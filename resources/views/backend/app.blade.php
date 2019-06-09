@@ -54,7 +54,15 @@
 
 <script src="{{asset('/assets/vendor/chart.js/dist/Chart.min.js')}}"></script>
 <script src="{{asset('/assets/vendor/chart.js/dist/Chart.extension.js')}}"></script>
-<!-- Argon JS -->
+
+<script type="text/javascript">
+    $("#logout").click(function(e){
+        e.stopPropagation();
+        e.preventDefault();
+        $(this).closest('form').submit();
+    });
+</script>
+
 @yield('scripts')
 
 </body>
