@@ -11,6 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/login', 'ProfileController@login')->name('login');
+Route::get('/register', 'ProfileController@login')->name('register');
+Route::get('/dashboard', 'DashboardController@dashboard')->name('dashboard');
