@@ -31,7 +31,9 @@ class AmemberAPI
         ]);
         $statusCode = $res->getStatusCode();
         if(200 == $statusCode){
-            return json_decode($res->getBody());
+            $responseBody = json_decode($res->getBody());
+            Subscription::syncAmemberSubscriptions( $responseBody->subscriptions );
+            return $responseBody;
         } else if(500 == $statusCode){
             abort(500,'Something wrong with amember api');
         }else {
