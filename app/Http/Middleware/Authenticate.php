@@ -2,7 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use Closure;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\View;
 
 class Authenticate extends Middleware
 {
@@ -17,5 +20,17 @@ class Authenticate extends Middleware
         if (! $request->expectsJson()) {
             return route('login');
         }
+    }
+
+    public function handle($request, Closure $next,...$guards) {
+
+        $user = Session::get('user');
+        view()->share('user', $user);
+
+        if ( null == $user ) {
+            return redirect(route('home'));
+        }
+
+        return $next($request);
     }
 }
