@@ -26,6 +26,7 @@ class Authenticate extends Middleware
 
         $user = Session::get('user');
         view()->share('user', $user);
+        app()->instance('user',$user);
 
         if ( null == $user ) {
             return redirect(route('home'));

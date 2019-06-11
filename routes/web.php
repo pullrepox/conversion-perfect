@@ -21,4 +21,7 @@ Route::get('/register', 'ProfileController@login')->name('register');
 Route::middleware(['auth'])->group(function(){
     Route::get('/dashboard', 'DashboardController@dashboard')->name('dashboard');
     Route::get('/pages/{slug}','PageController@show')->name('pages.show');
+
+    Route::resource('sliders','SliderController');
+
 });
