@@ -6,8 +6,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description"
-          content="ConversionPerfect is an interactive bar top of your websites to attract viewers attention.">
+          content="@yield('description','ConversionPerfect is an interactive bar top of your websites to attract viewers attention.')">
     <meta name="author" content="ConversionPerfect">
+
+    @yield('metas')
+
     <title>@yield('title',"Dashboard - Conversion Perfect")</title>
     <!-- Favicon -->
     <link rel="icon" href="{{asset('/assets/img/brand/favicon.png')}}" type="image/png">

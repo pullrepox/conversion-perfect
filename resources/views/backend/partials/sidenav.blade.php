@@ -44,10 +44,10 @@
                                     <a href="#" class="nav-link">Invoices</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">Affiliates</a>
+                                    <a href="{{route('pages.show','affiliates')}}" class="nav-link">Affiliates</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">Bonuses</a>
+                                    <a href="{{route('pages.show','bonuses')}}" class="nav-link">Bonuses</a>
                                 </li>
                             </ul>
                         </div>
