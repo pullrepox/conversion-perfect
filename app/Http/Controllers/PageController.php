@@ -50,7 +50,11 @@ class PageController extends Controller
         if(null == $page){
             abort(404, "Unable to find the page");
         }
-        return view('backend.pages.show',['page'=>$page]);
+        $bc = [
+            'active' => $page->title,
+            'links' => [['title'=>'Dashboard','url'=>route('dashboard')]]
+        ];
+        return view('backend.pages.show',['page'=>$page,'bc'=>$bc]);
     }
 
     /**
