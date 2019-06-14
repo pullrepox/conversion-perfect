@@ -7,7 +7,7 @@
     $isEdit = isset($slider)?true:false;
 @endphp
 @section('content')
-    <div class="row">
+    <div class="row" id="slider">
         <div class="col">
             <div class="card-wrapper">
                 <!-- Custom form validation -->
@@ -62,18 +62,56 @@
 @push('scripts')
     <script src="{{asset('/js/bootstrap-colorpicker.min.js')}}"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script>
         $(function () {
             // Basic instantiation:
-            $('#text-color').colorpicker();
-            $('#sub-color').colorpicker();
+            $('#headline-color').colorpicker();
+            $('#sub-headline-color').colorpicker();
             $('#bar-color').colorpicker();
-            $('#bar-text').summernote();
-            // Example using an event, to change the color of the .jumbotron background:
-            // $('#text-color').on('colorpickerChange', function(event) {
-            //     $('.jumbotron').css('background-color', event.color.toString());
-            // });
+            $('#bg-color-start').colorpicker();
+            var data = 'hello world';
+            $('#description').summernote('code',data);
+
+            $('#headline-color').on('colorpickerChange', function(event) {
+                bar.headline_color = event.color.toString();
+            });
+
+            $('#sub-headline-color').on('colorpickerChange', function(event) {
+                bar.sub_headline_color = event.color.toString();
+            });
+
+            $('#bg-color-start').on('colorpickerChange', function(event) {
+                bar.bg_color_start = event.color.toString();
+            });
+        });
+    </script>
+    <script>
+        var bar = new Vue({
+            el: '#slider',
+            data: {
+                headline: 'Your headline goes here !!!',
+                sub_headline: 'You sub headline goes here !!!',
+                description: 'Some message to appear for your bar',
+                headline_color: '#fff',
+                sub_headline_color: '#fff',
+                bg_color_start: '#fd5d22',
+                bg_color_end: '#fd5d22',
+                bg_gradient: false,
+                bg_gradient_angle: 0,
+                opacity: 1,
+            },
+
+            computed:{
+
+                show_bg_color_end_container: () => {
+                    if (this.bg_gradient){
+                        return true;
+                    } else {
+                        return false;
+                    }
+                },
+            }
         });
     </script>
 @endpush
