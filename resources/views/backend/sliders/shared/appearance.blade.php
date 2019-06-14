@@ -62,9 +62,12 @@
 
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label for="subColor">Opacity</label>
+                                <label for="subColor">Opacity (@{{ opacity }})</label>
                                 <input v-model="opacity" type="range" class="custom-range" min="0" max="1" step="0.1" id="customRange3">
-                                @{{ opacity }}
+                                <div class="d-flex justify-content-between bd-highlight mb-3">
+                                    <div class="p-2 bd-highlight">0</div>
+                                    <div class="p-2 bd-highlight">1</div>
+                                </div>
                             </div>
                         </div>
 
