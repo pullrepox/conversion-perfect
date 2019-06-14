@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
@@ -23,7 +23,7 @@
     <!-- Argon CSS -->
     <link rel="stylesheet" href="{{asset('/assets/css/argon.css')}}" type="text/css">
 
-    @yield('styles')
+    @stack('styles')
 </head>
 
 <body>
@@ -66,7 +66,7 @@
     });
 </script>
 
-@yield('scripts')
+@stack('scripts')
 
 </body>
 

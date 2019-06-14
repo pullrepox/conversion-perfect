@@ -381,7 +381,7 @@ input[type="date"],
 input[type="time"],
 input[type="datetime-local"],
 input[type="month"] {
-  // Remove the default appearance of temporal inputs to avoid a Mobile Safari
+  // Remove the default shared of temporal inputs to avoid a Mobile Safari
   // bug where setting a custom line-height prevents text from being vertically
   // centered within the input.
   // See https://bugs.webkit.org/show_bug.cgi?id=139848

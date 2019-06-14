@@ -10,7 +10,7 @@ class AmemberAPI
 {
     protected $baseUri;
     protected $key;
-    protected  $client=null;
+    protected $client=null;
 
 
     protected $checkAccess = 'check-access/by-login-pass';

@@ -17,14 +17,14 @@
                         <table class="table align-items-center table-flush">
                             <thead class="thead-light">
                             <tr>
-                                <th>Name</th>
-                                <th>Heading</th>
+                                <th>Bar Name</th>
+                                <th>Created</th>
                                 <th>Type</th>
-                                <th>Link Click</th>
-                                <th>Email Option</th>
+                                <th>Link Clicks</th>
+                                <th>Email Options</th>
                                 <th>Total Views</th>
                                 <th>Unique Views</th>
-                                <th></th>
+                                <th>Actions</th>
                             </tr>
                             </thead>
                             <tbody>

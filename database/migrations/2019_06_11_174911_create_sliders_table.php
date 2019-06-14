@@ -27,11 +27,11 @@ class CreateSlidersTable extends Migration
             $table->text('subheading')->nullable();
             $table->boolean('status')->default(0);
 
-            $table->json('appearance')->nullable();
-            $table->json('settings')->nullable();
-            $table->json('countdown')->nullable();
-            $table->json('button')->nullable();
-            $table->json('branding')->nullable();
+            $table->longText('shared')->nullable();
+            $table->longText('settings')->nullable();
+            $table->longText('countdown')->nullable();
+            $table->longText('button')->nullable();
+            $table->longText('branding')->nullable();
 
             $table->timestamps();
         });
