@@ -56,7 +56,7 @@
                                            data-original-title="Pause Slider">
                                             <i class="fas fa-pause"></i>
                                         </a>
-                                         <a href="{{route('slider.edit',$slider->id)}}" class="table-action" data-toggle="tooltip"
+                                         <a href="{{route('sliders.edit',$slider->id)}}" class="table-action" data-toggle="tooltip"
                                            data-original-title="Edit Slider">
                                             <i class="fas fa-pen"></i>
                                         </a>
@@ -76,10 +76,14 @@
                                            data-original-title="Clear Stat">
                                             <i class="fas fa-battery-empty"></i>
                                         </a>
-                                        <a href="#!" class="table-action table-action-delete" data-toggle="tooltip"
-                                           data-original-title="Delete Slider">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
+                                        <form method="POST" class="form-inline d-inline" action="{{route('sliders.destroy',$slider->id)}}">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            {{csrf_field()}}
+                                            <button  type="submit" class="delete-btn table-action table-action-delete bg-transparent border-0" data-toggle="tooltip"
+                                               data-original-title="Delete Slider">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
@@ -96,3 +100,25 @@
         </div>
     </div>
 @endsection
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    <script type="text/javascript">
+        $('.table-responsive').on('click','.delete-btn',function(e){
+            e.preventDefault();
+            Swal.fire({
+                title: 'Do you want to Delete?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Delete'
+            }).then((result) => {
+                if (result.value) {
+                   $(this).closest('form').submit();
+                }
+            })
+
+        });
+    </script>
+@endpush

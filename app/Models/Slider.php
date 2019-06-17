@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Slider extends Model
 {
     protected $casts = [
+        'appearance'=>'array',
         'shared' => 'array',
         'settings' => 'array',
         'countdown' => 'array',

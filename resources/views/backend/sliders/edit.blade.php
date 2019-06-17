@@ -19,37 +19,35 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
-                                @if($isEdit)
-                                    Lets Edit
-                                @else
-                                    <button class="btn btn-icon btn-3 btn-secondary" type="button">
-                                        <span class="btn-inner--text">Appearance</span>
-                                    </button>
-                                    <button class="btn btn-icon btn-3 btn-secondary" type="button">
-                                        <span class="btn-inner--text">Settings</span>
-                                    </button>
-                                    <button class="btn btn-icon btn-3 btn-secondary" type="button">
-                                        <span class="btn-inner--text">Countdown</span>
-                                    </button>
-                                    <button class="btn btn-icon btn-3 btn-secondary" type="button">
-                                        <span class="btn-inner--text">Button</span>
-                                    </button>
-                                    <button class="btn btn-icon btn-3 btn-secondary" type="button">
-                                        <span class="btn-inner--text">Opt-In Appearance</span>
-                                    </button>
-                                    <button class="btn btn-icon btn-3 btn-secondary" type="button">
-                                        <span class="btn-inner--text">Opt-In Settings</span>
-                                    </button>
-                                    <button class="btn btn-icon btn-3 btn-secondary" type="button">
-                                        <span class="btn-inner--text">Pro Features</span>
-                                    </button>
-
+                                <button class="btn btn-icon btn-3 btn-secondary" type="button">
+                                    <span class="btn-inner--text">Appearance</span>
+                                </button>
+                                <button class="btn btn-icon btn-3 btn-secondary" type="button">
+                                    <span class="btn-inner--text">Settings</span>
+                                </button>
+                                <button class="btn btn-icon btn-3 btn-secondary" type="button">
+                                    <span class="btn-inner--text">Countdown</span>
+                                </button>
+                                <button class="btn btn-icon btn-3 btn-secondary" type="button">
+                                    <span class="btn-inner--text">Button</span>
+                                </button>
+                                <button class="btn btn-icon btn-3 btn-secondary" type="button">
+                                    <span class="btn-inner--text">Opt-In Appearance</span>
+                                </button>
+                                <button class="btn btn-icon btn-3 btn-secondary" type="button">
+                                    <span class="btn-inner--text">Opt-In Settings</span>
+                                </button>
+                                <button class="btn btn-icon btn-3 btn-secondary" type="button">
+                                    <span class="btn-inner--text">Pro Features</span>
+                                </button>
+                                @php
+                                    $url = $isEdit?route('sliders.edit',$slider->id):route('sliders.store');
+                                @endphp
+                                <form method="POST" action="{{$url}}">
+                                    {{csrf_field()}}
                                     @include('backend.sliders.shared.appearance')
-
-                                    @include('backend.sliders.shared.preview')
-
-
-                                @endif
+                                </form>
+                                @include('backend.sliders.shared.preview')
                             </div>
                         </div>
                     </div>
@@ -66,53 +64,75 @@
     <script>
         $(function () {
             // Basic instantiation:
-            $('#headline-color').colorpicker();
-            $('#sub-headline-color').colorpicker();
+            $('#heading-color').colorpicker();
+            $('#sub-heading-color').colorpicker();
             $('#bar-color').colorpicker();
             $('#bg-color-start').colorpicker();
             var data = 'hello world';
-            $('#description').summernote('code',data);
+            $('#description').summernote('code', data);
 
-            $('#headline-color').on('colorpickerChange', function(event) {
-                bar.headline_color = event.color.toString();
+            $('#heading-color').on('colorpickerChange', function (event) {
+                bar.heading_color = event.color.toString();
             });
 
-            $('#sub-headline-color').on('colorpickerChange', function(event) {
-                bar.sub_headline_color = event.color.toString();
+            $('#sub-heading-color').on('colorpickerChange', function (event) {
+                bar.sub_heading_color = event.color.toString();
             });
 
-            $('#bg-color-start').on('colorpickerChange', function(event) {
+            $('#bg-color-start').on('colorpickerChange', function (event) {
                 bar.bg_color_start = event.color.toString();
             });
         });
     </script>
     <script>
-        var bar = new Vue({
-            el: '#slider',
-            data: {
-                headline: 'Your headline goes here !!!',
-                sub_headline: 'You sub headline goes here !!!',
+            <?php
+            if($isEdit){
+            ?>
+        var preFillData = {
+                heading: "{{$slider->heading?$slider->heading:'Slider heading goes here'}}",
+                sub_heading: "{{$slider->subheading?$slider->subheading:'Slider SubHeading goes here.'}}",
                 description: 'Some message to appear for your bar',
-                headline_color: '#fff',
-                sub_headline_color: '#fff',
+                heading_color: "{{isset($slider->appearance['heading_color'])?$slider->appearance['heading_color']:'#ffffff'}}",
+                sub_heading_color: '#fff',
                 bg_color_start: '#fd5d22',
                 bg_color_end: '#fd5d22',
                 bg_gradient: false,
                 bg_gradient_angle: 0,
                 opacity: 1,
-            },
-
-            computed:{
-
-                show_bg_color_end_container: () => {
-                    if (this.bg_gradient){
-                        return true;
-                    } else {
-                        return false;
-                    }
-                },
+            };
+            <?php
+            } else {
+            ?>
+        var preFillData = {
+                heading: 'Slider heading goes here',
+                sub_heading: 'Slider SubHeading goes here.',
+                description: 'Some message to appear for your bar',
+                heading_color: "#ffffff",
+                sub_heading_color: '#fff',
+                bg_color_start: '#fd5d22',
+                bg_color_end: '#fd5d22',
+                bg_gradient: false,
+                bg_gradient_angle: 0,
+                opacity: 1,
+            };
+            <?php
             }
-        });
+            ?>
+
+        var bar = new Vue({
+                el: '#slider',
+                data: preFillData,
+                computed: {
+
+                    show_bg_color_end_container: () => {
+                        if (this.bg_gradient) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    },
+                }
+            });
     </script>
 @endpush
 

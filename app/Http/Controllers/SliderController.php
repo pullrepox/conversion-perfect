@@ -42,7 +42,18 @@ class SliderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $slider = new Slider();
+        $slider->name = $request->input('slider_name');
+        $slider->user_id = resolve('user')->user_id;
+        $slider->heading = $request->input('headline');
+        $slider->subheading = $request->input('sub_headline');
+        $slider->appearance = $request->input('appearance');
+
+        if($slider->save()){
+            return redirect()->back()->withMessage('Appearance saved!');
+        } else {
+            abort(500,'Unable to save');
+        }
     }
 
     /**
@@ -65,7 +76,6 @@ class SliderController extends Controller
     public function edit(Slider $slider)
     {
         //TODO: got to check if slider is owned by user_id
-
         return view('backend.sliders.edit',['slider'=>$slider]);
     }
 
@@ -89,6 +99,10 @@ class SliderController extends Controller
      */
     public function destroy(Slider $slider)
     {
-        //
+        if($slider->delete()){
+            return redirect()->back()->withMessage('Slider Deleted');
+        } else {
+            abort(505, "Failed to delete Slider");
+        }
     }
 }

@@ -4,8 +4,8 @@
         <div style="width:auto; min-width:60%; height:170px; text-align:center;">
 
             <div style="width:auto; height:auto;">
-                <div  :style="{ color: headline_color }" style="width:100%; min-width:100%; margin:0 auto; padding-top:15px;" id="">@{{ headline }}</div>
-                <div :style="{ color: sub_headline_color }" style="width:100%; min-width:100%; margin:0 auto; font-size:16px; color:#ffffff" id="">@{{ sub_headline }}</div>
+                <div  :style="{ color: heading_color }" style="width:100%; min-width:100%; margin:0 auto; padding-top:15px;" id="">@{{ heading }}</div>
+                <div :style="{ color: sub_heading_color }" style="width:100%; min-width:100%; margin:0 auto; font-size:16px; color:#ffffff" id="">@{{ sub_heading }}</div>
             </div>
 
             <div style="width:auto; height:60px;">
