@@ -23,5 +23,6 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/pages/{slug}','PageController@show')->name('pages.show');
 
     Route::resource('sliders','SliderController');
+    Route::post('/sliders/update','SliderController@updateSection')->name('sliders.update.ajax');
 
 });

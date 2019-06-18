@@ -2,6 +2,7 @@
 /public/hot
 /public/storage
 /storage/*.key
+/storage/debugbar
 /vendor
 .env
 .phpunit.result.cache
@@ -10,3 +11,4 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 .idea
+

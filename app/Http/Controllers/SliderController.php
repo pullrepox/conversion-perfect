@@ -15,7 +15,7 @@ class SliderController extends Controller
 
     public function index()
     {
-        $user_id = resolve('user')->user_id;
+        $user_id = user()->user_id;
         $sliders = Slider::where('user_id',$user_id)
                     ->paginate(10);
 
@@ -87,7 +87,46 @@ class SliderController extends Controller
      */
     public function update(Request $request, Slider $slider)
     {
+
         return $slider;
+    }
+
+    public function updateSection(Request $request ){
+        $id = $request->input('slider_id',null);
+        if($id){
+           $slider = Slider::find($id);
+            if(user()->user_id != $slider->user_id){
+                return jsonResponse(false, 403,'Unauthorized Access');
+            }
+        } else {
+            $slider = new Slider();
+            $slider->user_id = user()->user_id;
+        }
+        $name = $request->input('slider_name');
+        $type = $request->input('section_type');
+        $section_data = $request->except('slider_id','slider_name','section_type');
+
+        $slider->name=$name;
+
+        switch ($type){
+            case 'appearance':
+                $slider->appearance = $section_data;
+                break;
+            default:
+                return jsonResponse(false,400,'Unrecognized Type', ['type' => $type]);
+                break;
+        }
+
+        if($slider->save()){
+            $respData = [
+                'slider'=> $slider,
+                'type' => $type
+            ];
+            return jsonResponse(true,200,'Slider Saved',$respData);
+        } else {
+            return jsonResponse(false,500,'Unable to save slider');
+        }
+
     }
 
     /**

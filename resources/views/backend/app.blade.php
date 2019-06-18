@@ -53,7 +53,6 @@
 <script src="{{asset('/assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js')}}"></script>
 <script src="{{asset('/assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js')}}"></script>
 <!-- Argon JS -->
-<script src="{{asset('/assets/js/argon.js')}}"></script>
 
 <script src="{{asset('/assets/vendor/chart.js/dist/Chart.min.js')}}"></script>
 <script src="{{asset('/assets/vendor/chart.js/dist/Chart.extension.js')}}"></script>
@@ -67,6 +66,7 @@
 </script>
 
 @stack('scripts')
+<script src="{{asset('/assets/js/argon.js')}}"></script>
 
 </body>
 

@@ -9,7 +9,7 @@
 
             <div style="width:auto; height:auto;">
                 <div  :style="{ color: heading_color }" style="width:100%; min-width:100%; margin:0 auto; padding-top:15px;" id="">@{{ heading }}</div>
-                <div :style="{ color: sub_heading_color }" style="width:100%; min-width:100%; margin:0 auto; font-size:16px; color:#ffffff" id="">@{{ sub_heading }}</div>
+                <div :style="{ color: subheading_color }" style="width:100%; min-width:100%; margin:0 auto; font-size:16px; color:#ffffff" id="">@{{ subheading }}</div>
             </div>
 
             <div style="width:auto; height:60px;">
