@@ -177,8 +177,8 @@
             });
 
 
-            var editor = new Quill('.quilleditor', {
-                placeholder: 'Description goes here'
+            var editor = new Quill('.quilleditor',{
+                placeholder:'Description goes here',
             });
 
             editor.on('text-change', function (delta, oldDelta, source) {
@@ -186,6 +186,9 @@
                     bar.description = editor.getText();
                 }
             });
+            @if($isEdit)
+            editor.setText("{{$slider->appearance['description']}}");
+            @endif
 
             var target='';
             $('#save-prev').click(function(e){
@@ -209,7 +212,6 @@
 
             function submitForm(){
                 $inputData = bar.$data;
-                console.log($inputData);
                 $inputData.section_type = $('#section_type').val();
                 $inputData.slider_id = $('#slider_id').val();
                 $inputData.slider_name = $('#slider-name').val();
@@ -275,9 +277,6 @@
         $appearance = $slider->appearance;
         ?>
 
-        @if('' != $slider->description )
-        editor.setText("{{$slider->description}}");
-        @endif
             bar.heading = "{{getArrayValue($appearance,'heading','')}}";
         bar.subheading = "{{getArrayValue($appearance,'subheading','')}}";
         bar.description = "{{getArrayValue($appearance,'description','')}}";
