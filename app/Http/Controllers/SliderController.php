@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models;
 use App\Models\Slider;
 use Illuminate\Http\Request;
 
@@ -88,7 +87,7 @@ class SliderController extends Controller
      */
     public function update(Request $request, Slider $slider)
     {
-        //
+        return $slider;
     }
 
     /**

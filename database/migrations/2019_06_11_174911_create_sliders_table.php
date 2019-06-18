@@ -19,19 +19,20 @@ class CreateSlidersTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('name',255);
             $table->tinyInteger('type')->default(1);
+            $table->longText('description');
             $table->unsignedBigInteger('link_click')->default(0);
             $table->unsignedBigInteger('email_options')->default(0);
             $table->unsignedBigInteger('total_views')->default(0);
             $table->unsignedBigInteger('unique_views')->default(0);
-            $table->text('heading')->nullable();
-            $table->text('subheading')->nullable();
             $table->boolean('status')->default(0);
 
-            $table->longText('shared')->nullable();
+            $table->longText('appearance')->nullable();
             $table->longText('settings')->nullable();
             $table->longText('countdown')->nullable();
             $table->longText('button')->nullable();
-            $table->longText('branding')->nullable();
+            $table->longText('opt_in_appearance')->nullable();
+            $table->longText('opt_in_settings')->nullable();
+            $table->longText('pro_features')->nullable();
 
             $table->timestamps();
         });

@@ -41,9 +41,10 @@
                                     <span class="btn-inner--text">Pro Features</span>
                                 </button>
                                 @php
-                                    $url = $isEdit?route('sliders.edit',$slider->id):route('sliders.store');
+                                    $url = $isEdit?route('sliders.update',$slider->id):route('sliders.store');
                                 @endphp
-                                <form method="POST" action="{{$url}}">
+                                <form method="POST" action="{{$url}}" @submit.prevent="updateSlider()">
+                                    @if($isEdit) @method ('PATCH') @endif
                                     {{csrf_field()}}
                                     @include('backend.sliders.shared.appearance')
                                 </form>
@@ -99,6 +100,7 @@
                 bg_gradient: false,
                 bg_gradient_angle: 0,
                 opacity: 1,
+                video_code: '',
             };
             <?php
             } else {
@@ -114,6 +116,7 @@
                 bg_gradient: false,
                 bg_gradient_angle: 0,
                 opacity: 1,
+                video_code: ''
             };
             <?php
             }
@@ -131,7 +134,12 @@
                             return false;
                         }
                     },
-                }
+                },
+                methods : {
+                    updateSlider: () => {
+                        console.log(this.data);
+                    }
+                },
             });
     </script>
 @endpush

@@ -82,7 +82,7 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="subColor">Video Code</label>
-                            <input type="text" name="appearance[video_code]" class="form-control" id="sub-color" placeholder="">
+                            <input type="text" v-model="video_code" name="appearance[video_code]" class="form-control" id="video-code" placeholder="">
                         </div>
                     </div>
 
