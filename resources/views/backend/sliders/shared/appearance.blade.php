@@ -212,6 +212,9 @@
 
             function submitForm(){
                 $inputData = bar.$data;
+
+                $inputData.html = $('#previewbar').html();
+
                 $inputData.section_type = $('#section_type').val();
                 $inputData.slider_id = $('#slider_id').val();
                 $inputData.slider_name = $('#slider-name').val();
