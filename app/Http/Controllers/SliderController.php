@@ -103,28 +103,13 @@ class SliderController extends Controller
             $slider->user_id = user()->user_id;
         }
 
+        $slider->appearance = $request->input('appearance');
+        $slider->settings = $request->input('settings');
 
-        $type = $request->input('section_type');
-        $section_data = $request->except('slider_id','slider_name','section_type','html');
-
-        switch ($type){
-            case 'appearance':
-                $slider->html = $request->input('html');
-                $slider->name = $request->input('slider_name');
-                $slider->appearance = $section_data;
-                break;
-            case 'settings':
-                $slider->settings = $section_data;
-                break;
-            default:
-                return jsonResponse(false,400,'Unrecognized Type', ['type' => $type]);
-                break;
-        }
 
         if($slider->save()){
             $respData = [
                 'slider'=> $slider,
-                'type' => $type
             ];
             return jsonResponse(true,200,'Slider Saved',$respData);
         } else {

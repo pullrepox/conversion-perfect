@@ -175,7 +175,7 @@
             });
         </script>
         <script>
-            var bar = new Vue({
+            var appearance = new Vue({
                 el: '#appearance',
                 data: {
                     heading: 'Slider heading goes here',
@@ -208,19 +208,19 @@
                 $appearance = $slider->appearance;
                 ?>
 
-                bar.heading = "{{getArrayValue($appearance,'heading','')}}";
-            bar.subheading = "{{getArrayValue($appearance,'subheading','')}}";
-            bar.description = "{{getArrayValue($appearance,'description','')}}";
-            bar.heading_color = "{{getArrayValue($appearance,'heading_color','')}}";
-            bar.subheading_color = "{{getArrayValue($appearance,'subheading_color','')}}";
-            bar.bg_color_start = "{{getArrayValue($appearance,'bg_color_start','')}}";
-            bar.bg_color_end = "{{getArrayValue($appearance,'bg_color_end','')}}";
-            bar.bg_gradient = {{getArrayValue($appearance,'bg_gradient',false)}};
-            bar.bg_gradient_angle = "{{getArrayValue($appearance,'bg_gradient_angle','')}}";
-            bar.opacity = "{{getArrayValue($appearance,'opacity','')}}";
-            bar.drop_shadow = {{getArrayValue($appearance,'drop_shadow',false)}};
-            bar.video_code = "{!! getArrayValue($appearance,'video_code','')  !!}";
-            bar.video_auto_play = {{getArrayValue($appearance,'video_auto_play',false)}};
+                appearance.heading = "{{getArrayValue($appearance,'heading','')}}";
+            appearance.subheading = "{{getArrayValue($appearance,'subheading','')}}";
+            appearance.description = "{{getArrayValue($appearance,'description','')}}";
+            appearance.heading_color = "{{getArrayValue($appearance,'heading_color','')}}";
+            appearance.subheading_color = "{{getArrayValue($appearance,'subheading_color','')}}";
+            appearance.bg_color_start = "{{getArrayValue($appearance,'bg_color_start','')}}";
+            appearance.bg_color_end = "{{getArrayValue($appearance,'bg_color_end','')}}";
+            appearance.bg_gradient = {{getArrayValue($appearance,'bg_gradient',false)}};
+            appearance.bg_gradient_angle = "{{getArrayValue($appearance,'bg_gradient_angle','')}}";
+            appearance.opacity = "{{getArrayValue($appearance,'opacity','')}}";
+            appearance.drop_shadow = {{getArrayValue($appearance,'drop_shadow',false)}};
+            appearance.video_code = "{!! getArrayValue($appearance,'video_code','')  !!}";
+            appearance.video_auto_play = {{getArrayValue($appearance,'video_auto_play',false)}};
             @endif
         </script>
 @endpush

@@ -53,9 +53,6 @@
                                            aria-selected="true">Pro Features</a>
                                     </li>
                                 </ul>
-                                {{--                                <button class="btn btn-icon btn-3 btn-secondary" type="button">--}}
-                                {{--                                    <span class="btn-inner--text">Pro Features</span>--}}
-                                {{--                                </button>--}}
                                 @php
                                     $url = $isEdit?route('sliders.update',$slider->id):route('sliders.store');
                                 @endphp
@@ -77,23 +74,23 @@
                                         </div>
                                         <div class="tab-pane fade" id="countdown" role="tabpanel"
                                              aria-labelledby="countdown-tab">
-                                            @include('backend.sliders.shared.settings')
+{{--                                            @include('backend.sliders.shared.settings')--}}
                                         </div>
                                         <div class="tab-pane fade" id="button" role="tabpanel"
                                              aria-labelledby="button-tab">
-                                            @include('backend.sliders.shared.settings')
+{{--                                            @include('backend.sliders.shared.settings')--}}
                                         </div>
                                         <div class="tab-pane fade" id="opt-in-appearance" role="tabpanel"
                                              aria-labelledby="opt-in-appearance-tab">
-                                            @include('backend.sliders.shared.settings')
+{{--                                            @include('backend.sliders.shared.settings')--}}
                                         </div>
                                         <div class="tab-pane fade" id="opt-in-settings" role="tabpanel"
                                              aria-labelledby="opt-in-settings-tab">
-                                            @include('backend.sliders.shared.settings')
+{{--                                            @include('backend.sliders.shared.settings')--}}
                                         </div>
                                         <div class="tab-pane fade" id="pro-features" role="tabpanel"
                                              aria-labelledby="pro-features-tab">
-                                            @include('backend.sliders.shared.settings')
+{{--                                            @include('backend.sliders.shared.settings')--}}
                                         </div>
                                     </div>
                                 </form>
@@ -135,18 +132,18 @@
         var target = '';
 
         function submitForm() {
-            $inputData = bar.$data;
+            $formData ={};
+            $formData.html = $('#previewbar').html();
+            $formData.slider_id = $('#slider_id').val();
+            $formData.slider_name = $('#slider-name').val();
 
-            $inputData.html = $('#previewbar').html();
-
-            $inputData.section_type = $('#section_type').val();
-            $inputData.slider_id = $('#slider_id').val();
-            $inputData.slider_name = $('#slider-name').val();
+            $formData.appearance = appearance.$data;
+            $formData.settings = settings.$data;
             $.ajax({
                 url: "{{route('sliders.update.ajax')}}",
                 method: "POST",
                 headers: {'X-CSRF-TOKEN': "{{csrf_token()}}"},
-                data: bar.$data,
+                data: $formData,
             }).done(function (response) {
 
                 if ('exit' != target) {
@@ -183,7 +180,7 @@
         });
         $('#save-exit').click(function (e) {
             target = 'exit';
-            // submitForm();
+             submitForm();
         });
 
         function nextAction() {

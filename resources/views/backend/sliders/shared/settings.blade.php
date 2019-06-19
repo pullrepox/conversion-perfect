@@ -103,7 +103,7 @@
             },
             computed: {
                 isGradDisabled() {
-                    return !this.bg_gradient;
+                    return true;
                 }
             },
             methods: {
@@ -117,14 +117,14 @@
             $settings = $slider->settings;
             ?>
 
-            {{--    settings.position = "{{getArrayValue($settings,'position','')}}";--}}
-            {{--settings.is_sticky = "{{getArrayValue($settings,'is_sticky','')}}";--}}
-            {{--settings.push_content_down = "{{getArrayValue($settings,'push_content_down','')}}";--}}
-            {{--settings.trigger = "{{getArrayValue($settings,'trigger','')}}";--}}
-            {{--settings.delay_seconds = "{{getArrayValue($settings,'delay_seconds','')}}";--}}
-            {{--settings.delay_scroll = "{{getArrayValue($settings,'bg_color_enddelay_scroll,delay_scroll')}}";--}}
-            {{--settings.frequency = {{getArrayValue($settings,'frequency',false)}};--}}
-            {{--settings.show_close_btn = "{{getArrayValue($settings,'show_close_btn','')}}";--}}
+            settings.position = "{{getArrayValue($settings,'position','')}}";
+            settings.is_sticky = "{{getArrayValue($settings,'is_sticky','')}}";
+            settings.push_content_down = "{{getArrayValue($settings,'push_content_down','')}}";
+            settings.trigger = "{{getArrayValue($settings,'trigger','')}}";
+            settings.delay_seconds = "{{getArrayValue($settings,'delay_seconds','')}}";
+            settings.delay_scroll = "{{getArrayValue($settings,'delay_scroll','')}}";
+            settings.frequency = "{{getArrayValue($settings,'frequency',false)}}";
+            settings.show_close_btn = "{{getArrayValue($settings,'show_close_btn','')}}";
         @endif
     </script>
 @endpush
