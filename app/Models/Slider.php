@@ -12,6 +12,8 @@ class Slider extends Model
         'settings' => 'array',
         'countdown' => 'array',
         'button' => 'array',
-        'branding' => 'array',
+        'opt_in_appearance' => 'array',
+        'opt_in_settings' => 'array',
+        'pro_features' => 'array',
     ];
 }

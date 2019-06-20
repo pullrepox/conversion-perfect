@@ -10,9 +10,8 @@
         </div>
     </div>
     <div class="card-body">
-        <div class="row mt-3" id="button">
+        <div class="row mt-3">
             <div class="col">
-                <input name="type" id="section_type" type="hidden" value="settings"/>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">

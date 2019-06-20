@@ -12,7 +12,11 @@
             border: none;
             border: 1px solid #dee2e6;
         }
-    </style>
+        .hide-card-btn:hover{
+            transform: none !important;
+            box-shadow: none !important;
+       }
+</style>
 @endsection
 @section('content')
     <div class="row" id="slider">
@@ -83,7 +87,7 @@
                                     <span class="btn-inner--text">
                                         Button</span>
                                 </button>
-                                <button id="opt-in-apperance"
+                                <button id="opt-in-appearance"
                                         class="btn btn-icon btn-outline-default btn-sm option">
                                     <span class="btn-inner--icon"><i class="ni ni-single-02"></i></span>
                                     <span class="btn-inner--text">
@@ -110,6 +114,9 @@
                     @include('backend.sliders.shared.settings')
                     @include('backend.sliders.shared.countdown')
                     @include('backend.sliders.shared.button')
+                    @include('backend.sliders.shared.opt-in-appearance')
+                    @include('backend.sliders.shared.opt-in-settings')
+                    @include('backend.sliders.shared.pro-features')
                 </div>
 
             </div>
@@ -180,6 +187,9 @@
             $formData.settings = slider.$data.settings;
             $formData.countdown = slider.$data.countdown;
             $formData.button = slider.$data.button;
+            $formData.opt_in_appearance = slider.$data.opt_in_appearance;
+            $formData.opt_in_settings = slider.$data.opt_in_settings;
+            $formData.pro_features = slider.$data.pro_features;
 
             $result = validate($formData);
             if (!$result.status) {
@@ -246,7 +256,7 @@
         };
         @endif
 
-        @if($isEdit && ''!=$slider->settings)
+                @if($isEdit && ''!=$slider->settings)
             prefillData.settings = <?php echo json_encode($slider->settings); ?>;
         @else
             prefillData.settings = {
@@ -261,7 +271,7 @@
         };
         @endif
 
-        @if($isEdit && ''!=$slider->countdown)
+                @if($isEdit && ''!=$slider->countdown)
             prefillData.countdown = <?php echo json_encode($slider->countdown); ?>;
         @else
             prefillData.countdown = {
@@ -279,7 +289,7 @@
         };
         @endif
 
-        @if($isEdit && ''!=$slider->button)
+                @if($isEdit && ''!=$slider->button)
             prefillData.button = <?php echo json_encode($slider->button); ?>;
         @else
             prefillData.button = {
@@ -297,19 +307,65 @@
         };
         @endif
 
+                @if($isEdit && ''!=$slider->opt_in_appearance)
+            prefillData.opt_in_appearance = <?php echo json_encode($slider->opt_in_appearance); ?>;
+        @else
+            prefillData.opt_in_appearance = {
+            optin_type: '',
+            optin_image: '',
+            optin_video: '',
+            headline_text: '',
+            panel_bgcolor: '',
+            subheadline_text: '',
+            subheadlineColor: '',
+            name_placeholder_text: '',
+            email_placeholder_text: '',
+            show_placeholder_icons: '',
+            button_type: '',
+            button_text_color: '',
+            button_bgcolor: '',
+            button_text: '',
+            button_animation: '',
+            tinyFooter_text: '',
+            tiny_footer_text_color: '',
+        };
+        @endif
+
+                @if($isEdit && ''!=$slider->opt_in_settings)
+            prefillData.opt_in_settings = <?php echo json_encode($slider->opt_in_settings); ?>;
+        @else
+            prefillData.opt_in_settings = {
+            optin_type: '',
+            optin_list: '',
+            optin_action: '',
+            after_message: '',
+            redirection_url: '',
+            reshow_slider: '',
+        };
+        @endif
+                @if($isEdit && ''!=$slider->pro_features)
+            prefillData.pro_features = <?php echo json_encode($slider->pro_features); ?>;
+        @else
+            prefillData.pro_features = {
+            remove_branding: '',
+            show_over_third_party_site: '',
+            overlay_page_title: ''
+        };
+                @endif
+
         var slider = new Vue({
-            el: '#slider',
-            data: prefillData,
-            computed: {
-                isGradDisabled() {
-                    return !this.appearance.bg_gradient;
-                }
-            },
-            methods: {
-                updateSlider: () => {
-                    console.log(this.data);
-                }
-            },
-        });
+                el: '#slider',
+                data: prefillData,
+                computed: {
+                    isGradDisabled() {
+                        return !this.appearance.bg_gradient;
+                    }
+                },
+                methods: {
+                    updateSlider: () => {
+                        console.log(this.data);
+                    }
+                },
+            });
     </script>
 @endsection
