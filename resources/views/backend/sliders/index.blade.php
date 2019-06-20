@@ -100,25 +100,28 @@
         </div>
     </div>
 @endsection
-@push('scripts')
+@section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
     <script type="text/javascript">
-        $('.table-responsive').on('click','.delete-btn',function(e){
-            e.preventDefault();
-            Swal.fire({
-                title: 'Do you want to Delete?',
-                text: "You won't be able to revert this!",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Delete'
-            }).then((result) => {
-                if (result.value) {
-                   $(this).closest('form').submit();
-                }
-            })
+        $(function(){
+            $('.table-responsive').on('click','.delete-btn',function(e){
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Do you want to Delete?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Delete'
+                }).then((result) => {
+                    if (result.value) {
+                        $(this).closest('form').submit();
+                    }
+                })
 
+            });
         });
+
     </script>
-@endpush
+@endsection
