@@ -1,164 +1,153 @@
-@push('styles')
-    <link rel="stylesheet" href="{{asset('/css/bootstrap-colorpicker.min.css')}}">
-    <link rel="stylesheet" href="{{asset('/assets/vendor/quill/dist/quill.core.css')}}"/>
-@endpush
-<div class="row mt-3" id="appearance">
-    <div class="col">
-        <input name="type" id="section_type" type="hidden" value="appearance"/>
-        @if($isEdit)
-            <input name="id" id="slider_id" type="hidden" value="{{$slider->id}}"/>
-        @endif
-        <div class="row">
-            <div class="col">
-                <div class="form-group">
-                    <label for="sliderName">Slider Name</label>
-                    <input type="text" class="form-control"
-                           value="{{$isEdit?$slider->name:''}}" id="slider-name">
-                </div>
+<div class="card" id="appearance-card" style="display: none;">
+    <div class="card-header pt-2 pb-2 division-card-header">
+        <div class="form-row">
+            <h3 class="mb-0 col card-title">Appearance</h3>
+            <div class="col text-right">
+                <button type="button" class="btn mr--2 no-shadow-box text-underline hide-card-btn">
+                    hide
+                </button>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="heading">Heading</label>
-                    <input v-model="heading" type="text" name="heading" class="form-control" id="heading">
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="subHeading">Sub Heading</label>
-                    <input type="text" v-model="subheading" name="subheading" class="form-control"
-                           id="subheading">
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="headingColor">Heading Color</label>
-                    <input type="text" v-model="heading_color" class="form-control" id="heading-color">
-
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="subHeadingColor">Sub Heading Color</label>
-                    <input type="text" v-model="subheading_color" class="form-control" id="sub-heading-color">
-                </div>
-            </div>
-            <div class="col-md-3">
-                <label for="dropShadow">Background Gradient</label>
-                <div class="form-group">
-                    <label class="custom-toggle mt-2">
-                        <input v-model="bg_gradient" type="checkbox">
-                        <span class="custom-toggle-slider rounded-circle"></span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="subColor">Background Color Start</label>
-                    <input v-model="bg_color_start" type="text" class="form-control" id="bg-color-start">
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="subColor">Background Color End</label>
-                    <input type="text" v-model="bg_color_end" value="#ffffff" :disabled=isGradDisabled
-                           class="form-control"
-                           id="bg-color-end" placeholder="">
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="subColor">Background Gradient Angle</label>
-                    <input type="number" v-model="bg_gradient_angle" :disabled=isGradDisabled
-                           class="form-control"
-                           id="sub-color" placeholder="">
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="subColor">Opacity (@{{ opacity }})</label>
-                    <input v-model="opacity" type="range" class="custom-range"
-                           min="0" max="1" step="0.1" id="customRange3">
-                    <div class="d-flex justify-content-between bd-highlight mb-3">
-                        <div class="p-2 bd-highlight">0</div>
-                        <div class="p-2 bd-highlight">1</div>
+    </div>
+    <div class="card-body">
+        <div class="row mt-3">
+            <div class="col">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="heading">Heading</label>
+                            <input v-model="appearance.heading" type="text" name="heading" class="form-control" id="heading">
+                        </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="subColor">Video Code</label>
-                    <input type="text" v-model="video_code" class="form-control"
-                           id="video-code" placeholder="">
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <label for="dropShadow">Drop Shadow</label>
-                <div class="form-group">
-                    <label class="custom-toggle mt-2">
-                        <input v-model="drop_shadow" type="checkbox">
-                        <span class="custom-toggle-slider rounded-circle"></span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="subColor">Video Autoplay</label>
-                    <div class="form-group">
-                        <label class="custom-toggle mt-2">
-                            <input v-model="video_auto_play" type="checkbox">
-                            <span class="custom-toggle-slider rounded-circle"></span>
-                        </label>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="subHeading">Sub Heading</label>
+                            <input type="text" v-model="appearance.subheading" name="subheading" class="form-control"
+                                   id="subheading">
+                        </div>
                     </div>
-                </div>
-            </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="headingColor">Heading Color</label>
+                            <input type="text" v-model="appearance.heading_color" class="form-control color-picker" id="heading-color">
 
-            <div class="col-md-8">
-                <div class="form-group">
-                    <label for="subColor">Description</label>
-                    <div data-toggle="quill"
-                         class="quilleditor"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="subHeadingColor">Sub Heading Color</label>
+                            <input type="text" v-model="appearance.subheading_color" class="form-control color-picker" id="sub-heading-color">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="dropShadow">Background Gradient</label>
+                        <div class="form-group">
+                            <label class="custom-toggle mt-2">
+                                <input v-model="appearance.bg_gradient" type="checkbox">
+                                <span class="custom-toggle-slider rounded-circle"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="subColor">Background Color Start</label>
+                            <input v-model="appearance.bg_color_start" type="text"
+                                   class="form-control color-picker"
+                                   id="bg-color-start">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="subColor">Background Color End</label>
+                            <input type="text" v-model="appearance.bg_color_end" value="#ffffff"
+                                   :disabled=isGradDisabled
+                                   class="form-control color-picker"
+                                   id="bg-color-end" >
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="subColor">Background Gradient Angle</label>
+                            <input type="number" v-model="appearance.bg_gradient_angle" :disabled=isGradDisabled
+                                   class="form-control"
+                                   id="sub-color">
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="subColor">Opacity (@{{ appearance.opacity }})</label>
+                            <input v-model="appearance.opacity" type="range" class="custom-range"
+                                   min="0" max="1" step="0.1" id="customRange3">
+                            <div class="d-flex justify-content-between bd-highlight mb-3">
+                                <div class="p-2 bd-highlight">0</div>
+                                <div class="p-2 bd-highlight">1</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="subColor">Video Code</label>
+                            <input type="text" v-model="appearance.video_code" class="form-control"
+                                   id="video-code" placeholder="">
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="dropShadow">Drop Shadow</label>
+                        <div class="form-group">
+                            <label class="custom-toggle mt-2">
+                                <input v-model="appearance.drop_shadow" type="checkbox">
+                                <span class="custom-toggle-slider rounded-circle"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="subColor">Video Autoplay</label>
+                            <div class="form-group">
+                                <label class="custom-toggle mt-2">
+                                    <input v-model="appearance.video_auto_play" type="checkbox">
+                                    <span class="custom-toggle-slider rounded-circle"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label for="subColor">Description</label>
+                            <div data-toggle="quill"
+                                 class="quilleditor"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-    @push('scripts')
-        <script src="{{asset('/js/bootstrap-colorpicker.min.js')}}"></script>
-        <script src="{{asset('/assets/vendor/quill/dist/quill.min.js')}}"></script>
+@section('scripts')
+    @parent
         <script>
             $(function () {
                 // Basic instantiation:
-                $('#heading-color').colorpicker();
-                $('#sub-heading-color').colorpicker();
-                $('#bar-color').colorpicker();
-                $('#bg-color-start').colorpicker();
-                $('#bg-color-end').colorpicker();
-
                 $('#heading-color').on('colorpickerChange', function (event) {
-                    bar.heading_color = event.color.toString();
+                    slider.appearance.heading_color = event.color.toString();
                 });
-
                 $('#sub-heading-color').on('colorpickerChange', function (event) {
-                    bar.subheading_color = event.color.toString();
+                    slider.appearance.subheading_color = event.color.toString();
                 });
-
                 $('#bg-color-start').on('colorpickerChange', function (event) {
-                    bar.bg_color_start = event.color.toString();
+                    slider.appearance.bg_color_start = event.color.toString();
                 });
-
                 $('#bg-color-end').on('colorpickerChange', function (event) {
-                    bar.bg_color_end = event.color.toString();
+                    slider.appearance.bg_color_end = event.color.toString();
                 });
-
 
                 var editor = new Quill('.quilleditor', {
                     placeholder: 'Description goes here',
@@ -166,7 +155,7 @@
 
                 editor.on('text-change', function (delta, oldDelta, source) {
                     if (source == 'user') {
-                        bar.description = editor.getText();
+                        slider.appearance.description = editor.getText();
                     }
                 });
                 @if($isEdit)
@@ -174,53 +163,4 @@
                         @endif
             });
         </script>
-        <script>
-            var appearance = new Vue({
-                el: '#appearance',
-                data: {
-                    heading: 'Slider heading goes here',
-                    subheading: 'Slider SubHeading goes here.',
-                    description: 'Slider description',
-                    heading_color: "#ffffff",
-                    subheading_color: '#ffffff',
-                    bg_color_start: '#fd5d22',
-                    bg_color_end: '#fd5d22',
-                    bg_gradient: false,
-                    bg_gradient_angle: 0,
-                    opacity: 1,
-                    drop_shadow: true,
-                    video_code: '',
-                    video_auto_play: true
-                },
-                computed: {
-                    isGradDisabled() {
-                        return !this.bg_gradient;
-                    }
-                },
-                methods: {
-                    updateSlider: () => {
-                        console.log(this.data);
-                    }
-                },
-            });
-            @if($isEdit)
-            <?php
-                $appearance = $slider->appearance;
-                ?>
-
-                appearance.heading = "{{getArrayValue($appearance,'heading','')}}";
-            appearance.subheading = "{{getArrayValue($appearance,'subheading','')}}";
-            appearance.description = "{{getArrayValue($appearance,'description','')}}";
-            appearance.heading_color = "{{getArrayValue($appearance,'heading_color','')}}";
-            appearance.subheading_color = "{{getArrayValue($appearance,'subheading_color','')}}";
-            appearance.bg_color_start = "{{getArrayValue($appearance,'bg_color_start','')}}";
-            appearance.bg_color_end = "{{getArrayValue($appearance,'bg_color_end','')}}";
-            appearance.bg_gradient = {{getArrayValue($appearance,'bg_gradient',false)}};
-            appearance.bg_gradient_angle = "{{getArrayValue($appearance,'bg_gradient_angle','')}}";
-            appearance.opacity = "{{getArrayValue($appearance,'opacity','')}}";
-            appearance.drop_shadow = {{getArrayValue($appearance,'drop_shadow',false)}};
-            appearance.video_code = "{!! getArrayValue($appearance,'video_code','')  !!}";
-            appearance.video_auto_play = {{getArrayValue($appearance,'video_auto_play',false)}};
-            @endif
-        </script>
-@endpush
+@endsection

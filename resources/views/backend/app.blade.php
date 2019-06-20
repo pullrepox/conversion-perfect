@@ -23,7 +23,7 @@
     <!-- Argon CSS -->
     <link rel="stylesheet" href="{{asset('/assets/css/argon.css')}}" type="text/css">
 
-    @stack('styles')
+    @yield('styles')
 </head>
 
 <body>
@@ -65,7 +65,7 @@
     });
 </script>
 
-@stack('scripts')
+@yield('scripts')
 <script src="{{asset('/assets/js/argon.js')}}"></script>
 
 </body>
