@@ -23,12 +23,16 @@
                         <div class="form-row">
                             <h3 class="mb-0 fa-pull-left">{{$isEdit?"Edit ":"Create "}} Slider</h3>
                             <div class="col text-right">
-                                <button class="btn btn-icon btn-primary" id="save-exit" type="button">
+                                <button class="btn btn-icon btn-primary btn-sm" id="save" type="button">
                                     <span class="btn-inner--icon"><i class="ni ni-check-bold"></i></span>
                                     <span class="btn-inner--text">Save</span>
                                 </button>
+                                <button class="btn btn-icon btn-primary btn-sm" id="save-exit" type="button">
+                                    <span class="btn-inner--icon"><i class="ni ni-send"></i></span>
+                                    <span class="btn-inner--text">Save & Exit</span>
+                                </button>
 
-                                <a href="{{route('sliders.index')}}" class="btn btn-warning"> Cancel </a>
+                                <a href="{{route('sliders.index')}}" class="btn btn-warning btn-sm"> Cancel </a>
                             </div>
                         </div>
                     </div>
@@ -36,10 +40,12 @@
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
-                                    <label for="sliderName">Slider Name</label>
-                                    <input type="text" class="form-control"
-                                           value="{{$isEdit?$slider->name:''}}" id="slider-name">
-                                    <input name="id" id="slider_id" type="hidden" value="{{$slider->id}}"/>
+                                    <label for="sliderName">Slider Name *</label>
+                                    <input type="text" class="form-control" value="{{$isEdit?$slider->name:''}}"
+                                           id="slider-name" required>
+                                    @if($isEdit)
+                                        <input name="id" id="slider_id" type="hidden" value="{{$slider->id}}"/>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -65,7 +71,7 @@
                                     <span class="btn-inner--text">
                                         Settings</span>
                                 </button>
-                                <button id="countdown"
+                                <button id="ticker"
                                         class="btn btn-icon btn-outline-default btn-sm option">
                                     <span class="btn-inner--icon"><i class="ni ni-watch-time"></i></span>
                                     <span class="btn-inner--text">
@@ -102,6 +108,8 @@
                 <div id="section-cards">
                     @include('backend.sliders.shared.appearance')
                     @include('backend.sliders.shared.settings')
+                    @include('backend.sliders.shared.countdown')
+                    @include('backend.sliders.shared.button')
                 </div>
 
             </div>
@@ -125,10 +133,14 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
     <script type="text/javascript">
-
+        var target = '';
         $(function () {
             $('.color-picker').colorpicker();
             $('#save-exit').click(function (e) {
+                target = 'exit';
+                submitForm();
+            });
+            $('#save').click(function (e) {
                 submitForm();
             });
 
@@ -147,15 +159,37 @@
             });
         });
 
+        function validate($formData) {
+            if ('' == $formData.slider_name.trim()) {
+                return {
+                    status: false,
+                    message: 'Slider name can not be empty'
+                }
+            }
+            return {
+                status: true,
+            }
+        }
 
         function submitForm() {
             $formData = {};
             $formData.html = $('#previewbar').html();
             $formData.slider_id = $('#slider_id').val();
             $formData.slider_name = $('#slider-name').val();
-
             $formData.appearance = slider.$data.appearance;
-            // $formData.settings = slider.$data.settings;
+            $formData.settings = slider.$data.settings;
+            $formData.countdown = slider.$data.settings;
+
+            $result = validate($formData);
+            if (!$result.status) {
+                Swal.fire(
+                    'Unable to proceed',
+                    $result.message,
+                    'error'
+                );
+                return 0;
+            }
+
             $.ajax({
                 url: "{{route('sliders.update.ajax')}}",
                 method: "POST",
@@ -189,9 +223,15 @@
     </script>
     {{--    Vue initilization--}}
     <script>
-        var slider = new Vue({
-            el: '#slider',
-            data: {
+                @if($isEdit)
+        var prefillData = {
+                appearance: <?php echo json_encode($slider->appearance); ?>,
+                settings: <?php echo json_encode($slider->settings); ?>,
+                countdown: <?php echo json_encode($slider->countdown); ?>,
+                button: <?php echo json_encode($slider->button); ?>,
+            };
+                @else
+        var prefillData = {
                 appearance: {
                     heading: 'Slider heading goes here',
                     subheading: 'Slider SubHeading goes here.',
@@ -216,18 +256,49 @@
                     delay_scroll: '',
                     frequency: '',
                     show_close_btn: '',
+                },
+                countdown: {
+                    countdown: '',
+                    countdown_color: '#fafafa',
+                    countdown_bgcolor: '#afafaf',
+                    expiration_action: '',
+                    expiration_redirect_url: '',
+                    expiration_text: '',
+                    evergreen_days: '',
+                    evergreen_hours: '',
+                    evergreen_minutes: '',
+                    fixed_date_time: '',
+                    fixed_time_zone: ''
+                },
+                button: {
+                    button_type: '',
+                    button_text_color: '#fafafa',
+                    button_bgcolor: '#afafaf',
+                    button_text: '',
+                    button_link: '',
+                    button_target: '',
+                    button_animation: '',
+                    evergreen_hours: '',
+                    evergreen_minutes: '',
+                    fixed_date_time: '',
+                    fixed_time_zone: ''
                 }
-            },
-            computed: {
-                isGradDisabled() {
-                    return !this.appearance.bg_gradient;
-                }
-            },
-            methods: {
-                updateSlider: () => {
-                    console.log(this.data);
-                }
-            },
-        });
+            };
+                @endif
+
+        var slider = new Vue({
+                el: '#slider',
+                data: prefillData,
+                computed: {
+                    isGradDisabled() {
+                        return !this.appearance.bg_gradient;
+                    }
+                },
+                methods: {
+                    updateSlider: () => {
+                        console.log(this.data);
+                    }
+                },
+            });
     </script>
 @endsection

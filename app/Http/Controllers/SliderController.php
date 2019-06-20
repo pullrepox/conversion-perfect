@@ -102,10 +102,10 @@ class SliderController extends Controller
             $slider = new Slider();
             $slider->user_id = user()->user_id;
         }
+        $slider->name = $request->input('slider_name');
 
         $slider->appearance = $request->input('appearance');
         $slider->settings = $request->input('settings');
-
 
         if($slider->save()){
             $respData = [
