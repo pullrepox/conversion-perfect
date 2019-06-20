@@ -178,7 +178,8 @@
             $formData.slider_name = $('#slider-name').val();
             $formData.appearance = slider.$data.appearance;
             $formData.settings = slider.$data.settings;
-            $formData.countdown = slider.$data.settings;
+            $formData.countdown = slider.$data.countdown;
+            $formData.button = slider.$data.button;
 
             $result = validate($formData);
             if (!$result.status) {
@@ -223,82 +224,92 @@
     </script>
     {{--    Vue initilization--}}
     <script>
-                @if($isEdit)
-        var prefillData = {
-                appearance: <?php echo json_encode($slider->appearance); ?>,
-                settings: <?php echo json_encode($slider->settings); ?>,
-                countdown: <?php echo json_encode($slider->countdown); ?>,
-                button: <?php echo json_encode($slider->button); ?>,
-            };
-                @else
-        var prefillData = {
-                appearance: {
-                    heading: 'Slider heading goes here',
-                    subheading: 'Slider SubHeading goes here.',
-                    description: 'Slider description',
-                    heading_color: "#ffffff",
-                    subheading_color: '#ffffff',
-                    bg_color_start: '#fd5d22',
-                    bg_color_end: '#fd5d22',
-                    bg_gradient: false,
-                    bg_gradient_angle: 0,
-                    opacity: 1,
-                    drop_shadow: true,
-                    video_code: '',
-                    video_auto_play: true
-                },
-                settings: {
-                    position: '',
-                    is_sticky: '',
-                    push_content_down: '',
-                    trigger: '',
-                    delay_seconds: '',
-                    delay_scroll: '',
-                    frequency: '',
-                    show_close_btn: '',
-                },
-                countdown: {
-                    countdown: '',
-                    countdown_color: '#fafafa',
-                    countdown_bgcolor: '#afafaf',
-                    expiration_action: '',
-                    expiration_redirect_url: '',
-                    expiration_text: '',
-                    evergreen_days: '',
-                    evergreen_hours: '',
-                    evergreen_minutes: '',
-                    fixed_date_time: '',
-                    fixed_time_zone: ''
-                },
-                button: {
-                    button_type: '',
-                    button_text_color: '#fafafa',
-                    button_bgcolor: '#afafaf',
-                    button_text: '',
-                    button_link: '',
-                    button_target: '',
-                    button_animation: '',
-                    evergreen_hours: '',
-                    evergreen_minutes: '',
-                    fixed_date_time: '',
-                    fixed_time_zone: ''
-                }
-            };
-                @endif
+        var prefillData = {};
+
+        @if($isEdit && ''!=$slider->appearance)
+            prefillData.appearance = <?php echo json_encode($slider->appearance); ?>;
+        @else
+            prefillData.appearance = {
+            heading: 'Slider heading goes here',
+            subheading: 'Slider SubHeading goes here.',
+            description: 'Slider description',
+            heading_color: "#ffffff",
+            subheading_color: '#ffffff',
+            bg_color_start: '#fd5d22',
+            bg_color_end: '#fd5d22',
+            bg_gradient: false,
+            bg_gradient_angle: 0,
+            opacity: 1,
+            drop_shadow: true,
+            video_code: '',
+            video_auto_play: true
+        };
+        @endif
+
+        @if($isEdit && ''!=$slider->settings)
+            prefillData.settings = <?php echo json_encode($slider->settings); ?>;
+        @else
+            prefillData.settings = {
+            position: '',
+            is_sticky: '',
+            push_content_down: '',
+            trigger: '',
+            delay_seconds: '',
+            delay_scroll: '',
+            frequency: '',
+            show_close_btn: '',
+        };
+        @endif
+
+        @if($isEdit && ''!=$slider->countdown)
+            prefillData.countdown = <?php echo json_encode($slider->countdown); ?>;
+        @else
+            prefillData.countdown = {
+            countdown: '',
+            countdown_color: '#fafafa',
+            countdown_bgcolor: '#afafaf',
+            expiration_action: '',
+            expiration_redirect_url: '',
+            expiration_text: '',
+            evergreen_days: '',
+            evergreen_hours: '',
+            evergreen_minutes: '',
+            fixed_date_time: '',
+            fixed_time_zone: ''
+        };
+        @endif
+
+        @if($isEdit && ''!=$slider->button)
+            prefillData.button = <?php echo json_encode($slider->button); ?>;
+        @else
+            prefillData.button = {
+            button_type: '',
+            button_text_color: '#fafafa',
+            button_bgcolor: '#afafaf',
+            button_text: '',
+            button_link: '',
+            button_target: '',
+            button_animation: '',
+            evergreen_hours: '',
+            evergreen_minutes: '',
+            fixed_date_time: '',
+            fixed_time_zone: ''
+        };
+        @endif
 
         var slider = new Vue({
-                el: '#slider',
-                data: prefillData,
-                computed: {
-                    isGradDisabled() {
-                        return !this.appearance.bg_gradient;
-                    }
-                },
-                methods: {
-                    updateSlider: () => {
-                        console.log(this.data);
-                    }
-                },
-            });
+            el: '#slider',
+            data: prefillData,
+            computed: {
+                isGradDisabled() {
+                    return !this.appearance.bg_gradient;
+                }
+            },
+            methods: {
+                updateSlider: () => {
+                    console.log(this.data);
+                }
+            },
+        });
     </script>
 @endsection

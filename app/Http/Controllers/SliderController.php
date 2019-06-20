@@ -106,6 +106,11 @@ class SliderController extends Controller
 
         $slider->appearance = $request->input('appearance');
         $slider->settings = $request->input('settings');
+        $slider->countdown = $request->input('countdown');
+        $slider->button = $request->input('button');
+        $slider->opt_in_appearance = $request->input('opt_in_appearance');
+        $slider->opt_in_settings = $request->input('opt_in_settings');
+        $slider->pro_features = $request->input('pro_features');
 
         if($slider->save()){
             $respData = [
