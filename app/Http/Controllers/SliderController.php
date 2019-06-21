@@ -114,8 +114,9 @@ class SliderController extends Controller
 
         if($slider->save()){
             $respData = [
-                'slider'=> $slider,
-            ];
+                'id'=>$slider->id,
+                'name'=>$slider->name
+                ];
             return jsonResponse(true,200,'Slider Saved',$respData);
         } else {
             return jsonResponse(false,500,'Unable to save slider');
