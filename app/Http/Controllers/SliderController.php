@@ -66,7 +66,7 @@ class SliderController extends Controller
      */
     public function show(Slider $slider)
     {
-        //
+        //it should handle the slider placement logic
     }
 
     /**
@@ -149,6 +149,23 @@ class SliderController extends Controller
         $newSlider = $slider->replicate();
         $newSlider->save();
         return redirect()->back();
+    }
+
+    public function clearStats(Slider $slider){
+
+        $slider->link_click=0;
+        $slider->email_options=0;
+        $slider->total_views=0;
+        $slider->unique_views=0;
+
+        if($slider->save()){
+            Toastr::success('Slider stats cleared','Success');
+            return redirect()->back();
+        }else {
+            Toastr::error('Unable to clear stats','Error');
+            return redirect()->back();
+        }
+
     }
 
     /**

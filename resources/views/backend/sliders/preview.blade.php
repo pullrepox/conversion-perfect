@@ -35,7 +35,6 @@ This should call js which should do the html rendering on top of the content of 
             </div>
         </div>
     </div>
-
 @endsection
 @section('styles')
     <style>

@@ -33,43 +33,53 @@
                                     <td class="table-user">{{$slider->name}}</td>
                                     <td>{{$slider->heading}}</td>
                                     <td>{{$slider->type}}</td>
-                                     <td>{{$slider->link_click}}</td>
-                                     <td>{{$slider->email_options}}</td>
-                                     <td>{{$slider->total_views}}</td>
-                                     <td>{{$slider->unique_views}}</td>
+                                    <td>{{$slider->link_click}}</td>
+                                    <td>{{$slider->email_options}}</td>
+                                    <td>{{$slider->total_views}}</td>
+                                    <td>{{$slider->unique_views}}</td>
                                     <td class="table-actions">
-                                        <form method="POST" class="form-inline  d-inline" action="{{route('sliders.toggle-status',$slider->id)}}">
+                                        <form method="POST" class="form-inline  d-inline"
+                                              action="{{route('sliders.toggle-status',$slider->id)}}">
                                             {{csrf_field()}}
-                                            <button type="submit" href="#!" class="table-action  bg-transparent border-0" data-toggle="tooltip"
-                                               data-original-title="{{$slider->status?'Pause':'Activate'}} Slider ?">
+                                            <button type="submit" href="#!"
+                                                    class="table-action  bg-transparent border-0" data-toggle="tooltip"
+                                                    data-original-title="{{$slider->status?'Pause':'Activate'}} Slider ?">
                                                 <i class="fas fa-{{$slider->status?'pause text-red':'play text-green'}}"></i>
                                             </button>
                                         </form>
-                                         <a href="{{route('sliders.edit',$slider->id)}}" class="table-action" data-toggle="tooltip"
+                                        <a href="{{route('sliders.edit',$slider->id)}}" class="table-action"
+                                           data-toggle="tooltip"
                                            data-original-title="Edit Slider">
                                             <i class="fas fa-pen"></i>
                                         </a>
-                                         <a href="{{route('sliders.preview',$slider->id)}}" class="table-action" data-toggle="tooltip"
+                                        <a href="{{route('sliders.preview',$slider->id)}}" class="table-action"
+                                           data-toggle="tooltip"
                                            data-original-title="View Slider">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                         <a href="{{route('sliders.clone',$slider->id)}}" class="table-action" data-toggle="tooltip"
+                                        <a href="{{route('sliders.clone',$slider->id)}}" class="table-action"
+                                           data-toggle="tooltip"
                                            data-original-title="Clone Slider">
                                             <i class="fas fa-clone"></i>
                                         </a>
-                                         <a href="#!" class="table-action" data-toggle="tooltip"
+                                        <a href="#!" data-code="{{getSliderCode($slider)}}"
+                                           class="table-action slider-code-btn" data-toggle="tooltip"
                                            data-original-title="Get Code">
                                             <i class="fas fa-code"></i>
                                         </a>
-                                         <a href="#!" class="table-action" data-toggle="tooltip"
+                                        <a href="{{route('sliders.clear-stats',$slider->id)}}"
+                                           class="table-action clear-stats-btn" data-toggle="tooltip"
                                            data-original-title="Clear Stat">
                                             <i class="fas fa-battery-empty"></i>
                                         </a>
-                                        <form method="POST" class="form-inline d-inline" action="{{route('sliders.destroy',$slider->id)}}">
+                                        <form method="POST" class="form-inline d-inline"
+                                              action="{{route('sliders.destroy',$slider->id)}}">
                                             <input type="hidden" name="_method" value="DELETE">
                                             {{csrf_field()}}
-                                            <button  type="submit" class="delete-btn table-action table-action-delete bg-transparent border-0" data-toggle="tooltip"
-                                               data-original-title="Delete Slider">
+                                            <button type="submit"
+                                                    class="delete-btn table-action table-action-delete bg-transparent border-0"
+                                                    data-toggle="tooltip"
+                                                    data-original-title="Delete Slider">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
@@ -88,12 +98,13 @@
             </div>
         </div>
     </div>
+    @include('backend.sliders.partials.code-modal')
 @endsection
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
     <script type="text/javascript">
-        $(function(){
-            $('.table-responsive').on('click','.delete-btn',function(e){
+        $(function () {
+            $('.table-responsive').on('click', '.delete-btn', function (e) {
                 e.preventDefault();
                 Swal.fire({
                     title: 'Do you want to Delete?',
@@ -106,6 +117,30 @@
                 }).then((result) => {
                     if (result.value) {
                         $(this).closest('form').submit();
+                    }
+                })
+
+            });
+            $('.table-responsive').on('click', '.slider-code-btn', function (e) {
+                e.preventDefault();
+                var sliderCode =$(this).attr('data-code');
+                $('#code-input').val(sliderCode);
+                $('#code-modal').modal('show');
+            });
+
+            $('.table-responsive').on('click', '.clear-stats-btn', function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Do you want to Clear stats?',
+                    text: "All stats for this slider will reset and you won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Clear'
+                }).then((result) => {
+                    if (result.value) {
+                        window.location.href = $(this).attr('href');
                     }
                 })
 
