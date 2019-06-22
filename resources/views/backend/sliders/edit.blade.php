@@ -162,8 +162,8 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vee-validate@latest"></script>
 
-
     <script type="text/javascript">
+        var toastr_options = {!! json_encode(config('toastr.options')) !!};
         var target = '';
         $(function () {
             $('.color-picker').colorpicker();
@@ -211,6 +211,7 @@
             }).done(function (response) {
                 $('#slider_id').val(response.data.id);
                 if ('exit' != target) {
+                    toastr.success('Slider Saved','Success',toastr_options);
                     return;
                 }
                 Swal.fire(
@@ -223,11 +224,7 @@
             }).fail(function (error) {
                 var errorResponse = error.responseJSON;
                 renderValidationError(errorResponse.errors);
-                Swal.fire(
-                    'Unable to save!',
-                    error.message,
-                    'error'
-                );
+                toastr.error('Failed to save Slider','Error!'.toastr_options);
             });
         }
 

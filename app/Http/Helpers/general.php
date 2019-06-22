@@ -13,7 +13,7 @@ function user(){
 }
 
 function getSliderCode($slider){
-    return '<script data-cfasync="false" src="'.url('/').'/sliders/?s='.$slider->id.'"></script>';
+    return '<script data-cfasync="false" src="'.url('/').'/sliders/'.$slider->id.'"></script>';
 }
 
 function getArrayValue($array,$key,$default){

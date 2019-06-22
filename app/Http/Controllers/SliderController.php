@@ -6,6 +6,7 @@ use App\Http\Requests\SliderRequest;
 use App\Models\Slider;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 
 class SliderController extends Controller
 {
@@ -66,7 +67,9 @@ class SliderController extends Controller
      */
     public function show(Slider $slider)
     {
-        //it should handle the slider placement logic
+        $page = view('backend.sliders.partials.slider-template',['slider'=>$slider])->render();
+        $html = str_replace(["\n","\r"],'',$page);
+        return 'document.write(\''."$html".'\');';
     }
 
     /**

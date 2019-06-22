@@ -26,7 +26,7 @@
                     <label for="countdownColor">Countdown Color</label>
                     <input type="text" v-model="countdown.countdown_color"
                            class="form-control color-picker"
-                           v-if="countdown.countdown!='none'"
+                           :disabled="countdown.countdown=='none'"
                            id="countdown-color">
                 </div>
             </div>
@@ -36,7 +36,7 @@
                 <div class="form-group">
                     <label for="countdownBgcolor">Countdown Background Color</label>
                     <input type="text" v-model="countdown.countdown_bgcolor"
-                           v-if="countdown.countdown!='none'"
+                           :disabled="countdown.countdown=='none'"
                            class="form-control color-picker"
                            id="countdown-bgcolor">
                 </div>

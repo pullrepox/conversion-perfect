@@ -16,4 +16,5 @@ class Slider extends Model
         'opt_in_settings' => 'array',
         'pro_features' => 'array',
     ];
+
 }
