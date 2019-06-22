@@ -24,7 +24,9 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="countdownColor">Countdown Color</label>
-                    <input type="text" v-model="countdown.countdown_color" class="form-control color-picker"
+                    <input type="text" v-model="countdown.countdown_color"
+                           class="form-control color-picker"
+                           v-if="countdown.countdown!='none'"
                            id="countdown-color">
                 </div>
             </div>
@@ -33,7 +35,8 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="countdownBgcolor">Countdown Background Color</label>
-                    <input type="text" v-model="countdown.countdown_bgcolor" value="#ffffff"
+                    <input type="text" v-model="countdown.countdown_bgcolor"
+                           v-if="countdown.countdown!='none'"
                            class="form-control color-picker"
                            id="countdown-bgcolor">
                 </div>
@@ -53,7 +56,8 @@
                 <div class="form-group">
                     <label for="expirationRedirectUrl">Expiration Redirect Url</label>
                     <input type="text" v-model="countdown.expiration_redirect_url"
-                           class="form-control" :disable=countdown.expiration_action!='redirect'
+                           class="form-control"
+                           :disabled=countdown.expiration_action!='redirect'
                            id="expiration-redirect-url">
                 </div>
             </div>
@@ -98,14 +102,16 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="fixedDateTime">Fixed DateTime</label>
-                    <input class="form-control datepicker"
-                           placeholder="Select date"
-                           type="text"
+                    <input class="form-control"
+                           type="datetime-local"
+                           value="2018-11-23T10:30"
                            id="fixed-data-time"
+                           :disabled=countdown.countdown!='fixeddate'
                            v-model="countdown.fixed_date_time"
-                           value="06/20/2018">
+                           >
                 </div>
             </div>
+
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="fixedTimeZone">TimeZone</label>
@@ -114,6 +120,7 @@
                     ?>
                     <select class="form-control select2-height-fix"
                             v-model="countdown.fixed_time_zone"
+                            :disabled=countdown.countdown!='fixeddate'
                             id="fixed-time-zone" data-toggle="select">
                         @foreach($timezones as $key=>$timezone)
                             <option name="{{$key}}">{{$timezone}}</option>
@@ -126,9 +133,11 @@
     </div>
 </div>
 @section('scripts')
-@parent
+    @parent
 <script>
     $(function () {
+
+
         $('#countdown-color').on('colorpickerChange', function (event) {
             slider.countdown.countdown_color = event.color.toString();
         });

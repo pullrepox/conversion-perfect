@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SliderRequest;
 use App\Models\Slider;
 use Illuminate\Http\Request;
 
@@ -30,7 +31,8 @@ class SliderController extends Controller
      */
     public function create()
     {
-        return view('backend.sliders.edit',['slider'=>null]);
+        $bc = ['active'=>'Sliders'];
+        return view('backend.sliders.edit',['slider'=>null,'bc'=>$bc]);
     }
 
     /**
@@ -91,9 +93,11 @@ class SliderController extends Controller
         return $slider;
     }
 
-    public function updateSection(Request $request ){
-        $id = $request->input('slider_id',null);
-        if($id){
+
+    public function updateSection(SliderRequest $request ){
+
+        $id = $request->input('slider_id',-1);
+        if(-1 != $id){
            $slider = Slider::find($id);
             if(user()->user_id != $slider->user_id){
                 return jsonResponse(false, 403,'Unauthorized Access');

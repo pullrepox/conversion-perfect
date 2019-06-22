@@ -16,21 +16,22 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="heading">Heading</label>
-                            <input v-model="appearance.heading" type="text" name="heading" class="form-control" id="heading">
+                            <input v-model="appearance.heading" type="text" name="heading"
+                                   class="form-control" id="heading">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="subHeading">Sub Heading</label>
-                            <input type="text" v-model="appearance.subheading" name="subheading" class="form-control"
-                                   id="subheading">
+                            <input type="text" v-model="appearance.subheading" name="subheading"
+                                   class="form-control" id="subheading">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="headingColor">Heading Color</label>
-                            <input type="text" v-model="appearance.heading_color" class="form-control color-picker" id="heading-color">
-
+                            <input type="text" v-model="appearance.heading_color" name="HeadingColor"
+                                   class="form-control color-picker" id="heading-color">
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -43,7 +44,7 @@
                         <label for="dropShadow">Background Gradient</label>
                         <div class="form-group">
                             <label class="custom-toggle mt-2">
-                                <input v-model="appearance.bg_gradient" type="checkbox">
+                                <input v-model="appearance.bg_gradient" type="checkbox" id="bg-gradient">
                                 <span class="custom-toggle-slider rounded-circle"></span>
                             </label>
                         </div>
@@ -149,9 +150,11 @@
                     slider.appearance.bg_color_end = event.color.toString();
                 });
 
-                var editor = new Quill('.quilleditor', {
-                    placeholder: 'Description goes here',
+                $('#bg-gradient').on('change',function(e){
+                    $('#bg-color-end').colorpicker('enable');
                 });
+
+                var editor = new Quill('.quilleditor');
 
                 editor.on('text-change', function (delta, oldDelta, source) {
                     if (source == 'user') {

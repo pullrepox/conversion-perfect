@@ -16,6 +16,22 @@
             transform: none !important;
             box-shadow: none !important;
        }
+        .error-list {
+            display: inline-block;
+            text-align:left;
+            text-decoration: none;
+            color:indianred;
+            margin-top: 0px;
+            padding-top: 0px;
+            list-style:none;
+        }
+
+        .validation-error {
+            font-size: smaller;
+            color: firebrick;
+        }
+
+
 </style>
 @endsection
 @section('content')
@@ -27,30 +43,36 @@
                         <div class="form-row">
                             <h3 class="mb-0 fa-pull-left">{{$isEdit?"Edit ":"Create "}} Slider</h3>
                             <div class="col text-right">
-                                <button class="btn btn-icon btn-primary btn-sm" id="save" type="button">
+                                <button class="btn btn-icon btn-primary btn-sm" id="save" type="button" :disabled="!isFormValid">
                                     <span class="btn-inner--icon"><i class="ni ni-check-bold"></i></span>
                                     <span class="btn-inner--text">Save</span>
                                 </button>
-                                <button class="btn btn-icon btn-primary btn-sm" id="save-exit" type="button">
+                                <button class="btn btn-icon btn-primary btn-sm" id="save-exit" type="button" >
                                     <span class="btn-inner--icon"><i class="ni ni-send"></i></span>
                                     <span class="btn-inner--text">Save & Exit</span>
                                 </button>
 
                                 <a href="{{route('sliders.index')}}" class="btn btn-warning btn-sm"> Cancel </a>
+                                <br/>
+                                <div class="text-red mt-2" v-if="!isFormValid">* Please fix the errors.</div>
+                                <ul class="error-list">
+                                    <li v-for="error in errors.all()">@{{ error }}</li>
+                                </ul>
                             </div>
                         </div>
+
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
                                     <label for="sliderName">Slider Name *</label>
-                                    <input type="text" class="form-control" value="{{$isEdit?$slider->name:''}}"
-                                           id="slider-name" required>
-                                    @if($isEdit)
-                                        <input name="id" id="slider_id" type="hidden" value="{{$slider->id}}"/>
-                                    @endif
+                                    <input type="text" class="form-control" name="slider_name" v-validate="'required'"
+                                           value="{{$isEdit?$slider->name:''}}" id="slider-name">
+                                    <span class="validation-error">@{{ errors.first('slider_name') }}</span>
+                                        <input name="id" id="slider_id" type="hidden" value="{{$isEdit?$slider->id:-1}}"/>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -138,6 +160,8 @@
     <script src="{{asset('/assets/vendor/select2/dist/js/select2.min.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vee-validate@latest"></script>
+
 
     <script type="text/javascript">
         var target = '';
@@ -166,18 +190,6 @@
             });
         });
 
-        function validate($formData) {
-            if ('' == $formData.slider_name.trim()) {
-                return {
-                    status: false,
-                    message: 'Slider name can not be empty'
-                }
-            }
-            return {
-                status: true,
-            }
-        }
-
         function submitForm() {
             $formData = {};
             $formData.html = $('#previewbar').html();
@@ -191,23 +203,13 @@
             $formData.opt_in_settings = slider.$data.opt_in_settings;
             $formData.pro_features = slider.$data.pro_features;
 
-            $result = validate($formData);
-            if (!$result.status) {
-                Swal.fire(
-                    'Unable to proceed',
-                    $result.message,
-                    'error'
-                );
-                return 0;
-            }
-
             $.ajax({
                 url: "{{route('sliders.update.ajax')}}",
                 method: "POST",
                 headers: {'X-CSRF-TOKEN': "{{csrf_token()}}"},
                 data: $formData,
             }).done(function (response) {
-
+                $('#slider_id').val(response.data.id);
                 if ('exit' != target) {
                     return;
                 }
@@ -219,7 +221,8 @@
                     goToListing();
                 });
             }).fail(function (error) {
-                console.log(error);
+                var errorResponse = error.responseJSON;
+                renderValidationError(errorResponse.errors);
                 Swal.fire(
                     'Unable to save!',
                     error.message,
@@ -284,7 +287,7 @@
             evergreen_days: '',
             evergreen_hours: '',
             evergreen_minutes: '',
-            fixed_date_time: '',
+            fixed_date_time: '2018-06-12T19:30',
             fixed_time_zone: ''
         };
         @endif
@@ -353,19 +356,39 @@
         };
                 @endif
 
+        Vue.use(VeeValidate, {
+                    classes: true,
+                    classNames: {
+                        valid: 'is-valid',
+                        invalid: 'is-invalid'
+                    }
+                });
+
+
         var slider = new Vue({
                 el: '#slider',
                 data: prefillData,
                 computed: {
                     isGradDisabled() {
                         return !this.appearance.bg_gradient;
+                    },
+                    isFormValid () {
+                        return !Object.keys(this.fields).some(key => this.fields[key].invalid)
                     }
                 },
                 methods: {
                     updateSlider: () => {
                         console.log(this.data);
+                    },
+                    enableColorPicker:()=>{
+                        console.log('working');
                     }
                 },
             });
+        function renderValidationError($errors){
+            slider.errors.clear();
+            slider.errors.add(JSON.parse($errors));
+        }
+
     </script>
 @endsection

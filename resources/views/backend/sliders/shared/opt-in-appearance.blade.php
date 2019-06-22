@@ -46,6 +46,7 @@
                         <div class="form-group">
                             <label for="optinImage">Optin Image</label>
                             <input type="text" v-model="opt_in_appearance.optin_image"
+                                   :disabled="opt_in_appearance.optin_type!='image'"
                                    class="form-control">
                         </div>
                     </div>
@@ -53,6 +54,7 @@
                         <div class="form-group">
                             <label for="optinVideo">Optin Video</label>
                             <input type="text" v-model="opt_in_appearance.optin_video"
+                                   :disabled="opt_in_appearance.optin_type!='video'"
                                    class="form-control">
                         </div>
                     </div>
@@ -167,7 +169,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="tinyFooterTextColor">Sub Headline Color</label>
+                            <label for="tinyFooterTextColor">Tiny Footer Color</label>
                             <input type="text" v-model="opt_in_appearance.tiny_footer_text_color"
                                    class="form-control color-picker"
                                    id="tiny-footer-text-color">

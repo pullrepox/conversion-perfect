@@ -33,6 +33,17 @@
                         </div>
                     </div>
                     <div class="col-md-3">
+                        <label>Reshow Slider</label>
+                        <div class="form-group">
+                            <label class="custom-toggle mt-2">
+                                <input v-model="opt_in_settings.reshow_slider" type="checkbox">
+                                <span class="custom-toggle-slider rounded-circle"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-1"></div>
+
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label>Optin Action</label>
                             <select class="form-control" v-model="opt_in_settings.optin_action">
@@ -57,15 +68,7 @@
                                     :disabled=opt_in_settings.optin_action!='redirect'>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <label>Reshow Slider</label>
-                        <div class="form-group">
-                            <label class="custom-toggle mt-2">
-                                <input v-model="opt_in_settings.reshow_slider" type="checkbox">
-                                <span class="custom-toggle-slider rounded-circle"></span>
-                            </label>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>

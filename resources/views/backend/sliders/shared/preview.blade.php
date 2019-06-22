@@ -17,8 +17,7 @@
             </div>
         </div>
 
-
-        <div id="previewclose" style="position:absolute; top:5px; right:8px; font-size:15px;">X</div>
+        <div id="previewclose" v-if="settings.show_close_btn" style="position:absolute; top:5px; right:8px; font-size:15px;">X</div>
     </div>
 
     <div id="previewbranding" style="font-size:12px; line-height:3px; font-family:Oswald; padding-right:5px;">
