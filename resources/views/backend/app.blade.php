@@ -21,8 +21,13 @@
     <link rel="stylesheet" href="{{asset('/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css')}}"
           type="text/css">
     <!-- Argon CSS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" type="text/css">
     <link rel="stylesheet" href="{{asset('/assets/css/argon.css')}}" type="text/css">
-
+    <style>
+        #toast-container>div {
+            opacity: 0.95 !important;
+        }
+    </style>
     @yield('styles')
 </head>
 
@@ -56,6 +61,7 @@
 
 <script src="{{asset('/assets/vendor/chart.js/dist/Chart.min.js')}}"></script>
 <script src="{{asset('/assets/vendor/chart.js/dist/Chart.extension.js')}}"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 <script type="text/javascript">
     $("#logout").click(function(e){
@@ -67,6 +73,7 @@
 
 @yield('scripts')
 <script src="{{asset('/assets/js/argon.js')}}"></script>
+{!! Toastr::message() !!}
 
 </body>
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SliderRequest;
 use App\Models\Slider;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 
 class SliderController extends Controller
@@ -107,6 +108,7 @@ class SliderController extends Controller
             $slider->user_id = user()->user_id;
         }
         $slider->name = $request->input('slider_name');
+        $slider->html = $request->input('html');
 
         $slider->appearance = $request->input('appearance');
         $slider->settings = $request->input('settings');
@@ -128,6 +130,20 @@ class SliderController extends Controller
 
     }
 
+    public function toggleSliderStatus(Slider $slider){
+        $slider->status = !$slider->status;
+        if(!$slider->save()){
+            Toastr::error('Failed to update slider', 'Error');
+        } else {
+            Toastr::success('Slider status changed', 'Success');
+        };
+        return redirect()->back()->with('message','Slider status changed');
+    }
+
+    public function previewSlider(Slider $slider){
+        return view('backend.sliders.preview',['slider'=>$slider]);
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -137,9 +153,11 @@ class SliderController extends Controller
     public function destroy(Slider $slider)
     {
         if($slider->delete()){
-            return redirect()->back()->withMessage('Slider Deleted');
+            Toastr::success('Slider deleted', 'Success');
+            return redirect()->back();
         } else {
-            abort(505, "Failed to delete Slider");
+            Toastr::error('Failed to delete slider', 'Error');
+            return redirect()->back();
         }
     }
 }

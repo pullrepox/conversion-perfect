@@ -30,37 +30,26 @@
                             <tbody>
                             @foreach($sliders as $slider)
                                 <tr>
-                                    <td class="table-user">
-                                        {{$slider->name}}
-                                    </td>
-                                    <td>
-                                       {{$slider->heading}}
-                                    </td>
-                                    <td>
-                                       {{$slider->type}}
-                                    </td>
-                                     <td>
-                                       {{$slider->link_click}}
-                                    </td>
-                                     <td>
-                                       {{$slider->email_options}}
-                                    </td>
-                                     <td>
-                                       {{$slider->total_views}}
-                                    </td>
-                                     <td>
-                                       {{$slider->unique_views}}
-                                    </td>
+                                    <td class="table-user">{{$slider->name}}</td>
+                                    <td>{{$slider->heading}}</td>
+                                    <td>{{$slider->type}}</td>
+                                     <td>{{$slider->link_click}}</td>
+                                     <td>{{$slider->email_options}}</td>
+                                     <td>{{$slider->total_views}}</td>
+                                     <td>{{$slider->unique_views}}</td>
                                     <td class="table-actions">
-                                        <a href="#!" class="table-action" data-toggle="tooltip"
-                                           data-original-title="Pause Slider">
-                                            <i class="fas fa-pause"></i>
-                                        </a>
+                                        <form method="POST" class="form-inline  d-inline" action="{{route('sliders.toggle-status',$slider->id)}}">
+                                            {{csrf_field()}}
+                                            <button type="submit" href="#!" class="table-action  bg-transparent border-0" data-toggle="tooltip"
+                                               data-original-title="{{$slider->status?'Pause':'Activate'}} Slider ?">
+                                                <i class="fas fa-{{$slider->status?'pause text-red':'play text-green'}}"></i>
+                                            </button>
+                                        </form>
                                          <a href="{{route('sliders.edit',$slider->id)}}" class="table-action" data-toggle="tooltip"
                                            data-original-title="Edit Slider">
                                             <i class="fas fa-pen"></i>
                                         </a>
-                                         <a href="#!" class="table-action" data-toggle="tooltip"
+                                         <a href="{{route('sliders.preview',$slider->id)}}" class="table-action" data-toggle="tooltip"
                                            data-original-title="View Slider">
                                             <i class="fas fa-eye"></i>
                                         </a>

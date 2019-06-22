@@ -132,13 +132,13 @@
                     </div>
                 </div>
                 <div id="section-cards">
-                    @include('backend.sliders.shared.appearance')
-                    @include('backend.sliders.shared.settings')
-                    @include('backend.sliders.shared.countdown')
-                    @include('backend.sliders.shared.button')
-                    @include('backend.sliders.shared.opt-in-appearance')
-                    @include('backend.sliders.shared.opt-in-settings')
-                    @include('backend.sliders.shared.pro-features')
+                    @include('backend.sliders.partials.appearance')
+                    @include('backend.sliders.partials.settings')
+                    @include('backend.sliders.partials.countdown')
+                    @include('backend.sliders.partials.button')
+                    @include('backend.sliders.partials.opt-in-appearance')
+                    @include('backend.sliders.partials.opt-in-settings')
+                    @include('backend.sliders.partials.pro-features')
                 </div>
 
             </div>
@@ -147,7 +147,7 @@
                     <h3>Preview</h3>
                 </div>
                 <div class="card-body">
-                    @include('backend.sliders.shared.preview')
+                    @include('backend.sliders.partials.preview')
                 </div>
             </div>
         </div>
