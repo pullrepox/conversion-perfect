@@ -53,7 +53,7 @@
                                            data-original-title="View Slider">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                         <a href="#!" class="table-action" data-toggle="tooltip"
+                                         <a href="{{route('sliders.clone',$slider->id)}}" class="table-action" data-toggle="tooltip"
                                            data-original-title="Clone Slider">
                                             <i class="fas fa-clone"></i>
                                         </a>

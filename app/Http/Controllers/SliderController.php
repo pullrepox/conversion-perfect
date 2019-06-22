@@ -77,7 +77,10 @@ class SliderController extends Controller
      */
     public function edit(Slider $slider)
     {
-        //TODO: got to check if slider is owned by user_id
+       if(user()->user_id != $slider->user_id){
+           abort(401, 'You are not authorized to access this!');
+       }
+
         return view('backend.sliders.edit',['slider'=>$slider]);
     }
 
@@ -90,7 +93,6 @@ class SliderController extends Controller
      */
     public function update(Request $request, Slider $slider)
     {
-
         return $slider;
     }
 
@@ -109,7 +111,6 @@ class SliderController extends Controller
         }
         $slider->name = $request->input('slider_name');
         $slider->html = $request->input('html');
-
         $slider->appearance = $request->input('appearance');
         $slider->settings = $request->input('settings');
         $slider->countdown = $request->input('countdown');
@@ -142,6 +143,12 @@ class SliderController extends Controller
 
     public function previewSlider(Slider $slider){
         return view('backend.sliders.preview',['slider'=>$slider]);
+    }
+
+    public function cloneSlider(Slider $slider){
+        $newSlider = $slider->replicate();
+        $newSlider->save();
+        return redirect()->back();
     }
 
     /**

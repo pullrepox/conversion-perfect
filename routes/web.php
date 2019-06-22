@@ -26,4 +26,5 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/sliders/update','SliderController@updateSection')->name('sliders.update.ajax');
     Route::post('/sliders/{slider}/toggle-status','SliderController@toggleSliderStatus')->name('sliders.toggle-status');
     Route::get('/sliders/{slider}/preview','SliderController@previewSlider')->name('sliders.preview');
+    Route::get('/sliders/{slider}/clone','SliderController@cloneSlider')->name('sliders.clone');
 });
