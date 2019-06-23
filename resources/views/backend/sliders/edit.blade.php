@@ -195,13 +195,14 @@
             $formData.html = $('#previewbar').html();
             $formData.slider_id = $('#slider_id').val();
             $formData.slider_name = $('#slider-name').val();
-            $formData.appearance = slider.$data.appearance;
-            $formData.settings = slider.$data.settings;
-            $formData.countdown = slider.$data.countdown;
-            $formData.button = slider.$data.button;
-            $formData.opt_in_appearance = slider.$data.opt_in_appearance;
-            $formData.opt_in_settings = slider.$data.opt_in_settings;
-            $formData.pro_features = slider.$data.pro_features;
+
+            $formData.appearance = JSON.stringify(slider.$data.appearance);
+            $formData.settings = JSON.stringify(slider.$data.settings);
+            $formData.countdown = JSON.stringify(slider.$data.countdown);
+            $formData.button = JSON.stringify(slider.$data.button);
+            $formData.opt_in_appearance = JSON.stringify(slider.$data.opt_in_appearance);
+            $formData.opt_in_settings = JSON.stringify(slider.$data.opt_in_settings);
+            $formData.pro_features = JSON.stringify(slider.$data.pro_features);
 
             $.ajax({
                 url: "{{route('sliders.update.ajax')}}",

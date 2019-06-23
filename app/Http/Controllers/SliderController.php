@@ -114,6 +114,7 @@ class SliderController extends Controller
         }
         $slider->name = $request->input('slider_name');
         $slider->html = $request->input('html');
+
         $slider->appearance = $request->input('appearance');
         $slider->settings = $request->input('settings');
         $slider->countdown = $request->input('countdown');

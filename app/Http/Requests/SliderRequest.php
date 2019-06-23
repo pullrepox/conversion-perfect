@@ -21,6 +21,18 @@ class SliderRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation()
+    {
+          $this->merge([
+            'appearance' => json_decode($this->appearance,true),
+            'settings' => json_decode($this->settings,true),
+            'countdown' => json_decode($this->countdown,true),
+            'button' => json_decode($this->button,true),
+            'opt_in_appearance' => json_decode($this->opt_in_appearance,true),
+            'opt_in_settings' => json_decode($this->opt_in_settings,true),
+            'pro_features' => json_decode($this->pro_features,true),
+        ]);
+    }
     /**
      * Get the validation rules that apply to the request.
      *
@@ -28,6 +40,7 @@ class SliderRequest extends FormRequest
      */
     public function rules()
     {
+
         return [
             'slider_name' => 'required',
             'appearance.heading_color' => [
