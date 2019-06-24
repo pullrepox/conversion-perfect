@@ -7,7 +7,7 @@
     <meta name="author" content="ConversionPerfect">
     <title>@yield('title',"Conversion Perfect")</title>
     <!-- Favicon -->
-    <link rel="icon" href="{{asset('/assets/img/brand/favicon.png')}}" type="image/png">
+    <link rel="icon" href="{{asset('/img/fevicon.png')}}" type="image/png">
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
     <!-- Icons -->
@@ -22,7 +22,7 @@
 
 <body class="bg-default">
 <!-- Navbar -->
-@include('frontend.partials.nav')
+{{--@include('frontend.partials.nav')--}}
 <!-- Main content -->
 <div class="main-content">
     @yield('content')

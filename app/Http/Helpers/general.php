@@ -19,3 +19,31 @@ function getSliderCode($slider){
 function getArrayValue($array,$key,$default){
     return isset($array[$key])?$array[$key]:$default;
 }
+
+function routeGroup(){
+    $route = url()->current();
+    $urlPart = explode('/',$route)[3];
+    switch($urlPart){
+        case 'sliders':
+        case 'bars':
+        case 'pages':
+        case 'groups':
+            return 'slider';
+        case 'reports':
+            return 'reports';
+        case 'settings':
+        case 'domain':
+        case 'integration':
+            return 'settings';
+        case 'bonuses':
+            return 'bonuses';
+        case 'support':
+        case 'faq':
+            return 'faq';
+        case 'account':
+            return 'account';
+        default:
+            return 'dashboard';
+
+    }
+}

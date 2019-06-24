@@ -13,7 +13,7 @@
 
     <title>@yield('title',"Dashboard - Conversion Perfect")</title>
     <!-- Favicon -->
-    <link rel="icon" href="{{asset('/assets/img/brand/favicon.png')}}" type="image/png">
+    <link rel="icon" href="{{asset('/img/fevicon.png')}}" type="image/png">
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
     <!-- Icons -->
@@ -23,11 +23,7 @@
     <!-- Argon CSS -->
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" type="text/css">
     <link rel="stylesheet" href="{{asset('/assets/css/argon.css')}}" type="text/css">
-    <style>
-        #toast-container>div {
-            opacity: 0.95 !important;
-        }
-    </style>
+    <link rel="stylesheet" href="{{asset('/css/custom.css')}}" type="text/css">
     @yield('styles')
 </head>
 

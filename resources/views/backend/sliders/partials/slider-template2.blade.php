@@ -5,8 +5,8 @@
     }
 
     .cogslidetop {
-        position: absolute;
-        top: -110px;
+        position: fixed;
+        top: -170px;
         bottom: 0px;
         left: 0px;
         right: 0px;
@@ -20,12 +20,12 @@
     }
 
     .cogslidetop.in {
-        top: -110px;
+        top: -170px;
     }
 
     .cogslidebottom {
-        position: absolute;
-        bottom: -110px;
+        position: fixed;
+        bottom: -170px;
         left: 0px;
         right: 0px;
         margin: 0px auto auto;
@@ -38,7 +38,7 @@
     }
 
     .cogslidebottom.in {
-        bottom: -110px;
+        bottom: -170px;
     }
 
     .cog_jiggle {
@@ -70,7 +70,7 @@
     }
 
     .bodypushout {
-        margin-top: 110px;
+        margin-top: 170px;
         -webkit-transition: margin-top 1s;
         transition: margin-top 1s;
     }
@@ -82,13 +82,13 @@
     }
 
     .ifpushout {
-        margin-top: 110px;
+        margin-top: 170px;
         -webkit-transition: margin-top 1s;
         transition: margin-top 1s;
     }
 
     .mcogslidetop {
-        position: absolute;
+        position: fixed;
         top: -230px;
         bottom: 0px;
         left: 0px;
@@ -107,7 +107,7 @@
     }
 
     .mcogslidebottom {
-        position: absolute;
+        position: fixed;
         bottom: -230px;
         left: 0px;
         right: 0px;
@@ -123,8 +123,6 @@
     .mcogslidebottom.in {
         bottom: -230px;
     }</style>
-{{url('/')}}
-
 <div id="cog_bar" class="cogslidetop"
      style="z-index:999999999;
              height:110px;
@@ -153,7 +151,7 @@
                         line-height:60px;
                         margin:0 auto;
                         color:{{$slider->appearance['heading_color']}};"
-                        id="cog_text">
+                     id="cog_text">
                     {{$slider->appearance['heading']}}
                 </div>
                 <div style="width:100%;
@@ -162,7 +160,7 @@
                             margin:0 auto;
                             font-size:16px;
                             color:{{$slider->appearance['subheading_color']}}"
-                            id="cog_text2">
+                     id="cog_text2">
                     {{$slider->appearance['subheading']}}
                 </div>
             </div>
@@ -174,31 +172,31 @@
                 <div style="width:100%; height:55px;">
                     <a href="{{$slider->button['button_link']}}">
                         <button id="cog_button"
-                            style="cursor:pointer;
-                                    padding-left:10px;
-                                    padding-right:10px;
-                                    padding-top:8px;
-                                    padding-bottom:8px;
-                            @if('rounded'===$slider->button['button_type'])border-radius:5px;
-                            @endif
-                                    cursor:hand;
-                                    margin-top:17px;
-                                    border:none;
-                                    text-decoration:none;
-                                    background:{{$slider->button['button_bgcolor']}};
-                                    color:{{$slider->button['button_text_color']}};
-                                    display:inline-block;
-                                    white-space:nowrap;
-                                    font-family:Nunito,sans-serif;
-                                    font-size:16px;"
-                            type="button">
+                                style="cursor:pointer;
+                                        padding-left:10px;
+                                        padding-right:10px;
+                                        padding-top:8px;
+                                        padding-bottom:8px;
+                                @if('rounded'===$slider->button['button_type'])
+                                        border-radius:5px;
+                                @endif
+                                        cursor:hand;
+                                        margin-top:17px;
+                                        border:none;
+                                        text-decoration:none;background:{{$slider->button['button_bgcolor']}};
+                                        color:{{$slider->button['button_text_color']}};
+                                        display:inline-block;
+                                        white-space:nowrap;
+                                        font-family:Nunito,sans-serif;
+                                        font-size:16px;"
+                                type="button">
                             {{$slider->button['button_text']}}
                         </button>
                     </a>
                 </div>
                 <div style="width:100%; height:40px; min-height:40px; margin-top:5px;">
                     <div id="cog_count" style="height:40px;
-                                            width:100%;
+                            width:100%;
                     @if('none'===$slider->countdown['countdown'])
                             visibility:hidden;
                     @endif">
@@ -293,12 +291,12 @@
             </div>
         </div>
         @if($slider->settings['show_close_btn'])
-        <div style="position:absolute;
+            <div style="position:absolute;
                     top:5px;
                     right:8px;
                     font-size:15px;
                     cursor:pointer;"
-             id="cog_close">X</div>
+                 id="cog_close">X</div>
         @endif
     </div>
     <div id="cog_branding" style="font-size:12px;
@@ -314,8 +312,37 @@
         </a>
     </div>
 </div>
-<script>
-    var cog_bardown = 0;
+<div id="cog_mail" class="mcogslidetop"
+     style="z-index:999999999; height:230px; width:100%; font-size:20px; font-family:Nunito,sans-serif; background-color:#dddddd; color:#777777; text-align:center;">
+    <div id="cog_branding"
+         style="position:absolute; right:5px; bottom:10px; font-size:12px; line-height:3px; font-family:Oswald; "><br>POWERED
+        BY <a style="color:inherit; text-decoration:inherit;" href="//conversiongorilla.com" target="_BLANK">CONVERSIONGORILLA</a>
+    </div>
+    <div class="cog_mailtop"
+         style="height:45px; width:100%; font-size:20px; font-family:Nunito,sans-serif; background-color:#fd5d22; color:#ffffff; line-height:45px;">
+        Your Slide Out Opt-In Call To Action Will Go Here!
+    </div>
+    <div class="cog_mailarrow"
+         style="margin:0 auto; width:0; height:0; border-left:15px solid transparent; border-right:15px solid transparent; border-top:15px solid #fd5d22"></div>
+    <div id="cog_mailsubhead"
+         style="margin-top:15px; width:100%; height:30px; font-size:17px; font-family:Nunito,sans-serif; color:#777777">
+        Enter Your Name And Email Below...
+    </div>
+    <div id="cog_mailfields" style="width:100%;"><input name="cog_mailname" id="cog_mailname" type="input"
+                                                        style="width:250px; border:1px solid #BBBBBB; display:inline-block; padding:12px; margin-right:5px; padding-right:30px;background: url(//conversiongorilla.com/iconavatar.png) no-repeat right center; background-color:#ffffff;"
+                                                        placeholder="Your Name"></input><input name="cog_mailemail"
+                                                                                               id="cog_mailemail"
+                                                                                               type="input"
+                                                                                               style="width:250px; border:1px solid #BBBBBB; display:inline-block; padding:12px; margin-left:5px; padding-right:30px; background: url(//conversiongorilla.com/iconmail.png) no-repeat right center; background-color:#ffffff;"
+                                                                                               placeholder="you@email.com"></input>
+    </div>
+    <button id="cog_mailbutton"
+            style="cursor:pointer; min-height:37px; width:596px; padding-left:10px; padding-right:10px; padding-top:15px; padding-bottom:15px; border-radius:0px; cursor:hand; margin-top:15px; border:none; text-decoration:none; background:#252237; color:#ffffff; display:inline-block; white-space:nowrap; font-family:Nunito,sans-serif; font-size:16px; "
+            type="button">Yes! Count Me In!
+    </button>
+    <div style="color:#ffffff; position:absolute; top:5px; right:8px; cursor:pointer;" id="mail_close">X</div>
+</div>
+<script>var cog_bardown = 0;
     window.onload = (function (pre) {
         return function () {
             pre && pre.apply(this, arguments);
@@ -360,6 +387,21 @@
         }
     }
 
+    function cog_submit() {
+        emailfname = document.getElementById("cog_mailname").value;
+        emaillname = "";
+        emailaddy = document.getElementById("cog_mailemail").value;
+        if (emailaddy.indexOf("@") < 1 || emailaddy.indexOf(".") < 1 || emailaddy.indexOf(".") == emailaddy.length - 1) {
+            document.getElementById("cog_mailemail").value = "";
+        } else {
+            var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+            xhr.open("GET", "//conversiongorilla.com/cogemail.php?barid=5375&email=" + emailaddy + "&fname=" + emailfname + "&lname=" + emaillname);
+            xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+            xhr.send();
+            return (1);
+        }
+    }
+
     function cog_load() {
         cogslider(0, 0);
         var cog_exit_intent = 0;
@@ -392,8 +434,25 @@
                 document.getElementById("cog_button").classList.remove("cog_jiggle");
                 cog_shake = 0;
             }
-        }, 500);
+        }, 1000);
         document.getElementById("cog_close").addEventListener("click", function () {
             cogslider(0, 1);
+        }, false);
+        document.getElementById("mail_close").addEventListener("click", function () {
+            cogslider(1, 1);
+        }, false);
+        document.getElementById("cog_button").addEventListener("click", function () {
+            cogslider(1, 0);
+        }, false);
+        document.getElementById("cog_mailbutton").addEventListener("click", function () {
+            if (cog_submit() == 1) {
+                document.getElementById("cog_mailsubhead").innerHTML = "Thank You!";
+                document.getElementById("cog_mailemail").style.display = "none";
+                document.getElementById("cog_mailname").style.display = "none";
+                document.getElementById("cog_mailbutton").style.display = "none";
+                document.getElementById("cog_mailsubhead").style.fontSize = "30px";
+                document.getElementById("cog_mailsubhead").style.paddingTop = "50px";
+            }
+            ;
         }, false);
     }</script>

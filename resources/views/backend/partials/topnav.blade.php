@@ -112,26 +112,26 @@
                             <h6 class="text-overflow m-0">Welcome!</h6>
                         </div>
                         <a href="#!" class="dropdown-item">
-                            <i class="ni ni-single-02"></i>
+                            <i class="ni ni-single-02 text-cp"></i>
                             <span>My profile</span>
                         </a>
                         <a href="#!" class="dropdown-item">
-                            <i class="ni ni-settings-gear-65"></i>
+                            <i class="ni ni-settings-gear-65 text-cp"></i>
                             <span>Settings</span>
                         </a>
                         <a href="#!" class="dropdown-item">
-                            <i class="ni ni-calendar-grid-58"></i>
+                            <i class="ni ni-calendar-grid-58 text-cp"></i>
                             <span>Activity</span>
                         </a>
                         <a href="#!" class="dropdown-item">
-                            <i class="ni ni-support-16"></i>
+                            <i class="ni ni-support-16 text-cp"></i>
                             <span>Support</span>
                         </a>
                         <div class="dropdown-divider"></div>
                         <form action="{{route('logout')}}" method="POST">
                             {{csrf_field()}}
                         <a href="#" id="logout" class="dropdown-item">
-                            <i class="ni ni-user-run"></i>
+                            <i class="fas fa-sign-out-alt text-cp"></i>
                             <span>Logout</span>
                         </a>
                         </form>
