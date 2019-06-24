@@ -126,7 +126,7 @@
 
                         <form action="{{route('logout')}}" method="POST">
                             {{csrf_field()}}
-                            <a href="#" id="logout" class="nav-link">
+                            <a href="#" class="nav-link logout">
                                 <i class="fas fa-sign-out-alt text-cp"></i>
                                 <span class="nav-link-text">Logout</span>
                             </a>

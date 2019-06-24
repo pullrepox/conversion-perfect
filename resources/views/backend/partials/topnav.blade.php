@@ -130,7 +130,7 @@
                         <div class="dropdown-divider"></div>
                         <form action="{{route('logout')}}" method="POST">
                             {{csrf_field()}}
-                        <a href="#" id="logout" class="dropdown-item">
+                        <a href="#" class="dropdown-item logout">
                             <i class="fas fa-sign-out-alt text-cp"></i>
                             <span>Logout</span>
                         </a>

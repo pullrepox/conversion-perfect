@@ -50,7 +50,7 @@
             </div>
             <div class="row mt-3">
                 <div class="col-6">
-                    <a href="#" class="text-light"><small>Forgot password?</small></a>
+                    <a href="{{route('reset-form')}}" class="text-light"><small>Forgot password?</small></a>
                 </div>
             </div>
         </div>

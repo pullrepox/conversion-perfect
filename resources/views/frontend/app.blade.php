@@ -13,6 +13,8 @@
     <!-- Icons -->
     <link rel="stylesheet" href="{{asset('/assets/vendor/nucleo/css/nucleo.css')}}" type="text/css">
     <link rel="stylesheet" href="{{asset('/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" type="text/css">
+
     <!-- Argon CSS -->
     <link rel="stylesheet" href="{{asset('/assets/css/argon.css')}}" type="text/css">
 
@@ -36,8 +38,12 @@
 <script src="{{asset('/assets/vendor/js-cookie/js.cookie.js')}}"></script>
 <script src="{{asset('/assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js')}}"></script>
 <script src="{{asset('/assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js')}}"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 <!-- Argon JS -->
 <script src="{{asset('/assets/js/argon.js')}}"></script>
+{!! Toastr::message() !!}
+
 @yield('scripts')
 </body>
 </html>

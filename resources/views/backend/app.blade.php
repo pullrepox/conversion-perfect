@@ -60,7 +60,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 <script type="text/javascript">
-    $("#logout").click(function(e){
+    $(".logout").click(function(e){
         e.stopPropagation();
         e.preventDefault();
         $(this).closest('form').submit();

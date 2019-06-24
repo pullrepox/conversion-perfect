@@ -133,12 +133,12 @@ var Layout = (function() {
 
 
     // Make the body full screen size if it has not enough content inside
-    $(window).on('load resize', function() {
-        if($('body').height() < 800) {
-            $('body').css('min-height', '100vh');
-            $('#footer-main').addClass('footer-auto-bottom')
-        }
-    })
+    // $(window).on('load resize', function() {
+    //     if($('body').height() < 800) {
+    //         $('body').css('min-height', '100vh');
+    //         $('#footer-main').addClass('footer-auto-bottom')
+    //     }
+    // })
 
 })();
 

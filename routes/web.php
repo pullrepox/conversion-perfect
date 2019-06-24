@@ -15,6 +15,8 @@ Route::get('/','ProfileController@login')->name('home');
 Route::get('/login', 'ProfileController@login')->name('login');
 Route::post('/login', 'ProfileController@processLogin')->name('process.login');
 Route::post('/logout', 'ProfileController@logout')->name('logout');
+Route::get('/reset','ProfileController@showResetForm')->name('reset-form');
+Route::post('/reset','ProfileController@resetPassword')->name('reset-password');
 
 Route::get('/register', 'ProfileController@login')->name('register');
 
