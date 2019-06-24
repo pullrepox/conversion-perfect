@@ -9,7 +9,8 @@ function jsonResponse($isSuccess, $statusCode=200, $message='', $data=[]){
 }
 
 function user(){
-    return resolve('user');
+//    return resolve('user');
+    return \Illuminate\Support\Facades\Auth::user();
 }
 
 function getSliderCode($slider){

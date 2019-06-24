@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 
@@ -23,11 +24,8 @@ class Authenticate extends Middleware
     }
 
     public function handle($request, Closure $next,...$guards) {
-
-        $user = Session::get('user');
+        $user = Auth::user();
         view()->share('user', $user);
-        app()->instance('user',$user);
-
         if ( null == $user ) {
             return redirect(route('home'));
         }

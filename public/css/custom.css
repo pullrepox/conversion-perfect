@@ -4,3 +4,10 @@
 #toast-container>div {
     opacity: 0.95 !important;
 }
+
+.custom-table {
+    overflow: hidden!important;
+    overflow-anchor: none;
+    -ms-overflow-style: none;
+    touch-action: auto;
+}

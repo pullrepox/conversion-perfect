@@ -28,6 +28,8 @@
 </head>
 
 <body>
+@include('backend.partials.flash-message')
+
 <!-- Sidenav -->
 @include('backend.partials.sidenav')
 <!-- Main content -->
@@ -64,6 +66,9 @@
         e.stopPropagation();
         e.preventDefault();
         $(this).closest('form').submit();
+    });
+    $(".alert").delay(1500).slideUp(400, function() {
+        $(this).alert('close');
     });
 </script>
 

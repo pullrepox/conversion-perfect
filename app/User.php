@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email',
     ];
 
     /**
@@ -36,4 +36,22 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public static function findOrCreate($email,$attribs)
+    {
+        $obj = static::where('email',$email)->first();
+        if(null != $obj){
+            return $obj;
+        } else {
+            $obj = new static;
+            $obj->amember_id = $attribs->user_id;
+            $obj->name = $attribs->name;
+            $obj->email = $attribs->email;
+            $obj->name_f = $attribs->name_f;
+            $obj->name_l = $attribs->name_l;
+            $obj->login = $attribs->login;
+            $obj->save();
+        }
+        return $obj;
+    }
 }

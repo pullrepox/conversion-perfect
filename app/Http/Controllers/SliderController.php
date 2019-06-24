@@ -18,8 +18,7 @@ class SliderController extends Controller
 
     public function index()
     {
-        $user_id = user()->user_id;
-        $sliders = Slider::where('user_id',$user_id)
+        $sliders = Slider::where('user_id',user()->id)
                     ->paginate(10);
 
         $bc = ['active'=>'Sliders'];
@@ -35,28 +34,6 @@ class SliderController extends Controller
     {
         $bc = ['active'=>'Sliders'];
         return view('backend.sliders.edit',['slider'=>null,'bc'=>$bc]);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $slider = new Slider();
-        $slider->name = $request->input('slider_name');
-        $slider->user_id = resolve('user')->user_id;
-        $slider->heading = $request->input('headline');
-        $slider->subheading = $request->input('sub_headline');
-        $slider->appearance = $request->input('appearance');
-
-        if($slider->save()){
-            return redirect()->back()->withMessage('Appearance saved!');
-        } else {
-            abort(500,'Unable to save');
-        }
     }
 
     /**
@@ -80,23 +57,11 @@ class SliderController extends Controller
      */
     public function edit(Slider $slider)
     {
-       if(user()->user_id != $slider->user_id){
+       if(user()->id != $slider->user_id){
            abort(401, 'You are not authorized to access this!');
        }
 
         return view('backend.sliders.edit',['slider'=>$slider]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Model\Slider  $slider
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Slider $slider)
-    {
-        return $slider;
     }
 
 
@@ -105,12 +70,12 @@ class SliderController extends Controller
         $id = $request->input('slider_id',-1);
         if(-1 != $id){
            $slider = Slider::find($id);
-            if(user()->user_id != $slider->user_id){
+            if(user()->id != $slider->user_id){
                 return jsonResponse(false, 403,'Unauthorized Access');
             }
         } else {
             $slider = new Slider();
-            $slider->user_id = user()->user_id;
+            $slider->user_id = user()->id;
         }
         $slider->name = $request->input('slider_name');
         $slider->html = $request->input('html');
@@ -136,13 +101,15 @@ class SliderController extends Controller
     }
 
     public function toggleSliderStatus(Slider $slider){
+        $this->authorizationCheck($slider);
+
         $slider->status = !$slider->status;
-        if(!$slider->save()){
-            Toastr::error('Failed to update slider', 'Error');
+        if($slider->save()){
+            Toastr::success('Slider status changed','Success');
         } else {
-            Toastr::success('Slider status changed', 'Success');
-        };
-        return redirect()->back()->with('message','Slider status changed');
+            Toastr::error('Failed to change slider status','Error');
+        }
+        return redirect()->back();
     }
 
     public function previewSlider(Slider $slider){
@@ -150,12 +117,16 @@ class SliderController extends Controller
     }
 
     public function cloneSlider(Slider $slider){
+        $this->authorizationCheck($slider);
+
         $newSlider = $slider->replicate();
         $newSlider->save();
         return redirect()->back();
     }
 
     public function clearStats(Slider $slider){
+
+        $this->authorizationCheck($slider);
 
         $slider->link_click=0;
         $slider->email_options=0;
@@ -164,11 +135,10 @@ class SliderController extends Controller
 
         if($slider->save()){
             Toastr::success('Slider stats cleared','Success');
-            return redirect()->back();
         }else {
             Toastr::error('Unable to clear stats','Error');
-            return redirect()->back();
         }
+        return redirect()->back();
 
     }
 
@@ -180,12 +150,17 @@ class SliderController extends Controller
      */
     public function destroy(Slider $slider)
     {
+        $this->authorizationCheck($slider);
         if($slider->delete()){
-            Toastr::success('Slider deleted', 'Success');
-            return redirect()->back();
+            Toastr::success('Slider deleted','Success');
         } else {
-            Toastr::error('Failed to delete slider', 'Error');
-            return redirect()->back();
+            Toastr::error('Failed to delete slider','Error');
+        }
+        return redirect()->back();
+    }
+    private function authorizationCheck($slider){
+        if(user()->id != $slider->user_id){
+            abort(403,'You are not authorized to perform this action');
         }
     }
 }

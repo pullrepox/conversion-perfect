@@ -13,7 +13,7 @@
                                         class="mb-0">Create New</h3></a></span>
                     </div>
                     <!-- Card body -->
-                    <div class="table-responsive">
+                    <div class="table-responsive custom-table">
                         <table class="table align-items-center table-flush">
                             <thead class="thead-light">
                             <tr>
