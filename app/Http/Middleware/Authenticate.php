@@ -27,7 +27,7 @@ class Authenticate extends Middleware
         $user = Auth::user();
         view()->share('user', $user);
         if ( null == $user ) {
-            return redirect(route('home'));
+            return redirect(route('login'));
         }
 
         return $next($request);

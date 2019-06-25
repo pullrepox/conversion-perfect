@@ -11,25 +11,24 @@ class AmemberAPI
     protected $baseUri;
     protected $key;
     protected $client = null;
-
-
+    
     protected $checkAccess = 'check-access/by-login-pass';
     protected $sendReset = 'check-access/send-pass';
-
+    
     public function __construct()
     {
         $this->baseUri = env('AMEMBER_BASE_URL');
         $this->key = env('AMEMBER_API_KEY');
         $this->client = new Client(['base_uri' => $this->baseUri]);
     }
-
+    
     public function checkAccessByLogin($email, $pass)
     {
         $res = $this->client->request('GET', $this->checkAccess, [
             'query' => [
-                '_key' => $this->key,
+                '_key'  => $this->key,
                 'login' => $email,
-                'pass' => $pass,
+                'pass'  => $pass,
             ]
         ]);
         $statusCode = $res->getStatusCode();
@@ -45,12 +44,12 @@ class AmemberAPI
             abort(400, 'Something unknown happened with fetching amember api');
         }
     }
-
+    
     public function sendResetPasswordEmail($email)
     {
         $res = $this->client->request('GET', $this->sendReset, [
             'query' => [
-                '_key' => $this->key,
+                '_key'  => $this->key,
                 'login' => $email
             ]
         ]);
@@ -61,7 +60,7 @@ class AmemberAPI
                 return $responseBody;
             } else {
                 return (object)[
-                    'ok'=>false,
+                    'ok'      => false,
                     'message' => 'Email does not exists on server',
                 ];
             }
@@ -72,5 +71,5 @@ class AmemberAPI
             abort(400, 'Something unknown happened with amember api');
         }
     }
-
+    
 }
