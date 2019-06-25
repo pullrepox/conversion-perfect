@@ -42,37 +42,19 @@
                                 <span class="shortcut-media avatar rounded-circle bg-gradient-white">
                                   <i class="ni ni-square-pin text-cp"></i>
                                 </span>
-                                <small class="text-capitalize">Tracker</small>
+                                <small class="text-capitalize">Bar</small>
                             </a>
                             <a href="#" class="col-4 shortcut-item">
                                 <span class="shortcut-media avatar rounded-circle bg-gradient-white">
                                   <i class="ni ni-spaceship text-cp"></i>
                                 </span>
-                                <small class="text-capitalize">Rotator</small>
+                                <small class="text-capitalize">Page</small>
                             </a>
                             <a href="#" class="col-4 shortcut-item">
                                 <span class="shortcut-media avatar rounded-circle bg-gradient-white">
                                   <i class="far fa-object-group text-cp"></i>
                                 </span>
-                                <small class="text-capitalize">Group</small>
-                            </a>
-                            <a href="#" class="col-4 shortcut-item">
-                                <span class="shortcut-media avatar rounded-circle bg-gradient-white">
-                                  <i class="fas fa-credit-card text-cp"></i>
-                                </span>
-                                <small class="text-capitalize">Conversion</small>
-                            </a>
-                            <a href="#" class="col-4 shortcut-item">
-                                <span class="shortcut-media avatar rounded-circle bg-gradient-white">
-                                  <i class="fas fa-comment text-cp"></i>
-                                </span>
-                                <small class="text-capitalize">Popover</small>
-                            </a>
-                            <a href="#" class="col-4 shortcut-item">
-                                <span class="shortcut-media avatar rounded-circle bg-gradient-white">
-                                  <i class="fas fa-redo text-cp"></i>
-                                </span>
-                                <small>Retargeting</small>
+                                <small class="text-capitalize">Email</small>
                             </a>
                         </div>
                     </div>
