@@ -50,23 +50,23 @@
                                                     @csrf
                                                     <button type="submit" href="#!"
                                                             class="table-action  bg-transparent border-0" data-toggle="tooltip"
-                                                            data-original-title="{{ $bar->status ? 'Pause' : 'Activate' }} Slider?">
+                                                            data-original-title="{{ $bar->status ? 'Pause' : 'Activate' }} Bar?">
                                                         <i class="fas fa-{{$bar->status?'pause text-red':'play text-green'}}"></i>
                                                     </button>
                                                 </form>
                                                 <a href="{{route('bars.edit',$bar->id)}}" class="table-action"
                                                    data-toggle="tooltip"
-                                                   data-original-title="Edit Slider">
+                                                   data-original-title="Edit Bar">
                                                     <i class="fas fa-pen"></i>
                                                 </a>
                                                 <a href="{{route('bars.preview',$bar->id)}}" class="table-action"
                                                    data-toggle="tooltip"
-                                                   data-original-title="View Slider">
+                                                   data-original-title="View Bar">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
                                                 <a href="{{route('bars.clone',$bar->id)}}" class="table-action"
                                                    data-toggle="tooltip"
-                                                   data-original-title="Clone Slider">
+                                                   data-original-title="Clone Bar">
                                                     <i class="fas fa-clone"></i>
                                                 </a>
                                                 <a href="#!" data-code="{{getSliderCode($bar)}}"
@@ -86,7 +86,7 @@
                                                     <button type="submit"
                                                             class="delete-btn table-action table-action-delete bg-transparent border-0"
                                                             data-toggle="tooltip"
-                                                            data-original-title="Delete Slider">
+                                                            data-original-title="Delete Bar">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </form>

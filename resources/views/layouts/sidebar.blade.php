@@ -32,7 +32,7 @@
                         <a class="nav-link {{ isActiveResource(['bars'], true) }}" href="#navbar-links" data-toggle="collapse" role="button"
                            aria-expanded="{{ isExpendResource(['bars'], true) }}" aria-controls="navbar-links">
                             <i class="ni ni-credit-card text-cp"></i>
-                            <span class="nav-link-text text-capitalize">Slider</span>
+                            <span class="nav-link-text text-capitalize">Overlay</span>
                         </a>
                         <div class="collapse {{ isActiveResource(['bars'], true, 'show') }}" id="navbar-links">
                             <ul class="nav nav-sm flex-column">
@@ -65,9 +65,6 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link text-capitalize">Rotators</a>
-                                </li>
-                                <li class="nav-item">
                                     <a href="#" class="nav-link text-capitalize">Pages</a>
                                 </li>
                                 <li class="nav-item">
@@ -89,6 +86,9 @@
                                 <li class="nav-item">
                                     <a href="#" class="nav-link text-capitalize">Integrations</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link text-capitalize">Internal Lists</a>
+                                </li>
                             </ul>
                         </div>
                     </li>
@@ -97,23 +97,22 @@
                         <hr class="my-3">
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#navbar-support" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-support">
-                            <i class="ni ni-support-16 text-cp"></i>
-                            <span class="nav-link-text text-capitalize">Support</span>
+                        <a href="#" class="nav-link text-capitalize">
+                            <i class="fas fa-question text-cp"></i>
+                            <span class="nav-link-text text-capitalize">FAQ</span>
                         </a>
-                        <div class="collapse" id="navbar-support">
-                            <ul class="nav nav-sm flex-column">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link text-capitalize">FAQ</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link text-capitalize">Tutorials</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link text-capitalize">Tickets</a>
-                                </li>
-                            </ul>
-                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link text-capitalize">
+                            <i class="fas fa-tv text-cp"></i>
+                            <span class="nav-link-text text-capitalize">Tutorials</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link text-capitalize">
+                            <i class="ni ni-support-16 text-cp"></i>
+                            <span class="nav-link-text text-capitalize">Get Support</span>
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#navbar-account" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-account">

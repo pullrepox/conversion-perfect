@@ -18,7 +18,7 @@ class BarsController extends Controller
         $header_data = [
             'main_name'   => 'Bars',
             'parent_data' => [
-                ['parent_name' => 'Slider', 'parent_url' => '']
+                ['parent_name' => 'Overlay', 'parent_url' => '']
             ],
             'button_show' => true,
             'button_data' => [
@@ -41,7 +41,7 @@ class BarsController extends Controller
         $header_data = [
             'main_name'   => 'New Bar',
             'parent_data' => [
-                ['parent_name' => 'Slider', 'parent_url' => ''],
+                ['parent_name' => 'Overlay', 'parent_url' => ''],
                 ['parent_name' => 'Bars', 'parent_url' => secure_redirect(route('bars'))],
             ],
             'button_show' => true,
