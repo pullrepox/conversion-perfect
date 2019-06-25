@@ -33,7 +33,8 @@ class SliderController extends Controller
     public function create()
     {
         $bc = ['active'=>'Sliders'];
-        return view('backend.sliders.edit',['slider'=>null,'bc'=>$bc]);
+        $slider = [];
+        return view('backend.sliders.edit', compact('slider', 'bc'));
     }
 
     /**

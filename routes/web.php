@@ -18,7 +18,7 @@ Route::post('/logout', 'ProfileController@logout')->name('logout');
 Route::get('/reset','ProfileController@showResetForm')->name('reset-form');
 Route::post('/reset','ProfileController@resetPassword')->name('reset-password');
 
-Route::get('/register', 'ProfileController@login')->name('register');
+//Route::get('/register', 'ProfileController@login')->name('register');
 
 Route::middleware(['auth'])->group(function(){
     Route::get('/dashboard', 'DashboardController@dashboard')->name('dashboard');

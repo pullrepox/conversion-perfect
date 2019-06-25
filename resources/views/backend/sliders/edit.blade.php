@@ -9,7 +9,6 @@
     <style type="text/css">
         .select2-height-fix + span.select2 .select2-selection--single {
             height: calc(1.5em + 1.25rem + 2px) !important;
-            border: none;
             border: 1px solid #dee2e6;
         }
         .hide-card-btn:hover{
@@ -21,8 +20,8 @@
             text-align:left;
             text-decoration: none;
             color:indianred;
-            margin-top: 0px;
-            padding-top: 0px;
+            margin-top: 0;
+            padding-top: 0;
             list-style:none;
         }
 
@@ -30,9 +29,7 @@
             font-size: smaller;
             color: firebrick;
         }
-
-
-</style>
+    </style>
 @endsection
 @section('content')
     <div class="row" id="slider">
@@ -66,13 +63,12 @@
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
-                                    <label for="sliderName">Slider Name *</label>
+                                    <label for="slider-name">Slider Name *</label>
                                     <input type="text" class="form-control" name="slider_name" v-validate="'required'"
                                            value="{{$isEdit?$slider->name:''}}" id="slider-name">
                                     <span class="validation-error">@{{ errors.first('slider_name') }}</span>
-                                        <input name="id" id="slider_id" type="hidden" value="{{$isEdit?$slider->id:-1}}"/>
+                                    <input name="id" id="slider_id" type="hidden" value="{{$isEdit?$slider->id:-1}}"/>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -163,7 +159,7 @@
     <script src="https://unpkg.com/vee-validate@latest"></script>
 
     <script type="text/javascript">
-        var toastr_options = {!! json_encode(config('toastr.options')) !!};
+        var toastr_options = JSON.parse('{!! json_encode(config('toastr.options')) !!}');
         var target = '';
         $(function () {
             $('.color-picker').colorpicker();
@@ -211,7 +207,7 @@
                 data: $formData,
             }).done(function (response) {
                 $('#slider_id').val(response.data.id);
-                if ('exit' != target) {
+                if ('exit' !== target) {
                     toastr.success('Slider Saved','Success',toastr_options);
                     return;
                 }
@@ -238,7 +234,7 @@
         var prefillData = {};
 
         @if($isEdit && ''!=$slider->appearance)
-            prefillData.appearance = <?php echo json_encode($slider->appearance); ?>;
+            prefillData.appearance = JSON.parse('{!! json_encode($slider->appearance) !!}');
         @else
             prefillData.appearance = {
             heading: 'Slider heading goes here',
@@ -257,8 +253,8 @@
         };
         @endif
 
-                @if($isEdit && ''!=$slider->settings)
-            prefillData.settings = <?php echo json_encode($slider->settings); ?>;
+        @if($isEdit && ''!=$slider->settings)
+            prefillData.settings = JSON.parse('{!! json_encode($slider->settings) !!}');
         @else
             prefillData.settings = {
             position: '',
@@ -272,8 +268,8 @@
         };
         @endif
 
-                @if($isEdit && ''!=$slider->countdown)
-            prefillData.countdown = <?php echo json_encode($slider->countdown); ?>;
+        @if($isEdit && ''!=$slider->countdown)
+            prefillData.countdown = JSON.parse('{!! json_encode($slider->countdown) !!}');
         @else
             prefillData.countdown = {
             countdown: '',
@@ -290,8 +286,8 @@
         };
         @endif
 
-                @if($isEdit && ''!=$slider->button)
-            prefillData.button = <?php echo json_encode($slider->button); ?>;
+        @if($isEdit && ''!=$slider->button)
+            prefillData.button = JSON.parse('{!! json_encode($slider->button) !!}');
         @else
             prefillData.button = {
             button_type: '',
@@ -308,8 +304,8 @@
         };
         @endif
 
-                @if($isEdit && ''!=$slider->opt_in_appearance)
-            prefillData.opt_in_appearance = <?php echo json_encode($slider->opt_in_appearance); ?>;
+        @if($isEdit && ''!=$slider->opt_in_appearance)
+            prefillData.opt_in_appearance = JSON.parse('{!! json_encode($slider->opt_in_appearance) !!}');
         @else
             prefillData.opt_in_appearance = {
             optin_type: '',
@@ -332,8 +328,8 @@
         };
         @endif
 
-                @if($isEdit && ''!=$slider->opt_in_settings)
-            prefillData.opt_in_settings = <?php echo json_encode($slider->opt_in_settings); ?>;
+        @if($isEdit && ''!=$slider->opt_in_settings)
+            prefillData.opt_in_settings = JSON.parse('{!! json_encode($slider->opt_in_settings) !!}');
         @else
             prefillData.opt_in_settings = {
             optin_type: '',
@@ -344,8 +340,8 @@
             reshow_slider: '',
         };
         @endif
-                @if($isEdit && ''!=$slider->pro_features)
-            prefillData.pro_features = <?php echo json_encode($slider->pro_features); ?>;
+        @if($isEdit && ''!=$slider->pro_features)
+            prefillData.pro_features = JSON.parse('{!! json_encode($slider->pro_features) !!}');
         @else
             prefillData.pro_features = {
             remove_branding: '',
@@ -355,12 +351,12 @@
                 @endif
 
         Vue.use(VeeValidate, {
-                    classes: true,
-                    classNames: {
-                        valid: 'is-valid',
-                        invalid: 'is-invalid'
-                    }
-                });
+            classes: true,
+            classNames: {
+                valid: 'is-valid',
+                invalid: 'is-invalid'
+            }
+        });
 
 
         var slider = new Vue({
