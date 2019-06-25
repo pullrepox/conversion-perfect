@@ -34,7 +34,7 @@
                         <a class="nav-link {{$routeGroup==='slider'?'active':''}}"
                            href="#navbar-slider" data-toggle="collapse" role="button" aria-expanded="{{$routeGroup==='slider'?'true':'false'}}" aria-controls="navbar-slider">
                             <i class="ni ni-credit-card text-cp"></i>
-                            <span class="nav-link-text">Slider</span>
+                            <span class="nav-link-text">Overlay</span>
                         </a>
                         <div class="collapse {{$routeGroup==='slider'?'show':''}}" id="navbar-slider">
                             <ul class="nav nav-sm flex-column">
