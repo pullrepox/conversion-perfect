@@ -35,7 +35,7 @@ This should call js which should do the html rendering on top of the content of 
             </div>
         </div>
     </div>
-    <script data-cfasync="false" src="http://conversion.test/sliders/1"></script>
+    {!! getSliderCode($slider) !!}
 @endsection
 @section('styles')
     <style>
