@@ -2,14 +2,13 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
     use Notifiable;
-
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -18,7 +17,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 'email',
     ];
-
+    
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -27,7 +26,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-
+    
     /**
      * The attributes that should be cast to native types.
      *
@@ -36,11 +35,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    public static function findOrCreate($email,$attribs)
+    
+    public static function findOrCreate($email, $attribs)
     {
-        $obj = static::where('email',$email)->first();
-        if(null != $obj){
+        $obj = static::where('email', $email)->first();
+        if (null != $obj) {
             return $obj;
         } else {
             $obj = new static;
@@ -53,5 +52,10 @@ class User extends Authenticatable
             $obj->save();
         }
         return $obj;
+    }
+    
+    public function bars()
+    {
+        return $this->hasMany('App\Models\Bar');
     }
 }

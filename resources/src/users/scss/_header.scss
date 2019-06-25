@@ -1,0 +1,35 @@
+.brand-bg {
+    background-color: #5f71e4 !important;
+}
+
+.brand-color {
+    color: #5f71e4 !important;
+}
+
+#users-top-navbar {
+    position: fixed;
+    top: 0;
+    left: 62px;
+    z-index: 200;
+    width: calc(100% - 62px);
+    @media (max-width: 1199px) {
+        left: 0;
+        width: 100%;
+    }
+    
+    .btn-rounded {
+        border-radius: 20px;
+    }
+}
+
+.g-sidenav-show {
+    #users-top-navbar {
+        width: calc(100% - 250px);
+        left: 250px;
+        
+        @media (max-width: 1199px) {
+            left: 0;
+            width: 100%;
+        }
+    }
+}
