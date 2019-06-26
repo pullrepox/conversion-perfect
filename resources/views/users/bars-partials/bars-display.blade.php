@@ -20,7 +20,8 @@
     </div>
     <div class="card-body pb-0 pt-2">
         <div class="form-row">
-            <div class="col-md-4">
+            <div
+                :class="{'col-md-4': (model.display.show_bar_type === 'delay' || model.display.show_bar_type === 'scroll'), 'col-md-6': (model.display.show_bar_type !== 'delay' && model.display.show_bar_type !== 'scroll')}">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="show_bar_type">Show Bar</label>
                     <select class="form-control" data-toggle="select" id="show_bar_type" name="show_bar_type" required
@@ -32,7 +33,8 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div
+                :class="{'col-md-4': (model.display.show_bar_type === 'delay' || model.display.show_bar_type === 'scroll'), 'col-md-6': (model.display.show_bar_type !== 'delay' && model.display.show_bar_type !== 'scroll')}">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="frequency">Frequency</label>
                     <select class="form-control" data-toggle="select" id="frequency" name="frequency" required
@@ -42,6 +44,19 @@
                         <option value="week">Once a Week</option>
                         <option value="once">Once</option>
                     </select>
+                </div>
+            </div>
+            <div class="col-md-4" v-show="model.display.show_bar_type === 'delay'">
+                <div class="form-group">
+                    <label class="form-control-label ml-1" for="delay_in_seconds">Delay in Seconds</label>
+                    <input type="number" class="form-control" id="delay_in_seconds" name="delay_in_seconds" v-model="model.display.delay_in_seconds" @input="showSaveBtn('display')"/>
+                </div>
+            </div>
+            <div class="col-md-4" v-show="model.display.show_bar_type === 'scroll'">
+                <div class="form-group">
+                    <label class="form-control-label ml-1" for="scroll_point_percent">Scroll Point Percent</label>
+                    <input type="number" class="form-control" id="scroll_point_percent" name="scroll_point_percent"
+                           v-model="model.display.scroll_point_percent" @input="showSaveBtn('display')"/>
                 </div>
             </div>
         </div>

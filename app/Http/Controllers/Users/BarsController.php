@@ -169,12 +169,12 @@ class BarsController extends Controller
      */
     public function update(Request $request, Bar $bar)
     {
-        $this->validate($request, [
+        $rules = [
             'friendly_name'    => 'required|max:100',
             'headline'         => 'required|max:60',
             'headline_color'   => 'required',
             'background_color' => 'required'
-        ]);
+        ];
         
         $bar->friendly_name = $request->input('friendly_name');
         $bar->position = $request->input('position');
@@ -202,7 +202,20 @@ class BarsController extends Controller
         }
         
         $bar->headline = json_encode($upd_headline);
-        
+    
+        if ($request->input('opt_display') == 'true') {
+            $bar->opt_display = 1;
+            $bar->show_bar_type = $request->input('show_bar_type');
+            $bar->frequency = $request->input('frequency');
+            $bar->delay_in_seconds = $request->input('delay_in_seconds');
+            $bar->scroll_point_percent = $request->input('scroll_point_percent');
+            $rules['delay_in_seconds'] = 'numeric';
+            $rules['scroll_point_percent'] = 'numeric';
+        } else {
+            $bar->opt_display = 0;
+        }
+    
+        $this->validate($request, $rules);
         
         $bar->save();
         
