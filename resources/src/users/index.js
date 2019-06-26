@@ -29,3 +29,11 @@ if (document.querySelector('.table-responsive')) {
         minScrollbarLength: 20
     });
 }
+
+if (document.querySelector('.card')) {
+    new PerfectScrollbar('.card', {
+        wheelSpeed: 2,
+        wheelPropagation: true,
+        minScrollbarLength: 20
+    });
+}

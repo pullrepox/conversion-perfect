@@ -107,6 +107,12 @@
         .was-validated .form-control:valid, .form-control.is-valid, .was-validated .custom-select:valid, .custom-select.is-valid {
             border-color: #dee2e6 !important;
         }
+        
+        .ql-editor {
+            min-height: 45px;
+            overflow: hidden;
+            padding: 10px;
+        }
     }
     
     .btn-icon-only.help-icon, .btn.btn-icon-only {

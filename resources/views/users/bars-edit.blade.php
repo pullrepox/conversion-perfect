@@ -32,14 +32,10 @@
                                 <div class="form-group">
                                     <label class="form-control-label ml-1" for="friendly_name" data-id="friendly_name">
                                         Friendly Name
-                                        <span class="btn-icon-only rounded-circle help-icon" role="tooltip"
-                                              data-toggle="tooltip" data-placement="top" title="{{ trans('help.friendly_name') }}">
-                                            <i class="fas fa-question-circle"></i>
-                                        </span>
                                     </label>
                                     <input type="text" class="form-control @error('friendly_name') is-invalid @enderror" id="friendly_name" name="friendly_name"
                                            v-model="model.friendly_name"
-                                           @keydown="tabKeyPress('#tracking_domain', true, $event)" @keypress="tabKeyPress('#tracking_domain', true, $event)"
+                                           @keydown="tabKeyPress('#position', true, $event)" @keypress="tabKeyPress('#position', true, $event)"
                                            placeholder="Friendly Name" required autocomplete="friendly_name"/>
                                     @if ($errors->has('friendly_name'))
                                         @error('friendly_name')
@@ -54,18 +50,60 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-control-label ml-1" for="position">
+                                        Position
+                                    </label>
+                                    <select class="form-control @error('position') is-invalid @enderror" data-toggle="select" id="position" name="position" required
+                                            @keydown="tabKeyPress('#group_id', true, $event)" @keypress="tabKeyPress('#group_id', true, $event)"
+                                            v-model="model.position">
+                                        <option value="top">Top</option>
+                                        <option value="bottom">Bottom</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="form-control-label ml-1" for="group_id">
                                         Group
-                                        <span class="btn-icon-only rounded-circle help-icon" data-toggle="tooltip" data-placement="top" title="{{ trans('help.link_group') }}">
-                                            <i class="fas fa-question-circle"></i>
-                                        </span>
                                     </label>
                                     <select class="form-control @error('group_id') is-invalid @enderror" data-toggle="select" id="group_id" name="group_id" required
+                                            @keydown="tabKeyPress('#headline', false, $event)" @keypress="tabKeyPress('#headline', false, $event)"
                                             v-model="model.group_id">
                                         <option value="0">All Bars</option>
                                     </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label ml-1" for="headline" data-id="headline">
+                                        Headline Text
+                                    </label>
+                                    <div id="headline" name="headline" data-toggle="quill" data-quill-placeholder="Headline Text"></div>
+                                    @error('headline')
+                                    <span class="invalid-feedback" role="alert">
+                                        {{ $message }}
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-control-label ml-1" for="headline_color" data-id="headline_color">
+                                        Headline Color
+                                    </label>
+                                    <input class="jscolor form-control" name="headline_color" id="headline_color" v-model="model.headline_color"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-control-label ml-1" for="background_color" data-id="background_color">
+                                        Background Color
+                                    </label>
+                                    <input class="jscolor form-control" name="background_color" id="background_color" v-model="model.background_color"/>
                                 </div>
                             </div>
                         </div>
@@ -102,23 +140,33 @@
         window._bar_opt_ary = {
             bar_id: "{{ $flag ? '' : $bar->id }}",
             create_edit: "{{ $flag }}",
-            abuse: "{{ $flag ? false : (old('opt_abuse') ? old('opt_abuse') : $bar->opt_abuse) }}",
+            display: false,
+            content: false,
+            appearance: false,
+            button: false,
+            countdown: false,
+            overlay: false,
+            autoresponder: false,
+            opt_in: false,
+            custom_text: false,
             model: {
-                destination_url: "{{ $flag ? '' : (old('destination_url') ? old('destination_url') : $bar->destination_url) }}",
-                friendly_name: "{{ $flag ? '' : (old('friendly_name') ? old('friendly_name') : $bar->friendly_name) }}",
-                tracking_link: "{{ $flag ? '' : (old('tracking_link') ? old('tracking_link') : $bar->tracking_link) }}",
+                friendly_name: "{{ $flag ? quickRandom(6) : (old('friendly_name') ? old('friendly_name') : $bar->friendly_name) }}",
+                position: "{{ $flag ? 'top' : (old('position') ? old('position') : $bar->position) }}",
                 group_id: "{{ $flag ? '0' : (old('group_id') ? old('group_id') : $bar->group_id) }}",
-            },
-            options_sub: {
-                split_weight: "{{ $flag ? 100 : $bar->split_weight }}"
+                headline: 'Your Headline Text Here!',
+                headline_color: '#ffffff',
+                background_color: '#172b4d',
+                display: {},
+                content: {},
+                appearance: {},
+                button: {},
+                countdown: {},
+                overlay: {},
+                autoresponder: {},
+                opt_in: {},
+                custom_text: {}
             }
         };
-        @error('language_alternate_url')
-            window._bar_opt_ary.model.language.language_all = null;
-        @enderror
-            @error('geo_alternate_url')
-            window._bar_opt_ary.model.geotargeting.include_all = null;
-        @enderror
     </script>
     <script type="text/javascript" src="{{ url(mix('js/slider-edit.js')) }}"></script>
 @stop
