@@ -235,11 +235,11 @@ new Vue({
         // Option Hide Show Event
         toggleOption(name) {
             this.bar_option[name] = !this.bar_option[name];
-            // axios.post(`/hide-option/${window._bar_opt_ary.bar_id}`, {
-            //     option_key: name
-            // }).then((r) => {
-            // }).catch((e) => {
-            // });
+            axios.post(`/hide-option/${window._bar_opt_ary.bar_id}`, {
+                option_key: name
+            }).then((r) => {
+            }).catch((e) => {
+            });
         },
         isUrlValid(userInput) {
             let res = userInput.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);

@@ -1,4 +1,4 @@
-<div class="card mt--3" v-show="bar_option.preview">
+<div class="card mt--3" v-if="bar_option.preview">
     <div class="card-header pt-2 pb-2 division-card-header">
         <div class="form-row">
             <h3 class="mb-0 col card-title">Preview</h3>
