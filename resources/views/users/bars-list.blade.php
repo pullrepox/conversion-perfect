@@ -30,66 +30,66 @@
                                     <th>Email Options</th>
                                     <th>Total Views</th>
                                     <th>Unique Views</th>
-                                    <th>Actions</th>
+                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @if (sizeof($bars) > 0)
                                     @foreach($bars as $bar)
                                         <tr>
-                                            <td class="table-user">{{$bar->name}}</td>
-                                            <td>{{$bar->heading}}</td>
+                                            <td class="table-user">{{$bar->friendly_name}}</td>
+                                            <td>{{ time_elapsed_string($bar->created_at) }}</td>
                                             <td>{{$bar->type}}</td>
                                             <td>{{$bar->link_click}}</td>
                                             <td>{{$bar->email_options}}</td>
                                             <td>{{$bar->total_views}}</td>
                                             <td>{{$bar->unique_views}}</td>
                                             <td class="table-actions">
-                                                <form method="POST" class="form-inline  d-inline"
-                                                      action="{{route('bars.toggle-status', $bar->id)}}">
-                                                    @csrf
-                                                    <button type="submit" href="#!"
-                                                            class="table-action  bg-transparent border-0" data-toggle="tooltip"
-                                                            data-original-title="{{ $bar->status ? 'Pause' : 'Activate' }} Bar?">
-                                                        <i class="fas fa-{{$bar->status?'pause text-red':'play text-green'}}"></i>
-                                                    </button>
-                                                </form>
-                                                <a href="{{route('bars.edit',$bar->id)}}" class="table-action"
+{{--                                                <form method="POST" class="form-inline  d-inline"--}}
+{{--                                                      action="{{route('bars.toggle-status', $bar->id)}}">--}}
+{{--                                                    @csrf--}}
+{{--                                                    <button type="submit" href="#!"--}}
+{{--                                                            class="table-action  bg-transparent border-0" data-toggle="tooltip"--}}
+{{--                                                            data-original-title="{{ $bar->status ? 'Pause' : 'Activate' }} Bar?">--}}
+{{--                                                        <i class="fas fa-{{$bar->status?'pause text-red':'play text-green'}}"></i>--}}
+{{--                                                    </button>--}}
+{{--                                                </form>--}}
+                                                <a href="{{route('bars.edit', ['bar' => $bar->id])}}" class="table-action"
                                                    data-toggle="tooltip"
                                                    data-original-title="Edit Bar">
-                                                    <i class="fas fa-pen"></i>
+                                                    <i class="fas fa-edit"></i>
                                                 </a>
-                                                <a href="{{route('bars.preview',$bar->id)}}" class="table-action"
-                                                   data-toggle="tooltip"
-                                                   data-original-title="View Bar">
-                                                    <i class="fas fa-eye"></i>
-                                                </a>
-                                                <a href="{{route('bars.clone',$bar->id)}}" class="table-action"
-                                                   data-toggle="tooltip"
-                                                   data-original-title="Clone Bar">
-                                                    <i class="fas fa-clone"></i>
-                                                </a>
-                                                <a href="#!" data-code="{{getSliderCode($bar)}}"
-                                                   class="table-action slider-code-btn" data-toggle="tooltip"
-                                                   data-original-title="Get Code">
-                                                    <i class="fas fa-code"></i>
-                                                </a>
-                                                <a href="{{route('bars.clear-stats',$bar->id)}}"
-                                                   class="table-action clear-stats-btn" data-toggle="tooltip"
-                                                   data-original-title="Clear Stat">
-                                                    <i class="fas fa-battery-empty"></i>
-                                                </a>
-                                                <form method="POST" class="form-inline d-inline"
-                                                      action="{{route('bars.destroy',$bar->id)}}">
-                                                    <input type="hidden" name="_method" value="DELETE">
-                                                    {{csrf_field()}}
-                                                    <button type="submit"
-                                                            class="delete-btn table-action table-action-delete bg-transparent border-0"
-                                                            data-toggle="tooltip"
-                                                            data-original-title="Delete Bar">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </form>
+{{--                                                <a href="{{route('bars.preview',$bar->id)}}" class="table-action"--}}
+{{--                                                   data-toggle="tooltip"--}}
+{{--                                                   data-original-title="View Bar">--}}
+{{--                                                    <i class="fas fa-eye"></i>--}}
+{{--                                                </a>--}}
+{{--                                                <a href="{{route('bars.clone',$bar->id)}}" class="table-action"--}}
+{{--                                                   data-toggle="tooltip"--}}
+{{--                                                   data-original-title="Clone Bar">--}}
+{{--                                                    <i class="fas fa-clone"></i>--}}
+{{--                                                </a>--}}
+{{--                                                <a href="#!" data-code="{{getSliderCode($bar)}}"--}}
+{{--                                                   class="table-action slider-code-btn" data-toggle="tooltip"--}}
+{{--                                                   data-original-title="Get Code">--}}
+{{--                                                    <i class="fas fa-code"></i>--}}
+{{--                                                </a>--}}
+{{--                                                <a href="{{route('bars.clear-stats',$bar->id)}}"--}}
+{{--                                                   class="table-action clear-stats-btn" data-toggle="tooltip"--}}
+{{--                                                   data-original-title="Clear Stat">--}}
+{{--                                                    <i class="fas fa-battery-empty"></i>--}}
+{{--                                                </a>--}}
+{{--                                                <form method="POST" class="form-inline d-inline"--}}
+{{--                                                      action="{{route('bars.destroy',$bar->id)}}">--}}
+{{--                                                    <input type="hidden" name="_method" value="DELETE">--}}
+{{--                                                    {{csrf_field()}}--}}
+{{--                                                    <button type="submit"--}}
+{{--                                                            class="delete-btn table-action table-action-delete bg-transparent border-0"--}}
+{{--                                                            data-toggle="tooltip"--}}
+{{--                                                            data-original-title="Delete Bar">--}}
+{{--                                                        <i class="fas fa-trash"></i>--}}
+{{--                                                    </button>--}}
+{{--                                                </form>--}}
                                             </td>
                                         </tr>
                                     @endforeach

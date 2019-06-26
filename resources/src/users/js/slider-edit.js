@@ -30,7 +30,12 @@ new Vue({
         },
         show_options: {},
         basic_model: {
-            friendly_name: '', position: 'top', group_id: '0', headline: 'Your Headline Text Here!', headline_color: '#ffffff', background_color: '#172b4d',
+            friendly_name: '', position: 'top', group_id: '0',
+            headline: [{
+                attributes: {},
+                insert: 'Your Headline Text Here!'
+            }],
+            headline_color: '#ffffff', background_color: '#172b4d',
             display: {},
             content: {},
             appearance: {},
@@ -42,7 +47,9 @@ new Vue({
             custom_text: {}
         },
         model: {
-            friendly_name: '', position: 'top', group_id: '0', headline: 'Your Headline Text Here!', headline_color: '#ffffff', background_color: '#172b4d',
+            friendly_name: '', position: 'top', group_id: '0',
+            headline: [{attributes: {}, insert: 'Your Headline Text Here!'}],
+            headline_color: '#ffffff', background_color: '#172b4d',
             display: {},
             content: {},
             appearance: {},
@@ -165,7 +172,7 @@ new Vue({
                                     tab: false,
                                     handleEnter: {
                                         key: 13,
-                                        handler: function() {
+                                        handler: function () {
                                             return false;
                                         }
                                     }
@@ -176,18 +183,17 @@ new Vue({
                         theme: 'snow'
                     });
                     
-                    quill.setContents([
-                        {insert: vm.model[$(this).attr('id')]}
-                    ]);
+                    quill.setContents(vm.model[$(this).attr('id')]);
                     
-                    let limit = 65;
-                    
+                    let attrId = $(this).attr('id');
+                    let limit = 60;
                     quill.on('text-change', function (delta, old, source) {
                         if (quill.getLength() > limit) {
                             quill.deleteText(limit, quill.getLength());
                         }
                         
-                        console.log(quill.getContents());
+                        vm.model[attrId] = JSON.parse(JSON.stringify(quill.getContents().ops));
+                        console.log(vm.model[attrId]);
                     });
                 });
             }

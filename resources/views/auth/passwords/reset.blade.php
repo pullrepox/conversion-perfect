@@ -23,7 +23,7 @@
                 <div class="col-lg-5 col-md-7">
                     <div class="card bg-secondary border-0 mb-0">
                         <div class="card-header bg-transparent text-center login-logo">
-                            <img src="{{ asset('img/logo.png', config('site.ssl_tf')) }}" alt="" class="img-fluid logo w-50"/>
+                            <img src="{{ asset('img/logo.png', config('site.ssl_tf')) }}" alt="" class="img-fluid logo w-80"/>
                         </div>
                         <div class="card-body px-lg-5 py-lg-5">
                             @if (session('status'))
