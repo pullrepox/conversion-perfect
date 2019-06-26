@@ -130,6 +130,7 @@
                     @include('users.bars-partials.bars-preview')
                 @else
                     @include('users.bars-partials.bars-options')
+                    @include('users.bars-partials.bars-display')
                     @include('users.bars-partials.bars-preview')
                 @endif
             </form>
@@ -180,7 +181,9 @@
                 headline: JSON.parse('{!! ($flag ? json_encode([['attributes' => [], 'insert' => '']]) : $bar->headline) !!}'),
                 headline_color: "{{ old('headline_color') ? old('headline_color') : ($flag ? '#ffffff' : $bar->headline_color) }}",
                 background_color: "{{ old('background_color') ? old('background_color') : ($flag ? '#3BAF85' : $bar->background_color) }}",
-                display: {},
+                display: {
+                    show_bar_type: 'immediate', frequency: 'every'
+                },
                 content: {},
                 appearance: {},
                 button: {},
