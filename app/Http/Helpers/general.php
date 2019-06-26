@@ -1,30 +1,35 @@
 <?php
 
-function jsonResponse($isSuccess, $statusCode=200, $message='', $data=[]){
+function jsonResponse($isSuccess, $statusCode = 200, $message = '', $data = [])
+{
     return response()->json([
-        'success'=>$isSuccess,
-        'message'=> $message,
-        'data' => $data,
-    ],$statusCode);
+        'success' => $isSuccess,
+        'message' => $message,
+        'data'    => $data,
+    ], $statusCode);
 }
 
-function user(){
+function user()
+{
 //    return resolve('user');
     return \Illuminate\Support\Facades\Auth::user();
 }
 
-function getSliderCode($slider){
-    return '<script data-cfasync="false" src="'.url('/').'/sliders/'.$slider->id.'"></script>';
+function getSliderCode($slider)
+{
+    return '<script data-cfasync="false" src="' . url('/') . '/sliders/' . $slider->id . '"></script>';
 }
 
-function getArrayValue($array,$key,$default){
-    return isset($array[$key])?$array[$key]:$default;
+function getArrayValue($array, $key, $default)
+{
+    return isset($array[$key]) ? $array[$key] : $default;
 }
 
-function routeGroup(){
+function routeGroup()
+{
     $route = url()->current();
-    $urlPart = explode('/',$route)[3];
-    switch($urlPart){
+    $urlPart = explode('/', $route)[3];
+    switch ($urlPart) {
         case 'sliders':
         case 'bars':
         case 'pages':
@@ -45,11 +50,9 @@ function routeGroup(){
             return 'account';
         default:
             return 'dashboard';
-
+        
     }
 }
-
-use Illuminate\Support\Facades\DB;
 
 if (!function_exists('isActiveRoute')) {
     function isActiveRoute($route, $output = 'active')
@@ -279,3 +282,13 @@ if (!function_exists('time_elapsed_string')) {
         return $string ? implode(', ', $string) . ' ago' : 'just now';
     }
 }
+
+if (!function_exists('quickRandom')) {
+    function quickRandom($length = 16)
+    {
+        $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        
+        return substr(str_shuffle(str_repeat($pool, 5)), 0, $length);
+    }
+}
+

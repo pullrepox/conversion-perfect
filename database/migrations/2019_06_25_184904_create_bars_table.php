@@ -31,8 +31,8 @@ class CreateBarsTable extends Migration
             $table->boolean('opt_appearance')->default(0);
             $table->boolean('opt_button')->default(0);
             $table->boolean('opt_countdown')->default(0);
-            $table->boolean('opt_opt_in')->default(0);
             $table->boolean('opt_overlay')->default(0);
+            $table->boolean('opt_opt_in')->default(0);
             $table->boolean('opt_custom_text')->default(0);
             
             $table->longText('html')->nullable();
