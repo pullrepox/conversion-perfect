@@ -77,6 +77,11 @@ class BarOptionsController extends Controller
             $bar->sub_headline = json_encode($upd_sub_headline);
             $bar->sub_headline_color = $request->input('sub_headline_color');
             $bar->sub_background_color = $request->input('sub_background_color');
+            $bar->media = $request->input('media');
+            $bar->media_location = $request->input('media_location');
+            $bar->video_url = $request->input('video_url');
+            $bar->image_url = $request->input('image_url');
+            $bar->video_auto_play = is_null($request->input('video_auto_play')) ? 0 : 1;
             
             $rules['sub_headline'] = 'required';
         }
