@@ -107,23 +107,31 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="form-control-label ml-1" for="headline_color" data-id="headline_color">
+                                    <label class="form-control-label ml-1" for="headline_color">
                                         Headline Color
                                     </label>
-                                    <input type="text" class="jscolor form-control" name="headline_color" id="headline_color" v-model="model.headline_color"/>
+                                    <input class="jscolor form-control" name="headline_color"
+                                           id="headline_color" v-model="model.headline_color" @change="updateJSColor('headline_color', false)"/>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="form-control-label ml-1" for="background_color" data-id="background_color">
+                                    <label class="form-control-label ml-1" for="background_color">
                                         Background Color
                                     </label>
-                                    <input type="text" class="jscolor form-control" name="background_color" id="background_color" v-model="model.background_color"/>
+                                    <input class="jscolor form-control" name="background_color"
+                                           id="background_color" v-model="model.background_color" @change="updateJSColor('background_color', false)"/>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                @if ($flag)
+                    @include('users.bars-partials.bars-preview')
+                @else
+                    @include('users.bars-partials.bars-options')
+                    @include('users.bars-partials.bars-preview')
+                @endif
             </form>
             {{-- Delete Options Modal Confirm --}}
             <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modal" aria-hidden="true">
@@ -155,6 +163,7 @@
         window._bar_opt_ary = {
             bar_id: "{{ $flag ? '' : $bar->id }}",
             create_edit: "{{ $flag }}",
+            preview: '{!! $flag ? 'true' : $bar->opt_preview !!}',
             display: false,
             content: false,
             appearance: false,
@@ -179,7 +188,8 @@
                 overlay: {},
                 autoresponder: {},
                 opt_in: {},
-                custom_text: {}
+                custom_text: {},
+                html: "{!! $flag ? '' : $bar->html !!}"
             }
         };
     </script>
