@@ -22,11 +22,12 @@ Auth::routes();
 
 //Route::get('/register', 'ProfileController@login')->name('register');
 
-Route::middleware(['auth'])->group(function(){
+Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', 'Users\DashboardController@index')->name('customer.dashboard');
     Route::get('/sub-domain-register', 'Users\DashboardController@subDomainRegister');
     Route::post('/sub-domain-register', 'Users\DashboardController@setSubDomainRegister')->name('domain.register');
-    Route::resource('bars','Users\BarsController', ['names' => ['index' => 'bars']]);
+    Route::resource('bars', 'Users\BarsController', ['names' => ['index' => 'bars']]);
+    Route::post('/hide-option/{id}', 'Users\BarOptionsController@hideBarOption');
 //    Route::get('/pages/{slug}','PageController@show')->name('pages.show');
 
 //    Route::resource('sliders','SliderController', ['names' => ['index' => 'sliders']]);
