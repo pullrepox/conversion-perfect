@@ -24,10 +24,8 @@ class BarsController extends Controller
     public function index()
     {
         $header_data = [
-            'main_name'   => 'Bars',
-            'parent_data' => [
-                ['parent_name' => 'Overlay', 'parent_url' => '']
-            ],
+            'main_name'   => 'Conversion Bars',
+            'parent_data' => [],
             'button_show' => true,
             'button_data' => [
                 ['button_url' => '', 'button_text' => '']
@@ -49,8 +47,7 @@ class BarsController extends Controller
         $header_data = [
             'main_name'   => 'New Bar',
             'parent_data' => [
-                ['parent_name' => 'Overlay', 'parent_url' => ''],
-                ['parent_name' => 'Bars', 'parent_url' => secure_redirect(route('bars'))],
+                ['parent_name' => 'Conversion Bars', 'parent_url' => secure_redirect(route('bars'))],
             ],
             'button_show' => true,
             'button_data' => [
@@ -69,6 +66,7 @@ class BarsController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
+     * @throws
      */
     public function store(Request $request)
     {
@@ -137,8 +135,7 @@ class BarsController extends Controller
         $header_data = [
             'main_name'   => 'Edit Bar',
             'parent_data' => [
-                ['parent_name' => 'Overlay', 'parent_url' => ''],
-                ['parent_name' => 'Bars', 'parent_url' => secure_redirect(route('bars'))],
+                ['parent_name' => 'Conversion Bars', 'parent_url' => secure_redirect(route('bars'))],
             ],
             'button_show' => true,
             'button_data' => [
@@ -150,6 +147,14 @@ class BarsController extends Controller
         $form_action = secure_redirect(route('bars.update', ['bar' => $bar->id]));
         
         $bar->opt_preview = $bar->opt_preview ? 'true' : 'false';
+        $bar->opt_display = $bar->opt_display ? 'true' : 'false';
+        $bar->opt_content = $bar->opt_content ? 'true' : 'false';
+        $bar->opt_appearance = $bar->opt_appearance ? 'true' : 'false';
+        $bar->opt_button = $bar->opt_button ? 'true' : 'false';
+        $bar->opt_countdown = $bar->opt_countdown ? 'true' : 'false';
+        $bar->opt_opt_in = $bar->opt_opt_in ? 'true' : 'false';
+        $bar->opt_overlay = $bar->opt_overlay ? 'true' : 'false';
+        $bar->opt_custom_text = $bar->opt_custom_text ? 'true' : 'false';
         
         return view('users.bars-edit', compact('header_data', 'flag', 'form_action', 'bar'));
     }
@@ -160,10 +165,50 @@ class BarsController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Bar $bar
      * @return \Illuminate\Http\Response
+     * @throws
      */
     public function update(Request $request, Bar $bar)
     {
-        //
+        $this->validate($request, [
+            'friendly_name'    => 'required|max:100',
+            'headline'         => 'required|max:60',
+            'headline_color'   => 'required',
+            'background_color' => 'required'
+        ]);
+        
+        $bar->friendly_name = $request->input('friendly_name');
+        $bar->position = $request->input('position');
+        $bar->group_id = $request->input('group_id');
+        $bar->headline_color = $request->input('headline_color');
+        $bar->background_color = $request->input('background_color');
+        $bar->opt_preview = $request->input('opt_preview') == 'true' ? 1 : 0;
+        
+        $headline = $request->input('headline');
+        $upd_headline = [];
+        for ($i = 0; $i < count($headline); $i++) {
+            $upd_headline[$i]['insert'] = $headline[$i] . ($i < (count($headline) - 1) ? ' ' : '');
+            if (!is_null($request->input('headline_bold')[$i])) {
+                $upd_headline[$i]['attributes']['bold'] = true;
+            }
+            if (!is_null($request->input('headline_italic')[$i])) {
+                $upd_headline[$i]['attributes']['italic'] = true;
+            }
+            if (!is_null($request->input('headline_underline')[$i])) {
+                $upd_headline[$i]['attributes']['underline'] = true;
+            }
+            if (!is_null($request->input('headline_strike')[$i])) {
+                $upd_headline[$i]['attributes']['strike'] = true;
+            }
+        }
+        
+        $bar->headline = json_encode($upd_headline);
+        
+        
+        $bar->save();
+        
+        session()->flash('success', 'Successfully Updated');
+        
+        return response()->redirectTo('bars');
     }
     
     /**

@@ -43,6 +43,5 @@
                 <img src="{{asset('assets/img/mockup.gif')}}" alt="" class="img-fluid w-100">
             </div>
         </div>
-        <textarea name="html" class="area-hidden" v-model="model.html"></textarea>
     </div>
 </div>
