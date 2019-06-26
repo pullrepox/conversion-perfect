@@ -12,30 +12,30 @@ new Vue({
         loading: false,
         create_edit: false,
         bar_option: {
-            display: false, content: false, appearance: false, button: false, countdown: false, overlay: false, autoresponder: false, opt_in: false, custom_text: false
+            preview: true, display: false, content: false, appearance: false, button: false, countdown: false, overlay: false, autoresponder: false, opt_in: false, custom_text: false
         },
         show_btn: {
-            display: false, content: false, appearance: false, button: false, countdown: false, overlay: false, autoresponder: false, opt_in: false, custom_text: false
+            preview: false, display: false, content: false, appearance: false, button: false, countdown: false, overlay: false, autoresponder: false, opt_in: false, custom_text: false
         },
         options_list: [
-            {key: 'display', name: 'Display', class: 'btn-outline-default'}, {key: 'content', name: 'Content', class: 'btn-outline-default'},
-            {key: 'appearance', name: 'Appearance', class: 'btn-outline-default'}, {key: 'button', name: 'Button', class: 'btn-outline-default'},
-            {key: 'countdown', name: 'Countdown', class: 'btn-outline-success'}, {key: 'overlay', name: 'Overlay', class: 'btn-outline-success'},
-            {key: 'autoresponder', name: 'Autoresponder', class: 'btn-outline-warning'}, {key: 'opt_in', name: 'Opt-In', class: 'btn-outline-warning'},
-            {key: 'custom_text', name: 'Custom Text', class: 'btn-outline-info'},
+            {key: 'preview', name: 'Preview', class: 'btn-outline-primary'}, {key: 'display', name: 'Display', class: 'btn-outline-default'},
+            {key: 'content', name: 'Content', class: 'btn-outline-default'}, {key: 'appearance', name: 'Appearance', class: 'btn-outline-default'},
+            {key: 'button', name: 'Button', class: 'btn-outline-default'}, {key: 'countdown', name: 'Countdown', class: 'btn-outline-success'},
+            {key: 'overlay', name: 'Overlay', class: 'btn-outline-success'}, {key: 'autoresponder', name: 'Autoresponder', class: 'btn-outline-warning'},
+            {key: 'opt_in', name: 'Opt-In', class: 'btn-outline-warning'}, {key: 'custom_text', name: 'Custom Text', class: 'btn-outline-info'},
         ],
         options_label: {
-            display: 'Display', content: 'Content', appearance: 'Appearance', button: 'Button', countdown: 'Countdown',
+            preview: 'Preview', display: 'Display', content: 'Content', appearance: 'Appearance', button: 'Button', countdown: 'Countdown',
             overlay: 'Overlay', autoresponder: 'Autoresponder', opt_in: 'Opt-In', custom_text: 'Custom Text'
         },
         show_options: {},
         basic_model: {
-            friendly_name: '', position: 'top', group_id: '0',
-            headline: [{
-                attributes: {},
-                insert: 'Your Headline Text Here!'
-            }],
-            headline_color: '#ffffff', background_color: '#3BAF85',
+            friendly_name: '',
+            position: 'top',
+            group_id: '0',
+            headline: [{attributes: {}, insert: 'Your Headline Text Here!'}],
+            headline_color: '#ffffff',
+            background_color: '#3BAF85',
             display: {},
             content: {},
             appearance: {},
@@ -44,12 +44,16 @@ new Vue({
             overlay: {},
             autoresponder: {},
             opt_in: {},
-            custom_text: {}
+            custom_text: {},
+            html: ''
         },
         model: {
-            friendly_name: '', position: 'top', group_id: '0',
+            friendly_name: '',
+            position: 'top',
+            group_id: '0',
             headline: [{attributes: {}, insert: 'Your Headline Text Here!'}],
-            headline_color: '#ffffff', background_color: '#3BAF85',
+            headline_color: '#ffffff',
+            background_color: '#3BAF85',
             display: {},
             content: {},
             appearance: {},
@@ -58,7 +62,8 @@ new Vue({
             overlay: {},
             autoresponder: {},
             opt_in: {},
-            custom_text: {}
+            custom_text: {},
+            html: ''
         },
         del_option: {
             key: '',
@@ -193,7 +198,6 @@ new Vue({
                         }
                         
                         vm.model[attrId] = JSON.parse(JSON.stringify(quill.getContents().ops));
-                        console.log(vm.model[attrId]);
                     });
                 });
             }
@@ -210,6 +214,23 @@ new Vue({
             } else {
                 return true;
             }
+        },
+        updateJSColor(id, flag) {
+            if (!flag) {
+                this.model[id] = this.rgbToHex($(`#${id}`).get(0).style['background-color']);
+            } else {
+                this.model[id][flag] = this.rgbToHex($(`#${id}`).get(0).style['background-color']);
+            }
+        },
+        rgbToHex(rgbStr) {
+            let a = rgbStr.split("(")[1].split(")")[0];
+            a = a.split(",");
+            let b = a.map(function (x) {
+                x = parseInt(x).toString(16);
+                return (x.length === 1) ? "0" + x : x;
+            });
+            
+            return "#" + b.join("");
         },
         // Option Hide Show Event
         toggleOption(name) {

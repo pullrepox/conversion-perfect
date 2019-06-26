@@ -86,6 +86,7 @@ class BarsController extends Controller
             'group_id'         => $request->input('group_id'),
             'headline_color'   => $request->input('headline_color'),
             'background_color' => $request->input('background_color'),
+            'opt_preview'      => 1
         ];
         
         $headline = $request->input('headline');
@@ -147,6 +148,8 @@ class BarsController extends Controller
         
         $flag = false;
         $form_action = secure_redirect(route('bars.update', ['bar' => $bar->id]));
+        
+        $bar->opt_preview = $bar->opt_preview ? 'true' : 'false';
         
         return view('users.bars-edit', compact('header_data', 'flag', 'form_action', 'bar'));
     }
