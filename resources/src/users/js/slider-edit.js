@@ -35,7 +35,7 @@ new Vue({
                 attributes: {},
                 insert: 'Your Headline Text Here!'
             }],
-            headline_color: '#ffffff', background_color: '#172b4d',
+            headline_color: '#ffffff', background_color: '#3BAF85',
             display: {},
             content: {},
             appearance: {},
@@ -49,7 +49,7 @@ new Vue({
         model: {
             friendly_name: '', position: 'top', group_id: '0',
             headline: [{attributes: {}, insert: 'Your Headline Text Here!'}],
-            headline_color: '#ffffff', background_color: '#172b4d',
+            headline_color: '#ffffff', background_color: '#3BAF85',
             display: {},
             content: {},
             appearance: {},

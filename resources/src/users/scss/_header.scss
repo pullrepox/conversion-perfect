@@ -43,4 +43,8 @@
             }
         }
     }
+    
+    .nav-link[data-toggle="collapse"][aria-expanded="true"]:after {
+        color: #3baf85 !important;
+    }
 }

@@ -29,27 +29,10 @@
                         </a>
                     </li>
                     <li class="nav-item {{ isActiveResource(['bars'], true) }}">
-                        <a class="nav-link {{ isActiveResource(['bars'], true) }}" href="#navbar-links" data-toggle="collapse" role="button"
-                           aria-expanded="{{ isExpendResource(['bars'], true) }}" aria-controls="navbar-links">
+                        <a class="nav-link {{ isActiveResource(['bars'], true) }}" href="{{ secure_redirect(route('bars')) }}">
                             <i class="ni ni-credit-card text-cp"></i>
-                            <span class="nav-link-text text-capitalize">Overlay</span>
+                            <span class="nav-link-text text-capitalize">Conversion Bars</span>
                         </a>
-                        <div class="collapse {{ isActiveResource(['bars'], true, 'show') }}" id="navbar-links">
-                            <ul class="nav nav-sm flex-column">
-                                <li class="nav-item {{ isActiveResource(['bars'], true) }}">
-                                    <a href="{{ secure_redirect(route('bars')) }}"
-                                       class="nav-link text-capitalize {{ isActiveResource(['bars'], true) }}">
-                                        Bars
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link text-capitalize">Pages</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link text-capitalize">Groups</a>
-                                </li>
-                            </ul>
-                        </div>
                     </li>
                     <li class="nav-item {{ isActiveRoute(['bars.show']) }}">
                         <a class="nav-link {{ isActiveRoute(['bars.show']) }}" href="#navbar-reports" data-toggle="collapse" role="button"
@@ -65,9 +48,6 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link text-capitalize">Pages</a>
-                                </li>
-                                <li class="nav-item">
                                     <a href="#" class="nav-link text-capitalize">Emails</a>
                                 </li>
                             </ul>
@@ -81,13 +61,16 @@
                         <div class="collapse" id="navbar-settings">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link text-capitalize">Domain</a>
+                                    <a href="#" class="nav-link text-capitalize">Autoresponders</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link text-capitalize">Integrations</a>
+                                    <a href="#" class="nav-link text-capitalize">Domains</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link text-capitalize">Internal Lists</a>
+                                    <a href="#" class="nav-link text-capitalize">Email Lists</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link text-capitalize">Groups</a>
                                 </li>
                             </ul>
                         </div>
@@ -115,20 +98,10 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#navbar-account" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-account">
+                        <a href="#" class="nav-link text-capitalize">
                             <i class="ni ni-single-02 text-cp"></i>
                             <span class="nav-link-text text-capitalize">Account</span>
                         </a>
-                        <div class="collapse" id="navbar-account">
-                            <ul class="nav nav-sm flex-column">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link text-capitalize">Profile</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link text-capitalize">Notifications</a>
-                                </li>
-                            </ul>
-                        </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">

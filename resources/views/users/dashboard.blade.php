@@ -1,4 +1,5 @@
 @extends('layouts.base')
+@section('title', 'Dashboard - ' . config('app.name'))
 @section('content')
     <div class="main-content" id="dashboard-panel">
         <!-- Header -->
