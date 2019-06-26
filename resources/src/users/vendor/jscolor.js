@@ -183,7 +183,7 @@ var jsc = {
 			window.attachEvent('onload', fireOnce);
 
 			// IE7/8
-			if (document.documentElement.doScroll && window == window.top) {
+			if (document.documentElement.doScroll && window === window.top) {
 				var tryScroll = function () {
 					if (!document.body) { return; }
 					try {
