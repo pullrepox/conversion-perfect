@@ -79,15 +79,16 @@
                         <div class="form-row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-control-label ml-1" for="headline" data-id="headline">
+                                    <label class="form-control-label ml-1" for="headline">
                                         Headline Text
                                     </label>
-                                    <div id="headline" name="headline" data-toggle="quill" data-quill-placeholder="Headline Text"></div>
+                                    <div id="headline" data-toggle="quill" data-quill-placeholder="Headline Text"></div>
                                     @error('headline')
                                     <span class="invalid-feedback" role="alert">
                                         {{ $message }}
                                     </span>
                                     @enderror
+                                    <input type="hidden" name="headline" data-id="headline" v-model="model.headline" />
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -95,7 +96,7 @@
                                     <label class="form-control-label ml-1" for="headline_color" data-id="headline_color">
                                         Headline Color
                                     </label>
-                                    <input class="jscolor form-control" name="headline_color" id="headline_color" v-model="model.headline_color"/>
+                                    <input type="text" class="jscolor form-control" name="headline_color" id="headline_color" v-model="model.headline_color"/>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -103,7 +104,7 @@
                                     <label class="form-control-label ml-1" for="background_color" data-id="background_color">
                                         Background Color
                                     </label>
-                                    <input class="jscolor form-control" name="background_color" id="background_color" v-model="model.background_color"/>
+                                    <input type="text" class="jscolor form-control" name="background_color" id="background_color" v-model="model.background_color"/>
                                 </div>
                             </div>
                         </div>

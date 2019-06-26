@@ -159,7 +159,18 @@ new Vue({
                         modules: {
                             toolbar: [
                                 ['bold', 'italic', 'underline', 'strike']
-                            ]
+                            ],
+                            keyboard: {
+                                bindings: {
+                                    tab: false,
+                                    handleEnter: {
+                                        key: 13,
+                                        handler: function() {
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
                         },
                         placeholder: placeholder,
                         theme: 'snow'
@@ -169,12 +180,14 @@ new Vue({
                         {insert: vm.model[$(this).attr('id')]}
                     ]);
                     
-                    let limit = 60;
+                    let limit = 65;
                     
                     quill.on('text-change', function (delta, old, source) {
                         if (quill.getLength() > limit) {
                             quill.deleteText(limit, quill.getLength());
                         }
+                        
+                        console.log(quill.getContents());
                     });
                 });
             }

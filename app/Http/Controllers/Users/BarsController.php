@@ -64,7 +64,14 @@ class BarsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'friendly_name'    => 'required|max:100',
+            'headline'         => 'required|max:65',
+            'headline_color'   => 'required',
+            'background_color' => 'required'
+        ]);
+        
+        
     }
     
     /**
