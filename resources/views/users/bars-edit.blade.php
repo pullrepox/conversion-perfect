@@ -164,8 +164,8 @@
         window._bar_opt_ary = {
             bar_id: "{{ $flag ? '' : $bar->id }}",
             create_edit: "{{ $flag }}",
-            preview: '{!! $flag ? 'true' : $bar->opt_preview !!}',
-            display: false,
+            preview: '{{ $flag ? 'true' : $bar->opt_preview }}',
+            display: '{{ $flag ? false : (old('opt_display') ? old('opt_display') : $bar->opt_display) }}',
             content: false,
             appearance: false,
             button: false,
@@ -182,7 +182,10 @@
                 headline_color: "{{ old('headline_color') ? old('headline_color') : ($flag ? '#ffffff' : $bar->headline_color) }}",
                 background_color: "{{ old('background_color') ? old('background_color') : ($flag ? '#3BAF85' : $bar->background_color) }}",
                 display: {
-                    show_bar_type: 'immediate', frequency: 'every'
+                    show_bar_type: "{{ $flag ? 'immediate' : (old('show_bar_type') ? old('show_bar_type') : $bar->show_bar_type) }}",
+                    frequency: "{{ $flag ? 'every' : (old('frequency') ? old('frequency') : $bar->frequency) }}",
+                    delay_in_seconds: "{{ $flag ? 0 : (old('delay_in_seconds') ? old('delay_in_seconds') : $bar->delay_in_seconds) }}",
+                    scroll_point_percent: "{{ $flag ? 0 : (old('scroll_point_percent') ? old('scroll_point_percent') : $bar->scroll_point_percent) }}"
                 },
                 content: {},
                 appearance: {},

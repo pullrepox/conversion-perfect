@@ -37,7 +37,7 @@ new Vue({
             headline_color: '#ffffff',
             background_color: '#3BAF85',
             display: {
-                show_bar_type: 'immediate', frequency: 'every'
+                show_bar_type: 'immediate', frequency: 'every', delay_in_seconds: 0, scroll_point_percent: 0
             },
             content: {},
             appearance: {},
@@ -57,7 +57,7 @@ new Vue({
             headline_color: '#ffffff',
             background_color: '#3BAF85',
             display: {
-                show_bar_type: 'immediate', frequency: 'every'
+                show_bar_type: 'immediate', frequency: 'every', delay_in_seconds: 0, scroll_point_percent: 0
             },
             content: {},
             appearance: {},
@@ -269,8 +269,6 @@ new Vue({
                         if ($(`#${item}`).data('toggle')) {
                             if ($(`#${item}`).data('toggle') === 'select') {
                                 $(`#${item}`).val(vm.model[vm.del_option.key][item]).trigger('change.select2');
-                            } else if ($(`#${item}`).data('toggle') === 'tags') {
-                                $(`#${item}`).tagsinput('removeAll');
                             }
                         }
                     });

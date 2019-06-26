@@ -28,6 +28,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/sub-domain-register', 'Users\DashboardController@setSubDomainRegister')->name('domain.register');
     Route::resource('bars', 'Users\BarsController', ['names' => ['index' => 'bars']]);
     Route::post('/hide-option/{id}', 'Users\BarOptionsController@hideBarOption');
+    Route::post('/save-option/{id}', 'Users\BarOptionsController@saveBarOption');
+    Route::post('/clear-option/{id}', 'Users\BarOptionsController@clearBarOption');
 //    Route::get('/pages/{slug}','PageController@show')->name('pages.show');
 
 //    Route::resource('sliders','SliderController', ['names' => ['index' => 'sliders']]);
