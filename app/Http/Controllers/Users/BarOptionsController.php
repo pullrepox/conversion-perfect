@@ -21,9 +21,8 @@ class BarOptionsController extends Controller
         $bar_id = $request->route()->parameter('id');
         $bar = $this->barsRepo->find($bar_id);
         $opt_key = $request->input('option_key');
-        if ($opt_key == 'preview') {
-            $bar->opt_preview = 0;
-        }
+        $opt_param = 'opt_' . $opt_key;
+        $bar->$opt_param = 0;
         
         $bar->save();
         

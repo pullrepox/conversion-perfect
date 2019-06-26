@@ -131,6 +131,8 @@
                 @else
                     @include('users.bars-partials.bars-options')
                     @include('users.bars-partials.bars-display')
+                    @include('users.bars-partials.bars-content')
+                    
                     @include('users.bars-partials.bars-preview')
                 @endif
             </form>
@@ -178,7 +180,7 @@
                 friendly_name: "{{ (old('friendly_name') ? old('friendly_name') : ($flag ? quickRandom(6) : $bar->friendly_name)) }}",
                 position: "{{ old('position') ? old('position') : ($flag ? 'top' : $bar->position) }}",
                 group_id: "{{ old('group_id') ? old('group_id') : ($flag ? '0' : $bar->group_id) }}",
-                headline: JSON.parse('{!! ($flag ? json_encode([['attributes' => [], 'insert' => '']]) : $bar->headline) !!}'),
+                headline: JSON.parse('{!! ($flag ? json_encode([['attributes' => [], 'insert' => '']]) : (is_null($bar->headline) ? json_encode([['attributes' => [], 'insert' => '']]) : $bar->headline)) !!}'),
                 headline_color: "{{ old('headline_color') ? old('headline_color') : ($flag ? '#ffffff' : $bar->headline_color) }}",
                 background_color: "{{ old('background_color') ? old('background_color') : ($flag ? '#3BAF85' : $bar->background_color) }}",
                 display: {
@@ -187,7 +189,9 @@
                     delay_in_seconds: "{{ $flag ? 0 : (old('delay_in_seconds') ? old('delay_in_seconds') : $bar->delay_in_seconds) }}",
                     scroll_point_percent: "{{ $flag ? 0 : (old('scroll_point_percent') ? old('scroll_point_percent') : $bar->scroll_point_percent) }}"
                 },
-                content: {},
+                content: {
+                    sub_headline: JSON.parse('{!! $flag ? json_encode([['attributes' => [], 'insert' => '']]) : (is_null($bar->sub_headline) ? json_encode([['attributes' => [], 'insert' => '']]) : $bar->sub_headline) !!}'),
+                },
                 appearance: {},
                 button: {},
                 countdown: {},
