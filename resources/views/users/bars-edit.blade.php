@@ -6,7 +6,7 @@
         @include('layouts.page-header', ['data' => $header_data])
         {{-- Page content --}}
         <div class="container-fluid mt--8">
-            <form action="{{ $form_action }}" method="post" class="needs-validation" novalidate>
+            <form action="{{ $form_action }}" method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
                 @csrf
                 @if (!$flag)
                     @method('PUT')
@@ -168,7 +168,7 @@
             create_edit: "{{ $flag }}",
             preview: '{{ $flag ? 'true' : $bar->opt_preview }}',
             display: '{{ $flag ? false : (old('opt_display') ? old('opt_display') : $bar->opt_display) }}',
-            content: false,
+            content: '{{ $flag ? false : (old('opt_content') ? old('opt_content') : $bar->opt_content) }}',
             appearance: false,
             button: false,
             countdown: false,
@@ -191,6 +191,14 @@
                 },
                 content: {
                     sub_headline: JSON.parse('{!! $flag ? json_encode([['attributes' => [], 'insert' => '']]) : (is_null($bar->sub_headline) ? json_encode([['attributes' => [], 'insert' => '']]) : $bar->sub_headline) !!}'),
+                    sub_headline_color: "{{ old('sub_headline_color') ? old('sub_headline_color') : ($flag ? '#ffffff' : $bar->sub_headline_color) }}",
+                    sub_background_color: "{{ old('sub_background_color') ? old('sub_background_color') : ($flag ? '#3BAF85' : $bar->sub_background_color) }}",
+                    media: "{{ old('media') ? old('media') : ($flag ? 'none' : $bar->media) }}",
+                    media_location: "{{ old('media_location') ? old('media_location') : ($flag ? 'left' : $bar->media_location) }}",
+                    video_url: "{{ old('video_url') ? old('video_url') : ($flag ? '' : $bar->video_url) }}",
+                    image_url: "{{ old('image_url') ? old('image_url') : ($flag ? '' : $bar->image_url) }}",
+                    upload_image: "{{ old('upload_image') ? old('upload_image') : ($flag ? '' : $bar->upload_image) }}",
+                    video_auto_play: "{{ old('video_auto_play') ? old('video_auto_play') : ($flag ? null : $bar->video_auto_play) }}",
                 },
                 appearance: {},
                 button: {},

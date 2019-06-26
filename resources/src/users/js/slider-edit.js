@@ -33,13 +33,16 @@ new Vue({
             friendly_name: '',
             position: 'top',
             group_id: '0',
-            headline: [{attributes: {}, insert: 'Your Headline Text Here!'}],
+            headline: [{attributes: {}, insert: ''}],
             headline_color: '#ffffff',
             background_color: '#3BAF85',
             display: {
                 show_bar_type: 'immediate', frequency: 'every', delay_in_seconds: 0, scroll_point_percent: 0
             },
-            content: {},
+            content: {
+                sub_headline: [{attributes: {}, insert: ''}], sub_headline_color: '#ffffff', sub_background_color: '#3BAF85',
+                media: 'none', media_location: 'left', video_url: '', image_url: '', upload_image: '', video_auto_play: null
+            },
             appearance: {},
             button: {},
             countdown: {},
@@ -53,13 +56,16 @@ new Vue({
             friendly_name: '',
             position: 'top',
             group_id: '0',
-            headline: [{attributes: {}, insert: 'Your Headline Text Here!'}],
+            headline: [{attributes: {}, insert: ''}],
             headline_color: '#ffffff',
             background_color: '#3BAF85',
             display: {
                 show_bar_type: 'immediate', frequency: 'every', delay_in_seconds: 0, scroll_point_percent: 0
             },
-            content: {},
+            content: {
+                sub_headline: [{attributes: {}, insert: ''}], sub_headline_color: '#ffffff', sub_background_color: '#3BAF85',
+                media: 'none', media_location: 'left', video_url: '', image_url: '', upload_image: '', video_auto_play: null
+            },
             appearance: {},
             button: {},
             countdown: {},
@@ -127,7 +133,7 @@ new Vue({
                                 vm.select2Open('#group_id');
                                 break;
                             case 'group_id':
-                                
+                                $('#headline').focus();
                                 break;
                         }
                     });
@@ -210,6 +216,7 @@ new Vue({
                         
                         if (parentId !== '') {
                             vm.model[parentId][attrId] = JSON.parse(JSON.stringify(quill.getContents().ops));
+                            vm.showSaveBtn(parentId);
                         } else {
                             vm.model[attrId] = JSON.parse(JSON.stringify(quill.getContents().ops));
                         }
