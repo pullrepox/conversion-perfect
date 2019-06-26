@@ -9,7 +9,7 @@
     height: calc(100vh - 77px);
     
     > .container-fluid {
-        min-height: calc(100vh - 180px);
+        min-height: calc(100vh - 210px);
     }
     
     @media (max-width: 1199px) {
@@ -112,6 +112,10 @@
             min-height: 45px;
             overflow: hidden;
             padding: 10px;
+            &.ql-blank::before {
+                color: rgba(195, 157, 157, 0.6);
+                top: 0.95rem;
+            }
         }
     }
     

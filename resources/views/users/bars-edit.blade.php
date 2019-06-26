@@ -26,9 +26,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body pb-0">
                         <div class="form-row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="form-control-label ml-1" for="friendly_name" data-id="friendly_name">
                                         Friendly Name
@@ -50,7 +50,7 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="form-control-label ml-1" for="position">
                                         Position
@@ -63,7 +63,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="form-control-label ml-1" for="group_id">
                                         Group
@@ -77,21 +77,35 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="form-control-label ml-1" for="headline">
                                         Headline Text
                                     </label>
-                                    <div id="headline" data-toggle="quill" data-quill-placeholder="Headline Text"></div>
+                                    <div id="headline" data-toggle="quill" data-quill-placeholder="Your Headline Text Here."></div>
+                                    <input type="hidden" v-for="(h_l, h_i) in model.headline" :key="`hLine_${h_i}`" name="headline[]" :value="h_l.insert" v-if="h_l.insert.trim() != ''"/>
+                                    <span v-for="(h_l, h_i) in model.headline" :key="`hLine_attr_${h_i}`" v-if="h_l.insert.trim() != ''">
+                                        <span v-if="h_l.attributes">
+                                            <input type="hidden" name="headline_bold[]" :value="h_l.attributes.bold ? true : ''"/>
+                                            <input type="hidden" name="headline_italic[]" :value="h_l.attributes.italic ? true : ''"/>
+                                            <input type="hidden" name="headline_underline[]" :value="h_l.attributes.underline ? true : ''"/>
+                                            <input type="hidden" name="headline_strike[]" :value="h_l.attributes.strike ? true : ''"/>
+                                        </span>
+                                        <span v-else>
+                                            <input type="hidden" name="headline_bold[]" value=""/>
+                                            <input type="hidden" name="headline_italic[]" value=""/>
+                                            <input type="hidden" name="headline_underline[]" value=""/>
+                                            <input type="hidden" name="headline_strike[]" value=""/>
+                                        </span>
+                                    </span>
                                     @error('headline')
-                                    <span class="invalid-feedback" role="alert">
+                                    <span class="invalid-feedback" style="display: block;" role="alert">
                                         {{ $message }}
                                     </span>
                                     @enderror
-                                    <input type="hidden" name="headline" data-id="headline" v-model="model.headline" />
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="form-control-label ml-1" for="headline_color" data-id="headline_color">
                                         Headline Color
@@ -99,7 +113,7 @@
                                     <input type="text" class="jscolor form-control" name="headline_color" id="headline_color" v-model="model.headline_color"/>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="form-control-label ml-1" for="background_color" data-id="background_color">
                                         Background Color
@@ -151,10 +165,10 @@
             opt_in: false,
             custom_text: false,
             model: {
-                friendly_name: "{{ $flag ? quickRandom(6) : (old('friendly_name') ? old('friendly_name') : $bar->friendly_name) }}",
-                position: "{{ $flag ? 'top' : (old('position') ? old('position') : $bar->position) }}",
-                group_id: "{{ $flag ? '0' : (old('group_id') ? old('group_id') : $bar->group_id) }}",
-                headline: 'Your Headline Text Here!',
+                friendly_name: "{{ (old('friendly_name') ? old('friendly_name') : ($flag ? quickRandom(6) : $bar->friendly_name)) }}",
+                position: "{{ old('position') ? old('position') : ($flag ? 'top' : $bar->position) }}",
+                group_id: "{{ old('group_id') ? old('group_id') : ($flag ? '0' : $bar->group_id) }}",
+                headline: JSON.parse('{!! ($flag ? json_encode([['attributes' => [], 'insert' => '']]) : $bar->headline) !!}'),
                 headline_color: '#ffffff',
                 background_color: '#172b4d',
                 display: {},
