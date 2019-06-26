@@ -72,7 +72,7 @@ class BarsController extends Controller
     {
         $this->validate($request, [
             'friendly_name'    => 'required|max:100',
-            'headline'         => 'required|max:60',
+            'headline'         => 'required',
             'headline_color'   => 'required',
             'background_color' => 'required'
         ]);
@@ -143,9 +143,6 @@ class BarsController extends Controller
             ]
         ];
         
-        $flag = false;
-        $form_action = secure_redirect(route('bars.update', ['bar' => $bar->id]));
-        
         $bar->opt_preview = $bar->opt_preview ? 'true' : 'false';
         $bar->opt_display = $bar->opt_display ? 'true' : 'false';
         $bar->opt_content = $bar->opt_content ? 'true' : 'false';
@@ -155,6 +152,10 @@ class BarsController extends Controller
         $bar->opt_opt_in = $bar->opt_opt_in ? 'true' : 'false';
         $bar->opt_overlay = $bar->opt_overlay ? 'true' : 'false';
         $bar->opt_custom_text = $bar->opt_custom_text ? 'true' : 'false';
+        $bar->video_auto_play = $bar->video_auto_play ? 'on' : null;
+        
+        $flag = false;
+        $form_action = secure_redirect(route('bars.update', ['bar' => $bar->id]));
         
         return view('users.bars-edit', compact('header_data', 'flag', 'form_action', 'bar'));
     }
@@ -171,7 +172,7 @@ class BarsController extends Controller
     {
         $rules = [
             'friendly_name'    => 'required|max:100',
-            'headline'         => 'required|max:60',
+            'headline'         => 'required',
             'headline_color'   => 'required',
             'background_color' => 'required'
         ];
@@ -202,7 +203,7 @@ class BarsController extends Controller
         }
         
         $bar->headline = json_encode($upd_headline);
-    
+        
         if ($request->input('opt_display') == 'true') {
             $bar->opt_display = 1;
             $bar->show_bar_type = $request->input('show_bar_type');
@@ -214,7 +215,37 @@ class BarsController extends Controller
         } else {
             $bar->opt_display = 0;
         }
-    
+        
+        if ($request->input('opt_content') == 'true') {
+            $bar->opt_content = 1;
+            
+            $sub_headline = $request->input('sub_headline');
+            $upd_sub_headline = [];
+            for ($i = 0; $i < count($sub_headline); $i++) {
+                $upd_sub_headline[$i]['insert'] = $sub_headline[$i] . ($i < (count($sub_headline) - 1) ? ' ' : '');
+                if (!is_null($request->input('sub_headline_bold')[$i])) {
+                    $upd_sub_headline[$i]['attributes']['bold'] = true;
+                }
+                if (!is_null($request->input('sub_headline_italic')[$i])) {
+                    $upd_sub_headline[$i]['attributes']['italic'] = true;
+                }
+                if (!is_null($request->input('sub_headline_underline')[$i])) {
+                    $upd_sub_headline[$i]['attributes']['underline'] = true;
+                }
+                if (!is_null($request->input('sub_headline_strike')[$i])) {
+                    $upd_sub_headline[$i]['attributes']['strike'] = true;
+                }
+            }
+            
+            $bar->sub_headline = json_encode($upd_sub_headline);
+            $bar->sub_headline_color = $request->input('sub_headline_color');
+            $bar->sub_background_color = $request->input('sub_background_color');
+            
+            $rules['sub_headline'] = 'required';
+        } else {
+            $bar->opt_content = 0;
+        }
+        
         $this->validate($request, $rules);
         
         $bar->save();

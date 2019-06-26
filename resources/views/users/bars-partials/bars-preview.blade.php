@@ -18,21 +18,39 @@
             </div>
             <div style="width:100%; height: 150px; font-size: 20px; font-family: 'Nunito', sans-serif; color: rgb(255, 255, 255); text-align: right;"
                  :style="{'background': model.background_color}">
-                <div style="height:135px; width:100%; font-size:20px; font-family: 'Nunito', sans-serif; display: flex; align-items: center; justify-content: center;">
-                    <div style="width:auto; min-width:60%; height:150px; text-align:center;">
-                        <div :style="{ color: model.headline_color }" style="width:100%; min-width:100%; margin:0 auto; padding-top:15px;font-size: 1.8rem;line-height: 60px;">
-                            <span v-for="(h_l, h_i) in model.headline" :key="`hLine_attr_${h_i}`" v-if="h_l.insert.trim() != ''">
-                                <span v-if="h_l.attributes" :style="{
-                                    'font-weight': h_l.attributes.bold ? 'bold' : 'normal',
-                                    'font-style': h_l.attributes.italic ? 'italic' : 'normal',
-                                    'text-decoration': h_l.attributes.underline && h_l.attributes.strike ? 'underline line-through' : (h_l.attributes.underline && !h_l.attributes.strike ? 'underline' : (!h_l.attributes.underline && h_l.attributes.strike ? 'line-through' : 'none'))
-                                    }">
-                                    @{{ h_l.insert }}
+                <div style="height:138px; width:100%; font-size:20px; font-family: 'Nunito', sans-serif; display: flex; align-items: center; justify-content: center;">
+                    <div style="display:inline-block; vertical-align:top; width:auto; min-width:60%; height:150px; text-align:center;">
+                        <div style="display:inline-block; width:auto; height:150px;">
+                            <div :style="{ color: model.headline_color }" style="width: 100%; min-width: 100%; line-height: 70px; margin:0 auto; font-size: 1.6rem;padding-top: 15px;">
+                                <span v-for="(h_l, h_i) in model.headline" :key="`hLine_attr_${h_i}`" v-if="h_l.insert.trim() != ''">
+                                    <span v-if="h_l.attributes" :style="{
+                                        'font-weight': h_l.attributes.bold ? 'bold' : 'normal',
+                                        'font-style': h_l.attributes.italic ? 'italic' : 'normal',
+                                        'text-decoration': h_l.attributes.underline && h_l.attributes.strike ? 'underline line-through' : (h_l.attributes.underline && !h_l.attributes.strike ? 'underline' : (!h_l.attributes.underline && h_l.attributes.strike ? 'line-through' : 'none'))
+                                        }">
+                                        @{{ h_l.insert }}
+                                    </span>
+                                    <span v-else>
+                                        @{{ h_l.insert }}
+                                    </span>
                                 </span>
-                                <span v-else>
-                                    @{{ h_l.insert }}
+                            </div>
+                            <div :style="{ color: model.content.sub_headline_color, 'background': model.content.sub_background_color }"
+                                 style="width: 100%; min-width: 100%; line-height: 26px; margin: 0 auto; font-size: 16px; padding: 5px;"
+                                 v-if="model.content.sub_headline[0].insert.trim() != ''">
+                                <span v-for="(s_h_l, s_h_i) in model.content.sub_headline" :key="`s_hLine_attr_${s_h_i}`" v-if="s_h_l.insert.trim() != ''">
+                                    <span v-if="s_h_l.attributes" :style="{
+                                        'font-weight': s_h_l.attributes.bold ? 'bold' : 'normal',
+                                        'font-style': s_h_l.attributes.italic ? 'italic' : 'normal',
+                                        'text-decoration': s_h_l.attributes.underline && s_h_l.attributes.strike ? 'underline line-through' : (s_h_l.attributes.underline && !s_h_l.attributes.strike ? 'underline' : (!s_h_l.attributes.underline && s_h_l.attributes.strike ? 'line-through' : 'none'))
+                                        }">
+                                        @{{ s_h_l.insert }}
+                                    </span>
+                                    <span v-else>
+                                        @{{ s_h_l.insert }}
+                                    </span>
                                 </span>
-                            </span>
+                            </div>
                         </div>
                     </div>
                 </div>

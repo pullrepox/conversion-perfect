@@ -47,6 +47,40 @@ class BarOptionsController extends Controller
             $rules['scroll_point_percent'] = 'numeric';
         }
         
+        if ($opt_key == 'content') {
+            $bar->opt_content = 1;
+            
+            $sub_headline = $request->input('sub_headline');
+            $upd_sub_headline = [];
+            
+            for ($i = 0; $i < count($sub_headline); $i++) {
+                if (trim($sub_headline[$i]['insert']) == '' || is_null($sub_headline[$i]['insert'])) {
+                    continue;
+                }
+                $upd_sub_headline[$i]['insert'] = $sub_headline[$i]['insert'];
+                if (isset($sub_headline[$i]['attributes'])) {
+                    if (isset($sub_headline[$i]['attributes']['bold'])) {
+                        $upd_sub_headline[$i]['attributes']['bold'] = true;
+                    }
+                    if (isset($sub_headline[$i]['attributes']['italic'])) {
+                        $upd_sub_headline[$i]['attributes']['italic'] = true;
+                    }
+                    if (isset($sub_headline[$i]['attributes']['underline'])) {
+                        $upd_sub_headline[$i]['attributes']['underline'] = true;
+                    }
+                    if (isset($sub_headline[$i]['attributes']['strike'])) {
+                        $upd_sub_headline[$i]['attributes']['strike'] = true;
+                    }
+                }
+            }
+            
+            $bar->sub_headline = json_encode($upd_sub_headline);
+            $bar->sub_headline_color = $request->input('sub_headline_color');
+            $bar->sub_background_color = $request->input('sub_background_color');
+            
+            $rules['sub_headline'] = 'required';
+        }
+        
         $validate = Validator::make($request->all(), $rules);
         
         if ($validate->fails()) {
@@ -71,6 +105,19 @@ class BarOptionsController extends Controller
             $bar->frequency = 'every';
             $bar->delay_in_seconds = 0;
             $bar->scroll_point_percent = 0;
+        }
+        
+        if ($opt_key == 'content') {
+            $bar->opt_content = 0;
+            $bar->sub_headline = '';
+            $bar->sub_headline_color = '#ffffff';
+            $bar->sub_background_color = '#3BAF85';
+            $bar->media = 'none';
+            $bar->media_location = 'left';
+            $bar->video_url = '';
+            $bar->image_url = '';
+            $bar->upload_image = '';
+            $bar->video_auto_play = 0;
         }
         
         $bar->save();
