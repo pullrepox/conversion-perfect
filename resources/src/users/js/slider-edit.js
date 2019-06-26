@@ -36,7 +36,9 @@ new Vue({
             headline: [{attributes: {}, insert: 'Your Headline Text Here!'}],
             headline_color: '#ffffff',
             background_color: '#3BAF85',
-            display: {},
+            display: {
+                show_bar_type: 'immediate', frequency: 'every'
+            },
             content: {},
             appearance: {},
             button: {},
@@ -54,7 +56,9 @@ new Vue({
             headline: [{attributes: {}, insert: 'Your Headline Text Here!'}],
             headline_color: '#ffffff',
             background_color: '#3BAF85',
-            display: {},
+            display: {
+                show_bar_type: 'immediate', frequency: 'every'
+            },
             content: {},
             appearance: {},
             button: {},
