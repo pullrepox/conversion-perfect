@@ -192,16 +192,27 @@ new Vue({
                         theme: 'snow'
                     });
                     
-                    quill.setContents(vm.model[$(this).attr('id')]);
+                    let parentId = '';
+                    if ($(this).data('parent')) {
+                        quill.setContents(vm.model[$(this).data('parent')][$(this).attr('id')]);
+                        parentId = $(this).data('parent');
+                    } else {
+                        quill.setContents(vm.model[$(this).attr('id')]);
+                    }
                     
                     let attrId = $(this).attr('id');
+                    
                     let limit = 60;
                     quill.on('text-change', function (delta, old, source) {
                         if (quill.getLength() > limit) {
                             quill.deleteText(limit, quill.getLength());
                         }
                         
-                        vm.model[attrId] = JSON.parse(JSON.stringify(quill.getContents().ops));
+                        if (parentId !== '') {
+                            vm.model[parentId][attrId] = JSON.parse(JSON.stringify(quill.getContents().ops));
+                        } else {
+                            vm.model[attrId] = JSON.parse(JSON.stringify(quill.getContents().ops));
+                        }
                     });
                 });
             }
@@ -223,7 +234,8 @@ new Vue({
             if (!flag) {
                 this.model[id] = this.rgbToHex($(`#${id}`).get(0).style['background-color']);
             } else {
-                this.model[id][flag] = this.rgbToHex($(`#${id}`).get(0).style['background-color']);
+                this.model[flag][id] = this.rgbToHex($(`#${id}`).get(0).style['background-color']);
+                this.showSaveBtn(flag);
             }
         },
         rgbToHex(rgbStr) {
