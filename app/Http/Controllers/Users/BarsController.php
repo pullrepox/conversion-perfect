@@ -193,7 +193,9 @@ class BarsController extends Controller
         $bar->opt_preview = $request->input('opt_preview') == 'true' ? 1 : 0;
         
         $headline = $request->input('headline');
-        $upd_headline = [];
+        $upd_headline = [[
+            'insert' => ''
+        ]];
         for ($i = 0; $i < count($headline); $i++) {
             $upd_headline[$i]['insert'] = addslashes($headline[$i] . ($i < (count($headline) - 1) ? ' ' : ''));
             if (!is_null($request->input('headline_bold')[$i])) {
@@ -228,7 +230,9 @@ class BarsController extends Controller
             $bar->opt_content = 1;
             
             $sub_headline = $request->input('sub_headline');
-            $upd_sub_headline = [];
+            $upd_sub_headline = [[
+                'insert' => ''
+            ]];
             for ($i = 0; $i < count($sub_headline); $i++) {
                 $upd_sub_headline[$i]['insert'] = addslashes($sub_headline[$i] . ($i < (count($sub_headline) - 1) ? ' ' : ''));
                 if (!is_null($request->input('sub_headline_bold')[$i])) {

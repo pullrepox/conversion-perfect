@@ -51,8 +51,9 @@ class BarOptionsController extends Controller
             $bar->opt_content = 1;
             
             $sub_headline = $request->input('sub_headline');
-            $upd_sub_headline = [];
-            
+            $upd_sub_headline = [[
+                'insert' => ''
+            ]];
             for ($i = 0; $i < count($sub_headline); $i++) {
                 if (trim($sub_headline[$i]['insert']) == '' || is_null($sub_headline[$i]['insert'])) {
                     continue;
@@ -123,7 +124,7 @@ class BarOptionsController extends Controller
         
         if ($opt_key == 'content') {
             $bar->opt_content = 0;
-            $bar->sub_headline = '';
+            $bar->sub_headline = json_encode([['attributes' => [], 'insert' => '']]);
             $bar->sub_headline_color = '#FFFFFF';
             $bar->sub_background_color = '#3BAF85';
             $bar->video = 0;
