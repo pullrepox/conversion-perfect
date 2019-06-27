@@ -2,12 +2,16 @@ require('select2/dist/js/select2.min');
 require('bootstrap-tagsinput/dist/bootstrap-tagsinput.min');
 require('bootstrap-datepicker/dist/js/bootstrap-datepicker.min');
 require('../vendor/jscolor');
+import vueSlider from 'vue-slider-component';
 import Quill from 'quill';
 import PerfectScrollbar from 'perfect-scrollbar';
 import Vue from 'vue';
 
 new Vue({
     el: '#bar-edit-page',
+    components: {
+        'vue-slider': vueSlider
+    },
     data: () => ({
         loading: false,
         create_edit: false,
@@ -43,7 +47,9 @@ new Vue({
                 sub_headline: [{attributes: {}, insert: ''}], sub_headline_color: '#ffffff', sub_background_color: '#3BAF85',
                 video: null, video_auto_play: null, video_code: ''
             },
-            appearance: {},
+            appearance: {
+                opacity: 100, drop_shadow: null, close_button: null, background_gradient: null, gradient_end_color: '#3BAF85', gradient_angle: 0, powered_by_position: 'bottom_right',
+            },
             button: {},
             countdown: {},
             overlay: {},
@@ -65,7 +71,9 @@ new Vue({
                 sub_headline: [{attributes: {}, insert: ''}], sub_headline_color: '#ffffff', sub_background_color: '#3BAF85',
                 video: null, video_auto_play: null, video_code: ''
             },
-            appearance: {},
+            appearance: {
+                opacity: 100, drop_shadow: null, close_button: null, background_gradient: null, gradient_end_color: '#3BAF85', gradient_angle: 0, powered_by_position: 'bottom_right'
+            },
             button: {},
             countdown: {},
             overlay: {},
@@ -341,10 +349,8 @@ new Vue({
         },
         decodeHTMLEntities(text) {
             let entities = [['amp', '&'], ['apos', '\''], ['#x27', '\''], ['#x2F', '/'], ['#39', '\''], ['#47', '/'], ['lt', '<'], ['gt', '>'], ['nbsp', ' '], ['quot', '"']];
-            
             for (let i = 0, max = entities.length; i < max; ++i)
                 text = text.replace(new RegExp('&' + entities[i][0] + ';', 'g'), entities[i][1]);
-            
             return text;
         },
         decodeHTML(html) {

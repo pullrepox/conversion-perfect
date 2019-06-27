@@ -13,8 +13,16 @@
     </div>
     <div class="card-body">
         <div class="w-100 h-100">
+            @{{ model.appearance.background_gradient }}
             <div style="width:100%; font-size: 20px; font-family: 'Nunito', sans-serif; color: rgb(255, 255, 255); text-align: right;position: relative;"
-                 :style="{'background': model.background_color.indexOf('#') > -1 ? model.background_color : `#${model.background_color}`}">
+                 :style="{
+                 'background': (model.background_color.indexOf('#') > -1 ? model.background_color : `#${model.background_color}`),
+                 'background-image': model.appearance.background_gradient ? (`linear-gradient(${model.appearance.gradient_angle}deg, ${(model.appearance.gradient_end_color.indexOf('#') > -1 ? model.appearance.gradient_end_color : `#${model.appearance.gradient_end_color}`)}, ${(model.background_color.indexOf('#') > -1 ? model.background_color : `#${model.background_color}`)})`) : 'none',
+                 'opacity': (model.appearance.opacity / 100), 'box-shadow': (model.appearance.drop_shadow ? `0 10px 10px -10px #120f0f` : 'none')
+                 }">
+                <div v-if="model.appearance.close_button" style="position: absolute; top: -4px; right: 6px;font-size: 24px;"
+                     :style="{ color: model.headline_color.indexOf('#') > -1 ? model.headline_color : `#${model.headline_color}` }">&times;
+                </div>
                 <div style="width:100%; font-size:20px; font-family: 'Nunito', sans-serif; display: flex; align-items: center; justify-content: center;">
                     <div style="display: inline-block; width: auto;margin-right: 20px;padding-top: 8px;"
                          v-if="model.content.video_code !== '' && model.content.video" v-html="model.content.video_code"></div>
@@ -56,9 +64,15 @@
                         </div>
                     </div>
                 </div>
-                <div
-                    style="font-size: 12px; line-height: 20px; font-family: Arial, 'Arial Narrow', sans-serif; padding-right: 5px;position: absolute;bottom: 0;right: 0;width: auto;z-index: 100;"
-                    :style="{ color: model.headline_color.indexOf('#') > -1 ? model.headline_color : `#${model.headline_color}` }">
+                <div v-if="model.appearance.powered_by_position !== 'hidden'"
+                     style="font-size: 12px; line-height: 20px; font-family: Arial, 'Arial Narrow', sans-serif; padding-right: 5px;position: absolute;width: auto;z-index: 100;"
+                     :style="{
+                    color: model.headline_color.indexOf('#') > -1 ? model.headline_color : `#${model.headline_color}`,
+                    bottom: (model.appearance.powered_by_position === 'bottom_right' || model.appearance.powered_by_position === 'bottom_left') ? 0 : 'auto',
+                    right: model.appearance.powered_by_position === 'bottom_right' ? 0 : 'auto',
+                    top: model.appearance.powered_by_position === 'top_left' ? '1px' : 'auto',
+                    left: (model.appearance.powered_by_position === 'top_left' || model.appearance.powered_by_position === 'bottom_left') ? '5px' : 'auto'
+                    }">
                     POWERED BY <a style="color:inherit; text-decoration:inherit;text-transform: uppercase;" href="//app.conversionperfect.com" target="_BLANK">{{ config('app.name') }}</a>
                 </div>
             </div>

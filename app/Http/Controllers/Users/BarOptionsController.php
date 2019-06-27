@@ -83,6 +83,17 @@ class BarOptionsController extends Controller
             
             $rules['sub_headline'] = 'required';
         }
+    
+        if ($opt_key == 'appearance') {
+            $bar->opt_appearance = 1;
+            $bar->opacity = $request->input('opacity');
+            $bar->drop_shadow = $request->input('drop_shadow') ? 1 : 0;
+            $bar->close_button = $request->input('close_button') ? 1 : 0;
+            $bar->background_gradient = $request->input('background_gradient') ? 1 : 0;
+            $bar->gradient_end_color = $request->input('gradient_end_color');
+            $bar->gradient_angle = $request->input('gradient_angle');
+            $bar->powered_by_position = $request->input('powered_by_position');
+        }
         
         $validate = Validator::make($request->all(), $rules);
         
@@ -113,11 +124,22 @@ class BarOptionsController extends Controller
         if ($opt_key == 'content') {
             $bar->opt_content = 0;
             $bar->sub_headline = '';
-            $bar->sub_headline_color = '#ffffff';
+            $bar->sub_headline_color = '#FFFFFF';
             $bar->sub_background_color = '#3BAF85';
             $bar->video = 0;
             $bar->video_code = '';
             $bar->video_auto_play = 0;
+        }
+    
+        if ($opt_key == 'appearance') {
+            $bar->opt_appearance = 0;
+            $bar->opacity = 100;
+            $bar->drop_shadow = 0;
+            $bar->close_button = 0;
+            $bar->background_gradient = 0;
+            $bar->gradient_end_color = '#3BAF85';
+            $bar->gradient_angle = 0;
+            $bar->powered_by_position = 'bottom_right';
         }
         
         $bar->save();

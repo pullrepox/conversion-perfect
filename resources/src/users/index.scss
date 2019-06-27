@@ -5,3 +5,8 @@
 
 @import "scss/header";
 @import "scss/pages";
+
+$themeColor: #3BAF85;
+
+/* import theme style */
+@import '~vue-slider-component/lib/theme/default.scss';
