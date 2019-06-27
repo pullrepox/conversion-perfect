@@ -60,8 +60,8 @@
                         </a>
                         <div class="collapse" id="navbar-settings">
                             <ul class="nav nav-sm flex-column">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link text-capitalize">Autoresponders</a>
+                                <li class="nav-item {{ isActiveRoute(['autoresponder.index']) }}">
+                                    <a href="{{route('autoresponder.index')}}" class="nav-link text-capitalize">Autoresponders</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="#" class="nav-link text-capitalize">Domains</a>
