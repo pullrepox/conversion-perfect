@@ -152,9 +152,9 @@ class BarsController extends Controller
         $bar->opt_opt_in = $bar->opt_opt_in ? 'true' : 'false';
         $bar->opt_overlay = $bar->opt_overlay ? 'true' : 'false';
         $bar->opt_custom_text = $bar->opt_custom_text ? 'true' : 'false';
-        $bar->video_auto_play = $bar->video_auto_play ? true : false;
         $bar->headline = !is_null(trim($bar->headline)) && !empty(trim($bar->headline)) ? addslashes(stripslashes($bar->headline)) : json_encode([['attributes' => [], 'insert' => '']]);
         $bar->sub_headline = !is_null(trim($bar->sub_headline)) && !empty(trim($bar->sub_headline)) ? addslashes(stripslashes($bar->sub_headline)) : json_encode([['attributes' => [], 'insert' => '']]);
+        $bar->video = $bar->video ? true : false;
         
         $flag = false;
         $form_action = secure_redirect(route('bars.update', ['bar' => $bar->id]));
@@ -242,10 +242,8 @@ class BarsController extends Controller
             $bar->sub_headline = json_encode($upd_sub_headline);
             $bar->sub_headline_color = $request->input('sub_headline_color');
             $bar->sub_background_color = $request->input('sub_background_color');
-            $bar->media = $request->input('media');
-            $bar->media_location = $request->input('media_location');
-            $bar->video_url = $request->input('video_url');
-            $bar->image_url = $request->input('image_url');
+            $bar->video = $request->input('video') ? 1 : 0;
+            $bar->video_code = $request->input('video_code');
             $bar->video_auto_play = is_null($request->input('video_auto_play')) ? 0 : 1;
             
             $rules['sub_headline'] = 'required';
