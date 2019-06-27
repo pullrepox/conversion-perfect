@@ -50,7 +50,17 @@ new Vue({
             appearance: {
                 opacity: 100, drop_shadow: null, close_button: null, background_gradient: null, gradient_end_color: '#3BAF85', gradient_angle: 0, powered_by_position: 'bottom_right',
             },
-            button: {},
+            button: {
+                button_type: 'none',
+                button_location: 'right',
+                button_label: '',
+                button_background_color: '#515f7f',
+                button_text_color: '#FFFFFF',
+                button_animation: 'none',
+                button_action: 'hide_bar',
+                button_click_url: '',
+                button_open_new: null,
+            },
             countdown: {},
             overlay: {},
             autoresponder: {},
@@ -74,7 +84,17 @@ new Vue({
             appearance: {
                 opacity: 100, drop_shadow: null, close_button: null, background_gradient: null, gradient_end_color: '#3BAF85', gradient_angle: 0, powered_by_position: 'bottom_right'
             },
-            button: {},
+            button: {
+                button_type: 'none',
+                button_location: 'right',
+                button_label: '',
+                button_background_color: '#515f7f',
+                button_text_color: '#FFFFFF',
+                button_animation: 'none',
+                button_action: 'hide_bar',
+                button_click_url: '',
+                button_open_new: null,
+            },
             countdown: {},
             overlay: {},
             autoresponder: {},

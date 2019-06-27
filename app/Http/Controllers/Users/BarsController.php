@@ -152,15 +152,22 @@ class BarsController extends Controller
         $bar->opt_opt_in = $bar->opt_opt_in ? 'true' : 'false';
         $bar->opt_overlay = $bar->opt_overlay ? 'true' : 'false';
         $bar->opt_custom_text = $bar->opt_custom_text ? 'true' : 'false';
+        
         $bar->headline = !is_null(trim($bar->headline)) && !empty(trim($bar->headline)) ? addslashes(stripslashes($bar->headline)) : json_encode([['attributes' => [], 'insert' => '']]);
+        
         $bar->sub_headline = !is_null(trim($bar->sub_headline)) && !empty(trim($bar->sub_headline)) ? addslashes(stripslashes($bar->sub_headline)) : json_encode([['attributes' => [], 'insert' => '']]);
         $bar->sub_headline_color = is_null($bar->sub_headline_color) ? '#FFFFFF' : $bar->sub_headline_color;
         $bar->sub_background_color = is_null($bar->sub_background_color) ? '#3BAF85' : $bar->sub_background_color;
         $bar->video = $bar->video ? true : false;
+        
         $bar->drop_shadow = $bar->drop_shadow ? true : false;
         $bar->close_button = $bar->close_button ? true : false;
         $bar->background_gradient = $bar->background_gradient ? true : false;
         $bar->gradient_end_color = is_null($bar->gradient_end_color) ? '#3BAF85' : $bar->gradient_end_color;
+        
+        $bar->button_background_color = is_null($bar->button_background_color) ? '#515f7f' : $bar->button_background_color;
+        $bar->button_text_color = is_null($bar->button_text_color) ? '#FFFFFF' : $bar->button_text_color;
+        $bar->button_open_new = $bar->button_open_new ? true : false;
         
         $flag = false;
         $form_action = secure_redirect(route('bars.update', ['bar' => $bar->id]));
@@ -257,10 +264,13 @@ class BarsController extends Controller
             $bar->video_auto_play = is_null($request->input('video_auto_play')) ? 0 : 1;
             
             $rules['sub_headline'] = 'required';
+            if ($request->input('video')) {
+                $rules['video_code'] = 'required';
+            }
         } else {
             $bar->opt_content = 0;
         }
-    
+        
         if ($request->input('opt_appearance') == 'true') {
             $bar->opt_appearance = 1;
             $bar->opacity = $request->input('opacity');
@@ -270,8 +280,30 @@ class BarsController extends Controller
             $bar->gradient_end_color = $request->input('gradient_end_color');
             $bar->gradient_angle = $request->input('gradient_angle');
             $bar->powered_by_position = $request->input('powered_by_position');
+            $rules['opacity'] = 'numeric|max:100|min:0';
         } else {
             $bar->opt_appearance = 0;
+        }
+        
+        if ($request->input('opt_button') == 'true') {
+            $bar->opt_button = 1;
+            $bar->button_type = $request->input('button_type');
+            $bar->button_location = $request->input('button_location');
+            $bar->button_label = $request->input('button_label');
+            $bar->button_background_color = $request->input('button_background_color');
+            $bar->button_text_color = $request->input('button_text_color');
+            $bar->button_animation = $request->input('button_animation');
+            $bar->button_action = $request->input('button_action');
+            $bar->button_click_url = $request->input('button_click_url');
+            $bar->button_open_new = $request->input('button_open_new') ? 1 : 0;
+            if ($request->input('button_type') != 'none') {
+                $rules['button_label'] = 'required';
+            }
+            if ($request->input('button_action') == 'open_click_url') {
+                $rules['button_click_url'] = 'required';
+            }
+        } else {
+            $bar->opt_button = 0;
         }
         
         $this->validate($request, $rules);
