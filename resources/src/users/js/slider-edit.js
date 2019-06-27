@@ -35,9 +35,9 @@ new Vue({
         show_options: {},
         basic_model: {
             friendly_name: '',
-            position: 'top',
+            position: 'top_sticky',
             group_id: '0',
-            headline: [{attributes: {}, insert: ''}],
+            headline: [{attributes: {}, insert: 'Your Headline'}],
             headline_color: '#ffffff',
             background_color: '#3BAF85',
             display: {
@@ -69,9 +69,9 @@ new Vue({
         },
         model: {
             friendly_name: '',
-            position: 'top',
+            position: 'top_sticky',
             group_id: '0',
-            headline: [{attributes: {}, insert: ''}],
+            headline: [{attributes: {}, insert: 'Your Headline'}],
             headline_color: '#ffffff',
             background_color: '#3BAF85',
             display: {
