@@ -180,7 +180,7 @@
                 friendly_name: "{{ (old('friendly_name') ? old('friendly_name') : ($flag ? quickRandom(6) : $bar->friendly_name)) }}",
                 position: "{{ old('position') ? old('position') : ($flag ? 'top' : $bar->position) }}",
                 group_id: "{{ old('group_id') ? old('group_id') : ($flag ? '0' : $bar->group_id) }}",
-                headline: JSON.parse('{!! ($flag ? json_encode([['attributes' => [], 'insert' => '']]) : (is_null($bar->headline) ? json_encode([['attributes' => [], 'insert' => '']]) : $bar->headline)) !!}'),
+                headline: JSON.parse('{!! $flag ? json_encode([['attributes' => [], 'insert' => '']]) : $bar->headline !!}'),
                 headline_color: "{{ old('headline_color') ? old('headline_color') : ($flag ? '#ffffff' : $bar->headline_color) }}",
                 background_color: "{{ old('background_color') ? old('background_color') : ($flag ? '#3BAF85' : $bar->background_color) }}",
                 display: {
@@ -190,7 +190,7 @@
                     scroll_point_percent: "{{ $flag ? 0 : (old('scroll_point_percent') ? old('scroll_point_percent') : $bar->scroll_point_percent) }}"
                 },
                 content: {
-                    sub_headline: JSON.parse('{!! $flag ? json_encode([['attributes' => [], 'insert' => '']]) : (is_null($bar->sub_headline) ? json_encode([['attributes' => [], 'insert' => '']]) : $bar->sub_headline) !!}'),
+                    sub_headline: JSON.parse('{!! $flag ? json_encode([['attributes' => [], 'insert' => '']]) : $bar->sub_headline !!}'),
                     sub_headline_color: "{{ old('sub_headline_color') ? old('sub_headline_color') : ($flag ? '#ffffff' : $bar->sub_headline_color) }}",
                     sub_background_color: "{{ old('sub_background_color') ? old('sub_background_color') : ($flag ? '#3BAF85' : $bar->sub_background_color) }}",
                     media: "{{ old('media') ? old('media') : ($flag ? 'none' : $bar->media) }}",
