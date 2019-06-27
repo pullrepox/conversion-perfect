@@ -13,7 +13,7 @@
     </div>
     <div class="card-body">
         <div class="w-100 h-100">
-            <div style="width:100%; font-size: 20px; font-family: 'Nunito', sans-serif; color: rgb(255, 255, 255); text-align: right;position: relative;"
+            <div style="width:100%; font-size: 20px; font-family: 'Nunito', sans-serif; color: rgb(255, 255, 255); text-align: right;position: relative;min-height: 76px;"
                  :style="{
                  'background': (model.background_color.indexOf('#') > -1 ? model.background_color : `#${model.background_color}`),
                  'background-image': model.appearance.background_gradient ? (`linear-gradient(${model.appearance.gradient_angle}deg, ${(model.appearance.gradient_end_color.indexOf('#') > -1 ? model.appearance.gradient_end_color : `#${model.appearance.gradient_end_color}`)}, ${(model.background_color.indexOf('#') > -1 ? model.background_color : `#${model.background_color}`)})`) : 'none',

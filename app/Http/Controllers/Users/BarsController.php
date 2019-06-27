@@ -80,6 +80,9 @@ class BarsController extends Controller
         ];
         
         $headline = $request->input('headline');
+        $ins_data['headline'] = [[
+            'insert' => 'Your Headline'
+        ]];
         for ($i = 0; $i < count($headline); $i++) {
             $ins_data['headline'][$i]['insert'] = addslashes($headline[$i] . ($i < (count($headline) - 1) ? ' ' : ''));
             if (!is_null($request->input('headline_bold')[$i])) {
@@ -141,7 +144,7 @@ class BarsController extends Controller
         $bar->opt_overlay = $bar->opt_overlay ? 'true' : 'false';
         $bar->opt_custom_text = $bar->opt_custom_text ? 'true' : 'false';
         
-        $bar->headline = !is_null(trim($bar->headline)) && !empty(trim($bar->headline)) ? addslashes(stripslashes($bar->headline)) : json_encode([['attributes' => [], 'insert' => '']]);
+        $bar->headline = !is_null(trim($bar->headline)) && !empty(trim($bar->headline)) ? addslashes(stripslashes($bar->headline)) : json_encode([['attributes' => [], 'insert' => 'Your Headline']]);
         
         $bar->sub_headline = !is_null(trim($bar->sub_headline)) && !empty(trim($bar->sub_headline)) ? addslashes(stripslashes($bar->sub_headline)) : json_encode([['attributes' => [], 'insert' => '']]);
         $bar->sub_headline_color = is_null($bar->sub_headline_color) ? '#FFFFFF' : $bar->sub_headline_color;
@@ -189,7 +192,7 @@ class BarsController extends Controller
         
         $headline = $request->input('headline');
         $upd_headline = [[
-            'insert' => ''
+            'insert' => 'Your Headline'
         ]];
         for ($i = 0; $i < count($headline); $i++) {
             $upd_headline[$i]['insert'] = addslashes($headline[$i] . ($i < (count($headline) - 1) ? ' ' : ''));

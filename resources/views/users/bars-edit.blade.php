@@ -58,8 +58,8 @@
                                     <select class="form-control @error('position') is-invalid @enderror" data-toggle="select" id="position" name="position" required
                                             @keydown="tabKeyPress('#group_id', true, $event)" @keypress="tabKeyPress('#group_id', true, $event)"
                                             v-model="model.position">
-                                        <option value="top">Top</option>
                                         <option value="top_sticky">Top Sticky</option>
+                                        <option value="top">Top</option>
                                         <option value="bottom">Bottom</option>
                                     </select>
                                 </div>
@@ -180,9 +180,9 @@
             custom_text: '{{ $flag ? false : (old('opt_custom_text') ? old('opt_custom_text') : $bar->opt_custom_text) }}',
             model: {
                 friendly_name: "{{ (old('friendly_name') ? old('friendly_name') : ($flag ? quickRandom(6) : $bar->friendly_name)) }}",
-                position: "{{ old('position') ? old('position') : ($flag ? 'top' : $bar->position) }}",
+                position: "{{ old('position') ? old('position') : ($flag ? 'top_sticky' : $bar->position) }}",
                 group_id: "{{ old('group_id') ? old('group_id') : ($flag ? '0' : $bar->group_id) }}",
-                headline: JSON.parse('{!! $flag ? json_encode([['attributes' => [], 'insert' => '']]) : $bar->headline !!}'),
+                headline: JSON.parse('{!! $flag ? json_encode([['attributes' => [], 'insert' => 'Your Headline']]) : $bar->headline !!}'),
                 headline_color: "{{ old('headline_color') ? old('headline_color') : ($flag ? '#FFFFFF' : $bar->headline_color) }}",
                 background_color: "{{ old('background_color') ? old('background_color') : ($flag ? '#3BAF85' : $bar->background_color) }}",
                 display: {
