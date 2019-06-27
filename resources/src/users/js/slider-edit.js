@@ -253,7 +253,7 @@ new Vue({
                 return (x.length === 1) ? "0" + x : x;
             });
             
-            return "#" + b.join("");
+            return b.join("").toUpperCase();
         },
         // Option Hide Show Event
         toggleOption(name) {
