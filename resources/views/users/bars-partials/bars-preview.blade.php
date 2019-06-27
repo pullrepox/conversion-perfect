@@ -25,6 +25,16 @@
                 <div style="width:100%; font-size:20px; font-family: 'Nunito', sans-serif; display: flex; align-items: center; justify-content: center;">
                     <div style="display: inline-block; width: auto;margin-right: 20px;padding-top: 8px;"
                          v-if="model.content.video_code !== '' && model.content.video" v-html="model.content.video_code"></div>
+                    <div v-if="model.button.button_type !== 'none' && model.button.button_location === 'left'"
+                         style="display:inline-block; width:auto; margin-right: 20px;">
+                        <button type="button" style="border: 0;padding: 2px 12px;"
+                                :style="{
+                                'background-color': model.button.button_background_color.indexOf('#') > -1 ? model.button.button_background_color : `#${model.button.button_background_color}`,
+                                'color': model.button.button_text_color.indexOf('#') > -1 ? model.button.button_text_color : `#${model.button.button_text_color}`,
+                                'box-shadow': `0 3px 10px -4px ${model.button.button_background_color.indexOf('#') > -1 ? model.button.button_background_color : `#${model.button.button_background_color}`}`,
+                                'border-radius': model.button.button_type === 'rounded' ? '6px' : 0
+                                }">@{{ model.button.button_label }}</button>
+                    </div>
                     <div style="display:inline-block; vertical-align:top; width:auto; text-align:center;">
                         <div style="display:inline-block; width:auto;">
                             <div :style="{ color: model.headline_color.indexOf('#') > -1 ? model.headline_color : `#${model.headline_color}` }"
@@ -60,7 +70,27 @@
                                     </span>
                                 </span>
                             </div>
+                            <div v-if="model.button.button_type !== 'none' && model.button.button_location === 'below_text'"
+                                 style="width: 100%;min-width: 100%; margin: 0 auto;margin-bottom: 15px;">
+                                <button type="button" style="border: 0;padding: 2px 12px;"
+                                        :style="{
+                                'background-color': model.button.button_background_color.indexOf('#') > -1 ? model.button.button_background_color : `#${model.button.button_background_color}`,
+                                'color': model.button.button_text_color.indexOf('#') > -1 ? model.button.button_text_color : `#${model.button.button_text_color}`,
+                                'box-shadow': `0 3px 10px -4px ${model.button.button_background_color.indexOf('#') > -1 ? model.button.button_background_color : `#${model.button.button_background_color}`}`,
+                                'border-radius': model.button.button_type === 'rounded' ? '6px' : 0
+                                }">@{{ model.button.button_label }}</button>
+                            </div>
                         </div>
+                    </div>
+                    <div v-if="model.button.button_type !== 'none' && model.button.button_location === 'right'"
+                         style="display:inline-block; width:auto; margin-left: 20px;">
+                        <button type="button" style="border: 0;padding: 2px 12px;"
+                                :style="{
+                                'background-color': model.button.button_background_color.indexOf('#') > -1 ? model.button.button_background_color : `#${model.button.button_background_color}`,
+                                'color': model.button.button_text_color.indexOf('#') > -1 ? model.button.button_text_color : `#${model.button.button_text_color}`,
+                                'box-shadow': `0 3px 10px -4px ${model.button.button_background_color.indexOf('#') > -1 ? model.button.button_background_color : `#${model.button.button_background_color}`}`,
+                                'border-radius': model.button.button_type === 'rounded' ? '6px' : 0
+                                }">@{{ model.button.button_label }}</button>
                     </div>
                 </div>
                 <div v-if="model.appearance.powered_by_position !== 'hidden'"
