@@ -79,7 +79,13 @@
             <div class="col-md-8" v-show="model.content.video">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="video_code">Video Embed Code</label>
-                    <textarea id="video_code" name="video_code" v-model="model.content.video_code" data-parent="content" class="form-control" @input="showSaveBtn('content')"></textarea>
+                    <textarea id="video_code" name="video_code" v-model="model.content.video_code" data-parent="content"
+                              class="form-control @error('video_code') is-invalid @enderror" @input="showSaveBtn('content')"></textarea>
+                    @error('video_code')
+                    <span class="invalid-feedback" role="alert">
+                        {{ $message }}
+                    </span>
+                    @enderror
                 </div>
             </div>
 {{--            <div class="col-md-4" v-show="model.content.video">--}}

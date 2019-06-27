@@ -83,6 +83,9 @@ class BarOptionsController extends Controller
             $bar->video_auto_play = $request->input('video_auto_play') ? 1 : 0;
             
             $rules['sub_headline'] = 'required';
+            if ($request->input('video')) {
+                $rules['video_code'] = 'required';
+            }
         }
     
         if ($opt_key == 'appearance') {
@@ -94,6 +97,26 @@ class BarOptionsController extends Controller
             $bar->gradient_end_color = $request->input('gradient_end_color');
             $bar->gradient_angle = $request->input('gradient_angle');
             $bar->powered_by_position = $request->input('powered_by_position');
+            $rules['opacity'] = 'numeric|max:100|min:0';
+        }
+    
+        if ($opt_key == 'button') {
+            $bar->opt_button = 1;
+            $bar->button_type = $request->input('button_type');
+            $bar->button_location = $request->input('button_location');
+            $bar->button_label = $request->input('button_label');
+            $bar->button_background_color = $request->input('button_background_color');
+            $bar->button_text_color = $request->input('button_text_color');
+            $bar->button_animation = $request->input('button_animation');
+            $bar->button_action = $request->input('button_action');
+            $bar->button_click_url = $request->input('button_click_url');
+            $bar->button_open_new = $request->input('button_open_new') ? 1 : 0;
+            if ($request->input('button_type') != 'none') {
+                $rules['button_label'] = 'required';
+            }
+            if ($request->input('button_action') == 'open_click_url') {
+                $rules['button_click_url'] = 'required';
+            }
         }
         
         $validate = Validator::make($request->all(), $rules);
@@ -141,6 +164,19 @@ class BarOptionsController extends Controller
             $bar->gradient_end_color = '#3BAF85';
             $bar->gradient_angle = 0;
             $bar->powered_by_position = 'bottom_right';
+        }
+    
+        if ($opt_key == 'button') {
+            $bar->opt_button = 0;
+            $bar->button_type = 'none';
+            $bar->button_location = 'right';
+            $bar->button_label = '';
+            $bar->button_background_color = '#515f7f';
+            $bar->button_text_color = '#FFFFFF';
+            $bar->button_animation = 'none';
+            $bar->button_action = 'hide_bar';
+            $bar->button_click_url = '';
+            $bar->button_open_new = 0;
         }
         
         $bar->save();
