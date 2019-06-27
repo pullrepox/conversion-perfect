@@ -134,6 +134,7 @@
                     @include('users.bars-partials.bars-preview')
                     @include('users.bars-partials.bars-display')
                     @include('users.bars-partials.bars-content')
+                    @include('users.bars-partials.bars-appearance')
                 @endif
             </form>
             {{-- Delete Options Modal Confirm --}}
@@ -169,13 +170,13 @@
             preview: '{{ $flag ? 'true' : $bar->opt_preview }}',
             display: '{{ $flag ? false : (old('opt_display') ? old('opt_display') : $bar->opt_display) }}',
             content: '{{ $flag ? false : (old('opt_content') ? old('opt_content') : $bar->opt_content) }}',
-            appearance: false,
-            button: false,
-            countdown: false,
-            overlay: false,
-            autoresponder: false,
-            opt_in: false,
-            custom_text: false,
+            appearance: '{{ $flag ? false : (old('opt_appearance') ? old('opt_appearance') : $bar->opt_appearance) }}',
+            button: '{{ $flag ? false : (old('opt_button') ? old('opt_button') : $bar->opt_button) }}',
+            countdown: '{{ $flag ? false : (old('opt_countdown') ? old('opt_countdown') : $bar->opt_countdown) }}',
+            overlay: '{{ $flag ? false : (old('opt_overlay') ? old('opt_overlay') : $bar->opt_overlay) }}',
+            autoresponder: '{{ $flag ? false : (old('opt_autoresponder') ? old('opt_autoresponder') : $bar->opt_autoresponder) }}',
+            opt_in: '{{ $flag ? false : (old('opt_opt_in') ? old('opt_opt_in') : $bar->opt_opt_in) }}',
+            custom_text: '{{ $flag ? false : (old('opt_custom_text') ? old('opt_custom_text') : $bar->opt_custom_text) }}',
             model: {
                 friendly_name: "{{ (old('friendly_name') ? old('friendly_name') : ($flag ? quickRandom(6) : $bar->friendly_name)) }}",
                 position: "{{ old('position') ? old('position') : ($flag ? 'top' : $bar->position) }}",
@@ -197,7 +198,15 @@
                     video_code: "{{ old('video_code') ? old('video_code') : ($flag ? '' : htmlspecialchars_decode($bar->video_code)) }}",
                     video_auto_play: "{{ old('video_auto_play') ? old('video_auto_play') : ($flag ? null : $bar->video_auto_play) }}",
                 },
-                appearance: {},
+                appearance: {
+                    opacity: "{{ $flag ? 100 : (old('opacity') ? old('opacity') : $bar->opacity) }}",
+                    drop_shadow: "{{ old('drop_shadow') ? old('drop_shadow') : ($flag ? null : $bar->drop_shadow) }}",
+                    close_button: "{{ old('close_button') ? old('close_button') : ($flag ? null : $bar->close_button) }}",
+                    background_gradient: "{{ old('background_gradient') ? old('background_gradient') : ($flag ? null : $bar->background_gradient) }}",
+                    gradient_end_color: "{{ $flag ? '#3BAF85' : (old('gradient_end_color') ? old('gradient_end_color') : $bar->gradient_end_color) }}",
+                    gradient_angle: "{{ $flag ? 0 : (old('gradient_angle') ? old('gradient_angle') : $bar->gradient_angle) }}",
+                    powered_by_position: "{{ $flag ? 'bottom_right' : (old('powered_by_position') ? old('powered_by_position') : $bar->powered_by_position) }}",
+                },
                 button: {},
                 countdown: {},
                 overlay: {},

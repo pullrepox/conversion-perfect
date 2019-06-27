@@ -154,7 +154,13 @@ class BarsController extends Controller
         $bar->opt_custom_text = $bar->opt_custom_text ? 'true' : 'false';
         $bar->headline = !is_null(trim($bar->headline)) && !empty(trim($bar->headline)) ? addslashes(stripslashes($bar->headline)) : json_encode([['attributes' => [], 'insert' => '']]);
         $bar->sub_headline = !is_null(trim($bar->sub_headline)) && !empty(trim($bar->sub_headline)) ? addslashes(stripslashes($bar->sub_headline)) : json_encode([['attributes' => [], 'insert' => '']]);
+        $bar->sub_headline_color = is_null($bar->sub_headline_color) ? '#FFFFFF' : $bar->sub_headline_color;
+        $bar->sub_background_color = is_null($bar->sub_background_color) ? '#3BAF85' : $bar->sub_background_color;
         $bar->video = $bar->video ? true : false;
+        $bar->drop_shadow = $bar->drop_shadow ? true : false;
+        $bar->close_button = $bar->close_button ? true : false;
+        $bar->background_gradient = $bar->background_gradient ? true : false;
+        $bar->gradient_end_color = is_null($bar->gradient_end_color) ? '#3BAF85' : $bar->gradient_end_color;
         
         $flag = false;
         $form_action = secure_redirect(route('bars.update', ['bar' => $bar->id]));
@@ -249,6 +255,19 @@ class BarsController extends Controller
             $rules['sub_headline'] = 'required';
         } else {
             $bar->opt_content = 0;
+        }
+    
+        if ($request->input('opt_appearance') == 'true') {
+            $bar->opt_appearance = 1;
+            $bar->opacity = $request->input('opacity');
+            $bar->drop_shadow = $request->input('drop_shadow') ? 1 : 0;
+            $bar->close_button = $request->input('close_button') ? 1 : 0;
+            $bar->background_gradient = $request->input('background_gradient') ? 1 : 0;
+            $bar->gradient_end_color = $request->input('gradient_end_color');
+            $bar->gradient_angle = $request->input('gradient_angle');
+            $bar->powered_by_position = $request->input('powered_by_position');
+        } else {
+            $bar->opt_appearance = 0;
         }
         
         $this->validate($request, $rules);
