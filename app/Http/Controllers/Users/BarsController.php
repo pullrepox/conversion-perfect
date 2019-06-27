@@ -152,7 +152,7 @@ class BarsController extends Controller
         $bar->opt_opt_in = $bar->opt_opt_in ? 'true' : 'false';
         $bar->opt_overlay = $bar->opt_overlay ? 'true' : 'false';
         $bar->opt_custom_text = $bar->opt_custom_text ? 'true' : 'false';
-        $bar->video_auto_play = $bar->video_auto_play ? 'on' : null;
+        $bar->video_auto_play = $bar->video_auto_play ? true : false;
         $bar->headline = !is_null(trim($bar->headline)) && !empty(trim($bar->headline)) ? addslashes(stripslashes($bar->headline)) : json_encode([['attributes' => [], 'insert' => '']]);
         $bar->sub_headline = !is_null(trim($bar->sub_headline)) && !empty(trim($bar->sub_headline)) ? addslashes(stripslashes($bar->sub_headline)) : json_encode([['attributes' => [], 'insert' => '']]);
         
@@ -267,9 +267,14 @@ class BarsController extends Controller
      *
      * @param \App\Models\Bar $bar
      * @return \Illuminate\Http\Response
+     * @throws
      */
     public function destroy(Bar $bar)
     {
-        //
+        $bar->delete();
+        
+        return response()->json([
+            'result' => 'success'
+        ]);
     }
 }

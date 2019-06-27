@@ -13,6 +13,7 @@ require('bootstrap-notify');
 require('../common/js/argon.js');
 require('./js/user-common.js');
 require('./js/dashboard.js');
+require('./js/bar-list.js');
 
 if (document.querySelector('.main-content')) {
     new PerfectScrollbar('.main-content', {

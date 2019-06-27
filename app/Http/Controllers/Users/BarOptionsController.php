@@ -81,7 +81,7 @@ class BarOptionsController extends Controller
             $bar->media_location = $request->input('media_location');
             $bar->video_url = $request->input('video_url');
             $bar->image_url = $request->input('image_url');
-            $bar->video_auto_play = is_null($request->input('video_auto_play')) ? 0 : 1;
+            $bar->video_auto_play = $request->input('video_auto_play') ? 1 : 0;
             
             $rules['sub_headline'] = 'required';
         }

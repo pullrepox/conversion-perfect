@@ -181,7 +181,7 @@
                 position: "{{ old('position') ? old('position') : ($flag ? 'top' : $bar->position) }}",
                 group_id: "{{ old('group_id') ? old('group_id') : ($flag ? '0' : $bar->group_id) }}",
                 headline: JSON.parse('{!! $flag ? json_encode([['attributes' => [], 'insert' => '']]) : $bar->headline !!}'),
-                headline_color: "{{ old('headline_color') ? old('headline_color') : ($flag ? '#ffffff' : $bar->headline_color) }}",
+                headline_color: "{{ old('headline_color') ? old('headline_color') : ($flag ? '#FFFFFF' : $bar->headline_color) }}",
                 background_color: "{{ old('background_color') ? old('background_color') : ($flag ? '#3BAF85' : $bar->background_color) }}",
                 display: {
                     show_bar_type: "{{ $flag ? 'immediate' : (old('show_bar_type') ? old('show_bar_type') : $bar->show_bar_type) }}",

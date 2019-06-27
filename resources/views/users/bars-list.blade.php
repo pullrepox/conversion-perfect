@@ -37,65 +37,31 @@
                                 @if (sizeof($bars) > 0)
                                     @foreach($bars as $bar)
                                         <tr>
-                                            <td class="table-user">{{$bar->friendly_name}}</td>
+                                            <td class="table-user">{{ $bar->friendly_name }}</td>
                                             <td>{{ time_elapsed_string($bar->created_at) }}</td>
-                                            <td>{{$bar->type}}</td>
-                                            <td>{{$bar->link_click}}</td>
-                                            <td>{{$bar->email_options}}</td>
-                                            <td>{{$bar->total_views}}</td>
-                                            <td>{{$bar->unique_views}}</td>
+                                            <td>{{ $bar->type }}</td>
+                                            <td>{{ $bar->link_click }}</td>
+                                            <td>{{ $bar->email_options }}</td>
+                                            <td>{{ $bar->total_views }}</td>
+                                            <td>{{ $bar->unique_views }}</td>
                                             <td class="table-actions">
-{{--                                                <form method="POST" class="form-inline  d-inline"--}}
-{{--                                                      action="{{route('bars.toggle-status', $bar->id)}}">--}}
-{{--                                                    @csrf--}}
-{{--                                                    <button type="submit" href="#!"--}}
-{{--                                                            class="table-action  bg-transparent border-0" data-toggle="tooltip"--}}
-{{--                                                            data-original-title="{{ $bar->status ? 'Pause' : 'Activate' }} Bar?">--}}
-{{--                                                        <i class="fas fa-{{$bar->status?'pause text-red':'play text-green'}}"></i>--}}
-{{--                                                    </button>--}}
-{{--                                                </form>--}}
-                                                <a href="{{route('bars.edit', ['bar' => $bar->id])}}" class="table-action"
+                                                <a href="{{ route('bars.edit', ['bar' => $bar->id]) }}" class="table-action"
                                                    data-toggle="tooltip"
                                                    data-original-title="Edit Bar">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-{{--                                                <a href="{{route('bars.preview',$bar->id)}}" class="table-action"--}}
-{{--                                                   data-toggle="tooltip"--}}
-{{--                                                   data-original-title="View Bar">--}}
-{{--                                                    <i class="fas fa-eye"></i>--}}
-{{--                                                </a>--}}
-{{--                                                <a href="{{route('bars.clone',$bar->id)}}" class="table-action"--}}
-{{--                                                   data-toggle="tooltip"--}}
-{{--                                                   data-original-title="Clone Bar">--}}
-{{--                                                    <i class="fas fa-clone"></i>--}}
-{{--                                                </a>--}}
-{{--                                                <a href="#!" data-code="{{getSliderCode($bar)}}"--}}
-{{--                                                   class="table-action slider-code-btn" data-toggle="tooltip"--}}
-{{--                                                   data-original-title="Get Code">--}}
-{{--                                                    <i class="fas fa-code"></i>--}}
-{{--                                                </a>--}}
-{{--                                                <a href="{{route('bars.clear-stats',$bar->id)}}"--}}
-{{--                                                   class="table-action clear-stats-btn" data-toggle="tooltip"--}}
-{{--                                                   data-original-title="Clear Stat">--}}
-{{--                                                    <i class="fas fa-battery-empty"></i>--}}
-{{--                                                </a>--}}
-{{--                                                <form method="POST" class="form-inline d-inline"--}}
-{{--                                                      action="{{route('bars.destroy',$bar->id)}}">--}}
-{{--                                                    <input type="hidden" name="_method" value="DELETE">--}}
-{{--                                                    {{csrf_field()}}--}}
-{{--                                                    <button type="submit"--}}
-{{--                                                            class="delete-btn table-action table-action-delete bg-transparent border-0"--}}
-{{--                                                            data-toggle="tooltip"--}}
-{{--                                                            data-original-title="Delete Bar">--}}
-{{--                                                        <i class="fas fa-trash"></i>--}}
-{{--                                                    </button>--}}
-{{--                                                </form>--}}
+                                                <a href="javascript: void(0)" data-id="{{ $bar->id }}" class="table-action table-action-delete bar-delete"
+                                                   data-toggle="modal" data-target="#delete-modal">
+                                                    <span data-toggle="tooltip" data-placement="top" title="Delete Bar" class="w-100 h-100">
+                                                        <i class="fas fa-trash"></i>
+                                                    </span>
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach
                                 @else
                                     <tr>
-                                        <th scope="row" colspan="8" class="text-center">Tracker data does not exist</th>
+                                        <th scope="row" colspan="8" class="text-center">Bar data does not exist</th>
                                     </tr>
                                 @endif
                                 </tbody>
@@ -122,7 +88,7 @@
                             <p>Once deleted, you won't be able to revert this bar.</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-danger text-capitalize" id="deleteTracker">Delete</button>
+                            <button type="button" class="btn btn-danger text-capitalize" id="deleteBar">Delete</button>
                             <button type="button" class="btn btn-light ml-auto" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>

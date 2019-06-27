@@ -122,7 +122,7 @@
             <div class="col-md-4" v-show="model.content.media === 'upload_image'">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="upload_image">Upload Image</label>
-                    <input type="file" id="upload_image" name="upload_image" data-parent="content" class="form-control"/>
+                    <input type="file" id="upload_image" name="upload_image" data-parent="content" class="form-control" accept="image/*"/>
                 </div>
             </div>
         </div>
