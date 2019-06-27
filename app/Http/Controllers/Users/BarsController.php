@@ -153,6 +153,7 @@ class BarsController extends Controller
         $bar->opt_overlay = $bar->opt_overlay ? 'true' : 'false';
         $bar->opt_custom_text = $bar->opt_custom_text ? 'true' : 'false';
         $bar->video_auto_play = $bar->video_auto_play ? 'on' : null;
+        $bar->sub_headline = !is_null($bar->sub_headline) ? $bar->sub_headline : json_encode([['insert' => '']]);
         
         $flag = false;
         $form_action = secure_redirect(route('bars.update', ['bar' => $bar->id]));
