@@ -54,8 +54,9 @@
                             </div>
                             <div :style="{
                                 color: model.content.sub_headline_color.indexOf('#') > -1 ? model.content.sub_headline_color : `#${model.content.sub_headline_color}`,
-                                'background': model.content.sub_background_color.indexOf('#') > -1 ? model.content.sub_background_color : `#${model.content.sub_background_color}`}"
-                                 style="width: 100%; min-width: 100%; margin: 0 auto; font-size: 16px; padding: 5px;line-height: 26px;margin-bottom: 15px;"
+                                'background': model.content.sub_background_color !== '' ? (model.content.sub_background_color.indexOf('#') > -1 ? model.content.sub_background_color : `#${model.content.sub_background_color}`) : 'transparent'
+                                }"
+                                 style="width: 100%; min-width: 100%; margin: 10px 0 15px auto; font-size: 18px; padding: 5px;line-height: 26px;"
                                  v-if="model.content.sub_headline[0].insert.trim() != ''">
                                 <span v-for="(s_h_l, s_h_i) in model.content.sub_headline" :key="`s_hLine_attr_${s_h_i}`" v-if="s_h_l.insert.trim() != ''">
                                     <span v-if="s_h_l.attributes" :style="{

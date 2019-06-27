@@ -148,7 +148,6 @@ class BarsController extends Controller
         
         $bar->sub_headline = !is_null(trim($bar->sub_headline)) && !empty(trim($bar->sub_headline)) ? addslashes(stripslashes($bar->sub_headline)) : json_encode([['attributes' => [], 'insert' => '']]);
         $bar->sub_headline_color = is_null($bar->sub_headline_color) ? '#FFFFFF' : $bar->sub_headline_color;
-        $bar->sub_background_color = is_null($bar->sub_background_color) ? '#3BAF85' : $bar->sub_background_color;
         $bar->video = $bar->video ? true : false;
         
         $bar->drop_shadow = $bar->drop_shadow ? true : false;

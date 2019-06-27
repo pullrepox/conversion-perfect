@@ -194,7 +194,7 @@
                 content: {
                     sub_headline: JSON.parse('{!! $flag ? json_encode([['attributes' => [], 'insert' => '']]) : $bar->sub_headline !!}'),
                     sub_headline_color: "{{ $flag ? '#ffffff' : (old('sub_headline_color') ? old('sub_headline_color') : $bar->sub_headline_color) }}",
-                    sub_background_color: "{{ $flag ? '#3BAF85' : (old('sub_background_color') ? old('sub_background_color') : $bar->sub_background_color) }}",
+                    sub_background_color: "{{ $flag ? '' : (old('sub_background_color') ? old('sub_background_color') : $bar->sub_background_color) }}",
                     video: "{{ $flag ? null : (old('video') ? old('video') : $bar->video) }}",
                     video_code: "{{ $flag ? '' : (old('video_code') ? old('video_code') : htmlspecialchars_decode($bar->video_code)) }}",
                     video_auto_play: "{{ $flag ? null : (old('video_auto_play') ? old('video_auto_play') : $bar->video_auto_play) }}",
