@@ -15,7 +15,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="form-row">
-                            <h3 class="mb-0 col">{{ $flag ? 'New' : 'Edit' }} Bar</h3>
+                            <h3 class="mb-0 col">{{ $flag ? 'New' : 'Edit' }} Conversion Bar</h3>
                             <div class="col text-right">
                                 <button type="submit" class="btn btn-success btn-sm text-capitalize">{{ $flag ? 'Create' : 'Update' }}</button>
                                 <a href="{{ secure_redirect(route('bars')) }}" class="btn btn-light btn-sm text-capitalize">Cancel</a>
@@ -130,10 +130,9 @@
                     @include('users.bars-partials.bars-preview')
                 @else
                     @include('users.bars-partials.bars-options')
+                    @include('users.bars-partials.bars-preview')
                     @include('users.bars-partials.bars-display')
                     @include('users.bars-partials.bars-content')
-                    
-                    @include('users.bars-partials.bars-preview')
                 @endif
             </form>
             {{-- Delete Options Modal Confirm --}}

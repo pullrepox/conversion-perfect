@@ -45,7 +45,7 @@ class BarsController extends Controller
     public function create()
     {
         $header_data = [
-            'main_name'   => 'New Bar',
+            'main_name'   => 'New Conversion Bar',
             'parent_data' => [
                 ['parent_name' => 'Conversion Bars', 'parent_url' => secure_redirect(route('bars'))],
             ],
@@ -133,7 +133,7 @@ class BarsController extends Controller
     public function edit(Bar $bar)
     {
         $header_data = [
-            'main_name'   => 'Edit Bar',
+            'main_name'   => 'Edit Conversion Bar',
             'parent_data' => [
                 ['parent_name' => 'Conversion Bars', 'parent_url' => secure_redirect(route('bars'))],
             ],

@@ -80,22 +80,23 @@
                         <hr class="my-3">
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link text-capitalize">
-                            <i class="fas fa-question text-cp"></i>
-                            <span class="nav-link-text text-capitalize">FAQ</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link text-capitalize">
-                            <i class="fas fa-tv text-cp"></i>
-                            <span class="nav-link-text text-capitalize">Tutorials</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link text-capitalize">
+                        <a class="nav-link" href="#navbar-support" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-support">
                             <i class="ni ni-support-16 text-cp"></i>
-                            <span class="nav-link-text text-capitalize">Get Support</span>
+                            <span class="nav-link-text text-capitalize">Support</span>
                         </a>
+                        <div class="collapse" id="navbar-support">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link text-capitalize">FAQ</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link text-capitalize">Tutorials</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link text-capitalize">Get Support</a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link text-capitalize">
