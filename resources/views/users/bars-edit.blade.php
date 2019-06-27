@@ -135,6 +135,7 @@
                     @include('users.bars-partials.bars-display')
                     @include('users.bars-partials.bars-content')
                     @include('users.bars-partials.bars-appearance')
+                    @include('users.bars-partials.bars-button')
                 @endif
             </form>
             {{-- Delete Options Modal Confirm --}}
