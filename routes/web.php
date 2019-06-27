@@ -38,4 +38,6 @@ Route::middleware(['auth'])->group(function () {
 //    Route::get('/sliders/{slider}/preview','SliderController@previewSlider')->name('sliders.preview');
 //    Route::get('/sliders/{slider}/clone','SliderController@cloneSlider')->name('sliders.clone');
 //    Route::get('/sliders/{slider}/clear-stats','SliderController@clearStats')->name('sliders.clear-stats');
+
+    Route::resource('/autoresponder','AutoResponderController');
 });
