@@ -89,7 +89,7 @@ class BarsController extends Controller
         
         $headline = $request->input('headline');
         for ($i = 0; $i < count($headline); $i++) {
-            $ins_data['headline'][$i]['insert'] = $headline[$i] . ($i < (count($headline) - 1) ? ' ' : '');
+            $ins_data['headline'][$i]['insert'] = addslashes($headline[$i] . ($i < (count($headline) - 1) ? ' ' : ''));
             if (!is_null($request->input('headline_bold')[$i])) {
                 $ins_data['headline'][$i]['attributes']['bold'] = true;
             }
@@ -153,8 +153,8 @@ class BarsController extends Controller
         $bar->opt_overlay = $bar->opt_overlay ? 'true' : 'false';
         $bar->opt_custom_text = $bar->opt_custom_text ? 'true' : 'false';
         $bar->video_auto_play = $bar->video_auto_play ? 'on' : null;
-        $bar->headline = !is_null(trim($bar->headline)) && !empty(trim($bar->headline)) ? $bar->headline : json_encode([['attributes' => [], 'insert' => '']]);
-        $bar->sub_headline = !is_null(trim($bar->sub_headline)) && !empty(trim($bar->sub_headline)) ? $bar->sub_headline : json_encode([['attributes' => [], 'insert' => '']]);
+        $bar->headline = !is_null(trim($bar->headline)) && !empty(trim($bar->headline)) ? addslashes(stripslashes($bar->headline)) : json_encode([['attributes' => [], 'insert' => '']]);
+        $bar->sub_headline = !is_null(trim($bar->sub_headline)) && !empty(trim($bar->sub_headline)) ? addslashes(stripslashes($bar->sub_headline)) : json_encode([['attributes' => [], 'insert' => '']]);
         
         $flag = false;
         $form_action = secure_redirect(route('bars.update', ['bar' => $bar->id]));
@@ -189,7 +189,7 @@ class BarsController extends Controller
         $headline = $request->input('headline');
         $upd_headline = [];
         for ($i = 0; $i < count($headline); $i++) {
-            $upd_headline[$i]['insert'] = $headline[$i] . ($i < (count($headline) - 1) ? ' ' : '');
+            $upd_headline[$i]['insert'] = addslashes($headline[$i] . ($i < (count($headline) - 1) ? ' ' : ''));
             if (!is_null($request->input('headline_bold')[$i])) {
                 $upd_headline[$i]['attributes']['bold'] = true;
             }
@@ -224,7 +224,7 @@ class BarsController extends Controller
             $sub_headline = $request->input('sub_headline');
             $upd_sub_headline = [];
             for ($i = 0; $i < count($sub_headline); $i++) {
-                $upd_sub_headline[$i]['insert'] = $sub_headline[$i] . ($i < (count($sub_headline) - 1) ? ' ' : '');
+                $upd_sub_headline[$i]['insert'] = addslashes($sub_headline[$i] . ($i < (count($sub_headline) - 1) ? ' ' : ''));
                 if (!is_null($request->input('sub_headline_bold')[$i])) {
                     $upd_sub_headline[$i]['attributes']['bold'] = true;
                 }

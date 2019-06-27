@@ -57,7 +57,7 @@ class BarOptionsController extends Controller
                 if (trim($sub_headline[$i]['insert']) == '' || is_null($sub_headline[$i]['insert'])) {
                     continue;
                 }
-                $upd_sub_headline[$i]['insert'] = $sub_headline[$i]['insert'];
+                $upd_sub_headline[$i]['insert'] = addslashes($sub_headline[$i]['insert']);
                 if (isset($sub_headline[$i]['attributes'])) {
                     if (isset($sub_headline[$i]['attributes']['bold'])) {
                         $upd_sub_headline[$i]['attributes']['bold'] = true;
