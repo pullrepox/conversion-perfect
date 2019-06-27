@@ -59,6 +59,7 @@
                                             @keydown="tabKeyPress('#group_id', true, $event)" @keypress="tabKeyPress('#group_id', true, $event)"
                                             v-model="model.position">
                                         <option value="top">Top</option>
+                                        <option value="top_sticky">Top Sticky</option>
                                         <option value="bottom">Bottom</option>
                                     </select>
                                 </div>
