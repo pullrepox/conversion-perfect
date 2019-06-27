@@ -11,11 +11,8 @@
             </div>
         </div>
     </div>
-    <div class="card-body" :class="{'pb-0': model.position === 'top'}">
+    <div class="card-body">
         <div class="w-100 h-100">
-            <div class="w-100 mt--4" v-if="model.position === 'bottom'">
-                <img src="{{asset('assets/img/mockup.gif')}}" alt="" class="img-fluid w-100">
-            </div>
             <div style="width:100%; min-height: 150px; font-size: 20px; font-family: 'Nunito', sans-serif; color: rgb(255, 255, 255); text-align: right;position: relative;"
                  :style="{'background': model.background_color.indexOf('#') > -1 ? model.background_color : `#${model.background_color}`}">
                 <div style="min-height:138px; width:100%; font-size:20px; font-family: 'Nunito', sans-serif; display: flex; align-items: center; justify-content: center;">
@@ -84,9 +81,6 @@
                      :style="{ color: model.headline_color.indexOf('#') > -1 ? model.headline_color : `#${model.headline_color}` }">
                     POWERED BY <a style="color:inherit; text-decoration:inherit;text-transform: uppercase;" href="//app.conversionperfect.com" target="_BLANK">{{ config('app.name') }}</a>
                 </div>
-            </div>
-            <div class="w-100" v-if="model.position === 'top'">
-                <img src="{{asset('assets/img/mockup.gif')}}" alt="" class="img-fluid w-100">
             </div>
         </div>
     </div>

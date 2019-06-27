@@ -12,9 +12,9 @@
                         <!-- Card header -->
                         <div class="card-header border-0">
                             <div class="row">
-                                <h3 class="mb-0 col">Bars</h3>
+                                <h3 class="mb-0 col">Conversion Bars</h3>
                                 <div class="col text-right">
-                                    <a href="{{ secure_redirect(route('bars.create')) }}" class="btn btn-success btn-sm text-capitalize">New Bar</a>
+                                    <a href="{{ secure_redirect(route('bars.create')) }}" class="btn btn-success btn-sm text-capitalize">New Conversion Bar</a>
                                 </div>
                             </div>
                         </div>
