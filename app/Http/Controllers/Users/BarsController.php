@@ -25,11 +25,7 @@ class BarsController extends Controller
     {
         $header_data = [
             'main_name'   => 'Conversion Bars',
-            'parent_data' => [],
-            'button_show' => true,
-            'button_data' => [
-                ['button_url' => '', 'button_text' => '']
-            ]
+            'parent_data' => []
         ];
         
         $bars = Bar::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->paginate(10);
@@ -48,10 +44,6 @@ class BarsController extends Controller
             'main_name'   => 'New Conversion Bar',
             'parent_data' => [
                 ['parent_name' => 'Conversion Bars', 'parent_url' => secure_redirect(route('bars'))],
-            ],
-            'button_show' => true,
-            'button_data' => [
-                ['button_url' => '', 'button_text' => '']
             ]
         ];
         
@@ -136,10 +128,6 @@ class BarsController extends Controller
             'main_name'   => 'Edit Conversion Bar',
             'parent_data' => [
                 ['parent_name' => 'Conversion Bars', 'parent_url' => secure_redirect(route('bars'))],
-            ],
-            'button_show' => true,
-            'button_data' => [
-                ['button_url' => '', 'button_text' => '']
             ]
         ];
         

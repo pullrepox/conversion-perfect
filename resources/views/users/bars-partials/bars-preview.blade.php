@@ -94,7 +94,7 @@
                     </div>
                 </div>
                 <div v-if="model.appearance.powered_by_position !== 'hidden'"
-                     style="font-size: 12px; line-height: 20px; font-family: Arial, 'Arial Narrow', sans-serif; padding-right: 5px;position: absolute;width: auto;z-index: 100;"
+                     style="font-size: 12px; line-height: 20px; font-family: 'Arial Narrow', sans-serif; padding-right: 5px;position: absolute;width: auto;z-index: 100;"
                      :style="{
                     color: model.headline_color.indexOf('#') > -1 ? model.headline_color : `#${model.headline_color}`,
                     bottom: (model.appearance.powered_by_position === 'bottom_right' || model.appearance.powered_by_position === 'bottom_left') ? 0 : 'auto',
