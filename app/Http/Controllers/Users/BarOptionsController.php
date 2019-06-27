@@ -149,7 +149,7 @@ class BarOptionsController extends Controller
             $bar->opt_content = 0;
             $bar->sub_headline = json_encode([['attributes' => [], 'insert' => '']]);
             $bar->sub_headline_color = '#FFFFFF';
-            $bar->sub_background_color = '#3BAF85';
+            $bar->sub_background_color = '';
             $bar->video = 0;
             $bar->video_code = '';
             $bar->video_auto_play = 0;

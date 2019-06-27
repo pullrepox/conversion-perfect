@@ -119,7 +119,6 @@ new Vue({
             minScrollbarLength: 20
         });
         
-        
         Object.keys(this.bar_option).forEach(function (item) {
             vm.bar_option[item] = !window._bar_opt_ary[item] ? false : (window._bar_opt_ary[item] === 'true')
         });
@@ -268,7 +267,19 @@ new Vue({
             if (!flag) {
                 this.model[id] = this.rgbToHex($(`#${id}`).get(0).style['background-color']);
             } else {
-                this.model[flag][id] = this.rgbToHex($(`#${id}`).get(0).style['background-color']);
+                if (id === 'sub_background_color') {
+                    if ($(`#${id}`).val() === '') {
+                        this.model[flag][id] = '';
+                        setTimeout(function () {
+                            $(`#${id}`).css('background-color', '#ffffff');
+                            $(`#${id}`).val('');
+                        }, 500);
+                    } else {
+                        this.model[flag][id] = this.rgbToHex($(`#${id}`).get(0).style['background-color']);
+                    }
+                } else {
+                    this.model[flag][id] = this.rgbToHex($(`#${id}`).get(0).style['background-color']);
+                }
                 this.showSaveBtn(flag);
             }
         },
