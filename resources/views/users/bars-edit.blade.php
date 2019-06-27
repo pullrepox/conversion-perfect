@@ -193,11 +193,8 @@
                     sub_headline: JSON.parse('{!! $flag ? json_encode([['attributes' => [], 'insert' => '']]) : $bar->sub_headline !!}'),
                     sub_headline_color: "{{ old('sub_headline_color') ? old('sub_headline_color') : ($flag ? '#ffffff' : $bar->sub_headline_color) }}",
                     sub_background_color: "{{ old('sub_background_color') ? old('sub_background_color') : ($flag ? '#3BAF85' : $bar->sub_background_color) }}",
-                    media: "{{ old('media') ? old('media') : ($flag ? 'none' : $bar->media) }}",
-                    media_location: "{{ old('media_location') ? old('media_location') : ($flag ? 'left' : $bar->media_location) }}",
-                    video_url: "{{ old('video_url') ? old('video_url') : ($flag ? '' : $bar->video_url) }}",
-                    image_url: "{{ old('image_url') ? old('image_url') : ($flag ? '' : $bar->image_url) }}",
-                    upload_image: "{{ old('upload_image') ? old('upload_image') : ($flag ? '' : $bar->upload_image) }}",
+                    video: "{{ old('video') ? old('video') : ($flag ? null : $bar->video) }}",
+                    video_code: "{{ old('video_code') ? old('video_code') : ($flag ? '' : htmlspecialchars_decode($bar->video_code)) }}",
                     video_auto_play: "{{ old('video_auto_play') ? old('video_auto_play') : ($flag ? null : $bar->video_auto_play) }}",
                 },
                 appearance: {},
@@ -206,8 +203,7 @@
                 overlay: {},
                 autoresponder: {},
                 opt_in: {},
-                custom_text: {},
-                html: "{!! $flag ? '' : $bar->html !!}"
+                custom_text: {}
             }
         };
     </script>

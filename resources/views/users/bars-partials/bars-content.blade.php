@@ -65,66 +65,41 @@
                     </label>
                     <input class="jscolor form-control" name="sub_background_color" id="sub_background_color" v-model="model.content.sub_background_color"
                            @change="updateJSColor('sub_background_color', 'content')"
-                           @keydown="tabKeyPress('#media', true, $event)" @keypress="tabKeyPress('#media', true, $event)"/>
+                           @keydown="tabKeyPress('#video', true, $event)" @keypress="tabKeyPress('#video', true, $event)"/>
                 </div>
             </div>
         </div>
         <div class="form-row">
-            <div
-                :class="{'col-md-3': model.content.media === 'video', 'col-md-6': model.content.media === 'none', 'col-md-4': (model.content.media === 'online_image' || model.content.media === 'upload_image')}">
+            <div class="col-md-4">
                 <div class="form-group">
-                    <label class="form-control-label ml-1" for="media">Media</label>
-                    <select class="form-control" data-toggle="select" id="media" name="media" required
-                            v-model="model.content.media" data-parent="content">
-                        <option value="none">None</option>
-                        <option value="video">Video</option>
-                        <option value="online_image">Image(Online)</option>
-                        <option value="upload_image">Image(Upload)</option>
-                    </select>
-                </div>
-            </div>
-            <div v-show="model.content.media !== 'none'"
-                 :class="{'col-md-4': (model.content.media === 'online_image' || model.content.media === 'upload_image'), 'col-md-3': model.content.media === 'video'}">
-                <div class="form-group">
-                    <label class="form-control-label ml-1" for="media_location">Media Location</label>
-                    <select class="form-control" data-toggle="select" id="media_location" name="media_location" required
-                            v-model="model.content.media_location" data-parent="content">
-                        <option value="left">Left</option>
-                        <option value="right">Right</option>
-                        <option value="below_text">Below Text</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-4" v-show="model.content.media === 'video'">
-                <div class="form-group">
-                    <label class="form-control-label ml-1" for="video_url">Video URL</label>
-                    <input type="text" id="video_url" name="video_url" v-model="model.content.video_url" data-parent="content" class="form-control" @input="showSaveBtn('content')"/>
-                </div>
-            </div>
-            <div class="col-md-2" v-show="model.content.media === 'video'">
-                <div class="form-group">
-                    <label class="form-control-label ml-1" for="video_auto_play">Video Autoplay</label>
+                    <label class="form-control-label ml-1" for="video">Video</label>
                     <div class="radio ml-1">
                         <label class="custom-toggle custom-toggle-light">
-                            <input type="checkbox" id="video_auto_play" name="video_auto_play"
-                                   data-parent="content" v-model="model.content.video_auto_play" @input="showSaveBtn('content')">
+                            <input type="checkbox" id="video" name="video"
+                                   data-parent="content" v-model="model.content.video" @input="showSaveBtn('content')">
                             <span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
                         </label>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4" v-show="model.content.media === 'online_image'">
+            <div class="col-md-8" v-show="model.content.video">
                 <div class="form-group">
-                    <label class="form-control-label ml-1" for="image_url">Image URL</label>
-                    <input type="text" id="image_url" name="image_url" v-model="model.content.image_url" data-parent="content" class="form-control" @input="showSaveBtn('content')"/>
+                    <label class="form-control-label ml-1" for="video_code">Video Embed Code</label>
+                    <textarea id="video_code" name="video_code" v-model="model.content.video_code" data-parent="content" class="form-control" @input="showSaveBtn('content')"></textarea>
                 </div>
             </div>
-            <div class="col-md-4" v-show="model.content.media === 'upload_image'">
-                <div class="form-group">
-                    <label class="form-control-label ml-1" for="upload_image">Upload Image</label>
-                    <input type="file" id="upload_image" name="upload_image" data-parent="content" class="form-control" accept="image/*"/>
-                </div>
-            </div>
+{{--            <div class="col-md-4" v-show="model.content.video">--}}
+{{--                <div class="form-group">--}}
+{{--                    <label class="form-control-label ml-1" for="video_auto_play">Video Autoplay</label>--}}
+{{--                    <div class="radio ml-1">--}}
+{{--                        <label class="custom-toggle custom-toggle-light">--}}
+{{--                            <input type="checkbox" id="video_auto_play" name="video_auto_play"--}}
+{{--                                   data-parent="content" v-model="model.content.video_auto_play" @input="showSaveBtn('content')">--}}
+{{--                            <span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>--}}
+{{--                        </label>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
         </div>
     </div>
 </div>

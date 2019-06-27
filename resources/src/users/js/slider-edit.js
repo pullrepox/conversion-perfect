@@ -41,7 +41,7 @@ new Vue({
             },
             content: {
                 sub_headline: [{attributes: {}, insert: ''}], sub_headline_color: '#ffffff', sub_background_color: '#3BAF85',
-                media: 'none', media_location: 'left', video_url: '', image_url: '', upload_image: '', video_auto_play: null
+                video: null, video_auto_play: null, video_code: ''
             },
             appearance: {},
             button: {},
@@ -49,8 +49,7 @@ new Vue({
             overlay: {},
             autoresponder: {},
             opt_in: {},
-            custom_text: {},
-            html: ''
+            custom_text: {}
         },
         model: {
             friendly_name: '',
@@ -64,7 +63,7 @@ new Vue({
             },
             content: {
                 sub_headline: [{attributes: {}, insert: ''}], sub_headline_color: '#ffffff', sub_background_color: '#3BAF85',
-                media: 'none', media_location: 'left', video_url: '', image_url: '', upload_image: '', video_auto_play: null
+                video: null, video_auto_play: null, video_code: ''
             },
             appearance: {},
             button: {},
@@ -72,8 +71,7 @@ new Vue({
             overlay: {},
             autoresponder: {},
             opt_in: {},
-            custom_text: {},
-            html: ''
+            custom_text: {}
         },
         del_option: {
             key: '',
@@ -107,6 +105,7 @@ new Vue({
         this.initSelect2();
         this.initDatePicker();
         this.initQuillEditor();
+        this.model.content.video_code = this.decodeHTML(this.model.content.video_code);
     },
     methods: {
         initSelect2() {
@@ -339,6 +338,19 @@ new Vue({
         },
         commonNotification(type, msg) {
             commonNotify('top', 'right', 'fas fa-bug', type, null, msg, '', 'animated fadeInDown', 'animated fadeOutUp');
+        },
+        decodeHTMLEntities(text) {
+            let entities = [['amp', '&'], ['apos', '\''], ['#x27', '\''], ['#x2F', '/'], ['#39', '\''], ['#47', '/'], ['lt', '<'], ['gt', '>'], ['nbsp', ' '], ['quot', '"']];
+            
+            for (let i = 0, max = entities.length; i < max; ++i)
+                text = text.replace(new RegExp('&' + entities[i][0] + ';', 'g'), entities[i][1]);
+            
+            return text;
+        },
+        decodeHTML(html) {
+            let txt = document.createElement("textarea");
+            txt.innerHTML = html;
+            return txt.value;
         }
     }
 });

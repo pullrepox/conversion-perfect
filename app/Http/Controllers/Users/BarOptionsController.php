@@ -77,10 +77,8 @@ class BarOptionsController extends Controller
             $bar->sub_headline = json_encode($upd_sub_headline);
             $bar->sub_headline_color = $request->input('sub_headline_color');
             $bar->sub_background_color = $request->input('sub_background_color');
-            $bar->media = $request->input('media');
-            $bar->media_location = $request->input('media_location');
-            $bar->video_url = $request->input('video_url');
-            $bar->image_url = $request->input('image_url');
+            $bar->video = $request->input('video') ? 1 : 0;
+            $bar->video_code = $request->input('video_code');
             $bar->video_auto_play = $request->input('video_auto_play') ? 1 : 0;
             
             $rules['sub_headline'] = 'required';
@@ -117,11 +115,8 @@ class BarOptionsController extends Controller
             $bar->sub_headline = '';
             $bar->sub_headline_color = '#ffffff';
             $bar->sub_background_color = '#3BAF85';
-            $bar->media = 'none';
-            $bar->media_location = 'left';
-            $bar->video_url = '';
-            $bar->image_url = '';
-            $bar->upload_image = '';
+            $bar->video = 0;
+            $bar->video_code = '';
             $bar->video_auto_play = 0;
         }
         

@@ -16,14 +16,8 @@
             <div style="width:100%; font-size: 20px; font-family: 'Nunito', sans-serif; color: rgb(255, 255, 255); text-align: right;position: relative;"
                  :style="{'background': model.background_color.indexOf('#') > -1 ? model.background_color : `#${model.background_color}`}">
                 <div style="width:100%; font-size:20px; font-family: 'Nunito', sans-serif; display: flex; align-items: center; justify-content: center;">
-                    <div style="display: inline-block; width: auto;"
-                         v-if="model.content.image_url !== '' && model.content.media === 'online_image' && model.content.media_location === 'left'">
-                        <img :src="model.content.image_url" style="max-width: 300px;" alt=""/>
-                    </div>
                     <div style="display: inline-block; width: auto;margin-right: 20px;padding-top: 8px;"
-                         v-if="model.content.video_url !== '' && model.content.media === 'video' && model.content.media_location === 'left'">
-                        <iframe style="border: 0;max-width: 300px;" :src="`${model.content.video_url}?autoplay=${model.content.video_auto_play ? 1 : 0}`"></iframe>
-                    </div>
+                         v-if="model.content.video_code !== '' && model.content.video" v-html="model.content.video_code"></div>
                     <div style="display:inline-block; vertical-align:top; width:auto; text-align:center;">
                         <div style="display:inline-block; width:auto;">
                             <div :style="{ color: model.headline_color.indexOf('#') > -1 ? model.headline_color : `#${model.headline_color}` }"
@@ -59,23 +53,7 @@
                                     </span>
                                 </span>
                             </div>
-                            <div style="width: 100%;"
-                                 v-if="model.content.image_url !== '' && model.content.media === 'online_image' && model.content.media_location === 'below_text'">
-                                <img :src="model.content.image_url" style="max-width: 300px;" alt=""/>
-                            </div>
-                            <div style="display: inline-block; width: auto;padding-top: 8px;"
-                                 v-if="model.content.video_url !== '' && model.content.media === 'video' && model.content.media_location === 'below_text'">
-                                <iframe style="border: 0;max-width: 300px;" :src="`${model.content.video_url}?autoplay=${model.content.video_auto_play ? 1 : 0}`"></iframe>
-                            </div>
                         </div>
-                    </div>
-                    <div style="display: inline-block; width: auto;"
-                         v-if="model.content.image_url !== '' && model.content.media === 'online_image' && model.content.media_location === 'right'">
-                        <img :src="model.content.image_url" style="max-width: 300px;" alt=""/>
-                    </div>
-                    <div style="display: inline-block; width: auto;margin-left: 20px;padding-top: 8px;"
-                         v-if="model.content.video_url !== '' && model.content.media === 'video' && model.content.media_location === 'right'">
-                        <iframe style="border: 0;max-width: 300px;" :src="`${model.content.video_url}?autoplay=${model.content.video_auto_play ? 1 : 0}`"></iframe>
                     </div>
                 </div>
                 <div
