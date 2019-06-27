@@ -13,7 +13,6 @@
     </div>
     <div class="card-body">
         <div class="w-100 h-100">
-            @{{ model.appearance.background_gradient }}
             <div style="width:100%; font-size: 20px; font-family: 'Nunito', sans-serif; color: rgb(255, 255, 255); text-align: right;position: relative;"
                  :style="{
                  'background': (model.background_color.indexOf('#') > -1 ? model.background_color : `#${model.background_color}`),
