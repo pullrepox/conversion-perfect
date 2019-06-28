@@ -159,6 +159,8 @@ class BarsController extends Controller
         $bar->button_text_color = is_null($bar->button_text_color) ? '#FFFFFF' : $bar->button_text_color;
         $bar->button_open_new = $bar->button_open_new ? true : false;
         
+        $bar->countdown_end_date = $bar->countdown_end_date != '0000-00-00' ? date('m/d/Y', strtotime($bar->countdown_end_date)) : date('m/d/Y');
+        
         $flag = false;
         $form_action = secure_redirect(route('bars.update', ['bar' => $bar->id]));
         
@@ -217,6 +219,10 @@ class BarsController extends Controller
                 $params[$key] = json_encode($upd_headline);
             }
             
+            if ($key == 'countdown_end_date') {
+                $params[$key] = date('m/d/Y', strtotime($val));
+            }
+            
             if ($key == 'countdown_end_time') {
                 $params[$key] = date('H:i:s', strtotime($val));
             }
@@ -258,9 +264,9 @@ class BarsController extends Controller
                 $rules['countdown_end_date'] = 'date_format:Y-m-d';
             }
             if ($request->input('countdown') == 'evergreen') {
-                $rules['countdown_days'] = 'numeric|min:0|max:365';
-                $rules['countdown_hours'] = 'numeric|min:0';
-                $rules['countdown_minutes'] = 'numeric|min:0';
+                $rules['countdown_days'] = 'numeric|min:0';
+                $rules['countdown_hours'] = 'numeric|min:0|max:23';
+                $rules['countdown_minutes'] = 'numeric|min:0|max:59';
             }
         }
         
