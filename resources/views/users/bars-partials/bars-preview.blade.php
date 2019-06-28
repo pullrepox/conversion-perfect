@@ -72,7 +72,7 @@
                                 </span>
                             </div>
                             <div v-if="model.button.button_type !== 'none' && model.button.button_location === 'below_text'"
-                                 style="width: 100%;min-width: 100%; margin: 0 auto;margin-bottom: 15px;">
+                                 style="width: 100%;min-width: 100%; margin: 0 0 5px auto;">
                                 <button type="button" style="border: 0;padding: 2px 12px;"
                                         :style="{
                                 'background-color': model.button.button_background_color.indexOf('#') > -1 ? model.button.button_background_color : `#${model.button.button_background_color}`,
