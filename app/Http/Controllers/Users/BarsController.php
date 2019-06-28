@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Users;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\BarsRepository;
 use App\Models\Bar;
+use App\Models\Utils;
 use Illuminate\Http\Request;
 
 class BarsController extends Controller
@@ -50,7 +51,7 @@ class BarsController extends Controller
         $flag = true;
         $form_action = secure_redirect(route('bars.store'));
         
-        return view('users.bars-edit', compact('header_data', 'flag', 'form_action'));
+        return view('users.bars-edit', compact('header_data', 'flag', 'form_action', 'timezone_list'));
     }
     
     /**

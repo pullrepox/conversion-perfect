@@ -6,13 +6,11 @@ import Quill from 'quill';
 import PerfectScrollbar from 'perfect-scrollbar';
 import Vue from 'vue';
 import vueSlider from 'vue-slider-component';
-import colorPicker from '../components/color-picker';
 
 new Vue({
     el: '#bar-edit-page',
     components: {
-        'vue-slider': vueSlider,
-        'color-picker': colorPicker
+        'vue-slider': vueSlider
     },
     data: () => ({
         loading: false,
@@ -54,17 +52,14 @@ new Vue({
                 opacity: 100, drop_shadow: null, close_button: null, background_gradient: null, gradient_end_color: '#3BAF85', gradient_angle: 0, powered_by_position: 'bottom_right',
             },
             button: {
-                button_type: 'none',
-                button_location: 'right',
-                button_label: '',
-                button_background_color: '#515f7f',
-                button_text_color: '#FFFFFF',
-                button_animation: 'none',
-                button_action: 'hide_bar',
-                button_click_url: '',
-                button_open_new: null,
+                button_type: 'none', button_location: 'right', button_label: '', button_background_color: '#515f7f', button_text_color: '#FFFFFF', button_animation: 'none',
+                button_action: 'hide_bar', button_click_url: '', button_open_new: null,
             },
-            countdown: {},
+            countdown: {
+                countdown: 'none', countdown_location: 'left', countdown_format: 'dd', countdown_end_date: '0000-00-00', countdown_end_time: '00:00:00', countdown_timezone: 'Canada/Central',
+                countdown_days: 0, countdown_hours: 0, countdown_minutes: 0, countdown_background_color: '#3BAF85', countdown_text_color: '#FFFFFF', countdown_on_expiry: 'hide_bar',
+                countdown_expiration_text: '', countdown_expiration_url: ''
+            },
             overlay: {},
             autoresponder: {},
             opt_in: {},
@@ -88,17 +83,14 @@ new Vue({
                 opacity: 100, drop_shadow: null, close_button: null, background_gradient: null, gradient_end_color: '#3BAF85', gradient_angle: 0, powered_by_position: 'bottom_right'
             },
             button: {
-                button_type: 'none',
-                button_location: 'right',
-                button_label: '',
-                button_background_color: '#515f7f',
-                button_text_color: '#FFFFFF',
-                button_animation: 'none',
-                button_action: 'hide_bar',
-                button_click_url: '',
-                button_open_new: null,
+                button_type: 'none', button_location: 'right', button_label: '', button_background_color: '#515f7f', button_text_color: '#FFFFFF', button_animation: 'none',
+                button_action: 'hide_bar', button_click_url: '', button_open_new: null,
             },
-            countdown: {},
+            countdown: {
+                countdown: 'none', countdown_location: 'left', countdown_format: 'dd', countdown_end_date: '0000-00-00', countdown_end_time: '00:00:00', countdown_timezone: 'Canada/Central',
+                countdown_days: 0, countdown_hours: 0, countdown_minutes: 0, countdown_background_color: '#3BAF85', countdown_text_color: '#FFFFFF', countdown_on_expiry: 'hide_bar',
+                countdown_expiration_text: '', countdown_expiration_url: ''
+            },
             overlay: {},
             autoresponder: {},
             opt_in: {},
@@ -272,9 +264,17 @@ new Vue({
         },
         updateJSColor(id, flag) {
             if (!flag) {
-                this.model[id] = this.rgbToHex($(`#${id}`).get(0).style['background-color']);
+                if ($(`#${id}`).val() === '') {
+                    this.model[id] = '';
+                } else {
+                    this.model[id] = this.rgbToHex($(`#${id}`).get(0).style['background-color']);
+                }
             } else {
-                this.model[flag][id] = this.rgbToHex($(`#${id}`).get(0).style['background-color']);
+                if ($(`#${id}`).val() === '') {
+                    this.model[flag][id] = '';
+                } else {
+                    this.model[flag][id] = this.rgbToHex($(`#${id}`).get(0).style['background-color']);
+                }
                 this.showSaveBtn(flag);
             }
         },
