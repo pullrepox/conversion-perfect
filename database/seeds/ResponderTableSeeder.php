@@ -17,7 +17,7 @@ class ResponderTableSeeder extends Seeder
         $list = [
             [
                 'title'      => 'sendlane',
-                'base_url'   => 'https://lightspeeddev.sendlane.com/api/v1',
+                'base_url'   => 'https://lightspeeddev.sendlane.com/api/v1/',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
