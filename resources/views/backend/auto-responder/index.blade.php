@@ -52,17 +52,13 @@
                                                     <i class="fas fa-edit"></i>
                                                 </a>
 
-                                                <form method="POST" class="form-inline d-inline"
-                                                      action="">
-                                                    <input type="hidden" name="_method" value="DELETE">
-                                                    {{csrf_field()}}
-                                                    <button type="submit"
-                                                            class="delete-btn table-action table-action-delete bg-transparent border-0"
-                                                            data-toggle="tooltip"
-                                                            data-original-title="Delete Bar">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </form>
+                                                <button type="submit"
+                                                        class="delete-btn table-action table-action-delete bg-transparent border-0"
+                                                        data-toggle="modal"
+                                                        data-id="{{$integration->id}}"
+                                                        data-target="#delete-modal">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -85,18 +81,25 @@
                 <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h6 class="modal-title" id="modal-title-default">Delete Link</h6>
+                            <h6 class="modal-title" id="modal-title-default">Delete Autoresponder</h6>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
                         <div class="modal-body text-center">
+
                             <h1>Are you sure?</h1>
-                            <p>Once deleted, you won't be able to revert this bar.</p>
+                            <p>Once deleted, you won't be able to revert this Autoresponder.</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-danger text-capitalize" id="deleteTracker">Delete</button>
                             <button type="button" class="btn btn-light ml-auto" data-dismiss="modal">Cancel</button>
+                            <form method="POST" class="form-inline d-inline"
+                                  action="">
+                                @method('DELETE')
+                                @csrf
+                                <button type="submit" class="btn btn-danger text-capitalize" id="deleteTracker">Delete</button>
+
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -104,4 +107,19 @@
         </div>
         @include('layouts.footer')
     </div>
+@endsection
+
+@section('scripts')
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script>
+        $(function () {
+           $('.delete-btn').on('click', function (event) {
+               var id = $(this).attr('data-id');
+               var modal = $('#delete-modal');
+               modal.find('form').attr('action','/autoresponder/'+id);
+
+           })
+        })
+    </script>
+
 @endsection

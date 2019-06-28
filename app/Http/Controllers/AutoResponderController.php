@@ -32,7 +32,7 @@ class AutoResponderController extends Controller
     public function create(Request $request)
     {
         $header_data = [
-            'main_name' => 'New Integration',
+            'main_name' => ' New Autoresponder',
             'parent_data' => [
                 ['parent_name' => 'Overlay', 'parent_url' => ''],
                 ['parent_name' => 'Integration', 'parent_url' => secure_redirect(route('autoresponder.index'))],
@@ -80,7 +80,6 @@ class AutoResponderController extends Controller
                 'type' => 'error',
                 'message' => $msg
             ];
-//
         } else {
             return [
                 'type' => 'success',
@@ -125,5 +124,11 @@ class AutoResponderController extends Controller
         $flag = false;
         $responders = Responder::all();
         return view('backend.auto-responder.create-edit', compact('header_data', 'flag', 'integration', 'responders'));
+    }
+
+    public function destroy($integration)
+    {
+        Integration::findOrFail($integration)->delete();
+        return redirect()->back()->with('success','Deleted Successfully');
     }
 }
