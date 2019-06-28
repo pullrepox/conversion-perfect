@@ -22,8 +22,8 @@ class ResponderTableSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'title'      => 'aweber',
-                'base_url'   => 'https://api.aweber.com/1.0/',
+                'title'      => 'mailchimp',
+                'base_url'   => 'https://us7.api.mailchimp.com/3.0/',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]

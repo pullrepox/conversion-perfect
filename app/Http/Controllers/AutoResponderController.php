@@ -55,6 +55,8 @@ class AutoResponderController extends Controller
         $responder = Responder::findOrFail($data['responder_id']);
         if ($responder->title === 'sendlane'){
             return $this->sendLane($data, $responder);
+        } else if ($responder->title === 'mailchimp'){
+            return $this->mailChimp($data, $responder);
         }
     }
 
@@ -88,7 +90,34 @@ class AutoResponderController extends Controller
         }
     }
 
-    public function store(StoreIntegration $request)
+    public function mailChimp($data, $responder)
+    {
+        $apikey = $data['api_key'];
+        $client = new \GuzzleHttp\Client();
+        try{
+
+            $response = $client->request('GET', $responder->base_url, [
+                'auth' => ['user', $apikey]
+            ]);
+            $result = $response->getBody()->getContents();
+            $user = json_decode($result);
+            if (isset($result->account_id) && isset($result->login_id)){
+                return [
+                    'type' => 'success',
+                    'message' => null,
+                ];
+            }
+        } catch (\Exception $e){
+            return [
+                'type' => 'error',
+                'message' => 'Invalid API key'
+            ];
+        }
+
+
+    }
+
+    public function store(Request $request)
     {
         $data = $request->all();
         $data['user_id'] = auth()->user()->id;
