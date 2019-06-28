@@ -54,7 +54,7 @@
                             </div>
                             <div :style="{
                                 color: model.content.sub_headline_color.indexOf('#') > -1 ? model.content.sub_headline_color : `#${model.content.sub_headline_color}`,
-                                'background': model.content.sub_background_color !== '' ? (model.content.sub_background_color.indexOf('#') > -1 ? model.content.sub_background_color : `#${model.content.sub_background_color}`) : 'transparent'
+                                'background': model.content.sub_background_color
                                 }"
                                  style="width: 100%; min-width: 100%; margin: 10px 0 15px auto; font-size: 18px; padding: 5px;line-height: 26px;"
                                  v-if="model.content.sub_headline[0].insert.trim() != ''">

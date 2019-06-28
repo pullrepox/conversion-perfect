@@ -1,4 +1,5 @@
 import PerfectScrollbar from 'perfect-scrollbar';
+import VEvent from './components/VEvent';
 
 window.axios = require('axios');
 
@@ -14,6 +15,7 @@ require('../common/js/argon.js');
 require('./js/user-common.js');
 require('./js/dashboard.js');
 require('./js/bar-list.js');
+window.vEvent = new VEvent();
 
 if (document.querySelector('.main-content')) {
     new PerfectScrollbar('.main-content', {

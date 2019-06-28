@@ -2,19 +2,22 @@ require('select2/dist/js/select2.min');
 require('bootstrap-tagsinput/dist/bootstrap-tagsinput.min');
 require('bootstrap-datepicker/dist/js/bootstrap-datepicker.min');
 require('../vendor/jscolor');
-import vueSlider from 'vue-slider-component';
 import Quill from 'quill';
 import PerfectScrollbar from 'perfect-scrollbar';
 import Vue from 'vue';
+import vueSlider from 'vue-slider-component';
+import colorPicker from '../components/color-picker';
 
 new Vue({
     el: '#bar-edit-page',
     components: {
-        'vue-slider': vueSlider
+        'vue-slider': vueSlider,
+        'color-picker': colorPicker
     },
     data: () => ({
         loading: false,
         create_edit: false,
+        colorLoaded: false,
         bar_option: {
             preview: true, display: false, content: false, appearance: false, button: false, countdown: false, overlay: false, autoresponder: false, opt_in: false, custom_text: false
         },
@@ -44,7 +47,7 @@ new Vue({
                 show_bar_type: 'immediate', frequency: 'every', delay_in_seconds: 0, scroll_point_percent: 0
             },
             content: {
-                sub_headline: [{attributes: {}, insert: ''}], sub_headline_color: '#ffffff', sub_background_color: '#3BAF85',
+                sub_headline: [{attributes: {}, insert: ''}], sub_headline_color: '#ffffff', sub_background_color: '#ffffff00',
                 video: null, video_auto_play: null, video_code: ''
             },
             appearance: {
@@ -78,7 +81,7 @@ new Vue({
                 show_bar_type: 'immediate', frequency: 'every', delay_in_seconds: 0, scroll_point_percent: 0
             },
             content: {
-                sub_headline: [{attributes: {}, insert: ''}], sub_headline_color: '#ffffff', sub_background_color: '#3BAF85',
+                sub_headline: [{attributes: {}, insert: ''}], sub_headline_color: '#ffffff', sub_background_color: '#ffffff00',
                 video: null, video_auto_play: null, video_code: ''
             },
             appearance: {
@@ -129,10 +132,14 @@ new Vue({
             }
         });
         
+        this.colorLoaded = true;
         this.initSelect2();
         this.initDatePicker();
         this.initQuillEditor();
         this.model.content.video_code = this.decodeHTML(this.model.content.video_code);
+        setTimeout(function () {
+            vm.show_btn.content = false;
+        }, 300);
     },
     methods: {
         initSelect2() {
@@ -267,19 +274,7 @@ new Vue({
             if (!flag) {
                 this.model[id] = this.rgbToHex($(`#${id}`).get(0).style['background-color']);
             } else {
-                if (id === 'sub_background_color') {
-                    if ($(`#${id}`).val() === '') {
-                        this.model[flag][id] = '';
-                        setTimeout(function () {
-                            $(`#${id}`).css('background-color', '#ffffff');
-                            $(`#${id}`).val('');
-                        }, 500);
-                    } else {
-                        this.model[flag][id] = this.rgbToHex($(`#${id}`).get(0).style['background-color']);
-                    }
-                } else {
-                    this.model[flag][id] = this.rgbToHex($(`#${id}`).get(0).style['background-color']);
-                }
+                this.model[flag][id] = this.rgbToHex($(`#${id}`).get(0).style['background-color']);
                 this.showSaveBtn(flag);
             }
         },
@@ -388,6 +383,9 @@ new Vue({
             let txt = document.createElement("textarea");
             txt.innerHTML = html;
             return txt.value;
+        },
+        hideColorPicker() {
+            window.vEvent.fire('hideColorPicker');
         }
     }
 });
