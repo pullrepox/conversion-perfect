@@ -57,9 +57,10 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="sub_background_color">Sub Headline Highlight Color</label>
-                    <input class="jscolor form-control" name="sub_background_color" id="sub_background_color" v-model="model.content.sub_background_color"
-                           @change="updateJSColor('sub_background_color', 'content')"
-                           @keydown="tabKeyPress('#video', true, $event)" @keypress="tabKeyPress('#video', true, $event)"/>
+                    <div class="form-control p-0" v-if="colorLoaded">
+                        <color-picker :color="model.content.sub_background_color" v-model="model.content.sub_background_color" @input="showSaveBtn('content')"></color-picker>
+                        <input type="hidden" name="sub_background_color" v-model="model.content.sub_background_color"/>
+                    </div>
                 </div>
             </div>
         </div>
@@ -76,7 +77,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-8" v-show="model.content.video">
+            <div class="col-md-4" v-show="model.content.video">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="video_code">Video Embed Code</label>
                     <textarea id="video_code" name="video_code" v-model="model.content.video_code" data-parent="content"
@@ -88,18 +89,6 @@
                     @enderror
                 </div>
             </div>
-{{--            <div class="col-md-4" v-show="model.content.video">--}}
-{{--                <div class="form-group">--}}
-{{--                    <label class="form-control-label ml-1" for="video_auto_play">Video Autoplay</label>--}}
-{{--                    <div class="radio ml-1">--}}
-{{--                        <label class="custom-toggle custom-toggle-light">--}}
-{{--                            <input type="checkbox" id="video_auto_play" name="video_auto_play"--}}
-{{--                                   data-parent="content" v-model="model.content.video_auto_play" @input="showSaveBtn('content')">--}}
-{{--                            <span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>--}}
-{{--                        </label>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
         </div>
     </div>
 </div>
