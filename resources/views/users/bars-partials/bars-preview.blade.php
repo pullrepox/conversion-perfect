@@ -13,7 +13,7 @@
     </div>
     <div class="card-body">
         <div class="w-100 h-100">
-            <div style="width:100%; font-size: 20px; font-family: 'Nunito', sans-serif; color: rgb(255, 255, 255); text-align: right;position: relative;min-height: 76px;"
+            <div style="width:100%; font-size: 20px; font-family: 'Nunito', sans-serif; color: rgb(255, 255, 255); position: relative;min-height: 76px;"
                  :style="{
                  'background': (model.background_color.indexOf('#') > -1 ? model.background_color : `#${model.background_color}`),
                  'background-image': model.appearance.background_gradient ? (`linear-gradient(${model.appearance.gradient_angle}deg, ${(model.appearance.gradient_end_color.indexOf('#') > -1 ? model.appearance.gradient_end_color : `#${model.appearance.gradient_end_color}`)}, ${(model.background_color.indexOf('#') > -1 ? model.background_color : `#${model.background_color}`)})`) : 'none',
@@ -25,19 +25,63 @@
                 <div style="width:100%; font-size:20px; font-family: 'Nunito', sans-serif; display: flex; align-items: center; justify-content: center;min-height: 76px;">
                     <div style="display: inline-block; width: auto;margin-right: 20px;padding-top: 8px;"
                          v-if="model.content.video_code !== '' && model.content.video" v-html="model.content.video_code"></div>
-                    <div v-if="model.button.button_type !== 'none' && model.button.button_location === 'left'"
-                         style="display:inline-block; width:auto; margin-right: 20px;">
-                        <button type="button" style="border: 0;padding: 2px 12px;"
-                                :style="{
-                                'background-color': model.button.button_background_color.indexOf('#') > -1 ? model.button.button_background_color : `#${model.button.button_background_color}`,
-                                'color': model.button.button_text_color.indexOf('#') > -1 ? model.button.button_text_color : `#${model.button.button_text_color}`,
-                                'box-shadow': `0 3px 10px -4px ${model.button.button_background_color.indexOf('#') > -1 ? model.button.button_background_color : `#${model.button.button_background_color}`}`,
-                                'border-radius': model.button.button_type === 'rounded' ? '6px' : 0
-                                }">@{{ model.button.button_label }}</button>
-                    </div>
-                    <div v-if="model.countdown.countdown !== 'none' && model.countdown.countdown === 'left'"
-                         style="display:inline-block; width:auto; margin-right: 20px;">
-                        
+                    <div
+                        v-if="(model.button.button_type !== 'none' && model.button.button_location === 'left') || (model.countdown.countdown !== 'none' && model.countdown.countdown_location === 'left')"
+                        style="display: inline-block; width:auto; margin-right: 20px;padding: 10px 0;text-align: center;">
+                        <div v-if="model.button.button_type !== 'none' && model.button.button_location === 'left'"
+                             style="width: 100%; min-width: 100%;">
+                            <button type="button" style="border: 0;padding: 2px 12px;"
+                                    :style="{
+                                    'background-color': model.button.button_background_color.indexOf('#') > -1 ? model.button.button_background_color : `#${model.button.button_background_color}`,
+                                    'color': model.button.button_text_color.indexOf('#') > -1 ? model.button.button_text_color : `#${model.button.button_text_color}`,
+                                    'box-shadow': `0 3px 10px -4px ${model.button.button_background_color.indexOf('#') > -1 ? model.button.button_background_color : `#${model.button.button_background_color}`}`,
+                                    'border-radius': model.button.button_type === 'rounded' ? '6px' : 0
+                                    }">@{{ model.button.button_label }}
+                            </button>
+                        </div>
+                        <div v-if="model.countdown.countdown !== 'none' && model.countdown.countdown_location === 'left'"
+                             style="width:100%; height:40px; min-height:40px; margin-top:5px;">
+                            <div style="height: 40px; width: 100%;">
+                                <div style="height:20px; width:100%; text-align:center;"
+                                     :style="{'color': model.countdown.countdown_text_color.indexOf('#') > -1 ? model.countdown.countdown_text_color : `#${model.countdown.countdown_text_color}`}">
+                                    <div style="margin-left:5px; margin-right:5px; float:left; padding:0; height:20px; width:50px; font-size:18px; font-weight:bold;"
+                                         :style="{'background-color': model.countdown.countdown_background_color.indexOf('#') > -1 ? model.countdown.countdown_background_color : `#${model.countdown.countdown_background_color}`}">
+                                        @{{ model.countdown.countdown === 'evergreen' ? (`0${model.countdown.countdown_days}`).slice(-2) : countdownCalculate() }}
+                                    </div>
+                                    <div style="margin-right:5px; float:left; padding:0; height:20px; width:50px; font-size:18px; font-weight:bold;"
+                                         :style="{'background-color': model.countdown.countdown_background_color.indexOf('#') > -1 ? model.countdown.countdown_background_color : `#${model.countdown.countdown_background_color}`}">
+                                        @{{ model.countdown.countdown === 'evergreen' ? (`0${model.countdown.countdown_hours}`).slice(-2) : ((`${model.countdown.countdown_end_time}`).split(':'))[0] }}
+                                    </div>
+                                    <div style="margin-right:5px; float:left; padding:0; height:20px; width:50px; font-size:18px; font-weight:bold;"
+                                         :style="{'background-color': model.countdown.countdown_background_color.indexOf('#') > -1 ? model.countdown.countdown_background_color : `#${model.countdown.countdown_background_color}`}">
+                                        @{{ model.countdown.countdown === 'evergreen' ? (`0${model.countdown.countdown_minutes}`).slice(-2) : ((`${model.countdown.countdown_end_time}`).split(':'))[1] }}
+                                    </div>
+                                    <div style="float:left; padding:0; height:20px; width:50px; font-size:18px; font-weight:bold;"
+                                         :style="{'background-color': model.countdown.countdown_background_color.indexOf('#') > -1 ? model.countdown.countdown_background_color : `#${model.countdown.countdown_background_color}`}">
+                                        @{{ (`0${(new Date().getUTCSeconds())}`).slice(-2) }}
+                                    </div>
+                                </div>
+                                <div style="height:20px; width:100%; text-align:center;"
+                                     :style="{'color': model.countdown.countdown_text_color.indexOf('#') > -1 ? model.countdown.countdown_text_color : `#${model.countdown.countdown_text_color}`}">
+                                    <div style="margin-left:5px; margin-right:5px; float:left; padding:0; height:20px; width:50px; font-size:10px;"
+                                         :style="{'background-color': model.countdown.countdown_background_color.indexOf('#') > -1 ? model.countdown.countdown_background_color : `#${model.countdown.countdown_background_color}`}">
+                                        DAYS
+                                    </div>
+                                    <div style="margin-right:5px; float:left; padding:0; height:20px; width:50px; font-size:10px;"
+                                         :style="{'background-color': model.countdown.countdown_background_color.indexOf('#') > -1 ? model.countdown.countdown_background_color : `#${model.countdown.countdown_background_color}`}">
+                                        HOURS
+                                    </div>
+                                    <div style="margin-right:5px; float:left; padding:0; height:20px; width:50px; font-size:10px;"
+                                         :style="{'background-color': model.countdown.countdown_background_color.indexOf('#') > -1 ? model.countdown.countdown_background_color : `#${model.countdown.countdown_background_color}`}">
+                                        MINS
+                                    </div>
+                                    <div style="float:left; padding:0; height:20px; width:50px; font-size:10px;"
+                                         :style="{'background-color': model.countdown.countdown_background_color.indexOf('#') > -1 ? model.countdown.countdown_background_color : `#${model.countdown.countdown_background_color}`}">
+                                        SECS
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div style="display:inline-block; vertical-align:top; width:auto; text-align:center;">
                         <div style="display:inline-block; width:auto;">
@@ -75,27 +119,123 @@
                                     </span>
                                 </span>
                             </div>
-                            <div v-if="model.button.button_type !== 'none' && model.button.button_location === 'below_text'"
-                                 style="width: 100%;min-width: 100%; margin: 0 0 5px auto;">
-                                <button type="button" style="border: 0;padding: 2px 12px;"
-                                        :style="{
-                                'background-color': model.button.button_background_color.indexOf('#') > -1 ? model.button.button_background_color : `#${model.button.button_background_color}`,
-                                'color': model.button.button_text_color.indexOf('#') > -1 ? model.button.button_text_color : `#${model.button.button_text_color}`,
-                                'box-shadow': `0 3px 10px -4px ${model.button.button_background_color.indexOf('#') > -1 ? model.button.button_background_color : `#${model.button.button_background_color}`}`,
-                                'border-radius': model.button.button_type === 'rounded' ? '6px' : 0
-                                }">@{{ model.button.button_label }}</button>
+                            <div
+                                v-if="(model.button.button_type !== 'none' && model.button.button_location === 'below_text') || (model.countdown.countdown !== 'none' && model.countdown.countdown_location === 'below_text')"
+                                style="width: 100%; min-width: 100%; margin: 0 0 5px auto; text-align: center;">
+                                <div v-if="model.button.button_type !== 'none' && model.button.button_location === 'below_text'"
+                                     style="width: 100%; min-width: 100%;">
+                                    <button type="button" style="border: 0;padding: 2px 12px;"
+                                            :style="{
+                                    'background-color': model.button.button_background_color.indexOf('#') > -1 ? model.button.button_background_color : `#${model.button.button_background_color}`,
+                                    'color': model.button.button_text_color.indexOf('#') > -1 ? model.button.button_text_color : `#${model.button.button_text_color}`,
+                                    'box-shadow': `0 3px 10px -4px ${model.button.button_background_color.indexOf('#') > -1 ? model.button.button_background_color : `#${model.button.button_background_color}`}`,
+                                    'border-radius': model.button.button_type === 'rounded' ? '6px' : 0
+                                    }">@{{ model.button.button_label }}
+                                    </button>
+                                </div>
+                                <div v-if="model.countdown.countdown !== 'none' && model.countdown.countdown_location === 'below_text'"
+                                     style="width:100%; height:40px; min-height:40px; margin-top:5px;">
+                                    <div style="height: 40px; width: 100%;">
+                                        <div style="height:20px; width:100%; text-align:center;"
+                                             :style="{'color': model.countdown.countdown_text_color.indexOf('#') > -1 ? model.countdown.countdown_text_color : `#${model.countdown.countdown_text_color}`}">
+                                            <div style="margin-left:5px; margin-right:5px; float:left; padding:0; height:20px; width:50px; font-size:18px; font-weight:bold;"
+                                                 :style="{'background-color': model.countdown.countdown_background_color.indexOf('#') > -1 ? model.countdown.countdown_background_color : `#${model.countdown.countdown_background_color}`}">
+                                                @{{ model.countdown.countdown === 'evergreen' ? (`0${model.countdown.countdown_days}`).slice(-2) : countdownCalculate() }}
+                                            </div>
+                                            <div style="margin-right:5px; float:left; padding:0; height:20px; width:50px; font-size:18px; font-weight:bold;"
+                                                 :style="{'background-color': model.countdown.countdown_background_color.indexOf('#') > -1 ? model.countdown.countdown_background_color : `#${model.countdown.countdown_background_color}`}">
+                                                @{{ model.countdown.countdown === 'evergreen' ? (`0${model.countdown.countdown_hours}`).slice(-2) : ((`${model.countdown.countdown_end_time}`).split(':'))[0] }}
+                                            </div>
+                                            <div style="margin-right:5px; float:left; padding:0; height:20px; width:50px; font-size:18px; font-weight:bold;"
+                                                 :style="{'background-color': model.countdown.countdown_background_color.indexOf('#') > -1 ? model.countdown.countdown_background_color : `#${model.countdown.countdown_background_color}`}">
+                                                @{{ model.countdown.countdown === 'evergreen' ? (`0${model.countdown.countdown_minutes}`).slice(-2) : ((`${model.countdown.countdown_end_time}`).split(':'))[1] }}
+                                            </div>
+                                            <div style="float:left; padding:0; height:20px; width:50px; font-size:18px; font-weight:bold;"
+                                                 :style="{'background-color': model.countdown.countdown_background_color.indexOf('#') > -1 ? model.countdown.countdown_background_color : `#${model.countdown.countdown_background_color}`}">
+                                                @{{ (`0${(new Date().getUTCSeconds())}`).slice(-2) }}
+                                            </div>
+                                        </div>
+                                        <div style="height:20px; width:100%; text-align:center;"
+                                             :style="{'color': model.countdown.countdown_text_color.indexOf('#') > -1 ? model.countdown.countdown_text_color : `#${model.countdown.countdown_text_color}`}">
+                                            <div style="margin-left:5px; margin-right:5px; float:left; padding:0; height:20px; width:50px; font-size:10px;"
+                                                 :style="{'background-color': model.countdown.countdown_background_color.indexOf('#') > -1 ? model.countdown.countdown_background_color : `#${model.countdown.countdown_background_color}`}">
+                                                DAYS
+                                            </div>
+                                            <div style="margin-right:5px; float:left; padding:0; height:20px; width:50px; font-size:10px;"
+                                                 :style="{'background-color': model.countdown.countdown_background_color.indexOf('#') > -1 ? model.countdown.countdown_background_color : `#${model.countdown.countdown_background_color}`}">
+                                                HOURS
+                                            </div>
+                                            <div style="margin-right:5px; float:left; padding:0; height:20px; width:50px; font-size:10px;"
+                                                 :style="{'background-color': model.countdown.countdown_background_color.indexOf('#') > -1 ? model.countdown.countdown_background_color : `#${model.countdown.countdown_background_color}`}">
+                                                MINS
+                                            </div>
+                                            <div style="float:left; padding:0; height:20px; width:50px; font-size:10px;"
+                                                 :style="{'background-color': model.countdown.countdown_background_color.indexOf('#') > -1 ? model.countdown.countdown_background_color : `#${model.countdown.countdown_background_color}`}">
+                                                SECS
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div v-if="model.button.button_type !== 'none' && model.button.button_location === 'right'"
-                         style="display:inline-block; width:auto; margin-left: 20px;">
-                        <button type="button" style="border: 0;padding: 2px 12px;"
-                                :style="{
-                                'background-color': model.button.button_background_color.indexOf('#') > -1 ? model.button.button_background_color : `#${model.button.button_background_color}`,
-                                'color': model.button.button_text_color.indexOf('#') > -1 ? model.button.button_text_color : `#${model.button.button_text_color}`,
-                                'box-shadow': `0 3px 10px -4px ${model.button.button_background_color.indexOf('#') > -1 ? model.button.button_background_color : `#${model.button.button_background_color}`}`,
-                                'border-radius': model.button.button_type === 'rounded' ? '6px' : 0
-                                }">@{{ model.button.button_label }}</button>
+                    <div
+                        v-if="(model.button.button_type !== 'none' && model.button.button_location === 'right') || (model.countdown.countdown !== 'none' && model.countdown.countdown_location === 'right')"
+                        style="display: inline-block; width:auto; margin-left: 20px;padding: 10px 0;text-align: center;">
+                        <div v-if="model.button.button_type !== 'none' && model.button.button_location === 'right'"
+                             style="width: 100%; min-width: 100%;">
+                            <button type="button" style="border: 0;padding: 2px 12px;"
+                                    :style="{
+                                    'background-color': model.button.button_background_color.indexOf('#') > -1 ? model.button.button_background_color : `#${model.button.button_background_color}`,
+                                    'color': model.button.button_text_color.indexOf('#') > -1 ? model.button.button_text_color : `#${model.button.button_text_color}`,
+                                    'box-shadow': `0 3px 10px -4px ${model.button.button_background_color.indexOf('#') > -1 ? model.button.button_background_color : `#${model.button.button_background_color}`}`,
+                                    'border-radius': model.button.button_type === 'rounded' ? '6px' : 0
+                                    }">@{{ model.button.button_label }}
+                            </button>
+                        </div>
+                        <div v-if="model.countdown.countdown !== 'none' && model.countdown.countdown_location === 'right'"
+                             style="width:100%; height:40px; min-height:40px; margin-top:5px;">
+                            <div style="height: 40px; width: 100%;">
+                                <div style="height:20px; width:100%; text-align:center;"
+                                     :style="{'color': model.countdown.countdown_text_color.indexOf('#') > -1 ? model.countdown.countdown_text_color : `#${model.countdown.countdown_text_color}`}">
+                                    <div style="margin-left:5px; margin-right:5px; float:left; padding:0; height:20px; width:50px; font-size:18px; font-weight:bold;"
+                                         :style="{'background-color': model.countdown.countdown_background_color.indexOf('#') > -1 ? model.countdown.countdown_background_color : `#${model.countdown.countdown_background_color}`}">
+                                        @{{ model.countdown.countdown === 'evergreen' ? (`0${model.countdown.countdown_days}`).slice(-2) : countdownCalculate() }}
+                                    </div>
+                                    <div style="margin-right:5px; float:left; padding:0; height:20px; width:50px; font-size:18px; font-weight:bold;"
+                                         :style="{'background-color': model.countdown.countdown_background_color.indexOf('#') > -1 ? model.countdown.countdown_background_color : `#${model.countdown.countdown_background_color}`}">
+                                        @{{ model.countdown.countdown === 'evergreen' ? (`0${model.countdown.countdown_hours}`).slice(-2) : ((`${model.countdown.countdown_end_time}`).split(':'))[0] }}
+                                    </div>
+                                    <div style="margin-right:5px; float:left; padding:0; height:20px; width:50px; font-size:18px; font-weight:bold;"
+                                         :style="{'background-color': model.countdown.countdown_background_color.indexOf('#') > -1 ? model.countdown.countdown_background_color : `#${model.countdown.countdown_background_color}`}">
+                                        @{{ model.countdown.countdown === 'evergreen' ? (`0${model.countdown.countdown_minutes}`).slice(-2) : ((`${model.countdown.countdown_end_time}`).split(':'))[1] }}
+                                    </div>
+                                    <div style="float:left; padding:0; height:20px; width:50px; font-size:18px; font-weight:bold;"
+                                         :style="{'background-color': model.countdown.countdown_background_color.indexOf('#') > -1 ? model.countdown.countdown_background_color : `#${model.countdown.countdown_background_color}`}">
+                                        @{{ (`0${(new Date().getUTCSeconds())}`).slice(-2) }}
+                                    </div>
+                                </div>
+                                <div style="height:20px; width:100%; text-align:center;"
+                                     :style="{'color': model.countdown.countdown_text_color.indexOf('#') > -1 ? model.countdown.countdown_text_color : `#${model.countdown.countdown_text_color}`}">
+                                    <div style="margin-left:5px; margin-right:5px; float:left; padding:0; height:20px; width:50px; font-size:10px;"
+                                         :style="{'background-color': model.countdown.countdown_background_color.indexOf('#') > -1 ? model.countdown.countdown_background_color : `#${model.countdown.countdown_background_color}`}">
+                                        DAYS
+                                    </div>
+                                    <div style="margin-right:5px; float:left; padding:0; height:20px; width:50px; font-size:10px;"
+                                         :style="{'background-color': model.countdown.countdown_background_color.indexOf('#') > -1 ? model.countdown.countdown_background_color : `#${model.countdown.countdown_background_color}`}">
+                                        HOURS
+                                    </div>
+                                    <div style="margin-right:5px; float:left; padding:0; height:20px; width:50px; font-size:10px;"
+                                         :style="{'background-color': model.countdown.countdown_background_color.indexOf('#') > -1 ? model.countdown.countdown_background_color : `#${model.countdown.countdown_background_color}`}">
+                                        MINS
+                                    </div>
+                                    <div style="float:left; padding:0; height:20px; width:50px; font-size:10px;"
+                                         :style="{'background-color': model.countdown.countdown_background_color.indexOf('#') > -1 ? model.countdown.countdown_background_color : `#${model.countdown.countdown_background_color}`}">
+                                        SECS
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div v-if="model.appearance.powered_by_position !== 'hidden'"

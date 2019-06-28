@@ -75,6 +75,10 @@ class BarOptionsController extends Controller
                 $params[$key] = json_encode($upd_sub_headline);
             }
             
+            if ($key == 'countdown_end_date') {
+                $params[$key] = date('Y-m-d', strtotime($val));
+            }
+            
             if ($key == 'countdown_end_time') {
                 $params[$key] = date('H:i:s', strtotime($val));
             }
@@ -118,7 +122,7 @@ class BarOptionsController extends Controller
                 $rules['countdown_expiration_url'] = 'required|max:200';
             }
             if ($request->input('countdown') == 'calendar') {
-                $rules['countdown_end_date'] = 'date_format:Y-m-d';
+                $rules['countdown_end_date'] = 'date_format:m/d/Y';
             }
             if ($request->input('countdown') == 'evergreen') {
                 $rules['countdown_days'] = 'min:0|max:365';

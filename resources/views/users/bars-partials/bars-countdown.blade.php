@@ -115,7 +115,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="countdown_hours">Hours</label>
-                    <input type="number" min="0" class="form-control @error('countdown_hours') is-invalid @enderror"
+                    <input type="number" min="0" max="23" class="form-control @error('countdown_hours') is-invalid @enderror"
                            @keydown="tabKeyPress('#countdown_minutes', false, $event)" @keypress="tabKeyPress('#countdown_minutes', false, $event)"
                            id="countdown_hours" name="countdown_hours" @input="showSaveBtn('countdown')" data-parent="countdown" v-model="model.countdown.countdown_hours"/>
                     @error('countdown_hours')
@@ -128,7 +128,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="countdown_minutes">Minutes</label>
-                    <input type="number" min="0" class="form-control @error('countdown_minutes') is-invalid @enderror"
+                    <input type="number" min="0" max="59" class="form-control @error('countdown_minutes') is-invalid @enderror"
                            @keydown="tabKeyPress('#countdown_background_color', false, $event)" @keypress="tabKeyPress('#countdown_background_color', false, $event)"
                            id="countdown_minutes" name="countdown_minutes" @input="showSaveBtn('countdown')" data-parent="countdown" v-model="model.countdown.countdown_minutes"/>
                     @error('countdown_minutes')

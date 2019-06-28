@@ -182,24 +182,49 @@ new Vue({
             let $datepicker = $('.datepicker');
             if ($datepicker.length) {
                 $datepicker.each(function () {
+                    let parent = $(this).data('parent');
                     $(this).datepicker({
                         disableTouchKeyboard: true,
                         autoclose: false,
-                        startDate: new Date(),
-                        format: 'yyyy-mm-dd'
+                        startDate: new Date()
                     }).on('show', function () {
                         $('.datepicker.datepicker-dropdown').css('top', parseInt($('.datepicker.datepicker-dropdown').get(0).style.top) + 72 + 'px');
                     }).on('hide', function () {
-                        let parent = $(this).data('parent');
-                        if (parent) {
-                            vm.model[parent][$(this).attr('id')] = $(this).val();
+                        if ($(this).val() !== '') {
+                            if (parent) {
+                                vm.model[parent][$(this).attr('id')] = $(this).val();
+                            } else {
+                                vm.model[$(this).attr('id')] = $(this).val();
+                            }
+                            vm.showSaveBtn('countdown');
+                        } else {
+                            if (parent) {
+                                $(this).val(vm.model[parent][$(this).attr('id')]);
+                            } else {
+                                $(this).val(vm.model[$(this).attr('id')]);
+                            }
                         }
                     }).on('changeDate', function () {
-                        let parent = $(this).data('parent');
-                        if (parent) {
-                            vm.model[parent][$(this).attr('id')] = $(this).val();
+                        if ($(this).val() !== '') {
+                            if (parent) {
+                                vm.model[parent][$(this).attr('id')] = $(this).val();
+                            } else {
+                                vm.model[$(this).attr('id')] = $(this).val();
+                            }
+                            vm.showSaveBtn('countdown');
+                        } else {
+                            if (parent) {
+                                $(this).val(vm.model[parent][$(this).attr('id')]);
+                            } else {
+                                $(this).val(vm.model[$(this).attr('id')]);
+                            }
                         }
                     });
+                    if (parent) {
+                        $(this).val(vm.model[parent][$(this).attr('id')]);
+                    } else {
+                        $(this).val(vm.model[$(this).attr('id')]);
+                    }
                 });
             }
         },
@@ -402,6 +427,17 @@ new Vue({
             $('#countdown_text_color').val(this.model.headline_color);
             $('#countdown_text_color').css('background-color', this.model.headline_color.indexOf('#') > -1 ? this.model.headline_color : `#${this.model.headline_color}`);
             this.show_btn.countdown = true;
+        },
+        countdownCalculate() {
+            let vm = this;
+            let date_val = new Date(vm.model.countdown.countdown_end_date);
+            let change_date = new Date(date_val.toLocaleString('en-US', {
+                timeZone: vm.model.countdown.countdown_timezone
+            }));
+            let curr_date = new Date();
+            let date_diff = Math.abs(change_date.getTime() - curr_date.getTime());
+            // parseInt(date_diff / (24 * 60 * 60 * 1000), 10)
+            return (`0${Math.ceil(date_diff / (24 * 60 * 60 * 1000))}`).slice(-2);
         }
     }
 });
