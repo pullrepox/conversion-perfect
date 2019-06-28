@@ -134,8 +134,8 @@
                                     </button>
                                 </div>
                                 <div v-if="model.countdown.countdown !== 'none' && model.countdown.countdown_location === 'below_text'"
-                                     style="width:100%; height:40px; min-height:40px; margin-top:5px;">
-                                    <div style="height: 40px; width: 100%;">
+                                     style="width:100%; height:40px; min-height:40px; margin-top:5px;display: flex;justify-content: center;">
+                                    <div style="height: 40px; width: auto;">
                                         <div style="height:20px; width:100%; text-align:center;"
                                              :style="{'color': model.countdown.countdown_text_color.indexOf('#') > -1 ? model.countdown.countdown_text_color : `#${model.countdown.countdown_text_color}`}">
                                             <div style="margin-left:5px; margin-right:5px; float:left; padding:0; height:20px; width:50px; font-size:18px; font-weight:bold;"
