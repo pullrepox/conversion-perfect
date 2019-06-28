@@ -6,6 +6,7 @@ use App\Responder;
 use App\Integration;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreIntegration;
+use Illuminate\Validation\Rules\In;
 
 class AutoResponderController extends Controller
 {
@@ -153,6 +154,16 @@ class AutoResponderController extends Controller
         $flag = false;
         $responders = Responder::all();
         return view('backend.auto-responder.create-edit', compact('header_data', 'flag', 'integration', 'responders'));
+    }
+
+    public function update($integration, Request $request)
+    {
+        $integration = Integration::find($integration);
+        if ($integration && $integration->update($request->all())){
+            return redirect()->back()->with('success','Updated Successfully');
+        } else {
+            return redirect()->back()->with('error','Integration not found');
+        }
     }
 
     public function destroy($integration)

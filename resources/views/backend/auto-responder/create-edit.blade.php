@@ -130,36 +130,54 @@
 
         @include('layouts.footer')
     </div>
+    </div>
 @endsection
 
 @section('scripts')
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    @if(!$flag)
+        <script>
+            $(function () {
+                var responder_id =  {!! json_encode($integration->responder->id) !!};
+                var responder =  {!! json_encode($integration->responder) !!};
+                $('#responder_id').val(responder_id);
+                adjustChanges(responder.title);
+            })
+        </script>
+    @else
+        <script>
+            $(function(){
+
+                $('#responder_id').change(function () {
+                    $('.responder-group').hide();
+                    var value = $('#responder_id option:selected').text();
+                    adjustChanges(value)
+                });
+
+            })
+        </script>
+    @endif
+
     <script>
-        $(function(){
-
-            $('#responder_id').change(function () {
-                $('.responder-group').hide();
-                var value = $('#responder_id option:selected').text();
-                if (value === 'sendlane'){
-                    $('#friendly-name').show();
-                    $('#api-key').show();
-                    $('#hash').show();
-                } else if (value === 'mailchimp'){
-                    $('#friendly-name').show();
-                    $('#api-key').show();
-                } else if (value === 'activecampaign'){
-                    $('#friendly-name').show();
-                    $('#url').show();
-                    $('#api-key').show();
-                } else if (value === 'sendy'){
-                    $('#friendly-name').show();
-                    $('#url').show();
-                    $('#api-key').show();
-                }
-            });
-
-        })
+        function adjustChanges(value)
+        {
+            if (value === 'sendlane'){
+                $('#friendly-name').show();
+                $('#api-key').show();
+                $('#hash').show();
+            } else if (value === 'mailchimp'){
+                $('#friendly-name').show();
+                $('#api-key').show();
+            } else if (value === 'activecampaign'){
+                $('#friendly-name').show();
+                $('#url').show();
+                $('#api-key').show();
+            } else if (value === 'sendy'){
+                $('#friendly-name').show();
+                $('#url').show();
+                $('#api-key').show();
+            }
+        }
     </script>
-
 
 @endsection
