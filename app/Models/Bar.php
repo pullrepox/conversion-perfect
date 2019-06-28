@@ -13,7 +13,9 @@ class Bar extends Model
         'opt_appearance', 'opacity', 'drop_shadow', 'close_button', 'background_gradient', 'gradient_end_color', 'gradient_angle', 'powered_by_position',
         'opt_button', 'button_type', 'button_location', 'button_label', 'button_background_color', 'button_text_color', 'button_animation', 'button_action', 'button_click_url',
         'button_open_new',
-        'opt_countdown', 'opt_overlay', 'opt_opt_in', 'opt_custom_text', 'html',
+        'opt_countdown', 'countdown', 'countdown_location', 'countdown_format', 'countdown_end_date', 'countdown_end_time', 'countdown_timezone', 'countdown_days', 'countdown_hours',
+        'countdown_minutes', 'countdown_background_color', 'countdown_text_color', 'countdown_on_expiry', 'countdown_expiration_text', 'countdown_expiration_url',
+        'opt_overlay', 'opt_opt_in', 'opt_custom_text', 'html',
     ];
     
     public function user()
