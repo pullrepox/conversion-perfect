@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Users;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\BarsRepository;
 use App\Models\Bar;
-use App\Models\Utils;
 use Illuminate\Http\Request;
 
 class BarsController extends Controller
@@ -183,121 +182,91 @@ class BarsController extends Controller
             'background_color' => 'required'
         ];
         
-        $bar->friendly_name = $request->input('friendly_name');
-        $bar->position = $request->input('position');
-        $bar->group_id = $request->input('group_id');
-        $bar->headline_color = $request->input('headline_color');
-        $bar->background_color = $request->input('background_color');
-        $bar->opt_preview = $request->input('opt_preview') == 'true' ? 1 : 0;
-        
-        $headline = $request->input('headline');
-        $upd_headline = [[
-            'insert' => 'Your Headline'
-        ]];
-        for ($i = 0; $i < count($headline); $i++) {
-            $upd_headline[$i]['insert'] = addslashes($headline[$i] . ($i < (count($headline) - 1) ? ' ' : ''));
-            if (!is_null($request->input('headline_bold')[$i])) {
-                $upd_headline[$i]['attributes']['bold'] = true;
+        $params = $request->all();
+        $radio_keys = ['video', 'video_auto_play', 'drop_shadow', 'close_button', 'background_gradient', 'button_open_new'];
+        $option_keys = ['opt_preview', 'opt_display', 'opt_content', 'opt_appearance', 'opt_button', 'opt_countdown', 'opt_overlay', 'opt_opt_in', 'opt_custom_text'];
+        foreach ($params as $key => $val) {
+            if (false !== array_search($key, $radio_keys)) {
+                $params[$key] = $val ? 1 : 0;
+            } else if (false !== array_search($key, $option_keys)) {
+                $params[$key] = $val == 'true' ? 1 : 0;
+            } else {
+                if (is_null($val)) $params[$key] = '';
             }
-            if (!is_null($request->input('headline_italic')[$i])) {
-                $upd_headline[$i]['attributes']['italic'] = true;
+            
+            if ($key == 'headline' || $key == 'sub_headline') {
+                $upd_headline = [[
+                    'insert' => ($key == 'headline' ? 'Your Headline' : '')
+                ]];
+                for ($i = 0; $i < count($val); $i++) {
+                    $upd_headline[$i]['insert'] = addslashes($val[$i] . ($i < (count($val) - 1) ? ' ' : ''));
+                    if (!is_null($request->input('headline_bold')[$i])) {
+                        $upd_headline[$i]['attributes']['bold'] = true;
+                    }
+                    if (!is_null($request->input('headline_italic')[$i])) {
+                        $upd_headline[$i]['attributes']['italic'] = true;
+                    }
+                    if (!is_null($request->input('headline_underline')[$i])) {
+                        $upd_headline[$i]['attributes']['underline'] = true;
+                    }
+                    if (!is_null($request->input('headline_strike')[$i])) {
+                        $upd_headline[$i]['attributes']['strike'] = true;
+                    }
+                }
+                
+                $params[$key] = json_encode($upd_headline);
             }
-            if (!is_null($request->input('headline_underline')[$i])) {
-                $upd_headline[$i]['attributes']['underline'] = true;
-            }
-            if (!is_null($request->input('headline_strike')[$i])) {
-                $upd_headline[$i]['attributes']['strike'] = true;
+            
+            if ($key == 'countdown_end_time') {
+                $params[$key] = date('H:i:s', strtotime($val));
             }
         }
         
-        $bar->headline = json_encode($upd_headline);
-        
         if ($request->input('opt_display') == 'true') {
-            $bar->opt_display = 1;
-            $bar->show_bar_type = $request->input('show_bar_type');
-            $bar->frequency = $request->input('frequency');
-            $bar->delay_in_seconds = $request->input('delay_in_seconds');
-            $bar->scroll_point_percent = $request->input('scroll_point_percent');
             $rules['delay_in_seconds'] = 'numeric';
             $rules['scroll_point_percent'] = 'numeric';
-        } else {
-            $bar->opt_display = 0;
         }
         
         if ($request->input('opt_content') == 'true') {
-            $bar->opt_content = 1;
-            
-            $sub_headline = $request->input('sub_headline');
-            $upd_sub_headline = [[
-                'insert' => ''
-            ]];
-            for ($i = 0; $i < count($sub_headline); $i++) {
-                $upd_sub_headline[$i]['insert'] = addslashes($sub_headline[$i] . ($i < (count($sub_headline) - 1) ? ' ' : ''));
-                if (!is_null($request->input('sub_headline_bold')[$i])) {
-                    $upd_sub_headline[$i]['attributes']['bold'] = true;
-                }
-                if (!is_null($request->input('sub_headline_italic')[$i])) {
-                    $upd_sub_headline[$i]['attributes']['italic'] = true;
-                }
-                if (!is_null($request->input('sub_headline_underline')[$i])) {
-                    $upd_sub_headline[$i]['attributes']['underline'] = true;
-                }
-                if (!is_null($request->input('sub_headline_strike')[$i])) {
-                    $upd_sub_headline[$i]['attributes']['strike'] = true;
-                }
-            }
-            
-            $bar->sub_headline = json_encode($upd_sub_headline);
-            $bar->sub_headline_color = $request->input('sub_headline_color');
-            $bar->sub_background_color = $request->input('sub_background_color');
-            $bar->video = $request->input('video') ? 1 : 0;
-            $bar->video_code = $request->input('video_code');
-            $bar->video_auto_play = is_null($request->input('video_auto_play')) ? 0 : 1;
-            
             $rules['sub_headline'] = 'required';
             if ($request->input('video')) {
                 $rules['video_code'] = 'required';
             }
-        } else {
-            $bar->opt_content = 0;
         }
         
         if ($request->input('opt_appearance') == 'true') {
-            $bar->opt_appearance = 1;
-            $bar->opacity = $request->input('opacity');
-            $bar->drop_shadow = $request->input('drop_shadow') ? 1 : 0;
-            $bar->close_button = $request->input('close_button') ? 1 : 0;
-            $bar->background_gradient = $request->input('background_gradient') ? 1 : 0;
-            $bar->gradient_end_color = $request->input('gradient_end_color');
-            $bar->gradient_angle = $request->input('gradient_angle');
-            $bar->powered_by_position = $request->input('powered_by_position');
             $rules['opacity'] = 'numeric|max:100|min:0';
-        } else {
-            $bar->opt_appearance = 0;
         }
         
         if ($request->input('opt_button') == 'true') {
-            $bar->opt_button = 1;
-            $bar->button_type = $request->input('button_type');
-            $bar->button_location = $request->input('button_location');
-            $bar->button_label = $request->input('button_label');
-            $bar->button_background_color = $request->input('button_background_color');
-            $bar->button_text_color = $request->input('button_text_color');
-            $bar->button_animation = $request->input('button_animation');
-            $bar->button_action = $request->input('button_action');
-            $bar->button_click_url = $request->input('button_click_url');
-            $bar->button_open_new = $request->input('button_open_new') ? 1 : 0;
             if ($request->input('button_type') != 'none') {
                 $rules['button_label'] = 'required';
             }
             if ($request->input('button_action') == 'open_click_url') {
                 $rules['button_click_url'] = 'required';
             }
-        } else {
-            $bar->opt_button = 0;
+        }
+        
+        if ($request->input('opt_countdown') == 'true') {
+            if ($request->input('countdown_on_expiry') == 'display_text') {
+                $rules['countdown_expiration_text'] = 'required|max:200';
+            }
+            if ($request->input('countdown_on_expiry') == 'redirect') {
+                $rules['countdown_expiration_url'] = 'required|max:200';
+            }
+            if ($request->input('countdown') == 'calendar') {
+                $rules['countdown_end_date'] = 'date_format:Y-m-d';
+            }
+            if ($request->input('countdown') == 'evergreen') {
+                $rules['countdown_days'] = 'numeric|min:0|max:365';
+                $rules['countdown_hours'] = 'numeric|min:0';
+                $rules['countdown_minutes'] = 'numeric|min:0';
+            }
         }
         
         $this->validate($request, $rules);
+        
+        $bar->fill($params);
         
         $bar->save();
         

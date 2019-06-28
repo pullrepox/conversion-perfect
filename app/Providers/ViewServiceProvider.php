@@ -24,7 +24,7 @@ class ViewServiceProvider extends ServiceProvider
     public function boot()
     {
         view()->composer([
-            'users/tracker-create', 'users/tracker-list'
-        ], 'App\Http\View\TrackerComposer');
+            'users/bars-edit', 'users/bars-countdown'
+        ], 'App\Http\View\BarsComposer');
     }
 }

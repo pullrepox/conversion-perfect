@@ -35,6 +35,10 @@
                                 'border-radius': model.button.button_type === 'rounded' ? '6px' : 0
                                 }">@{{ model.button.button_label }}</button>
                     </div>
+                    <div v-if="model.countdown.countdown !== 'none' && model.countdown.countdown === 'left'"
+                         style="display:inline-block; width:auto; margin-right: 20px;">
+                        
+                    </div>
                     <div style="display:inline-block; vertical-align:top; width:auto; text-align:center;">
                         <div style="display:inline-block; width:auto;">
                             <div :style="{ color: model.headline_color.indexOf('#') > -1 ? model.headline_color : `#${model.headline_color}` }"

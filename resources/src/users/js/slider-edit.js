@@ -15,7 +15,6 @@ new Vue({
     data: () => ({
         loading: false,
         create_edit: false,
-        colorLoaded: false,
         bar_option: {
             preview: true, display: false, content: false, appearance: false, button: false, countdown: false, overlay: false, autoresponder: false, opt_in: false, custom_text: false
         },
@@ -45,15 +44,15 @@ new Vue({
                 show_bar_type: 'immediate', frequency: 'every', delay_in_seconds: 0, scroll_point_percent: 0
             },
             content: {
-                sub_headline: [{attributes: {}, insert: ''}], sub_headline_color: '#ffffff', sub_background_color: '#ffffff00',
-                video: null, video_auto_play: null, video_code: ''
+                sub_headline: [{attributes: {}, insert: ''}], sub_headline_color: '#ffffff', sub_background_color: '',
+                video: 0, video_auto_play: 0, video_code: ''
             },
             appearance: {
-                opacity: 100, drop_shadow: null, close_button: null, background_gradient: null, gradient_end_color: '#3BAF85', gradient_angle: 0, powered_by_position: 'bottom_right',
+                opacity: 100, drop_shadow: 0, close_button: 0, background_gradient: 0, gradient_end_color: '#3BAF85', gradient_angle: 0, powered_by_position: 'bottom_right',
             },
             button: {
                 button_type: 'none', button_location: 'right', button_label: '', button_background_color: '#515f7f', button_text_color: '#FFFFFF', button_animation: 'none',
-                button_action: 'hide_bar', button_click_url: '', button_open_new: null,
+                button_action: 'hide_bar', button_click_url: '', button_open_new: 0,
             },
             countdown: {
                 countdown: 'none', countdown_location: 'left', countdown_format: 'dd', countdown_end_date: '0000-00-00', countdown_end_time: '00:00:00', countdown_timezone: 'Canada/Central',
@@ -76,7 +75,7 @@ new Vue({
                 show_bar_type: 'immediate', frequency: 'every', delay_in_seconds: 0, scroll_point_percent: 0
             },
             content: {
-                sub_headline: [{attributes: {}, insert: ''}], sub_headline_color: '#ffffff', sub_background_color: '#ffffff00',
+                sub_headline: [{attributes: {}, insert: ''}], sub_headline_color: '#ffffff', sub_background_color: '',
                 video: null, video_auto_play: null, video_code: ''
             },
             appearance: {
@@ -124,14 +123,10 @@ new Vue({
             }
         });
         
-        this.colorLoaded = true;
         this.initSelect2();
         this.initDatePicker();
         this.initQuillEditor();
         this.model.content.video_code = this.decodeHTML(this.model.content.video_code);
-        setTimeout(function () {
-            vm.show_btn.content = false;
-        }, 300);
     },
     methods: {
         initSelect2() {
@@ -183,13 +178,27 @@ new Vue({
             }
         },
         initDatePicker() {
+            let vm = this;
             let $datepicker = $('.datepicker');
             if ($datepicker.length) {
                 $datepicker.each(function () {
                     $(this).datepicker({
                         disableTouchKeyboard: true,
                         autoclose: false,
-                        startDate: new Date()
+                        startDate: new Date(),
+                        format: 'yyyy-mm-dd'
+                    }).on('show', function () {
+                        $('.datepicker.datepicker-dropdown').css('top', parseInt($('.datepicker.datepicker-dropdown').get(0).style.top) + 72 + 'px');
+                    }).on('hide', function () {
+                        let parent = $(this).data('parent');
+                        if (parent) {
+                            vm.model[parent][$(this).attr('id')] = $(this).val();
+                        }
+                    }).on('changeDate', function () {
+                        let parent = $(this).data('parent');
+                        if (parent) {
+                            vm.model[parent][$(this).attr('id')] = $(this).val();
+                        }
                     });
                 });
             }
@@ -307,15 +316,16 @@ new Vue({
             $('#delete-modal').modal('show');
         },
         clearOption() {
+            this.model[this.del_option.key] = JSON.parse(JSON.stringify(this.basic_model[this.del_option.key]));
             axios.post(`/clear-option/${window._bar_opt_ary.bar_id}`, {
-                option_key: this.del_option.key
+                option_key: this.del_option.key,
+                data: this.model[this.del_option.key]
             }).then((r) => {
                 if (r.data.status === 'success') {
                     this.commonNotification('success', 'Successfully cleared!');
                     $('#delete-modal').modal('hide');
                     this.show_btn[this.del_option.key] = false;
                     this.bar_option[this.del_option.key] = false;
-                    this.model[this.del_option.key] = JSON.parse(JSON.stringify(this.basic_model[this.del_option.key]));
                     let vm = this;
                     Object.keys(this.model[this.del_option.key]).forEach(function (item) {
                         if ($(`#${item}`).data('toggle')) {
@@ -384,8 +394,14 @@ new Vue({
             txt.innerHTML = html;
             return txt.value;
         },
-        hideColorPicker() {
-            window.vEvent.fire('hideColorPicker');
+        matchMainBar() {
+            this.model.countdown.countdown_background_color = this.model.background_color;
+            this.model.countdown.countdown_text_color = this.model.headline_color;
+            $('#countdown_background_color').css('background-color', this.model.background_color.indexOf('#') > -1 ? this.model.background_color : `#${this.model.background_color}`);
+            $('#countdown_background_color').val(this.model.background_color);
+            $('#countdown_text_color').val(this.model.headline_color);
+            $('#countdown_text_color').css('background-color', this.model.headline_color.indexOf('#') > -1 ? this.model.headline_color : `#${this.model.headline_color}`);
+            this.show_btn.countdown = true;
         }
     }
 });
