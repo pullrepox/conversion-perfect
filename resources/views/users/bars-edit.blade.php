@@ -136,6 +136,7 @@
                     @include('users.bars-partials.bars-content')
                     @include('users.bars-partials.bars-appearance')
                     @include('users.bars-partials.bars-button')
+                    @include('users.bars-partials.bars-countdown')
                 @endif
             </form>
             {{-- Delete Options Modal Confirm --}}
@@ -219,7 +220,22 @@
                     button_click_url: "{{ $flag ? '' : (old('button_click_url') ? old('button_click_url') : $bar->button_click_url) }}",
                     button_open_new: "{{ $flag ? null : (old('button_open_new') ? old('button_open_new') : $bar->button_open_new) }}",
                 },
-                countdown: {},
+                countdown: {
+                    countdown: "{{ $flag ? 'none' : (old('countdown') ? old('countdown') : $bar->countdown) }}",
+                    countdown_location: "{{ $flag ? 'left' : (old('countdown_location') ? old('countdown_location') : $bar->countdown_location) }}",
+                    countdown_format: "{{ $flag ? 'dd' : (old('countdown_format') ? old('countdown_format') : $bar->countdown_format) }}",
+                    countdown_end_date: "{{ $flag ? date('Y-m-d', strtotime('+30 days')) : (old('countdown_end_date') ? old('countdown_end_date') : $bar->countdown_end_date) }}",
+                    countdown_end_time: "{{ $flag ? '00:00:00' : (old('countdown_end_time') ? old('countdown_end_time') : $bar->countdown_end_time) }}",
+                    countdown_timezone: "{{ $flag ? 'Canada/Central' : (old('countdown_timezone') ? old('countdown_timezone') : $bar->countdown_timezone) }}",
+                    countdown_days: 0,
+                    countdown_hours: 0,
+                    countdown_minutes: 0,
+                    countdown_background_color: '#3BAF85',
+                    countdown_text_color: '#FFFFFF',
+                    countdown_on_expiry: 'hide_bar',
+                    countdown_expiration_text: '',
+                    countdown_expiration_url: ''
+                },
                 overlay: {},
                 autoresponder: {},
                 opt_in: {},

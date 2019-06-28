@@ -22,7 +22,7 @@
                 <div v-if="model.appearance.close_button" style="position: absolute; top: -4px; right: 6px;font-size: 24px;"
                      :style="{ color: model.headline_color.indexOf('#') > -1 ? model.headline_color : `#${model.headline_color}` }">&times;
                 </div>
-                <div style="width:100%; font-size:20px; font-family: 'Nunito', sans-serif; display: flex; align-items: center; justify-content: center;">
+                <div style="width:100%; font-size:20px; font-family: 'Nunito', sans-serif; display: flex; align-items: center; justify-content: center;min-height: 76px;">
                     <div style="display: inline-block; width: auto;margin-right: 20px;padding-top: 8px;"
                          v-if="model.content.video_code !== '' && model.content.video" v-html="model.content.video_code"></div>
                     <div v-if="model.button.button_type !== 'none' && model.button.button_location === 'left'"
@@ -38,7 +38,7 @@
                     <div style="display:inline-block; vertical-align:top; width:auto; text-align:center;">
                         <div style="display:inline-block; width:auto;">
                             <div :style="{ color: model.headline_color.indexOf('#') > -1 ? model.headline_color : `#${model.headline_color}` }"
-                                 style="width: 100%; min-width: 100%; line-height: 76px; margin:0 auto; font-size: 1.8rem;">
+                                 style="width: 100%; min-width: 100%; margin:0 auto; font-size: 1.8rem;">
                                 <span v-for="(h_l, h_i) in model.headline" :key="`hLine_attr_${h_i}`" v-if="h_l.insert.trim() != ''">
                                     <span v-if="h_l.attributes" :style="{
                                         'font-weight': h_l.attributes.bold ? 'bold' : 'normal',
@@ -54,9 +54,9 @@
                             </div>
                             <div :style="{
                                 color: model.content.sub_headline_color.indexOf('#') > -1 ? model.content.sub_headline_color : `#${model.content.sub_headline_color}`,
-                                'background': model.content.sub_background_color
+                                'background': model.content.sub_background_color !== '' ? (model.content.sub_background_color.indexOf('#') > -1 ? model.content.sub_background_color : `#${model.content.sub_background_color}`) : 'transparent'
                                 }"
-                                 style="width: 100%; min-width: 100%; margin: 10px 0 15px auto; font-size: 18px; padding: 5px;line-height: 26px;"
+                                 style="width: 100%; min-width: 100%; margin: 0 0 5px auto; font-size: 18px;"
                                  v-if="model.content.sub_headline[0].insert.trim() != ''">
                                 <span v-for="(s_h_l, s_h_i) in model.content.sub_headline" :key="`s_hLine_attr_${s_h_i}`" v-if="s_h_l.insert.trim() != ''">
                                     <span v-if="s_h_l.attributes" :style="{
@@ -72,7 +72,7 @@
                                 </span>
                             </div>
                             <div v-if="model.button.button_type !== 'none' && model.button.button_location === 'below_text'"
-                                 style="width: 100%;min-width: 100%; margin: 0 auto;margin-bottom: 15px;">
+                                 style="width: 100%;min-width: 100%; margin: 0 0 5px auto;">
                                 <button type="button" style="border: 0;padding: 2px 12px;"
                                         :style="{
                                 'background-color': model.button.button_background_color.indexOf('#') > -1 ? model.button.button_background_color : `#${model.button.button_background_color}`,

@@ -57,10 +57,8 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="sub_background_color">Sub Headline Highlight Color</label>
-                    <div class="form-control p-0" v-if="colorLoaded">
-                        <color-picker :color="model.content.sub_background_color" v-model="model.content.sub_background_color" @input="showSaveBtn('content')"></color-picker>
-                        <input type="hidden" name="sub_background_color" v-model="model.content.sub_background_color"/>
-                    </div>
+                    <input class="form-control jscolor {required:false}" name="sub_background_color"
+                           id="sub_background_color" v-model="model.content.sub_background_color" @change="updateJSColor('sub_background_color', 'content')"/>
                 </div>
             </div>
         </div>
