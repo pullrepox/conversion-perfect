@@ -148,7 +148,7 @@ class BarsController extends Controller
         
         $bar->sub_headline = !is_null(trim($bar->sub_headline)) && !empty(trim($bar->sub_headline)) ? addslashes(stripslashes($bar->sub_headline)) : json_encode([['attributes' => [], 'insert' => '']]);
         $bar->sub_headline_color = is_null($bar->sub_headline_color) ? '#FFFFFF' : $bar->sub_headline_color;
-        $bar->video = $bar->video ? true : false;
+        $bar->video_auto_play = $bar->video_auto_play ? true : false;
         
         $bar->drop_shadow = $bar->drop_shadow ? true : false;
         $bar->close_button = $bar->close_button ? true : false;
@@ -185,7 +185,7 @@ class BarsController extends Controller
         ];
         
         $params = $request->all();
-        $radio_keys = ['video', 'video_auto_play', 'drop_shadow', 'close_button', 'background_gradient', 'button_open_new'];
+        $radio_keys = ['video_auto_play', 'drop_shadow', 'close_button', 'background_gradient', 'button_open_new'];
         $option_keys = ['opt_preview', 'opt_display', 'opt_content', 'opt_appearance', 'opt_button', 'opt_countdown', 'opt_overlay', 'opt_opt_in', 'opt_custom_text'];
         foreach ($params as $key => $val) {
             if (false !== array_search($key, $radio_keys)) {
@@ -234,9 +234,15 @@ class BarsController extends Controller
         }
         
         if ($request->input('opt_content') == 'true') {
-            $rules['sub_headline'] = 'required';
-            if ($request->input('video')) {
-                $rules['video_code'] = 'required';
+//            $rules['sub_headline'] = 'required';
+            if ($request->input('video_type') != 'none') {
+                if ($request->input('video_type') == 'youtube') {
+                    $rules['content_youtube_url'] = 'required|url';
+                } else if ($request->input('video_type') == 'vimeo') {
+                    $rules['content_vimeo_url'] = 'required|url';
+                } else {
+                    $rules['video_code'] = 'required';
+                }
             }
         }
         

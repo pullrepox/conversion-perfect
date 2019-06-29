@@ -39,9 +39,9 @@ class BarOptionsController extends Controller
         $rules = [];
         
         $params = $request->all();
-        $radio_keys = ['video', 'video_auto_play', 'drop_shadow', 'close_button', 'background_gradient', 'button_open_new'];
+        $radio_keys = ['video_auto_play', 'drop_shadow', 'close_button', 'background_gradient', 'button_open_new'];
         foreach ($params as $key => $val) {
-            if (array_search($key, $radio_keys)) {
+            if (false !== array_search($key, $radio_keys)) {
                 $params[$key] = $val ? 1 : 0;
             } else {
                 if (is_null($val)) $params[$key] = '';
@@ -92,9 +92,15 @@ class BarOptionsController extends Controller
         
         if ($opt_key == 'content') {
             $bar->opt_content = 1;
-            $rules['sub_headline'] = 'required';
-            if ($request->input('video')) {
-                $rules['video_code'] = 'required';
+//            $rules['sub_headline'] = 'required';
+            if ($request->input('video_type') != 'none') {
+                if ($request->input('video_type') == 'youtube') {
+                    $rules['content_youtube_url'] = 'required|url';
+                } else if ($request->input('video_type') == 'vimeo') {
+                    $rules['content_vimeo_url'] = 'required|url';
+                } else {
+                    $rules['video_code'] = 'required';
+                }
             }
         }
         

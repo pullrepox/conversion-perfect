@@ -83,8 +83,10 @@
                                     <label class="form-control-label ml-1" for="headline">
                                         Headline Text
                                     </label>
-                                    <div id="headline" data-toggle="quill" data-quill-placeholder="Your Headline Text Here."></div>
-                                    <input type="hidden" v-for="(h_l, h_i) in model.headline" :key="`hLine_${h_i}`" name="headline[]" :value="h_l.insert" v-if="h_l.insert.trim() != ''"/>
+                                    <div class="w-100 ql-editor-parent">
+                                        <div id="headline" data-toggle="quill" data-quill-placeholder="Headline Here."></div>
+                                        <input type="hidden" v-for="(h_l, h_i) in model.headline" :key="`hLine_${h_i}`" name="headline[]" :value="h_l.insert" v-if="h_l.insert.trim() != ''"/>
+                                    </div>
                                     <span v-for="(h_l, h_i) in model.headline" :key="`hLine_attr_${h_i}`" v-if="h_l.insert.trim() != ''">
                                         <span v-if="h_l.attributes">
                                             <input type="hidden" name="headline_bold[]" :value="h_l.attributes.bold ? true : ''"/>
@@ -196,7 +198,9 @@
                     sub_headline: JSON.parse('{!! $flag ? json_encode([['attributes' => [], 'insert' => '']]) : $bar->sub_headline !!}'),
                     sub_headline_color: "{{ $flag ? '#ffffff' : (old('sub_headline_color') ? old('sub_headline_color') : $bar->sub_headline_color) }}",
                     sub_background_color: "{{ $flag ? '#ffffff00' : (old('sub_background_color') ? old('sub_background_color') : $bar->sub_background_color) }}",
-                    video: "{{ $flag ? null : (old('video') ? old('video') : $bar->video) }}",
+                    video_type: "{{ $flag ? 'none' : (old('video_type') ? old('video_type') : $bar->video_type) }}",
+                    content_youtube_url: "{{ $flag ? '' : (old('content_youtube_url') ? old('content_youtube_url') : $bar->content_youtube_url) }}",
+                    content_vimeo_url: "{{ $flag ? '' : (old('content_vimeo_url') ? old('content_vimeo_url') : $bar->content_vimeo_url) }}",
                     video_code: "{{ $flag ? '' : (old('video_code') ? old('video_code') : htmlspecialchars_decode($bar->video_code)) }}",
                     video_auto_play: "{{ $flag ? null : (old('video_auto_play') ? old('video_auto_play') : $bar->video_auto_play) }}",
                 },
