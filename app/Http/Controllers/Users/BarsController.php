@@ -159,6 +159,8 @@ class BarsController extends Controller
         $bar->button_background_color = is_null($bar->button_background_color) ? '#515f7f' : $bar->button_background_color;
         $bar->button_text_color = is_null($bar->button_text_color) ? '#FFFFFF' : $bar->button_text_color;
         $bar->button_open_new = $bar->button_open_new ? true : false;
+        $bar->delay_in_seconds = $bar->delay_in_seconds ? $bar->delay_in_seconds : 3;
+        $bar->scroll_point_percent = $bar->scroll_point_percent ? $bar->scroll_point_percent : 10;
         
         $bar->countdown_end_date = $bar->countdown_end_date != '0000-00-00' ? date('m/d/Y', strtotime($bar->countdown_end_date)) : date('m/d/Y');
         

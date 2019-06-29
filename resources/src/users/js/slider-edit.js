@@ -41,7 +41,7 @@ new Vue({
             headline_color: '#ffffff',
             background_color: '#3BAF85',
             display: {
-                show_bar_type: 'immediate', frequency: 'every', delay_in_seconds: 0, scroll_point_percent: 0
+                show_bar_type: 'immediate', frequency: 'every', delay_in_seconds: 3, scroll_point_percent: 10
             },
             content: {
                 sub_headline: [{attributes: {}, insert: ''}], sub_headline_color: '#ffffff', sub_background_color: '',
@@ -72,7 +72,7 @@ new Vue({
             headline_color: '#ffffff',
             background_color: '#3BAF85',
             display: {
-                show_bar_type: 'immediate', frequency: 'every', delay_in_seconds: 0, scroll_point_percent: 0
+                show_bar_type: 'immediate', frequency: 'every', delay_in_seconds: 3, scroll_point_percent: 10
             },
             content: {
                 sub_headline: [{attributes: {}, insert: ''}], sub_headline_color: '#ffffff', sub_background_color: '',
