@@ -107,6 +107,7 @@ class BarOptionsController extends Controller
         if ($opt_key == 'appearance') {
             $bar->opt_appearance = 1;
             $rules['opacity'] = 'numeric|max:100|min:0';
+            $rules['gradient_angle'] = 'numeric|max:360|min:0';
         }
         
         if ($opt_key == 'button') {
