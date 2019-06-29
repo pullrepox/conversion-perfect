@@ -108,18 +108,35 @@
             border-color: #dee2e6 !important;
         }
         
-        .ql-editor {
-            min-height: 45px;
-            overflow: hidden;
-            padding: 10px;
-            &.ql-blank::before {
-                color: rgba(195, 157, 157, 0.6);
-                top: 0.95rem;
+        .ql-editor-parent {
+            display: flex;
+            .ql-toolbar {
+                order: 1;
+                border-radius: 0 0.25rem 0.25rem 0;
+                flex-shrink: 0;
+                padding: 0.625rem 0.3rem;
+                button {
+                    padding: 0 0.15rem;
+                }
             }
-        }
-    
-        .ql-container {
-            font-family: 'Open Sans', sans-serif !important;
+            
+            .ql-container {
+                font-family: 'Open Sans', sans-serif !important;
+                flex-grow: 1;
+                margin: 0;
+                min-width: 0;
+                .ql-editor {
+                    border-radius: 0.25rem 0 0 0.25rem;
+                    min-height: 45px;
+                    overflow: hidden;
+                    padding: 0.52rem;
+                    border-right: 0;
+                    &.ql-blank::before {
+                        color: rgba(195, 157, 157, 0.6);
+                        top: 0.75rem;
+                    }
+                }
+            }
         }
     }
     

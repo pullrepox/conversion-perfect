@@ -45,7 +45,7 @@ new Vue({
             },
             content: {
                 sub_headline: [{attributes: {}, insert: ''}], sub_headline_color: '#ffffff', sub_background_color: '',
-                video: 0, video_auto_play: 0, video_code: ''
+                video_type: 'none', content_youtube_url: '', content_vimeo_url: '', video_auto_play: 0, video_code: ''
             },
             appearance: {
                 opacity: 100, drop_shadow: 0, close_button: 0, background_gradient: 0, gradient_end_color: '#3BAF85', gradient_angle: 0, powered_by_position: 'bottom_right',
@@ -76,7 +76,7 @@ new Vue({
             },
             content: {
                 sub_headline: [{attributes: {}, insert: ''}], sub_headline_color: '#ffffff', sub_background_color: '',
-                video: null, video_auto_play: null, video_code: ''
+                video_type: 'none', content_youtube_url: '', content_vimeo_url: '', video_auto_play: 0, video_code: ''
             },
             appearance: {
                 opacity: 100, drop_shadow: null, close_button: null, background_gradient: null, gradient_end_color: '#3BAF85', gradient_angle: 0, powered_by_position: 'bottom_right'
@@ -377,6 +377,8 @@ new Vue({
                 this.loading = false;
                 if (r.data.status === 'success') {
                     this.show_btn[key] = false;
+                    $('.invalid-feedback').hide();
+                    $('.form-control').removeClass('is-invalid');
                 } else {
                     this.showSaveErrorNotify();
                 }
@@ -438,6 +440,64 @@ new Vue({
             let date_diff = Math.abs(change_date.getTime() - curr_date.getTime());
             // parseInt(date_diff / (24 * 60 * 60 * 1000), 10)
             return (`0${Math.ceil(date_diff / (24 * 60 * 60 * 1000))}`).slice(-2);
+        },
+        changeVideoUrl(flag, parent) {
+            this.showSaveBtn(parent);
+            switch (this.model[parent][flag]) {
+                case 'h':
+                case 'ht':
+                case 'htt':
+                case 'http':
+                case 'https':
+                case 'https:':
+                case 'https:/':
+                case 'y':
+                case 'yo':
+                case 'you':
+                case 'yout':
+                case 'youtu':
+                case 'youtub':
+                case 'youtube':
+                case 'v':
+                case 'vi':
+                case 'vim':
+                case 'vime':
+                case 'vimeo':
+                case 'p':
+                case 'pl':
+                case 'pla':
+                case 'play':
+                case 'playe':
+                case 'player':
+                case 'player.':
+                case 'w':
+                case 'ww':
+                case 'www':
+                case 'www.':
+                    if (flag === 'content_youtube_url') {
+                        this.model[parent][flag] = `https://www.youtube.com/embed/`;
+                    } else if (flag === 'content_vimeo_url') {
+                        this.model[parent][flag] = `https://player.vimeo.com/video`;
+                    } else {
+                        this.model[parent][flag] = `https://`;
+                    }
+                    break;
+            }
+            if (this.model[parent][flag] !== '') {
+                if (this.model[parent][flag].indexOf('http') < 0) {
+                    this.model[parent][flag] = `https://${this.model[parent][flag]}`;
+                }
+                if (flag === 'content_youtube_url') {
+                    if (this.model[parent][flag].indexOf('watch?v=') > -1) {
+                        this.model[parent][flag] = this.model[parent][flag].replace('watch?v=', 'embed/');
+                    }
+                }
+                if (flag === 'content_vimeo_url') {
+                    if (this.model[parent][flag].indexOf('https://vimeo.com') > -1) {
+                        this.model[parent][flag] = this.model[parent][flag].replace('https://vimeo.com', 'https://player.vimeo.com/video');
+                    }
+                }
+            }
         }
     }
 });
