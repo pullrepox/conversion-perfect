@@ -50,7 +50,7 @@ class BarsController extends Controller
         $flag = true;
         $form_action = secure_redirect(route('bars.store'));
         
-        return view('users.bars-edit', compact('header_data', 'flag', 'form_action', 'timezone_list'));
+        return view('users.bars-edit', compact('header_data', 'flag', 'form_action'));
     }
     
     /**
