@@ -22,6 +22,32 @@
         <div class="form-row">
             <div class="col-md-4">
                 <div class="form-group">
+                    <label class="form-control-label ml-1" for="drop_shadow">Show Drop Shadow</label>
+                    <div class="radio ml-1">
+                        <label class="custom-toggle custom-toggle-light">
+                            <input type="checkbox" id="drop_shadow" name="drop_shadow"
+                                   @keydown="tabKeyPress('#close_button', false, $event)" @keypress="tabKeyPress('#close_button', false, $event)"
+                                   data-parent="appearance" v-model="model.appearance.drop_shadow" @input="showSaveBtn('appearance')">
+                            <span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="form-control-label ml-1" for="close_button">Hide Close Button</label>
+                    <div class="radio ml-1">
+                        <label class="custom-toggle custom-toggle-light">
+                            <input type="checkbox" id="close_button" name="close_button"
+                                   @keydown="tabKeyPress('#background_gradient', false, $event)" @keypress="tabKeyPress('#background_gradient', false, $event)"
+                                   data-parent="appearance" v-model="model.appearance.close_button" @input="showSaveBtn('appearance')">
+                            <span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
                     <label class="form-control-label ml-1" for="opacity">Opacity</label>
                     <div class="row">
                         <div class="col-md-10 col-sm-9">
@@ -37,37 +63,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label class="form-control-label ml-1" for="drop_shadow">Show Drop Shadow</label>
-                    <div class="radio ml-1">
-                        <label class="custom-toggle custom-toggle-light">
-                            <input type="checkbox" id="drop_shadow" name="drop_shadow"
-                                   @keydown="tabKeyPress('#close_button', false, $event)" @keypress="tabKeyPress('#close_button', false, $event)"
-                                   data-parent="appearance" v-model="model.appearance.drop_shadow" @input="showSaveBtn('appearance')">
-                            <span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label class="form-control-label ml-1" for="close_button">Show Close Button</label>
-                    <div class="radio ml-1">
-                        <label class="custom-toggle custom-toggle-light">
-                            <input type="checkbox" id="close_button" name="close_button"
-                                   @keydown="tabKeyPress('#background_gradient', false, $event)" @keypress="tabKeyPress('#background_gradient', false, $event)"
-                                   data-parent="appearance" v-model="model.appearance.close_button" @input="showSaveBtn('appearance')">
-                            <span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
-                        </label>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="form-row">
             <div class="col-md-4">
                 <div class="form-group">
-                    <label class="form-control-label ml-1" for="background_gradient">Background Gradient</label>
+                    <label class="form-control-label ml-1" for="background_gradient">Gradient</label>
                     <div class="radio ml-1">
                         <label class="custom-toggle custom-toggle-light">
                             <input type="checkbox" id="background_gradient" name="background_gradient"
@@ -80,7 +80,7 @@
             </div>
             <div class="col-md-4" v-show="model.appearance.background_gradient">
                 <div class="form-group">
-                    <label class="form-control-label ml-1" for="gradient_end_color">Background Gradient End Color</label>
+                    <label class="form-control-label ml-1" for="gradient_end_color">Gradient End Color</label>
                     <input class="jscolor form-control" name="gradient_end_color" id="gradient_end_color" v-model="model.appearance.gradient_end_color"
                            @keydown="tabKeyPress('#gradient_angle', false, $event)" @keypress="tabKeyPress('#gradient_angle', false, $event)"
                            @change="updateJSColor('gradient_end_color', 'appearance')"/>
@@ -88,19 +88,26 @@
             </div>
             <div class="col-md-4" v-show="model.appearance.background_gradient">
                 <div class="form-group">
-                    <label class="form-control-label ml-1" for="gradient_angle">Background Gradient End Color</label>
-                    <input type="number" class="form-control" name="gradient_angle" id="gradient_angle" v-model="model.appearance.gradient_angle" max="360" min="0"
-                           @keydown="tabKeyPress('#powered_by_position', true, $event)" @keypress="tabKeyPress('#powered_by_position', true, $event)" @input="showSaveBtn('appearance')"/>
-                    <span class="invalid-feedback" role="alert">
-                        Gradient Angle value must be minimum 0, maximum 360.
-                    </span>
+                    <label class="form-control-label ml-1" for="gradient_angle">Gradient Angle</label>
+                    <div class="row">
+                        <div class="col-md-10 col-sm-9">
+                            <vue-slider :speed="1" :min="0" :max="360" v-model="model.appearance.gradient_angle" id="gradient_angle" @change="showSaveBtn('appearance')"></vue-slider>
+                        </div>
+                        <div class="col-md-2 col-sm-3 pl-0 mt--1">@{{ model.appearance.gradient_angle }}&deg;</div>
+                        <input type="hidden" name="gradient_angle" v-model="model.appearance.gradient_angle"/>
+                        @error('gradient_angle')
+                        <span class="invalid-feedback" style="display: block;" role="alert">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </div>
                 </div>
             </div>
         </div>
         <div class="form-row">
             <div class="col-md-4">
                 <div class="form-group">
-                    <label class="form-control-label ml-1" for="powered_by_position">Brand Position</label>
+                    <label class="form-control-label ml-1" for="powered_by_position">Powered By Location</label>
                     <select class="form-control" data-toggle="select" id="powered_by_position" name="powered_by_position" required
                             v-model="model.appearance.powered_by_position" data-parent="appearance">
                         <option value="bottom_right">Bottom Right</option>

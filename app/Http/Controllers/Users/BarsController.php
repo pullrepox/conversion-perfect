@@ -249,6 +249,7 @@ class BarsController extends Controller
         
         if ($request->input('opt_appearance') == 'true') {
             $rules['opacity'] = 'numeric|max:100|min:0';
+            $rules['gradient_angle'] = 'numeric|max:360|min:0';
         }
         
         if ($request->input('opt_button') == 'true') {
