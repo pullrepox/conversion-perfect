@@ -180,7 +180,7 @@
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="countdown_expiration_text">Expiration Text</label>
                     <input type="text" class="form-control @error('countdown_expiration_text') is-invalid @enderror"
-                           id="countdown_expiration_text" name="countdown_expiration_text" @input="showSaveBtn('countdown')" data-parent="countdown"
+                           id="countdown_expiration_text" name="countdown_expiration_text" @input="validationCheck('countdown_expiration_text', 'countdown')" data-parent="countdown"
                            v-model="model.countdown.countdown_expiration_text"/>
                     @error('countdown_expiration_text')
                     <span class="invalid-feedback" role="alert">
@@ -193,7 +193,7 @@
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="countdown_expiration_url">Expiration URL</label>
                     <input type="text" min="0" class="form-control @error('countdown_expiration_url') is-invalid @enderror"
-                           id="countdown_expiration_url" name="countdown_expiration_url" @input="showSaveBtn('countdown')" data-parent="countdown"
+                           id="countdown_expiration_url" name="countdown_expiration_url" @input="validationCheck('countdown_expiration_url', 'countdown')" data-parent="countdown"
                            v-model="model.countdown.countdown_expiration_url"/>
                     @error('countdown_expiration_url')
                     <span class="invalid-feedback" role="alert">

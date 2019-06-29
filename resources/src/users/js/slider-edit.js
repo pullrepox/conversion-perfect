@@ -441,6 +441,30 @@ new Vue({
             // parseInt(date_diff / (24 * 60 * 60 * 1000), 10)
             return (`0${Math.ceil(date_diff / (24 * 60 * 60 * 1000))}`).slice(-2);
         },
+        validationCheck(flag, parent) {
+            this.showSaveBtn(parent);
+            switch (flag) {
+                case 'button_label':
+                    if (this.model[parent][flag] === '') {
+                        this.commonNotification('danger', 'Button Text is required.');
+                        this.model[parent][flag] = 'Click Here';
+                        $(`#${flag}`).focus().select();
+                    }
+                    break;
+                case 'countdown_expiration_url':
+                    if (this.model[parent][flag] === '') {
+                        this.commonNotification('danger', 'This field is required.');
+                        $(`#${flag}`).focus().select();
+                    }
+                    break;
+                default:
+                    if (this.model[parent][flag] === '') {
+                        this.commonNotification('danger', 'This field is required.');
+                        $(`#${flag}`).focus().select();
+                    }
+                    break;
+            }
+        },
         changeVideoUrl(flag, parent) {
             this.showSaveBtn(parent);
             switch (this.model[parent][flag]) {

@@ -216,7 +216,7 @@
                 button: {
                     button_type: "{{ $flag ? 'none' : (old('button_type') ? old('button_type') : $bar->button_type) }}",
                     button_location: "{{ $flag ? 'right' : (old('button_location') ? old('button_location') : $bar->button_location) }}",
-                    button_label: "{{ $flag ? '' : (old('button_label') ? old('button_label') : $bar->button_label) }}",
+                    button_label: "{{ $flag ? 'Click Here' : (old('button_label') ? old('button_label') : $bar->button_label) }}",
                     button_background_color: "{{ $flag ? '#515f7f' : (old('button_background_color') ? old('button_background_color') : $bar->button_background_color) }}",
                     button_text_color: "{{ $flag ? '#FFFFFF' : (old('button_text_color') ? old('button_text_color') : $bar->button_text_color) }}",
                     button_animation: "{{ $flag ? 'none' : (old('button_animation') ? old('button_animation') : $bar->button_animation) }}",
