@@ -40,7 +40,7 @@
                         style="display: inline-block; width:auto; margin-right: 20px;padding: 10px 0;text-align: center;">
                         <div v-if="model.button.button_type !== 'none' && model.button.button_location === 'left'"
                              style="width: 100%; min-width: 100%;">
-                            <button type="button" style="border: 0;padding: 2px 12px;"
+                            <button type="button" style="border: 0;padding: 8px 12px;"
                                     :style="{
                                     'background-color': model.button.button_background_color.indexOf('#') > -1 ? model.button.button_background_color : `#${model.button.button_background_color}`,
                                     'color': model.button.button_text_color.indexOf('#') > -1 ? model.button.button_text_color : `#${model.button.button_text_color}`,
@@ -136,7 +136,7 @@
                                 style="width: 100%; min-width: 100%; margin: 0 0 5px auto; text-align: center;">
                                 <div v-if="model.button.button_type !== 'none' && model.button.button_location === 'below_text'"
                                      style="width: 100%; min-width: 100%;">
-                                    <button type="button" style="border: 0;padding: 2px 12px;"
+                                    <button type="button" style="border: 0;padding: 8px 12px;"
                                             :style="{
                                     'background-color': model.button.button_background_color.indexOf('#') > -1 ? model.button.button_background_color : `#${model.button.button_background_color}`,
                                     'color': model.button.button_text_color.indexOf('#') > -1 ? model.button.button_text_color : `#${model.button.button_text_color}`,
@@ -198,7 +198,7 @@
                         style="display: inline-block; width:auto; margin-left: 20px;padding: 10px 0;text-align: center;">
                         <div v-if="model.button.button_type !== 'none' && model.button.button_location === 'right'"
                              style="width: 100%; min-width: 100%;">
-                            <button type="button" style="border: 0;padding: 2px 12px;"
+                            <button type="button" style="border: 0;padding: 8px 12px;"
                                     :style="{
                                     'background-color': model.button.button_background_color.indexOf('#') > -1 ? model.button.button_background_color : `#${model.button.button_background_color}`,
                                     'color': model.button.button_text_color.indexOf('#') > -1 ? model.button.button_text_color : `#${model.button.button_text_color}`,

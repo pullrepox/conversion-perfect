@@ -155,6 +155,7 @@ class BarsController extends Controller
         $bar->background_gradient = $bar->background_gradient ? true : false;
         $bar->gradient_end_color = is_null($bar->gradient_end_color) ? '#3BAF85' : $bar->gradient_end_color;
         
+        $bar->button_label = is_null($bar->button_label) ? 'Click Here' : $bar->button_label;
         $bar->button_background_color = is_null($bar->button_background_color) ? '#515f7f' : $bar->button_background_color;
         $bar->button_text_color = is_null($bar->button_text_color) ? '#FFFFFF' : $bar->button_text_color;
         $bar->button_open_new = $bar->button_open_new ? true : false;

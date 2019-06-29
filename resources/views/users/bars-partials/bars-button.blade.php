@@ -46,9 +46,9 @@
             </div>
             <div class="col-md-4" v-show="model.button.button_type !== 'none'">
                 <div class="form-group">
-                    <label class="form-control-label ml-1" for="button_label">Button Label</label>
+                    <label class="form-control-label ml-1" for="button_label">Button Text</label>
                     <input type="text" id="button_label" name="button_label" data-parent="button" class="form-control @error('button_label') is-invalid @enderror"
-                           v-model="model.button.button_label" @input="showSaveBtn('button')"/>
+                           v-model="model.button.button_label" @input="validationCheck('button_label', 'button')"/>
                     @error('button_label')
                     <span class="invalid-feedback" role="alert">
                         {{ $message }}
@@ -76,14 +76,16 @@
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label class="form-control-label ml-1" for="button_animation">Animation</label>
+                    <label class="form-control-label ml-1" for="button_animation">Shake</label>
                     <select class="form-control" data-toggle="select" id="button_animation" name="button_animation" required
                             @keydown="tabKeyPress('#button_action', true, $event)" @keypress="tabKeyPress('#button_action', true, $event)"
                             v-model="model.button.button_animation" data-parent="button">
                         <option value="none">None</option>
-                        <option value="crazy_shake">Crazy Shake</option>
-                        <option value="money_make_shake">Money Make Shake</option>
-                        <option value="lazy_shake">Lazy Shake</option>
+                        <option value="on_load">On Load</option>
+                        <option value="on_hover">On Hover</option>
+                        <option value="on_load_on_hover">On Load and On Hover</option>
+                        <option value="repeat_6_seconds">Repeat Every 6 Seconds</option>
+                        <option value="repeat_6_seconds_on_hover">Repeat Every 6 Seconds and On Hover</option>
                     </select>
                 </div>
             </div>
