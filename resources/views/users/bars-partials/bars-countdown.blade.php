@@ -139,7 +139,7 @@
                 </div>
             </div>
         </div>
-        <div class="form-row">
+        <div class="form-row" v-show="model.countdown.countdown !== 'none'">
             <div class="col-md-4">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="countdown_background_color">Background Color</label>
@@ -164,7 +164,7 @@
                 </div>
             </div>
         </div>
-        <div class="form-row">
+        <div class="form-row" v-show="model.countdown.countdown !== 'none'">
             <div class="col-md-4">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="countdown_on_expiry">Expiry On</label>
