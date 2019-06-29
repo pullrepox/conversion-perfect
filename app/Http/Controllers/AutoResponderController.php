@@ -7,7 +7,6 @@ use App\Integration;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreIntegration;
 use Illuminate\Validation\Rules\In;
-
 class AutoResponderController extends Controller
 {
     public function index()
@@ -58,6 +57,10 @@ class AutoResponderController extends Controller
             return $this->sendLane($data, $responder);
         } else if ($responder->title === 'mailchimp'){
             return $this->mailChimp($data, $responder);
+        } else if ($responder->title === 'activecampaign'){
+            return $this->activeCampaign($data, $responder);
+        } else if ($responder->title === 'mailerlite'){
+            return $this->mailerLite($data, $responder);
         }
     }
 
@@ -115,6 +118,46 @@ class AutoResponderController extends Controller
             ];
         }
 
+
+    }
+
+    public function activeCampaign($data, $responder)
+    {
+        $url     = $data['url'];
+        $api_key = $data['api_key'];
+        $ac = new \ActiveCampaign($url, $api_key);
+        if (!(int)$ac->credentials_test()) {
+            return [
+                'type' => 'error',
+                'message' => 'Invalid credentials (URL and/or API key)'
+            ];
+        }
+
+        return [
+            'type' => 'success',
+            'message' => null,
+        ];
+    }
+
+    public function mailerLite($data, $responder)
+    {
+        $client = new \GuzzleHttp\Client();
+        try{
+            $response = $client->request('GET', $responder->base_url, [
+                'headers' => [
+                    'X-MailerLite-ApiKey' => $data['api_key'],
+                ]
+            ]);
+            return [
+                'type' => 'success',
+                'message' => null,
+            ];
+        } catch (\Exception $e){
+            return [
+                'type' => 'error',
+                'message' => 'Unauthorized API-KEY'
+            ];
+        }
 
     }
 

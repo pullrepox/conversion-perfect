@@ -40,6 +40,9 @@
                                     </select>
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="form-row">
                             <div class="col-md-4 responder-group" id="friendly-name" style="display: none">
                                 <div class="form-group">
                                     <label class="form-control-label ml-1" for="name" data-id="name">
@@ -64,7 +67,7 @@
                             <div class="col-md-4 responder-group" id="api-key" style="display: none">
                                 <div class="form-group">
                                     <label class="form-control-label ml-1" for="api_key" data-id="api_key">
-                                        API KEY
+                                        API Key
                                     </label>
                                     <input type="text" value="{{isset($integration) && $integration->api_key ? $integration->api_key : old('api_key')}}"
                                            class="@error('api_key') is-invalid @enderror form-control" name="api_key" id="api_key"/>
@@ -81,49 +84,50 @@
                                     @endif
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-md-4 responder-group" id="hash" style="display:none;">
-                            <div class="form-group">
-                                <label class="form-control-label ml-1" for="hash_key" data-id="hash_key">
-                                    HASH KEY
-                                </label>
-                                <input type="text" value="{{isset($integration) && $integration->hash ? $integration->hash : old('hash')}}"
-                                 class="@error('hash') is-invalid @enderror form-control" name="hash" id="hash"/>
-                                @if ($errors->has('hash'))
-                                    @error('hash')
-                                    <span class="invalid-feedback" role="alert">
+                            <div class="col-md-4 responder-group" id="hash" style="display:none;">
+                                <div class="form-group">
+                                    <label class="form-control-label ml-1" for="hash_key" data-id="hash_key">
+                                        Hash Key
+                                    </label>
+                                    <input type="text" value="{{isset($integration) && $integration->hash ? $integration->hash : old('hash')}}"
+                                           class="@error('hash') is-invalid @enderror form-control" name="hash" id="hash"/>
+                                    @if ($errors->has('hash'))
+                                        @error('hash')
+                                        <span class="invalid-feedback" role="alert">
                                         {{ $message }}
                                     </span>
-                                    @enderror
-                                @else
-                                    <span class="invalid-feedback" role="alert">
+                                        @enderror
+                                    @else
+                                        <span class="invalid-feedback" role="alert">
                                         Please insert correct value.
                                     </span>
-                                @endif
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 responder-group" id="url" style="display:none;">
+                                <div class="form-group">
+                                    <label class="form-control-label ml-1" for="hash_key" data-id="hash_key">
+                                        URL
+                                    </label>
+                                    <input type="text" value="{{isset($integration) && $integration->url ? $integration->url : old('url')}}"
+                                           class="@error('hash') is-invalid @enderror form-control" name="url" id="url"/>
+                                    @if ($errors->has('hash'))
+                                        @error('hash')
+                                        <span class="invalid-feedback" role="alert">
+                                            {{ $message }}
+                                        </span>
+                                        @enderror
+                                    @else
+                                        <span class="invalid-feedback" role="alert">
+                                            Please insert correct value.
+                                        </span>
+                                    @endif
+                                </div>
                             </div>
                         </div>
 
-                        <div class="col-md-4 responder-group" id="url" style="display:none;">
-                            <div class="form-group">
-                                <label class="form-control-label ml-1" for="hash_key" data-id="hash_key">
-                                    URL
-                                </label>
-                                <input type="text" value="{{isset($integration) && $integration->url ? $integration->url : old('url')}}"
-                                       class="@error('hash') is-invalid @enderror form-control" name="url" id="url"/>
-                                @if ($errors->has('hash'))
-                                    @error('hash')
-                                    <span class="invalid-feedback" role="alert">
-                                            {{ $message }}
-                                        </span>
-                                    @enderror
-                                @else
-                                    <span class="invalid-feedback" role="alert">
-                                            Please insert correct value.
-                                        </span>
-                                @endif
-                            </div>
-                        </div>
                     </div>
                 </div>
             </form>
@@ -147,7 +151,12 @@
     @else
         <script>
             $(function(){
-
+                var data = {!! json_encode(old()) !!};
+                var responder = $( "#responder_id  option[value="+data.responder_id+"]" ).text();
+                if (responder !== ''){
+                    $('#responder_id').val(data.responder_id);
+                    adjustChanges(responder);
+                }
                 $('#responder_id').change(function () {
                     $('.responder-group').hide();
                     var value = $('#responder_id option:selected').text();
@@ -175,6 +184,9 @@
             } else if (value === 'sendy'){
                 $('#friendly-name').show();
                 $('#url').show();
+                $('#api-key').show();
+            } else if (value === 'mailerlite'){
+                $('#friendly-name').show();
                 $('#api-key').show();
             }
         }
