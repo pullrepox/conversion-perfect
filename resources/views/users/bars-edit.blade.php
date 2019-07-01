@@ -242,6 +242,7 @@
                     countdown_expiration_url: "{{ $flag ? '' : (old('countdown_expiration_url') ? old('countdown_expiration_url') : $bar->countdown_expiration_url) }}",
                 },
                 overlay: {
+                    third_party_url: "{{ $flag ? '' : (old('third_party_url') ? old('third_party_url') : $bar->third_party_url) }}",
                     custom_link: "{{ $flag ? 0 : (old('custom_link') ? old('custom_link') : $bar->custom_link) }}",
                     custom_link_text: "{{ $flag ? quickRandom(6) : (old('custom_link_text') ? old('custom_link_text') : $bar->custom_link_text) }}",
                     meta_title: "{{ $flag ? '' : (old('meta_title') ? old('meta_title') : $bar->meta_title) }}",

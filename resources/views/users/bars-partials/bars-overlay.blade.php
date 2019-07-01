@@ -22,6 +22,19 @@
         <div class="form-row">
             <div class="col-md-4">
                 <div class="form-group">
+                    <label class="form-control-label ml-1" for="third_party_url">3rd Party URL</label>
+                    <input type="text" id="third_party_url" name="third_party_url" data-parent="overlay" class="form-control @error('third_party_url') is-invalid @enderror"
+                           @keydown="tabKeyPress('#custom_link', true, $event)" @keypress="tabKeyPress('#custom_link', true, $event)"
+                           v-model="model.overlay.third_party_url" @input="changeVideoUrl('third_party_url', 'overlay')"/>
+                    @error('third_party_url')
+                    <span class="invalid-feedback" role="alert">
+                        {{ $message }}
+                    </span>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
                     <label class="form-control-label ml-1" for="custom_link">Custom Link</label>
                     <select class="form-control" data-toggle="select" id="custom_link" name="custom_link" required
                             @keydown="tabKeyPress('#custom_link_text', false, $event)" @keypress="tabKeyPress('#custom_link_text', false, $event)"
