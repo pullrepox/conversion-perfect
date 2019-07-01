@@ -161,6 +161,27 @@ class AutoResponderController extends Controller
 
     }
 
+    public function sendy($data, $responder)
+    {
+        $client = new \GuzzleHttp\Client();
+        try{
+            $response = $client->request('POST', $responder->base_url, [
+                'email' => $data['email'],
+                'list' => 2,
+                'api_key' => $data['api_key'],
+            ]);
+            return [
+                'type' => 'success',
+                'message' => null,
+            ];
+        } catch (\Exception $e){
+            return [
+                'type' => 'error',
+                'message' => 'Unauthorized API-KEY'
+            ];
+        }
+    }
+
     public function store(Request $request)
     {
         $data = $request->all();

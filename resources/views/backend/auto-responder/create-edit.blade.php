@@ -1,4 +1,7 @@
 @extends('layouts.base')
+@section('styles')
+
+@endsection
 @section('title', 'Auto Responder Edit - ' . config('app.name'))
 @section('content')
     <div class="main-content" id="autoresponder-edit-page">
@@ -31,7 +34,7 @@
                                     <label class="form-control-label ml-1" for="auto-responder">
                                         Autoresponders
                                     </label>
-                                    <select class="form-control" name="responder_id" id="responder_id">
+                                    <select data-toggle="select" class="form-control" name="responder_id" id="responder_id">
                                         <option value="" selected disabled>Select Autoresponder Provider</option>
                                         @foreach($responders as $list)
                                             <option {{'selected' ? isset($integration) && $integration->responder_id === $list->id : old('responder_id') === $list->id}}
@@ -139,6 +142,11 @@
 
 @section('scripts')
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="{{asset('/assets/vendor/select2/dist/js/select2.min.js')}}"></script>
+    <script>
+        $('#responder_id').select2({
+        });
+    </script>
     @if(!$flag)
         <script>
             $(function () {
