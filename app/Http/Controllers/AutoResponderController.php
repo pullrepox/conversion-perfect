@@ -12,9 +12,9 @@ class AutoResponderController extends Controller
     public function index()
     {
         $header_data = [
-            'main_name' => 'AutoResponders',
+            'main_name' => 'Autoresponders',
             'parent_data' => [
-                ['parent_name' => 'Overlay', 'parent_url' => '']
+                ['parent_name' => 'Settings', 'parent_url' => '']
             ],
             'button_show' => true,
             'button_data' => [
@@ -34,7 +34,7 @@ class AutoResponderController extends Controller
         $header_data = [
             'main_name' => ' New Autoresponder',
             'parent_data' => [
-                ['parent_name' => 'Overlay', 'parent_url' => ''],
+                ['parent_name' => 'Settings', 'parent_url' => ''],
                 ['parent_name' => 'Integration', 'parent_url' => secure_redirect(route('autoresponder.index'))],
             ],
             'button_show' => true,
@@ -61,6 +61,8 @@ class AutoResponderController extends Controller
             return $this->activeCampaign($data, $responder);
         } else if ($responder->title === 'mailerlite'){
             return $this->mailerLite($data, $responder);
+        } else if ($responder->title === 'getresponse'){
+            return $this->getresponse($data, $responder);
         }
     }
 
@@ -161,14 +163,14 @@ class AutoResponderController extends Controller
 
     }
 
-    public function sendy($data, $responder)
+    public function getresponse($data, $responder)
     {
         $client = new \GuzzleHttp\Client();
         try{
-            $response = $client->request('POST', $responder->base_url, [
-                'email' => $data['email'],
-                'list' => 2,
-                'api_key' => $data['api_key'],
+            $response = $client->request('GET', $responder->base_url, [
+                'headers' => [
+                 'X-Auth-Token' => 'api-key ' . $data['api_key']
+                ]
             ]);
             return [
                 'type' => 'success',
@@ -204,7 +206,7 @@ class AutoResponderController extends Controller
     {
         $integration = Integration::findOrFail($id);
         $header_data = [
-            'main_name' => 'Edit Auto-Responder',
+            'main_name' => 'Edit Autoresponder',
             'parent_data' => [
                 ['parent_name' => 'Overlay', 'parent_url' => ''],
                 ['parent_name' => 'Bars', 'parent_url' => secure_redirect(route('autoresponder.index'))],

@@ -32,13 +32,13 @@
                             <div class="col-md-4" id="auto-responder">
                                 <div class="form-group">
                                     <label class="form-control-label ml-1" for="auto-responder">
-                                        Autoresponders
+                                        Provider
                                     </label>
                                     <select data-toggle="select" class="form-control" name="responder_id" id="responder_id">
-                                        <option value="" selected disabled>Select Autoresponder Provider</option>
+                                        <option value="" selected disabled>Select Provider</option>
                                         @foreach($responders as $list)
                                             <option {{'selected' ? isset($integration) && $integration->responder_id === $list->id : old('responder_id') === $list->id}}
-                                                    value="{{$list->id}}">{{$list->title}}</option>
+                                                    value="{{$list->id}}">{{ucfirst($list->title)}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -146,14 +146,21 @@
     <script>
         $('#responder_id').select2({
         });
+        const capitalize = (s) => {
+            if (typeof s !== 'string') return ''
+            return s.charAt(0).toUpperCase() + s.slice(1)
+        }
+
     </script>
+    {{--edit--}}
     @if(!$flag)
         <script>
             $(function () {
                 var responder_id =  {!! json_encode($integration->responder->id) !!};
                 var responder =  {!! json_encode($integration->responder) !!};
-                $('#responder_id').val(responder_id);
-                adjustChanges(responder.title);
+                console.log(responder_id);
+                $('#responder_id').select2('val',responder_id.toString());
+                adjustChanges(capitalize(responder.title));
             })
         </script>
     @else
@@ -162,7 +169,7 @@
                 var data = {!! json_encode(old()) !!};
                 var responder = $( "#responder_id  option[value="+data.responder_id+"]" ).text();
                 if (responder !== ''){
-                    $('#responder_id').val(data.responder_id);
+                    $('#responder_id').select2('val',data.responder_id);
                     adjustChanges(responder);
                 }
                 $('#responder_id').change(function () {
@@ -178,22 +185,25 @@
     <script>
         function adjustChanges(value)
         {
-            if (value === 'sendlane'){
+            if (value === 'Sendlane'){
                 $('#friendly-name').show();
                 $('#api-key').show();
                 $('#hash').show();
-            } else if (value === 'mailchimp'){
+            } else if (value === 'Mailchimp'){
                 $('#friendly-name').show();
                 $('#api-key').show();
-            } else if (value === 'activecampaign'){
-                $('#friendly-name').show();
-                $('#url').show();
-                $('#api-key').show();
-            } else if (value === 'sendy'){
+            } else if (value === 'Activecampaign'){
                 $('#friendly-name').show();
                 $('#url').show();
                 $('#api-key').show();
-            } else if (value === 'mailerlite'){
+            } else if (value === 'Sendy'){
+                $('#friendly-name').show();
+                $('#url').show();
+                $('#api-key').show();
+            } else if (value === 'Mailerlite'){
+                $('#friendly-name').show();
+                $('#api-key').show();
+            }else if (value === 'Getresponse'){
                 $('#friendly-name').show();
                 $('#api-key').show();
             }

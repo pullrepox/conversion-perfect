@@ -12,7 +12,7 @@
                         <!-- Card header -->
                         <div class="card-header border-0">
                             <div class="row">
-                                <h3 class="mb-0 col">Auto Responders</h3>
+                                <h3 class="mb-0 col">Autoresponders</h3>
                                 <div class="col text-right">
                                     <a href="{{ secure_redirect(route('autoresponder.create')) }}" class="btn btn-success btn-sm text-capitalize">New AutoResponder</a>
                                 </div>
