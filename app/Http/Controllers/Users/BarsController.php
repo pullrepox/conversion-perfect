@@ -162,6 +162,7 @@ class BarsController extends Controller
         $bar->delay_in_seconds = $bar->delay_in_seconds ? $bar->delay_in_seconds : 3;
         $bar->scroll_point_percent = $bar->scroll_point_percent ? $bar->scroll_point_percent : 10;
         
+        $bar->countdown_timezone = is_null($bar->countdown_timezone) ? 'Canada/Pacific' : $bar->countdown_timezone;
         $bar->countdown_end_date = $bar->countdown_end_date != '0000-00-00' ? date('m/d/Y', strtotime($bar->countdown_end_date)) : date('m/d/Y');
         
         $flag = false;

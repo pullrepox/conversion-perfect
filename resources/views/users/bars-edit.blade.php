@@ -230,7 +230,7 @@
                     countdown_format: "{{ $flag ? 'dd' : (old('countdown_format') ? old('countdown_format') : $bar->countdown_format) }}",
                     countdown_end_date: "{{ $flag ? date('Y-m-d', strtotime('+30 days')) : (old('countdown_end_date') ? old('countdown_end_date') : $bar->countdown_end_date) }}",
                     countdown_end_time: "{{ $flag ? '00:00:00' : (old('countdown_end_time') ? old('countdown_end_time') : $bar->countdown_end_time) }}",
-                    countdown_timezone: "{{ $flag ? config('app.timezone') : (old('countdown_timezone') ? old('countdown_timezone') : $bar->countdown_timezone) }}",
+                    countdown_timezone: "{{ $flag ? 'Canada/PacificA' : (old('countdown_timezone') ? old('countdown_timezone') : $bar->countdown_timezone) }}",
                     countdown_days: "{{ $flag ? 0 : (old('countdown_days') ? old('countdown_days') : $bar->countdown_days) }}",
                     countdown_hours: "{{ $flag ? 0 : (old('countdown_hours') ? old('countdown_hours') : $bar->countdown_hours) }}",
                     countdown_minutes: "{{ $flag ? 0 : (old('countdown_minutes') ? old('countdown_minutes') : $bar->countdown_minutes) }}",
