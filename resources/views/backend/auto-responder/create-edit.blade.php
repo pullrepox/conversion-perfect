@@ -203,7 +203,13 @@
             } else if (value === 'Mailerlite'){
                 $('#friendly-name').show();
                 $('#api-key').show();
-            }else if (value === 'Getresponse'){
+            } else if (value === 'Getresponse'){
+                $('#friendly-name').show();
+                $('#api-key').show();
+            } else if (value === 'Sendinblue'){
+                $('#friendly-name').show();
+                $('#api-key').show();
+            } else if (value === 'Campaignmonitor'){
                 $('#friendly-name').show();
                 $('#api-key').show();
             }

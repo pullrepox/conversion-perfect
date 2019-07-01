@@ -62,7 +62,13 @@ class AutoResponderController extends Controller
         } else if ($responder->title === 'mailerlite'){
             return $this->mailerLite($data, $responder);
         } else if ($responder->title === 'getresponse'){
-            return $this->getresponse($data, $responder);
+            return $this->getResponse($data, $responder);
+        } else if ($responder->title === 'sendinblue'){
+            return $this->sendInBlue($data, $responder);
+        }else if ($responder->title === 'sendinblue'){
+            return $this->sendInBlue($data, $responder);
+        } else if ($responder->title === 'campaignmonitor'){
+            return $this->campaignMonitor($data, $responder);
         }
     }
 
@@ -163,7 +169,7 @@ class AutoResponderController extends Controller
 
     }
 
-    public function getresponse($data, $responder)
+    public function getResponse($data, $responder)
     {
         $client = new \GuzzleHttp\Client();
         try{
@@ -176,6 +182,54 @@ class AutoResponderController extends Controller
                 'type' => 'success',
                 'message' => null,
             ];
+        } catch (\Exception $e){
+            return [
+                'type' => 'error',
+                'message' => 'Unauthorized API-KEY'
+            ];
+        }
+    }
+
+    public function sendInBlue($data, $responder)
+    {
+        $client = new \GuzzleHttp\Client();
+        try{
+            $response = $client->request('GET', $responder->base_url, [
+                'headers' => [
+                 'Content-Type' => 'application/json',
+                 'api-key'      => $data['api_key']
+                ]
+            ]);
+            return [
+                'type' => 'success',
+                'message' => null,
+            ];
+        } catch (\Exception $e){
+            return [
+                'type' => 'error',
+                'message' => 'Unauthorized API-KEY'
+            ];
+        }
+    }
+
+    public function campaignMonitor($data, $responder)
+    {
+        $client = new \GuzzleHttp\Client();
+        try{
+            $response = $client->request('GET', $responder->base_url, [
+                'headers' => [
+                 'Content-Type'     => 'application/json',
+                    'Authorization' => 'Basic ' . base64_encode($data['api_key'])
+                ]
+            ]);
+            $result = json_decode($response->getBody()->getContents());
+            if (isset($result) && isset($result[0])){
+                return [
+                    'type' => 'success',
+                    'message' => null,
+                ];
+            }
+
         } catch (\Exception $e){
             return [
                 'type' => 'error',
