@@ -60,7 +60,7 @@ new Vue({
                 countdown_expiration_text: '', countdown_expiration_url: ''
             },
             overlay: {
-                custom_link: 0, custom_link_text: '', meta_title: '', meta_description: '', meta_keywords: ''
+                third_party_url: '', custom_link: 0, custom_link_text: '', meta_title: '', meta_description: '', meta_keywords: ''
             },
             autoresponder: {},
             opt_in: {},
@@ -93,7 +93,7 @@ new Vue({
                 countdown_expiration_text: '', countdown_expiration_url: ''
             },
             overlay: {
-                custom_link: 0, custom_link_text: '', meta_title: '', meta_description: '', meta_keywords: ''
+                third_party_url: '', custom_link: 0, custom_link_text: '', meta_title: '', meta_description: '', meta_keywords: ''
             },
             autoresponder: {},
             opt_in: {},
@@ -133,16 +133,16 @@ new Vue({
         this.model.content.video_code = this.decodeHTML(this.model.content.video_code);
         $('[data-toggle="tags"]').each(function () {
             $(this).val(vm.model[$(this).data('parent')][$(this).attr('id')]);
-        
+            
             $(this).tagsinput({
                 tagClass: 'badge badge-primary'
             });
-        
+            
             $(this).on('itemAdded', function () {
                 vm.model[$(this).data('parent')][$(this).attr('id')] = $(this).val();
                 vm.showSaveBtn($(this).data('parent'));
             });
-        
+            
             $(this).on('itemRemoved', function () {
                 vm.model[$(this).data('parent')][$(this).attr('id')] = $(this).val();
                 vm.showSaveBtn($(this).data('parent'));
@@ -515,6 +515,7 @@ new Vue({
                 case 'playe':
                 case 'player':
                 case 'player.':
+                case '':
                 case 'w':
                 case 'ww':
                 case 'www':

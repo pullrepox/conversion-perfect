@@ -283,6 +283,7 @@ class BarsController extends Controller
         }
         
         if ($request->input('opt_overlay') == 'true') {
+            $rules['third_party_url'] = 'required';
             $rules['custom_link_text'] = 'required';
         }
         

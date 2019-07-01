@@ -138,6 +138,7 @@ class BarOptionsController extends Controller
         if ($opt_key == 'overlay') {
             $bar->opt_overlay = 1;
             $rules['custom_link_text'] = 'required';
+            $rules['third_party_url'] = 'required';
         }
         
         $validate = Validator::make($request->all(), $rules);
