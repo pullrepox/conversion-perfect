@@ -147,24 +147,26 @@ class BarsController extends Controller
         $bar->headline = !is_null(trim($bar->headline)) && !empty(trim($bar->headline)) ? addslashes(stripslashes($bar->headline)) : json_encode([['attributes' => [], 'insert' => 'Your Headline']]);
         
         $bar->sub_headline = !is_null(trim($bar->sub_headline)) && !empty(trim($bar->sub_headline)) ? addslashes(stripslashes($bar->sub_headline)) : json_encode([['attributes' => [], 'insert' => '']]);
-        $bar->sub_headline_color = is_null($bar->sub_headline_color) ? '#FFFFFF' : $bar->sub_headline_color;
+        $bar->sub_headline_color = (is_null($bar->sub_headline_color) || $bar->sub_headline_color == '') ? '#FFFFFF' : $bar->sub_headline_color;
         $bar->video_auto_play = $bar->video_auto_play ? true : false;
         
         $bar->drop_shadow = $bar->drop_shadow ? true : false;
         $bar->close_button = $bar->close_button ? true : false;
         $bar->background_gradient = $bar->background_gradient ? true : false;
-        $bar->gradient_end_color = is_null($bar->gradient_end_color) ? '#3BAF85' : $bar->gradient_end_color;
+        $bar->gradient_end_color = (is_null($bar->gradient_end_color) || $bar->gradient_end_color == '') ? '#3BAF85' : $bar->gradient_end_color;
         
-        $bar->button_label = is_null($bar->button_label) ? 'Click Here' : $bar->button_label;
-        $bar->button_background_color = is_null($bar->button_background_color) ? '#515f7f' : $bar->button_background_color;
-        $bar->button_text_color = is_null($bar->button_text_color) ? '#FFFFFF' : $bar->button_text_color;
+        $bar->button_label = (is_null($bar->button_label) || $bar->button_label == '') ? 'Click Here' : $bar->button_label;
+        $bar->button_background_color = (is_null($bar->button_background_color) || $bar->button_background_color == '') ? '#515f7f' : $bar->button_background_color;
+        $bar->button_text_color = (is_null($bar->button_text_color) || $bar->button_text_color == '') ? '#FFFFFF' : $bar->button_text_color;
         $bar->button_open_new = $bar->button_open_new ? true : false;
         $bar->delay_in_seconds = $bar->delay_in_seconds ? $bar->delay_in_seconds : 3;
         $bar->scroll_point_percent = $bar->scroll_point_percent ? $bar->scroll_point_percent : 10;
         
-        $bar->countdown_timezone = is_null($bar->countdown_timezone) ? 'Canada/Pacific' : $bar->countdown_timezone;
+        $bar->countdown_timezone = (is_null($bar->countdown_timezone) || $bar->countdown_timezone == '') ? 'Canada/Pacific' : $bar->countdown_timezone;
         $bar->countdown_end_date = $bar->countdown_end_date != '0000-00-00' ? date('m/d/Y', strtotime($bar->countdown_end_date)) : date('m/d/Y');
         
+        $bar->custom_link_text = (is_null($bar->custom_link_text) || $bar->custom_link_text == '') ? quickRandom(6) : $bar->custom_link_text;
+
         $flag = false;
         $form_action = secure_redirect(route('bars.update', ['bar' => $bar->id]));
         
@@ -238,7 +240,6 @@ class BarsController extends Controller
         }
         
         if ($request->input('opt_content') == 'true') {
-//            $rules['sub_headline'] = 'required';
             if ($request->input('video_type') != 'none') {
                 if ($request->input('video_type') == 'youtube') {
                     $rules['content_youtube_url'] = 'required|url';
@@ -279,6 +280,10 @@ class BarsController extends Controller
                 $rules['countdown_hours'] = 'numeric|min:0|max:23';
                 $rules['countdown_minutes'] = 'numeric|min:0|max:59';
             }
+        }
+        
+        if ($request->input('opt_overlay') == 'true') {
+            $rules['custom_link_text'] = 'required';
         }
         
         $this->validate($request, $rules);

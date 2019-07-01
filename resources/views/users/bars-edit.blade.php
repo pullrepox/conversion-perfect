@@ -139,6 +139,7 @@
                     @include('users.bars-partials.bars-appearance')
                     @include('users.bars-partials.bars-button')
                     @include('users.bars-partials.bars-countdown')
+                    @include('users.bars-partials.bars-overlay')
                 @endif
             </form>
             {{-- Delete Options Modal Confirm --}}
@@ -240,7 +241,13 @@
                     countdown_expiration_text: "{{ $flag ? '' : (old('countdown_expiration_text') ? old('countdown_expiration_text') : $bar->countdown_expiration_text) }}",
                     countdown_expiration_url: "{{ $flag ? '' : (old('countdown_expiration_url') ? old('countdown_expiration_url') : $bar->countdown_expiration_url) }}",
                 },
-                overlay: {},
+                overlay: {
+                    custom_link: "{{ $flag ? 0 : (old('custom_link') ? old('custom_link') : $bar->custom_link) }}",
+                    custom_link_text: "{{ $flag ? quickRandom(6) : (old('custom_link_text') ? old('custom_link_text') : $bar->custom_link_text) }}",
+                    meta_title: "{{ $flag ? '' : (old('meta_title') ? old('meta_title') : $bar->meta_title) }}",
+                    meta_description: "{{ $flag ? '' : (old('meta_description') ? old('meta_description') : $bar->meta_description) }}",
+                    meta_keywords: "{{ $flag ? '' : (old('meta_keywords') ? old('meta_keywords') : $bar->meta_keywords) }}",
+                },
                 autoresponder: {},
                 opt_in: {},
                 custom_text: {}

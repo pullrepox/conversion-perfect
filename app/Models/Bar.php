@@ -15,7 +15,8 @@ class Bar extends Model
         'button_open_new',
         'opt_countdown', 'countdown', 'countdown_location', 'countdown_format', 'countdown_end_date', 'countdown_end_time', 'countdown_timezone', 'countdown_days', 'countdown_hours',
         'countdown_minutes', 'countdown_background_color', 'countdown_text_color', 'countdown_on_expiry', 'countdown_expiration_text', 'countdown_expiration_url',
-        'opt_overlay', 'opt_opt_in', 'opt_custom_text', 'html',
+        'opt_overlay', 'custom_link', 'custom_link_text', 'meta_title', 'meta_description', 'meta_keywords',
+        'opt_opt_in', 'opt_custom_text', 'html',
     ];
     
     public function user()
