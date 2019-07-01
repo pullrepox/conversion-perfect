@@ -11,6 +11,9 @@ class BarsComposer
     {
         $timezone_list = Utils::timeZones();
     
+        $custom_links = config('site.custom_link');
+        
         $view->with('timezone_list', $timezone_list);
+        $view->with('custom_links', $custom_links);
     }
 }

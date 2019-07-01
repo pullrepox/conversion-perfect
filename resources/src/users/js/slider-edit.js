@@ -59,7 +59,9 @@ new Vue({
                 countdown_days: 0, countdown_hours: 0, countdown_minutes: 0, countdown_background_color: '#3BAF85', countdown_text_color: '#FFFFFF', countdown_on_expiry: 'hide_bar',
                 countdown_expiration_text: '', countdown_expiration_url: ''
             },
-            overlay: {},
+            overlay: {
+                custom_link: 0, custom_link_text: '', meta_title: '', meta_description: '', meta_keywords: ''
+            },
             autoresponder: {},
             opt_in: {},
             custom_text: {}
@@ -90,7 +92,9 @@ new Vue({
                 countdown_days: 0, countdown_hours: 0, countdown_minutes: 0, countdown_background_color: '#3BAF85', countdown_text_color: '#FFFFFF', countdown_on_expiry: 'hide_bar',
                 countdown_expiration_text: '', countdown_expiration_url: ''
             },
-            overlay: {},
+            overlay: {
+                custom_link: 0, custom_link_text: '', meta_title: '', meta_description: '', meta_keywords: ''
+            },
             autoresponder: {},
             opt_in: {},
             custom_text: {}
@@ -127,6 +131,23 @@ new Vue({
         this.initDatePicker();
         this.initQuillEditor();
         this.model.content.video_code = this.decodeHTML(this.model.content.video_code);
+        $('[data-toggle="tags"]').each(function () {
+            $(this).val(vm.model[$(this).data('parent')][$(this).attr('id')]);
+        
+            $(this).tagsinput({
+                tagClass: 'badge badge-primary'
+            });
+        
+            $(this).on('itemAdded', function () {
+                vm.model[$(this).data('parent')][$(this).attr('id')] = $(this).val();
+                vm.showSaveBtn($(this).data('parent'));
+            });
+        
+            $(this).on('itemRemoved', function () {
+                vm.model[$(this).data('parent')][$(this).attr('id')] = $(this).val();
+                vm.showSaveBtn($(this).data('parent'));
+            });
+        });
     },
     methods: {
         initSelect2() {

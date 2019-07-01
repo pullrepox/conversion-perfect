@@ -92,7 +92,6 @@ class BarOptionsController extends Controller
         
         if ($opt_key == 'content') {
             $bar->opt_content = 1;
-//            $rules['sub_headline'] = 'required';
             if ($request->input('video_type') != 'none') {
                 if ($request->input('video_type') == 'youtube') {
                     $rules['content_youtube_url'] = 'required|url';
@@ -134,6 +133,11 @@ class BarOptionsController extends Controller
             if ($request->input('countdown') == 'evergreen') {
                 $rules['countdown_days'] = 'min:0|max:365';
             }
+        }
+    
+        if ($opt_key == 'overlay') {
+            $bar->opt_overlay = 1;
+            $rules['custom_link_text'] = 'required';
         }
         
         $validate = Validator::make($request->all(), $rules);

@@ -12,5 +12,6 @@ return [
     'billing_flag'     => 0,
     'link_check_min'   => 10,
     'db_prefix'        => '',
+    'custom_link'      => [0 => 'https://username.cnvp.me/', -1 => 'https://username.cnvp.in/'],
     'home_url'         => (env('APP_ENV') == 'dev' ? 'http://app.conversionperfectdev.test' : 'https://conversionperfect.com'),
 ];
