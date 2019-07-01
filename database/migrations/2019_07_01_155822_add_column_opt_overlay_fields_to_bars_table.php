@@ -15,10 +15,10 @@ class AddColumnOptOverlayFieldsToBarsTable extends Migration
     {
         Schema::table('bars', function (Blueprint $table) {
             $table->tinyInteger('custom_link')->after('opt_overlay');
-            $table->string('custom_link_text')->after('custom_link');
-            $table->string('meta_title')->after('custom_link_text');
-            $table->text('meta_description')->after('meta_title');
-            $table->text('meta_keywords')->after('meta_description');
+            $table->string('custom_link_text')->after('custom_link')->nullable();
+            $table->string('meta_title')->after('custom_link_text')->nullable();
+            $table->text('meta_description')->after('meta_title')->nullable();
+            $table->text('meta_keywords')->after('meta_description')->nullable();
         });
     }
     
