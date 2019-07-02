@@ -39,7 +39,7 @@ class BarOptionsController extends Controller
         $rules = [];
         
         $params = $request->all();
-        $radio_keys = ['video_auto_play', 'drop_shadow', 'close_button', 'background_gradient', 'button_open_new'];
+        $radio_keys = ['video_auto_play', 'drop_shadow', 'close_button', 'background_gradient', 'button_open_new', 'opt_in_video_auto_play'];
         foreach ($params as $key => $val) {
             if (false !== array_search($key, $radio_keys)) {
                 $params[$key] = $val ? 1 : 0;
