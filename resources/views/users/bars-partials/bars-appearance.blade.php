@@ -95,11 +95,6 @@
                         </div>
                         <div class="col-md-2 col-sm-3 pl-0 mt--1">@{{ model.appearance.gradient_angle }}&deg;</div>
                         <input type="hidden" name="gradient_angle" v-model="model.appearance.gradient_angle"/>
-                        @error('gradient_angle')
-                        <span class="invalid-feedback" style="display: block;" role="alert">
-                            {{ $message }}
-                        </span>
-                        @enderror
                     </div>
                 </div>
             </div>

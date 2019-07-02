@@ -297,11 +297,6 @@ class BarsController extends Controller
             if ($request->input('countdown') == 'calendar') {
                 $rules['countdown_end_date'] = 'date_format:m/d/Y';
             }
-            if ($request->input('countdown') == 'evergreen') {
-                $rules['countdown_days'] = 'numeric|min:0';
-                $rules['countdown_hours'] = 'numeric|min:0|max:23';
-                $rules['countdown_minutes'] = 'numeric|min:0|max:59';
-            }
         }
         
         if ($request->input('opt_overlay') == 'true') {
