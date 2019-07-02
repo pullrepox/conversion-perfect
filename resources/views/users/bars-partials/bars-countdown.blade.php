@@ -156,7 +156,7 @@
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label class="form-control-label ml-1" for="countdown_text_color">&nbsp;</label>
+                    <label class="form-control-label ml-1">&nbsp;</label>
                     <div class="w-100">
                         <button type="button" class="btn btn-light btn-sm" @click="matchMainBar">Match Main Bar</button>
                     </div>

@@ -188,8 +188,13 @@ class BarsController extends Controller
                 $re = $re_data['message'];
             }
         }
-        
         $list_array = json_encode($re);
+        
+        $bar->opt_in_video_auto_play = $bar->opt_in_video_auto_play ? true : false;
+        $bar->call_to_action = !is_null(trim($bar->call_to_action)) && !empty(trim($bar->call_to_action)) ?
+            addslashes(stripslashes($bar->call_to_action)) : json_encode([['attributes' => [], 'insert' => 'Call To Action Text Here']]);
+        $bar->subscribe_text = !is_null(trim($bar->subscribe_text)) && !empty(trim($bar->subscribe_text)) ?
+            addslashes(stripslashes($bar->subscribe_text)) : json_encode([['attributes' => [], 'insert' => 'Enter Your Name And Email Below...']]);
         
         $flag = false;
         $form_action = secure_redirect(route('bars.update', ['bar' => $bar->id]));
@@ -226,22 +231,22 @@ class BarsController extends Controller
                 if (is_null($val)) $params[$key] = '';
             }
             
-            if ($key == 'headline' || $key == 'sub_headline') {
+            if ($key == 'headline' || $key == 'sub_headline' || $key == 'call_to_action' || $key == 'subscribe_text') {
                 $upd_headline = [[
-                    'insert' => ($key == 'headline' ? 'Your Headline' : '')
+                    'insert' => ($key == 'headline' ? 'Your Headline' : ($key == 'subscribe_text' ? 'Enter Your Name And Email Below...' : ''))
                 ]];
                 for ($i = 0; $i < count($val); $i++) {
                     $upd_headline[$i]['insert'] = addslashes($val[$i] . ($i < (count($val) - 1) ? ' ' : ''));
-                    if (!is_null($request->input('headline_bold')[$i])) {
+                    if (!is_null($request->input($key. '_bold')[$i])) {
                         $upd_headline[$i]['attributes']['bold'] = true;
                     }
-                    if (!is_null($request->input('headline_italic')[$i])) {
+                    if (!is_null($request->input($key. '_italic')[$i])) {
                         $upd_headline[$i]['attributes']['italic'] = true;
                     }
-                    if (!is_null($request->input('headline_underline')[$i])) {
+                    if (!is_null($request->input($key. '_underline')[$i])) {
                         $upd_headline[$i]['attributes']['underline'] = true;
                     }
-                    if (!is_null($request->input('headline_strike')[$i])) {
+                    if (!is_null($request->input($key. '_strike')[$i])) {
                         $upd_headline[$i]['attributes']['strike'] = true;
                     }
                 }
@@ -321,15 +326,18 @@ class BarsController extends Controller
         }
     
         if ($request->input('opt_opt_in') == 'true') {
-            if ($request->input('opt_in_type') != 'none' && $request->input('opt_in_type') != 'standard') {
-                if ($request->input('opt_in_type') == 'img-online') {
-                    $rules['image_url'] = 'required|url';
-                } else if ($request->input('opt_in_type') == 'vid-youtube') {
-                    $rules['opt_in_youtube_url'] = 'required|url';
-                } else if ($request->input('opt_in_type') == 'vid-vimeo') {
-                    $rules['opt_in_vimeo_url'] = 'required|url';
-                } else if ($request->input('opt_in_type') == 'vid-other') {
-                    $rules['opt_in_video_code'] = 'required';
+            if ($request->input('opt_in_type') != 'none') {
+                $rules['call_to_action'] = 'required';
+                if ($request->input('opt_in_type') != 'standard') {
+                    if ($request->input('opt_in_type') == 'img-online') {
+                        $rules['image_url'] = 'required|url';
+                    } else if ($request->input('opt_in_type') == 'vid-youtube') {
+                        $rules['opt_in_youtube_url'] = 'required|url';
+                    } else if ($request->input('opt_in_type') == 'vid-vimeo') {
+                        $rules['opt_in_vimeo_url'] = 'required|url';
+                    } else if ($request->input('opt_in_type') == 'vid-other') {
+                        $rules['opt_in_video_code'] = 'required';
+                    }
                 }
             }
         }

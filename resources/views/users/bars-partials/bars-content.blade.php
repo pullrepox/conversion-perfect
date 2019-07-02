@@ -102,7 +102,7 @@
                     @enderror
                 </div>
             </div>
-            <div class="col-md-4" v-show="model.content.video_type === 'other'">
+            <div class="col-md-4" v-if="model.content.video_type === 'other'">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="video_code">Video Embed Code</label>
                     <textarea id="video_code" name="video_code" v-model="model.content.video_code" data-parent="content"

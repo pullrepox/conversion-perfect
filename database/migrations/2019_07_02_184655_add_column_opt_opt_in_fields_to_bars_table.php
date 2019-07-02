@@ -22,7 +22,7 @@ class AddColumnOptOptInFieldsToBarsTable extends Migration
             $table->boolean('opt_in_video_auto_play')->after('opt_in_video_code');
             $table->string('image_url')->nullable()->after('opt_in_video_auto_play');
             $table->string('image_upload')->nullable()->after('image_url');
-            $table->string('call_to_action')->default('Your Opt-In Call To Action Will Go Here!')->after('image_upload');
+            $table->string('call_to_action')->default('Call To Action Text Here')->after('image_upload');
             $table->string('subscribe_text')->default('Enter Your Name And Email Below...')->after('call_to_action');
             $table->string('subscribe_text_color', 30)->default('#ffffff')->after('subscribe_text');
             $table->enum('opt_in_button_type', ['match_main_button', 'square', 'rounded'])->default('match_main_button')->after('subscribe_text_color');

@@ -47,9 +47,9 @@ class BarOptionsController extends Controller
                 if (is_null($val)) $params[$key] = '';
             }
             
-            if ($key == 'sub_headline') {
+            if ($key == 'sub_headline' || $key == 'call_to_action' || $key == 'subscribe_text') {
                 $upd_sub_headline = [[
-                    'insert' => ''
+                    'insert' => ($key == 'subscribe_text' ? 'Enter Your Name And Email Below...' : '')
                 ]];
                 for ($i = 0; $i < count($val); $i++) {
                     if (trim($val[$i]['insert']) == '' || is_null($val[$i]['insert'])) {
@@ -144,6 +144,7 @@ class BarOptionsController extends Controller
         }
     
         if ($opt_key == 'autoresponder') {
+            $bar->opt_autoresponder = 1;
             if ($request->input('integration_type') != 'none') {
                 if ($request->input('integration_type') != 'conversion_perfect') {
                     $rules['list'] = 'required';
@@ -153,6 +154,24 @@ class BarOptionsController extends Controller
                     $rules['redirect_url'] = 'required';
                 } else {
                     $rules['message'] = 'required';
+                }
+            }
+        }
+    
+        if ($opt_key == 'opt_in') {
+            $bar->opt_opt_in = 1;
+            if ($request->input('opt_in_type') != 'none') {
+                $rules['call_to_action'] = 'required';
+                if ($request->input('opt_in_type') != 'standard') {
+                    if ($request->input('opt_in_type') == 'img-online') {
+                        $rules['image_url'] = 'required|url';
+                    } else if ($request->input('opt_in_type') == 'vid-youtube') {
+                        $rules['opt_in_youtube_url'] = 'required|url';
+                    } else if ($request->input('opt_in_type') == 'vid-vimeo') {
+                        $rules['opt_in_vimeo_url'] = 'required|url';
+                    } else if ($request->input('opt_in_type') == 'vid-other') {
+                        $rules['opt_in_video_code'] = 'required';
+                    }
                 }
             }
         }
