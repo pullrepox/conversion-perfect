@@ -12,7 +12,10 @@ class BarsComposer
     {
         $timezone_list = Utils::timeZones();
         
-        $custom_links = config('site.custom_link');
+        $custom_links = [
+            0 => 'https://' . auth()->user()->subdomain . '.cnvp.me/',
+            -1 => 'http://' . auth()->user()->subdomain . '.cnvp.in/'
+        ];
     
         $responder_list = [
             'none' => 'None'
