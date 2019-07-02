@@ -40,8 +40,8 @@
                             v-model="model.countdown.countdown_location" data-parent="countdown">
                         <option value="left">Left</option>
                         <option value="right">Right</option>
-                        <option value="left_ege">Left Ege</option>
-                        <option value="right_ege">Right Ege</option>
+                        <option value="left_edge">Left Edge</option>
+                        <option value="right_edge">Right Edge</option>
                         <option value="below_text">Below Text</option>
                     </select>
                 </div>
@@ -156,9 +156,9 @@
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label class="form-control-label ml-1" for="countdown_text_color">Match Main Bar</label>
+                    <label class="form-control-label ml-1" for="countdown_text_color">&nbsp;</label>
                     <div class="w-100">
-                        <button type="button" class="btn btn-light" @click="matchMainBar"></button>
+                        <button type="button" class="btn btn-light btn-sm" @click="matchMainBar">Match Main Bar</button>
                     </div>
                 </div>
             </div>

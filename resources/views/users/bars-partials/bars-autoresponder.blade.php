@@ -22,7 +22,7 @@
         <div class="form-row">
             <div class="col-md-4">
                 <div class="form-group">
-                    <label class="form-control-label ml-1" for="integration_type">Autoresponder</label>
+                    <label class="form-control-label ml-1" for="integration_type">Autoresponder Service</label>
                     <select class="form-control" data-toggle="select" id="integration_type" name="integration_type" required
                             @keydown="tabKeyPress('#list', true, $event)" @keypress="tabKeyPress('#list', true, $event)"
                             v-model="model.autoresponder.integration_type" data-parent="autoresponder">
@@ -50,23 +50,29 @@
                     <select class="form-control" data-toggle="select" id="after_submit" name="after_submit" required
                             v-model="model.autoresponder.after_submit" data-parent="autoresponder">
                         <option value="show_message">Show Message</option>
+                        <option value="show_message_hide_bar">Show Message and Hide Bar</option>
                         <option value="redirect">Redirect</option>
                     </select>
                 </div>
             </div>
-            <div class="col-md-4" v-show="model.autoresponder.after_submit === 'show_message'">
+            <div class="col-md-4" v-show="model.autoresponder.after_submit !== 'redirect'">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="message">Message</label>
                     <textarea id="message" name="message" v-model="model.autoresponder.message" data-parent="autoresponder"
                               class="form-control" @input="showSaveBtn('autoresponder')" rows="1"></textarea>
                 </div>
             </div>
-            <div class="col-md-4" v-show="model.autoresponder.after_submit === 'show_message'">
+            <div class="col-md-4" v-show="model.autoresponder.after_submit === 'show_message_hide_bar'">
                 <div class="form-group">
-                    <label class="form-control-label ml-1" for="autohide_delay_seconds">Autohide Delay In Seconds</label>
-                    <input type="number" id="autohide_delay_seconds" name="autohide_delay_seconds" data-parent="autoresponder"
-                           class="form-control @error('autohide_delay_seconds') is-invalid @enderror"
-                           v-model="model.autoresponder.autohide_delay_seconds" @input="showSaveBtn('autoresponder')"/>
+                    <label class="form-control-label ml-1" for="autohide_delay_seconds">Hide Delay Seconds</label>
+                    <div class="row">
+                        <div class="col-md-10 col-sm-9">
+                            <vue-slider :speed="1" :min="1" :max="10" v-model="model.autoresponder.autohide_delay_seconds" id="autohide_delay_seconds"
+                                        @change="showSaveBtn('autoresponder')"></vue-slider>
+                        </div>
+                        <div class="col-md-2 col-sm-3 pl-0 mt--1">@{{ model.autoresponder.autohide_delay_seconds }}s</div>
+                        <input type="hidden" name="autohide_delay_seconds" v-model="model.autoresponder.autohide_delay_seconds"/>
+                    </div>
                 </div>
             </div>
             <div class="col-md-4" v-show="model.autoresponder.after_submit === 'redirect'">

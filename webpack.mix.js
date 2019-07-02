@@ -60,5 +60,6 @@ if (mix.inProduction()) {
     mix.version();
 } else {
     mix.sourceMaps();
-    mix.browserSync('app.conversionperfectdev.test');
+    // mix.browserSync('app.conversionperfectdev.test');
 }
+mix.browserSync('app.conversionperfectdev.test');
