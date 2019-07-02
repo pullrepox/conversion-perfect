@@ -37,7 +37,6 @@
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="custom_link">Custom Link</label>
                     <select class="form-control" data-toggle="select" id="custom_link" name="custom_link" required
-                            @keydown="tabKeyPress('#custom_link_text', false, $event)" @keypress="tabKeyPress('#custom_link_text', false, $event)"
                             v-model="model.overlay.custom_link" data-parent="overlay">
                         @foreach($custom_links as $c_key => $c_row)
                             <option value="{{ $c_key }}">{{ $c_row }}</option>

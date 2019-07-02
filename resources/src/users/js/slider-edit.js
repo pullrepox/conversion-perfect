@@ -62,7 +62,9 @@ new Vue({
             overlay: {
                 third_party_url: '', custom_link: 0, custom_link_text: '', meta_title: '', meta_description: '', meta_keywords: ''
             },
-            autoresponder: {},
+            autoresponder: {
+                integration_type: 'none', list: '', after_submit: 'show_message', message: '', autohide_delay_seconds: 0, redirect_url: '',
+            },
             opt_in: {},
             custom_text: {}
         },
@@ -95,7 +97,10 @@ new Vue({
             overlay: {
                 third_party_url: '', custom_link: 0, custom_link_text: '', meta_title: '', meta_description: '', meta_keywords: ''
             },
-            autoresponder: {},
+            autoresponder: {
+                integration_type: 'none', list: '', after_submit: 'show_message', message: '', autohide_delay_seconds: 0, redirect_url: '',
+            },
+            auto_responder_list: [{key: '', name: '-- Choose List --'}],
             opt_in: {},
             custom_text: {}
         },
@@ -165,6 +170,9 @@ new Vue({
                         if ($(this).data('parent')) {
                             vm.model[$(this).data('parent')][$(this).attr('id')] = $(this).val();
                             vm.showSaveBtn($(this).data('parent'));
+                            if ($(this).attr('id') === 'integration_type') {
+                                vm.getResponderList();
+                            }
                         } else {
                             vm.model[$(this).attr('id')] = $(this).val();
                         }
@@ -422,6 +430,9 @@ new Vue({
                 }
             });
         },
+        showGetErrorNotify() {
+            this.commonNotification('danger', 'Failed! Please make sure your internet connection or contact to support.');
+        },
         showSaveErrorNotify() {
             this.commonNotification('danger', 'Data save failed! Please make sure your internet connection or inserted data correctly.');
         },
@@ -543,6 +554,34 @@ new Vue({
                         this.model[parent][flag] = this.model[parent][flag].replace('https://vimeo.com', 'https://player.vimeo.com/video');
                     }
                 }
+            }
+        },
+        getResponderList() {
+            this.model.auto_responder_list = [{key: '', name: '-- Choose List --'}];
+            if (this.model.autoresponder.integration_type === 'none') {
+                this.model.autoresponder.list = '';
+            } else if (this.model.autoresponder.integration_type === 'conversion_perfect') {
+                this.model.auto_responder_list = [{key: 'conversion_perfect', name: 'Conversion Perfect'}];
+                this.model.autoresponder.list = '';
+            } else {
+                this.loading = true;
+                axios.get(`/get-responder-lists?responder_id=${this.model.autoresponder.integration_type}`).then((r) => {
+                    this.loading = false;
+                    if (r.data.result === 'success') {
+                        this.model.auto_responder_list = JSON.parse(JSON.stringify(r.data.message));
+                        this.model.autoresponder.list = '';
+                    } else if (r.data.result === 'failure') {
+                        this.model.autoresponder.list = '';
+                        this.commonNotification('danger', r.data.message);
+                    } else {
+                        this.model.autoresponder.list = '';
+                        this.showGetErrorNotify();
+                    }
+                }).catch((e) => {
+                    this.loading = false;
+                    this.model.autoresponder.list = '';
+                    this.showGetErrorNotify();
+                });
             }
         }
     }

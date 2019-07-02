@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\BarsRepository;
+use App\Integration;
 use App\Models\Bar;
 use Illuminate\Http\Request;
 
@@ -49,8 +50,9 @@ class BarsController extends Controller
         
         $flag = true;
         $form_action = secure_redirect(route('bars.store'));
+        $list_array = json_encode([['key' => '', 'name' => '-- Choose List --']]);
         
-        return view('users.bars-edit', compact('header_data', 'flag', 'form_action'));
+        return view('users.bars-edit', compact('header_data', 'flag', 'form_action', 'list_array'));
     }
     
     /**
@@ -124,6 +126,7 @@ class BarsController extends Controller
      *
      * @param \App\Models\Bar $bar
      * @return \Illuminate\Http\Response
+     * @throws
      */
     public function edit(Bar $bar)
     {
@@ -166,11 +169,32 @@ class BarsController extends Controller
         $bar->countdown_end_date = $bar->countdown_end_date != '0000-00-00' ? date('m/d/Y', strtotime($bar->countdown_end_date)) : date('m/d/Y');
         
         $bar->custom_link_text = (is_null($bar->custom_link_text) || $bar->custom_link_text == '') ? quickRandom(6) : $bar->custom_link_text;
-
+        
+        $bar->integration_type = (is_null($bar->integration_type) || $bar->integration_type == '') ? 'none' : $bar->integration_type;
+        $bar->after_submit = (is_null($bar->after_submit) || $bar->after_submit == '') ? 'show_message' : $bar->after_submit;
+        
+        $re = [['key' => '', 'name' => '-- Choose List --']];
+        if ($bar->integration_type != 'none' && $bar->integration_type != 'conversion_perfect' && !is_null($bar->list) && $bar->list != '') {
+            $integration = Integration::with('responder')->where('user_id', auth()->user()->id)->where('responder_id', $bar->integration_type)->first();
+            
+            $re_data['result'] = '';
+            if ($integration->responder->title == 'sendlane') {
+                $re_data = $this->barsRepo->getSendlaneList($integration);
+            } else if ($integration->responder->title == 'mailchimp') {
+                $re_data = $this->barsRepo->getMailChimpLists($integration);
+            }
+            
+            if ($re_data['result'] == 'success') {
+                $re = $re_data['message'];
+            }
+        }
+        
+        $list_array = json_encode($re);
+        
         $flag = false;
         $form_action = secure_redirect(route('bars.update', ['bar' => $bar->id]));
         
-        return view('users.bars-edit', compact('header_data', 'flag', 'form_action', 'bar'));
+        return view('users.bars-edit', compact('header_data', 'flag', 'form_action', 'bar', 'list_array'));
     }
     
     /**
@@ -285,6 +309,20 @@ class BarsController extends Controller
         if ($request->input('opt_overlay') == 'true') {
             $rules['third_party_url'] = 'required';
             $rules['custom_link_text'] = 'required';
+        }
+        
+        if ($request->input('opt_autoresponder') == 'true') {
+            if ($request->input('integration_type') != 'none') {
+                if ($request->input('integration_type') != 'conversion_perfect') {
+                    $rules['list'] = 'required';
+                }
+                
+                if ($request->input('after_submit') == 'show_message') {
+                    $rules['message'] = 'required';
+                } else {
+                    $rules['redirect_url'] = 'required';
+                }
+            }
         }
         
         $this->validate($request, $rules);

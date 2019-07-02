@@ -140,6 +140,7 @@
                     @include('users.bars-partials.bars-button')
                     @include('users.bars-partials.bars-countdown')
                     @include('users.bars-partials.bars-overlay')
+                    @include('users.bars-partials.bars-autoresponder')
                 @endif
             </form>
             {{-- Delete Options Modal Confirm --}}
@@ -249,7 +250,15 @@
                     meta_description: "{{ $flag ? '' : (old('meta_description') ? old('meta_description') : $bar->meta_description) }}",
                     meta_keywords: "{{ $flag ? '' : (old('meta_keywords') ? old('meta_keywords') : $bar->meta_keywords) }}",
                 },
-                autoresponder: {},
+                autoresponder: {
+                    integration_type: "{{ $flag ? 'none' : (old('integration_type') ? old('integration_type') : $bar->integration_type) }}",
+                    list: "{{ $flag ? '' : (old('list') ? old('list') : $bar->list) }}",
+                    after_submit: "{{ $flag ? 'show_message' : (old('after_submit') ? old('after_submit') : $bar->after_submit) }}",
+                    message: "{{ $flag ? '' : (old('message') ? old('message') : $bar->message) }}",
+                    autohide_delay_seconds: "{{ $flag ? 0 : (old('autohide_delay_seconds') ? old('autohide_delay_seconds') : $bar->autohide_delay_seconds) }}",
+                    redirect_url: "{{ $flag ? '' : (old('redirect_url') ? old('redirect_url') : $bar->redirect_url) }}",
+                },
+                auto_responder_list: JSON.parse('{!! $list_array !!}'),
                 opt_in: {},
                 custom_text: {}
             }
