@@ -15,6 +15,7 @@ new Vue({
     data: () => ({
         loading: false,
         create_edit: false,
+        changed_status: false,
         bar_option: {
             preview: true, display: false, content: false, appearance: false, button: false, countdown: false, overlay: false, autoresponder: false, opt_in: false, custom_text: false
         },
@@ -51,7 +52,7 @@ new Vue({
                 opacity: 100, drop_shadow: 0, close_button: 0, background_gradient: 0, gradient_end_color: '#3BAF85', gradient_angle: 0, powered_by_position: 'bottom_right',
             },
             button: {
-                button_type: 'none', button_location: 'right', button_label: '', button_background_color: '#515f7f', button_text_color: '#FFFFFF', button_animation: 'none',
+                button_type: 'none', button_location: 'right', button_label: 'Click Here', button_background_color: '#515f7f', button_text_color: '#FFFFFF', button_animation: 'none',
                 button_action: 'hide_bar', button_click_url: '', button_open_new: 0,
             },
             countdown: {
@@ -86,7 +87,7 @@ new Vue({
                 opacity: 100, drop_shadow: null, close_button: null, background_gradient: null, gradient_end_color: '#3BAF85', gradient_angle: 0, powered_by_position: 'bottom_right'
             },
             button: {
-                button_type: 'none', button_location: 'right', button_label: '', button_background_color: '#515f7f', button_text_color: '#FFFFFF', button_animation: 'none',
+                button_type: 'none', button_location: 'right', button_label: 'Click Here', button_background_color: '#515f7f', button_text_color: '#FFFFFF', button_animation: 'none',
                 button_action: 'hide_bar', button_click_url: '', button_open_new: null,
             },
             countdown: {
@@ -167,6 +168,7 @@ new Vue({
                         $('.form-control-label').css('color', '#525f7f');
                         $('label[data-id="' + $(this).attr('id') + '"]').css('color', '#515f7f');
                     }).on('select2:select', function () {
+                        vm.changed_status = true;
                         if ($(this).data('parent')) {
                             vm.model[$(this).data('parent')][$(this).attr('id')] = $(this).val();
                             vm.showSaveBtn($(this).data('parent'));
@@ -298,6 +300,7 @@ new Vue({
                     
                     let limit = 60;
                     quill.on('text-change', function (delta, old, source) {
+                        vm.changed_status = true;
                         if (quill.getLength() > limit) {
                             quill.deleteText(limit, quill.getLength());
                         }
@@ -339,6 +342,7 @@ new Vue({
                     this.model[flag][id] = this.rgbToHex($(`#${id}`).get(0).style['background-color']);
                 }
                 this.showSaveBtn(flag);
+                this.changed_status = true;
             }
         },
         rgbToHex(rgbStr) {
@@ -396,6 +400,7 @@ new Vue({
             });
         },
         showSaveBtn(key) {
+            this.changed_status = true;
             this.show_btn[key] = true;
         },
         saveOption(key) {

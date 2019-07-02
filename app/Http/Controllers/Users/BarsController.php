@@ -168,8 +168,6 @@ class BarsController extends Controller
         $bar->countdown_timezone = (is_null($bar->countdown_timezone) || $bar->countdown_timezone == '') ? 'Canada/Pacific' : $bar->countdown_timezone;
         $bar->countdown_end_date = $bar->countdown_end_date != '0000-00-00' ? date('m/d/Y', strtotime($bar->countdown_end_date)) : date('m/d/Y');
         
-        $bar->custom_link_text = (is_null($bar->custom_link_text) || $bar->custom_link_text == '') ? quickRandom(6) : $bar->custom_link_text;
-        
         $bar->integration_type = (is_null($bar->integration_type) || $bar->integration_type == '') ? 'none' : $bar->integration_type;
         $bar->after_submit = (is_null($bar->after_submit) || $bar->after_submit == '') ? 'show_message' : $bar->after_submit;
         

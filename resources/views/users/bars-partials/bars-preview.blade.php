@@ -263,7 +263,9 @@
                     top: model.appearance.powered_by_position === 'top_left' ? '1px' : 'auto',
                     left: (model.appearance.powered_by_position === 'top_left' || model.appearance.powered_by_position === 'bottom_left') ? '5px' : 'auto'
                     }">
-                    POWERED BY <a style="color:inherit; text-decoration:inherit;text-transform: uppercase;" href="//app.conversionperfect.com" target="_BLANK">{{ config('app.name') }}</a>
+                    POWERED BY <a style="color:inherit; text-decoration:inherit;text-transform: uppercase;" href="{{ config('site.home_url') }}" target="_BLANK">
+                        {{ config('site.full_url') }}
+                    </a>
                 </div>
             </div>
         </div>
