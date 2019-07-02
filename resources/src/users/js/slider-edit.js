@@ -58,61 +58,36 @@ new Vue({
             countdown: {
                 countdown: 'none', countdown_location: 'left', countdown_format: 'dd', countdown_end_date: '0000-00-00', countdown_end_time: '00:00:00', countdown_timezone: 'Canada/Central',
                 countdown_days: 0, countdown_hours: 0, countdown_minutes: 0, countdown_background_color: '', countdown_text_color: '#FFFFFF', countdown_on_expiry: 'hide_bar',
-                countdown_expiration_text: '', countdown_expiration_url: ''
+                countdown_expiration_text: 'Expired!', countdown_expiration_url: ''
             },
             overlay: {
                 third_party_url: '', custom_link: 0, custom_link_text: '', meta_title: '', meta_description: '', meta_keywords: ''
             },
             autoresponder: {
-                integration_type: 'none', list: '', after_submit: 'show_message', message: '', autohide_delay_seconds: 0, redirect_url: '',
+                integration_type: 'none', list: '', after_submit: 'show_message', message: 'Thank You!', autohide_delay_seconds: 3, redirect_url: '',
             },
             opt_in: {},
             custom_text: {}
         },
-        model: {
-            friendly_name: '',
-            position: 'top_sticky',
-            group_id: '0',
-            headline: [{attributes: {}, insert: 'Your Headline'}],
-            headline_color: '#ffffff',
-            background_color: '#3BAF85',
-            display: {
-                show_bar_type: 'immediate', frequency: 'every', delay_in_seconds: 3, scroll_point_percent: 10
-            },
-            content: {
-                sub_headline: [{attributes: {}, insert: ''}], sub_headline_color: '#ffffff', sub_background_color: '',
-                video_type: 'none', content_youtube_url: '', content_vimeo_url: '', video_auto_play: 0, video_code: ''
-            },
-            appearance: {
-                opacity: 100, drop_shadow: null, close_button: null, background_gradient: null, gradient_end_color: '#3BAF85', gradient_angle: 0, powered_by_position: 'bottom_right'
-            },
-            button: {
-                button_type: 'none', button_location: 'right', button_label: 'Click Here', button_background_color: '#515f7f', button_text_color: '#FFFFFF', button_animation: 'none',
-                button_action: 'hide_bar', button_click_url: '', button_open_new: null,
-            },
-            countdown: {
-                countdown: 'none', countdown_location: 'left', countdown_format: 'dd', countdown_end_date: '0000-00-00', countdown_end_time: '00:00:00', countdown_timezone: 'Canada/Central',
-                countdown_days: 0, countdown_hours: 0, countdown_minutes: 0, countdown_background_color: '', countdown_text_color: '#FFFFFF', countdown_on_expiry: 'hide_bar',
-                countdown_expiration_text: '', countdown_expiration_url: ''
-            },
-            overlay: {
-                third_party_url: '', custom_link: 0, custom_link_text: '', meta_title: '', meta_description: '', meta_keywords: ''
-            },
-            autoresponder: {
-                integration_type: 'none', list: '', after_submit: 'show_message', message: '', autohide_delay_seconds: 0, redirect_url: '',
-            },
-            auto_responder_list: [{key: '', name: '-- Choose List --'}],
-            opt_in: {},
-            custom_text: {}
-        },
-        del_option: {
-            key: '',
-            label: ''
-        }
+        model: {},
+        del_option: {key: '', label: ''}
     }),
+    created(){
+        this.model = JSON.parse(JSON.stringify(this.basic_model));
+        this.create_edit = (window._bar_opt_ary.create_edit || window._bar_opt_ary.create_edit === 'true');
+        let vm = this;
+        Object.keys(this.bar_option).forEach(function (item) {
+            vm.bar_option[item] = !window._bar_opt_ary[item] ? false : (window._bar_opt_ary[item] === 'true')
+        });
+    
+        Object.keys(this.model).forEach(function (item) {
+            if (window._bar_opt_ary.model[item]) {
+                vm.model[item] = window._bar_opt_ary.model[item];
+            }
+        });
+    },
     mounted() {
         let vm = this;
-        this.create_edit = (window._bar_opt_ary.create_edit || window._bar_opt_ary.create_edit === 'true');
         $('[data-toggle="tooltip"]').tooltip({
             container: 'body'
         });
@@ -121,16 +96,6 @@ new Vue({
             wheelSpeed: 2,
             wheelPropagation: true,
             minScrollbarLength: 20
-        });
-        
-        Object.keys(this.bar_option).forEach(function (item) {
-            vm.bar_option[item] = !window._bar_opt_ary[item] ? false : (window._bar_opt_ary[item] === 'true')
-        });
-        
-        Object.keys(this.model).forEach(function (item) {
-            if (window._bar_opt_ary.model[item]) {
-                vm.model[item] = window._bar_opt_ary.model[item];
-            }
         });
         
         this.initSelect2();

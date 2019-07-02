@@ -149,10 +149,10 @@ class BarOptionsController extends Controller
                     $rules['list'] = 'required';
                 }
         
-                if ($request->input('after_submit') == 'show_message') {
-                    $rules['message'] = 'required';
-                } else {
+                if ($request->input('after_submit') == 'redirect') {
                     $rules['redirect_url'] = 'required';
+                } else {
+                    $rules['message'] = 'required';
                 }
             }
         }

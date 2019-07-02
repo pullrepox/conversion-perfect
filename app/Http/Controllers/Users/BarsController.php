@@ -168,8 +168,10 @@ class BarsController extends Controller
         $bar->countdown_timezone = (is_null($bar->countdown_timezone) || $bar->countdown_timezone == '') ? 'Canada/Pacific' : $bar->countdown_timezone;
         $bar->countdown_end_date = $bar->countdown_end_date != '0000-00-00' ? date('m/d/Y', strtotime($bar->countdown_end_date)) : date('m/d/Y');
         
+        $bar->autohide_delay_seconds = $bar->autohide_delay_seconds ? $bar->autohide_delay_seconds : 3;
         $bar->integration_type = (is_null($bar->integration_type) || $bar->integration_type == '') ? 'none' : $bar->integration_type;
         $bar->after_submit = (is_null($bar->after_submit) || $bar->after_submit == '') ? 'show_message' : $bar->after_submit;
+        $bar->message = (is_null($bar->message) || $bar->message == '') ? 'Thank You!' : $bar->message;
         
         $re = [['key' => '', 'name' => '-- Choose List --']];
         if ($bar->integration_type != 'none' && $bar->integration_type != 'conversion_perfect' && !is_null($bar->list) && $bar->list != '') {
@@ -310,10 +312,10 @@ class BarsController extends Controller
                     $rules['list'] = 'required';
                 }
                 
-                if ($request->input('after_submit') == 'show_message') {
-                    $rules['message'] = 'required';
-                } else {
+                if ($request->input('after_submit') == 'redirect') {
                     $rules['redirect_url'] = 'required';
+                } else {
+                    $rules['message'] = 'required';
                 }
             }
         }

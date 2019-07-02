@@ -22,13 +22,13 @@
                 <div v-if="!model.appearance.close_button" style="position: absolute; top: -4px; right: 6px;font-size: 24px;z-index: 9999;"
                      :style="{ color: model.headline_color.indexOf('#') > -1 ? model.headline_color : `#${model.headline_color}` }">&times;
                 </div>
-                <div v-if="model.countdown.countdown !== 'none' && model.countdown.countdown_location === 'left_ege'"
+                <div v-if="model.countdown.countdown !== 'none' && model.countdown.countdown_location === 'left_edge'"
                      style="width:auto; height:100%; min-height:40px; top:0; left: 0; position: absolute;">
                     <div style="width: auto;min-height: 40px;height: 100%;display: flex;align-items: center;justify-content: left;"
                          :style="{'background-color': model.countdown.countdown_background_color !== '' ? (model.countdown.countdown_background_color.indexOf('#') > -1 ? model.countdown.countdown_background_color : `#${model.countdown.countdown_background_color}`) : 'transparent'}">
                         <div style="width: 100%">
-                            @include('users.bars-partials.countdown-ege-top')
-                            @include('users.bars-partials.countdown-ege-bottom')
+                            @include('users.bars-partials.countdown-edge-top')
+                            @include('users.bars-partials.countdown-edge-bottom')
                         </div>
                     </div>
                 </div>
@@ -130,13 +130,13 @@
                         </div>
                     </div>
                 </div>
-                <div v-if="model.countdown.countdown !== 'none' && model.countdown.countdown_location === 'right_ege'"
+                <div v-if="model.countdown.countdown !== 'none' && model.countdown.countdown_location === 'right_edge'"
                      style="width:auto; height:100%; min-height:40px; top: 0; right: 0; position: absolute;">
                     <div style="width: auto;min-height: 40px;height: 100%;display: flex;align-items: center;justify-content: left;"
                          :style="{'background-color': model.countdown.countdown_background_color !== '' ? (model.countdown.countdown_background_color.indexOf('#') > -1 ? model.countdown.countdown_background_color : `#${model.countdown.countdown_background_color}`) : 'transparent'}">
                         <div style="width: 100%">
-                            @include('users.bars-partials.countdown-ege-top')
-                            @include('users.bars-partials.countdown-ege-bottom')
+                            @include('users.bars-partials.countdown-edge-top')
+                            @include('users.bars-partials.countdown-edge-bottom')
                         </div>
                     </div>
                 </div>
