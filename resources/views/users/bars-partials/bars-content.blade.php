@@ -106,7 +106,7 @@
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="video_code">Video Embed Code</label>
                     <textarea id="video_code" name="video_code" v-model="model.content.video_code" data-parent="content"
-                              class="form-control @error('video_code') is-invalid @enderror" @input="showSaveBtn('content')" rows="1"></textarea>
+                              class="form-control @error('video_code') is-invalid @enderror" @input="showSaveBtn('content')"></textarea>
                     @error('video_code')
                     <span class="invalid-feedback" role="alert">
                         {{ $message }}

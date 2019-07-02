@@ -14,14 +14,6 @@ Route::get('/', 'IndexController@index');
 
 Auth::routes();
 
-//Route::get('/login', 'ProfileController@login')->name('login');
-//Route::post('/login', 'ProfileController@processLogin')->name('process.login');
-//Route::post('/logout', 'ProfileController@logout')->name('logout');
-//Route::get('/reset','ProfileController@showResetForm')->name('reset-form');
-//Route::post('/reset','ProfileController@resetPassword')->name('reset-password');
-
-//Route::get('/register', 'ProfileController@login')->name('register');
-
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', 'Users\DashboardController@index')->name('customer.dashboard');
     Route::get('/sub-domain-register', 'Users\DashboardController@subDomainRegister');
@@ -30,14 +22,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/hide-option/{id}', 'Users\BarOptionsController@hideBarOption');
     Route::post('/save-option/{id}', 'Users\BarOptionsController@saveBarOption');
     Route::post('/clear-option/{id}', 'Users\BarOptionsController@clearBarOption');
-//    Route::get('/pages/{slug}','PageController@show')->name('pages.show');
-
-//    Route::resource('sliders','SliderController', ['names' => ['index' => 'sliders']]);
-//    Route::post('/sliders/update','SliderController@updateSection')->name('sliders.update.ajax');
-//    Route::post('/sliders/{slider}/toggle-status','SliderController@toggleSliderStatus')->name('sliders.toggle-status');
-//    Route::get('/sliders/{slider}/preview','SliderController@previewSlider')->name('sliders.preview');
-//    Route::get('/sliders/{slider}/clone','SliderController@cloneSlider')->name('sliders.clone');
-//    Route::get('/sliders/{slider}/clear-stats','SliderController@clearStats')->name('sliders.clear-stats');
+    Route::get('/get-responder-lists', 'Api\BarOptionsApiController@getAutoResponderLists');
 
     Route::resource('/autoresponder','AutoResponderController');
 });

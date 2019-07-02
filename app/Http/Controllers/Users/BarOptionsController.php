@@ -140,6 +140,20 @@ class BarOptionsController extends Controller
             $rules['custom_link_text'] = 'required';
             $rules['third_party_url'] = 'required';
         }
+    
+        if ($opt_key == 'autoresponder') {
+            if ($request->input('integration_type') != 'none') {
+                if ($request->input('integration_type') != 'conversion_perfect') {
+                    $rules['list'] = 'required';
+                }
+        
+                if ($request->input('after_submit') == 'show_message') {
+                    $rules['message'] = 'required';
+                } else {
+                    $rules['redirect_url'] = 'required';
+                }
+            }
+        }
         
         $validate = Validator::make($request->all(), $rules);
         
