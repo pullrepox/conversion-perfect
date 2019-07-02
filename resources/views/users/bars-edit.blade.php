@@ -27,9 +27,8 @@
                                             <i class="fas fa-ellipsis-v"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <a class="dropdown-item" href="#">Something else here</a>
+                                            <a class="dropdown-item" href="#">Reset Stats</a>
+                                            <a class="dropdown-item" href="#">Archive</a>
                                         </div>
                                     </div>
                                 @endif
@@ -246,7 +245,7 @@
                     countdown_days: "{{ $flag ? 0 : (old('countdown_days') ? old('countdown_days') : $bar->countdown_days) }}",
                     countdown_hours: "{{ $flag ? 0 : (old('countdown_hours') ? old('countdown_hours') : $bar->countdown_hours) }}",
                     countdown_minutes: "{{ $flag ? 0 : (old('countdown_minutes') ? old('countdown_minutes') : $bar->countdown_minutes) }}",
-                    countdown_background_color: "{{ $flag ? '#3BAF85' : (old('countdown_background_color') ? old('countdown_background_color') : $bar->countdown_background_color) }}",
+                    countdown_background_color: "{{ $flag ? '#ffffff00' : (old('countdown_background_color') ? old('countdown_background_color') : $bar->countdown_background_color) }}",
                     countdown_text_color: "{{ $flag ? '#FFFFFF' : (old('countdown_text_color') ? old('countdown_text_color') : $bar->countdown_text_color) }}",
                     countdown_on_expiry: "{{ $flag ? 'hide_bar' : (old('countdown_on_expiry') ? old('countdown_on_expiry') : $bar->countdown_on_expiry) }}",
                     countdown_expiration_text: "{{ $flag ? '' : (old('countdown_expiration_text') ? old('countdown_expiration_text') : $bar->countdown_expiration_text) }}",

@@ -57,7 +57,7 @@ new Vue({
             },
             countdown: {
                 countdown: 'none', countdown_location: 'left', countdown_format: 'dd', countdown_end_date: '0000-00-00', countdown_end_time: '00:00:00', countdown_timezone: 'Canada/Central',
-                countdown_days: 0, countdown_hours: 0, countdown_minutes: 0, countdown_background_color: '#3BAF85', countdown_text_color: '#FFFFFF', countdown_on_expiry: 'hide_bar',
+                countdown_days: 0, countdown_hours: 0, countdown_minutes: 0, countdown_background_color: '', countdown_text_color: '#FFFFFF', countdown_on_expiry: 'hide_bar',
                 countdown_expiration_text: '', countdown_expiration_url: ''
             },
             overlay: {
@@ -92,7 +92,7 @@ new Vue({
             },
             countdown: {
                 countdown: 'none', countdown_location: 'left', countdown_format: 'dd', countdown_end_date: '0000-00-00', countdown_end_time: '00:00:00', countdown_timezone: 'Canada/Central',
-                countdown_days: 0, countdown_hours: 0, countdown_minutes: 0, countdown_background_color: '#3BAF85', countdown_text_color: '#FFFFFF', countdown_on_expiry: 'hide_bar',
+                countdown_days: 0, countdown_hours: 0, countdown_minutes: 0, countdown_background_color: '', countdown_text_color: '#FFFFFF', countdown_on_expiry: 'hide_bar',
                 countdown_expiration_text: '', countdown_expiration_url: ''
             },
             overlay: {
