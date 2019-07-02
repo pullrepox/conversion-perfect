@@ -56,9 +56,9 @@ new Vue({
                 button_action: 'hide_bar', button_click_url: '', button_open_new: 0,
             },
             countdown: {
-                countdown: 'none', countdown_location: 'left', countdown_format: 'dd', countdown_end_date: '0000-00-00', countdown_end_time: '00:00:00', countdown_timezone: 'Canada/Central',
-                countdown_days: 0, countdown_hours: 0, countdown_minutes: 0, countdown_background_color: '', countdown_text_color: '#FFFFFF', countdown_on_expiry: 'hide_bar',
-                countdown_expiration_text: 'Expired!', countdown_expiration_url: ''
+                countdown: 'none', countdown_location: 'left', countdown_format: 'dd', countdown_end_date: '0000-00-00', countdown_end_time: '00:00:00',
+                countdown_timezone: 'Canada/Central', countdown_days: 0, countdown_hours: 0, countdown_minutes: 0, countdown_background_color: '', countdown_text_color: '#FFFFFF',
+                countdown_on_expiry: 'hide_bar', countdown_expiration_text: 'Expired!', countdown_expiration_url: ''
             },
             overlay: {
                 third_party_url: '', custom_link: 0, custom_link_text: '', meta_title: '', meta_description: '', meta_keywords: ''
@@ -66,20 +66,27 @@ new Vue({
             autoresponder: {
                 integration_type: 'none', list: '', after_submit: 'show_message', message: 'Thank You!', autohide_delay_seconds: 3, redirect_url: '',
             },
-            opt_in: {},
+            opt_in: {
+                opt_in_type: 'none', opt_in_youtube_url: '', opt_in_vimeo_url: '', opt_in_video_code: '', opt_in_video_auto_play: 0, image_url: '', image_upload: '',
+                call_to_action: [{attributes: {}, insert: 'Call To Action Text Here'}], panel_color: '',
+                subscribe_text: [{attributes: {}, insert: 'Enter Your Name And Email Below...'}], subscribe_text_color: '#ffffff',
+                opt_in_button_type: 'match_main_button', opt_in_button_label: 'Click Here', opt_in_button_bg_color: '#515f7f', opt_in_button_label_color: '#ffffff',
+                opt_in_button_animation: 'none'
+            },
             custom_text: {}
         },
         model: {},
-        del_option: {key: '', label: ''}
+        del_option: {key: '', label: ''},
+        showUpload: false
     }),
-    created(){
+    created() {
         this.model = JSON.parse(JSON.stringify(this.basic_model));
         this.create_edit = (window._bar_opt_ary.create_edit || window._bar_opt_ary.create_edit === 'true');
         let vm = this;
         Object.keys(this.bar_option).forEach(function (item) {
             vm.bar_option[item] = !window._bar_opt_ary[item] ? false : (window._bar_opt_ary[item] === 'true')
         });
-    
+        
         Object.keys(this.model).forEach(function (item) {
             if (window._bar_opt_ary.model[item]) {
                 vm.model[item] = window._bar_opt_ary.model[item];
@@ -501,9 +508,9 @@ new Vue({
                 case 'ww':
                 case 'www':
                 case 'www.':
-                    if (flag === 'content_youtube_url') {
+                    if (flag === 'content_youtube_url' || flag === 'opt_in_youtube_url') {
                         this.model[parent][flag] = `https://www.youtube.com/embed/`;
-                    } else if (flag === 'content_vimeo_url') {
+                    } else if (flag === 'content_vimeo_url' || flag === 'opt_in_vimeo_url') {
                         this.model[parent][flag] = `https://player.vimeo.com/video`;
                     } else {
                         this.model[parent][flag] = `http`;
@@ -514,12 +521,12 @@ new Vue({
                 if (this.model[parent][flag].indexOf('http') < 0) {
                     this.model[parent][flag] = `https://${this.model[parent][flag]}`;
                 }
-                if (flag === 'content_youtube_url') {
+                if (flag === 'content_youtube_url' || flag === 'opt_in_youtube_url') {
                     if (this.model[parent][flag].indexOf('watch?v=') > -1) {
                         this.model[parent][flag] = this.model[parent][flag].replace('watch?v=', 'embed/');
                     }
                 }
-                if (flag === 'content_vimeo_url') {
+                if (flag === 'content_vimeo_url' || flag === 'opt_in_vimeo_url') {
                     if (this.model[parent][flag].indexOf('https://vimeo.com') > -1) {
                         this.model[parent][flag] = this.model[parent][flag].replace('https://vimeo.com', 'https://player.vimeo.com/video');
                     }

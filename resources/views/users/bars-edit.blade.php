@@ -150,6 +150,7 @@
                     @include('users.bars-partials.bars-countdown')
                     @include('users.bars-partials.bars-overlay')
                     @include('users.bars-partials.bars-autoresponder')
+                    @include('users.bars-partials.bars-opt-in')
                 @endif
             </form>
             {{-- Delete Options Modal Confirm --}}
@@ -268,7 +269,24 @@
                     redirect_url: "{{ $flag ? '' : (old('redirect_url') ? old('redirect_url') : $bar->redirect_url) }}",
                 },
                 auto_responder_list: JSON.parse('{!! $list_array !!}'),
-                opt_in: {},
+                opt_in: {
+                    opt_in_type: "{{ $flag ? 'none' : (old('opt_in_type') ? old('opt_in_type') : $bar->opt_in_type) }}",
+                    opt_in_youtube_url: "{{ $flag ? '' : (old('opt_in_youtube_url') ? old('opt_in_youtube_url') : $bar->opt_in_youtube_url) }}",
+                    opt_in_vimeo_url: "{{ $flag ? '' : (old('opt_in_vimeo_url') ? old('opt_in_vimeo_url') : $bar->opt_in_vimeo_url) }}",
+                    opt_in_video_code: "{{ $flag ? '' : (old('opt_in_video_code') ? old('opt_in_video_code') : $bar->opt_in_video_code) }}",
+                    opt_in_video_auto_play: "{{ $flag ? null : (old('opt_in_video_auto_play') ? old('opt_in_video_auto_play') : $bar->opt_in_video_auto_play) }}",
+                    image_url: "{{ $flag ? '' : (old('image_url') ? old('image_url') : $bar->image_url) }}",
+                    image_upload: "{{ $flag ? '' : (old('image_upload') ? old('image_upload') : $bar->image_upload) }}",
+                    call_to_action: JSON.parse('{!! $flag ? json_encode([['attributes' => [], 'insert' => 'Call To Action Text Here']]) : $bar->call_to_action !!}'),
+                    panel_color: "{{ $flag ? '' : (old('panel_color') ? old('panel_color') : $bar->panel_color) }}",
+                    subscribe_text: JSON.parse('{!! $flag ? json_encode([['attributes' => [], 'insert' => 'Enter Your Name And Email Below...']]) : $bar->subscribe_text !!}'),
+                    subscribe_text_color: "{{ $flag ? '#ffffff' : (old('subscribe_text_color') ? old('subscribe_text_color') : $bar->subscribe_text_color) }}",
+                    opt_in_button_type: "{{ $flag ? 'match_main_button' : (old('opt_in_button_type') ? old('opt_in_button_type') : $bar->opt_in_button_type) }}",
+                    opt_in_button_label: "{{ $flag ? 'Click Here' : (old('opt_in_button_label') ? old('opt_in_button_label') : $bar->opt_in_button_label) }}",
+                    opt_in_button_bg_color: "{{ $flag ? '#515f7f' : (old('opt_in_button_bg_color') ? old('opt_in_button_bg_color') : $bar->opt_in_button_bg_color) }}",
+                    opt_in_button_label_color: "{{ $flag ? '#ffffff' : (old('opt_in_button_label_color') ? old('opt_in_button_label_color') : $bar->opt_in_button_label_color) }}",
+                    opt_in_button_animation: "{{ $flag ? 'none' : (old('opt_in_button_animation') ? old('opt_in_button_animation') : $bar->opt_in_button_animation) }}",
+                },
                 custom_text: {}
             }
         };
