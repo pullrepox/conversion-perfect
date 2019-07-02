@@ -33,18 +33,7 @@
                     </div>
                 </div>
                 <div style="width:100%; font-size:20px; font-family: 'Nunito', sans-serif; display: flex; align-items: center; justify-content: center;min-height: 76px;">
-                    <div style="display: inline-block; margin-right: 20px;padding-top: 8px;" class="video-code-preview"
-                         v-if="model.content.video_code !== '' && model.content.video_type === 'other'" v-html="model.content.video_code"></div>
-                    <div style="display: inline-block; width: auto;margin-right: 20px;padding-top: 8px;"
-                         v-if="model.content.content_youtube_url !== '' && model.content.video_type === 'youtube'">
-                        <iframe width="280" height="158" allow="autoplay; fullscreen;" allowfullscreen style="border: 0"
-                                :src="`${model.content.content_youtube_url}?autoplay=${model.content.video_auto_play ? 1 : 0}`"></iframe>
-                    </div>
-                    <div style="display: inline-block; width: auto;margin-right: 20px;padding-top: 8px;"
-                         v-if="model.content.content_vimeo_url !== '' && model.content.video_type === 'vimeo'">
-                        <iframe width="280" height="158" allow="autoplay; fullscreen;" allowfullscreen style="border: 0"
-                                :src="`${model.content.content_vimeo_url}?autoplay=${model.content.video_auto_play ? 1 : 0}`"></iframe>
-                    </div>
+                    @include('users.bars-partials.preview-video')
                     <div
                         v-if="(model.button.button_type !== 'none' && model.button.button_location === 'left') || (model.countdown.countdown !== 'none' && model.countdown.countdown_location === 'left')"
                         style="display: inline-block; width:auto; margin-right: 20px;padding: 10px 0;text-align: center;">

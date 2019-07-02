@@ -215,7 +215,7 @@ class BarsController extends Controller
         ];
         
         $params = $request->all();
-        $radio_keys = ['video_auto_play', 'drop_shadow', 'close_button', 'background_gradient', 'button_open_new'];
+        $radio_keys = ['video_auto_play', 'drop_shadow', 'close_button', 'background_gradient', 'button_open_new', 'opt_in_video_auto_play'];
         $option_keys = ['opt_preview', 'opt_display', 'opt_content', 'opt_appearance', 'opt_button', 'opt_countdown', 'opt_overlay', 'opt_opt_in', 'opt_custom_text'];
         foreach ($params as $key => $val) {
             if (false !== array_search($key, $radio_keys)) {
@@ -316,6 +316,20 @@ class BarsController extends Controller
                     $rules['redirect_url'] = 'required';
                 } else {
                     $rules['message'] = 'required';
+                }
+            }
+        }
+    
+        if ($request->input('opt_opt_in') == 'true') {
+            if ($request->input('opt_in_type') != 'none' && $request->input('opt_in_type') != 'standard') {
+                if ($request->input('opt_in_type') == 'img-online') {
+                    $rules['image_url'] = 'required|url';
+                } else if ($request->input('opt_in_type') == 'vid-youtube') {
+                    $rules['opt_in_youtube_url'] = 'required|url';
+                } else if ($request->input('opt_in_type') == 'vid-vimeo') {
+                    $rules['opt_in_vimeo_url'] = 'required|url';
+                } else if ($request->input('opt_in_type') == 'vid-other') {
+                    $rules['opt_in_video_code'] = 'required';
                 }
             }
         }
