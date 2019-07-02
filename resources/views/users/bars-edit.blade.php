@@ -18,10 +18,20 @@
                             <h3 class="mb-0 col">{{ $flag ? 'New' : 'Edit' }} Conversion Bar</h3>
                             <div class="col text-right">
                                 <button type="submit" class="btn btn-success btn-sm text-capitalize">{{ $flag ? 'Create' : 'Update' }}</button>
-                                <a href="{{ secure_redirect(route('bars')) }}" class="btn btn-light btn-sm text-capitalize">Cancel</a>
+                                <a href="{{ secure_redirect(route('bars')) }}" class="btn btn-light btn-sm text-capitalize">
+                                    @{{ changed_status ? 'Cancel' : 'Close' }}
+                                </a>
                                 @if (!$flag)
-                                    <button type="button" class="btn btn-sm btn-default text-capitalize">Reset Stats</button>
-                                    <button type="button" class="btn btn-sm btn-primary text-capitalize">Archive</button>
+                                    <div class="dropdown">
+                                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                            <a class="dropdown-item" href="#">Action</a>
+                                            <a class="dropdown-item" href="#">Another action</a>
+                                            <a class="dropdown-item" href="#">Something else here</a>
+                                        </div>
+                                    </div>
                                 @endif
                             </div>
                         </div>
@@ -36,7 +46,7 @@
                                     <input type="text" class="form-control @error('friendly_name') is-invalid @enderror" id="friendly_name" name="friendly_name"
                                            v-model="model.friendly_name"
                                            @keydown="tabKeyPress('#position', true, $event)" @keypress="tabKeyPress('#position', true, $event)"
-                                           placeholder="Friendly Name" required autocomplete="friendly_name"/>
+                                           placeholder="Friendly Name" required autocomplete="friendly_name" @input="changed_status = true"/>
                                     @if ($errors->has('friendly_name'))
                                         @error('friendly_name')
                                         <span class="invalid-feedback" role="alert">
@@ -184,7 +194,7 @@
             opt_in: '{{ $flag ? false : (old('opt_opt_in') ? old('opt_opt_in') : $bar->opt_opt_in) }}',
             custom_text: '{{ $flag ? false : (old('opt_custom_text') ? old('opt_custom_text') : $bar->opt_custom_text) }}',
             model: {
-                friendly_name: "{{ (old('friendly_name') ? old('friendly_name') : ($flag ? quickRandom(6) : $bar->friendly_name)) }}",
+                friendly_name: "{{ (old('friendly_name') ? old('friendly_name') : ($flag ? '' : $bar->friendly_name)) }}",
                 position: "{{ old('position') ? old('position') : ($flag ? 'top_sticky' : $bar->position) }}",
                 group_id: "{{ old('group_id') ? old('group_id') : ($flag ? '0' : $bar->group_id) }}",
                 headline: JSON.parse('{!! $flag ? json_encode([['attributes' => [], 'insert' => 'Your Headline']]) : $bar->headline !!}'),
@@ -245,7 +255,7 @@
                 overlay: {
                     third_party_url: "{{ $flag ? '' : (old('third_party_url') ? old('third_party_url') : $bar->third_party_url) }}",
                     custom_link: "{{ $flag ? 0 : (old('custom_link') ? old('custom_link') : $bar->custom_link) }}",
-                    custom_link_text: "{{ $flag ? quickRandom(6) : (old('custom_link_text') ? old('custom_link_text') : $bar->custom_link_text) }}",
+                    custom_link_text: "{{ $flag ? '' : (old('custom_link_text') ? old('custom_link_text') : $bar->custom_link_text) }}",
                     meta_title: "{{ $flag ? '' : (old('meta_title') ? old('meta_title') : $bar->meta_title) }}",
                     meta_description: "{{ $flag ? '' : (old('meta_description') ? old('meta_description') : $bar->meta_description) }}",
                     meta_keywords: "{{ $flag ? '' : (old('meta_keywords') ? old('meta_keywords') : $bar->meta_keywords) }}",
