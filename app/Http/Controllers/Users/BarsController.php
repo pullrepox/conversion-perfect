@@ -295,7 +295,7 @@ class BarsController extends Controller
                 $rules['countdown_expiration_url'] = 'required|max:200';
             }
             if ($request->input('countdown') == 'calendar') {
-                $rules['countdown_end_date'] = 'date_format:Y-m-d';
+                $rules['countdown_end_date'] = 'date_format:m/d/Y';
             }
             if ($request->input('countdown') == 'evergreen') {
                 $rules['countdown_days'] = 'numeric|min:0';

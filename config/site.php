@@ -8,7 +8,7 @@ return [
     'avatar_path'      => 'avatars/',
     'support_email'    => 'support@conversionperfect.com',
     'support_url'      => 'https://support.conversionperfect.com',
-    'full_url'         => 'www.conversionperfect.com',
+    'full_url'         => 'conversionperfect.com',
     'api_token'        => 'g97Bw8QdwqARtzZ9aXUKqje9',
     'billing_flag'     => 0,
     'link_check_min'   => 10,

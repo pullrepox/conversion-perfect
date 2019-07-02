@@ -40,6 +40,8 @@
                             v-model="model.countdown.countdown_location" data-parent="countdown">
                         <option value="left">Left</option>
                         <option value="right">Right</option>
+                        <option value="left_ege">Left Ege</option>
+                        <option value="right_ege">Right Ege</option>
                         <option value="below_text">Below Text</option>
                     </select>
                 </div>
@@ -143,7 +145,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="countdown_background_color">Background Color</label>
-                    <input class="jscolor form-control" name="countdown_background_color" id="countdown_background_color" v-model="model.countdown.countdown_background_color"
+                    <input class="jscolor {required:false} form-control" name="countdown_background_color" id="countdown_background_color" v-model="model.countdown.countdown_background_color"
                            @change="updateJSColor('countdown_background_color', 'countdown')"
                            @keydown="tabKeyPress('#countdown_text_color', false, $event)" @keypress="tabKeyPress('#countdown_text_color', false, $event)"/>
                 </div>
@@ -159,7 +161,7 @@
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="countdown_text_color">Match Main Bar</label>
                     <div class="w-100">
-                        <button type="button" class="btn btn-success bg-cp" @click="matchMainBar">Match Main Bar</button>
+                        <button type="button" class="btn btn-light" @click="matchMainBar"></button>
                     </div>
                 </div>
             </div>
@@ -167,12 +169,12 @@
         <div class="form-row" v-show="model.countdown.countdown !== 'none'">
             <div class="col-md-4">
                 <div class="form-group">
-                    <label class="form-control-label ml-1" for="countdown_on_expiry">Expiry On</label>
+                    <label class="form-control-label ml-1" for="countdown_on_expiry">Expiration Action</label>
                     <select class="form-control" data-toggle="select" id="countdown_on_expiry" name="countdown_on_expiry" required
                             v-model="model.countdown.countdown_on_expiry" data-parent="countdown">
                         <option value="hide_bar">Hide Bar</option>
-                        <option value="redirect">Redirect</option>
-                        <option value="display_text">Display Text</option>
+                        <option value="redirect">Redirect to Expiration URL</option>
+                        <option value="display_text">Display Expiration Text</option>
                     </select>
                 </div>
             </div>
