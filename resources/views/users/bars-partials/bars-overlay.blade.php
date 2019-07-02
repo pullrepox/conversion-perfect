@@ -33,48 +33,51 @@
                     @enderror
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-8">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="custom_link">Custom Link</label>
-                    <select class="form-control" data-toggle="select" id="custom_link" name="custom_link" required
-                            v-model="model.overlay.custom_link" data-parent="overlay">
-                        @foreach($custom_links as $c_key => $c_row)
-                            <option value="{{ $c_key }}">{{ $c_row }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label class="form-control-label ml-1" for="custom_link_text">Custom Link Text</label>
-                    <input type="text" id="custom_link_text" name="custom_link_text" data-parent="overlay" class="form-control @error('custom_link_text') is-invalid @enderror"
-                           v-model="model.overlay.custom_link_text" @input="showSaveBtn('overlay')"/>
-                    @error('custom_link_text')
-                    <span class="invalid-feedback" role="alert">
-                        {{ $message }}
-                    </span>
-                    @enderror
+                    <div class="form-row">
+                        <div class="col-md-6 pr-2">
+                            <select class="form-control" data-toggle="select" id="custom_link" name="custom_link" required
+                                    v-model="model.overlay.custom_link" data-parent="overlay">
+                                @foreach($custom_links as $c_key => $c_row)
+                                    <option value="{{ $c_key }}">{{ $c_row }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-6 pl-2">
+                            <div class="track-link-sept">
+                                <input type="text" id="custom_link_text" name="custom_link_text" data-parent="overlay" class="form-control @error('custom_link_text') is-invalid @enderror"
+                                       v-model="model.overlay.custom_link_text" @input="showSaveBtn('overlay')"/>
+                                @error('custom_link_text')
+                                <span class="invalid-feedback" role="alert">
+                                    {{ $message }}
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="form-row">
             <div class="col-md-4">
                 <div class="form-group">
-                    <label class="form-control-label ml-1" for="meta_title">Meta Title</label>
+                    <label class="form-control-label ml-1" for="meta_title">SEO Title</label>
                     <input type="text" id="meta_title" name="meta_title" data-parent="overlay" class="form-control"
                            v-model="model.overlay.meta_title" @input="showSaveBtn('overlay')"/>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label class="form-control-label ml-1" for="meta_description">Meta Description</label>
+                    <label class="form-control-label ml-1" for="meta_description">SEO Description</label>
                     <textarea id="meta_description" name="meta_description" v-model="model.overlay.meta_description" data-parent="overlay"
-                              class="form-control" @input="showSaveBtn('overlay')"></textarea>
+                              class="form-control" @input="showSaveBtn('overlay')" rows="1"></textarea>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label class="form-control-label ml-1" for="meta_keywords">Meta Keywords</label>
+                    <label class="form-control-label ml-1" for="meta_keywords">SEO Keywords</label>
                     <div class="tags-area">
                         <input type="text" id="meta_keywords" name="meta_keywords" data-parent="overlay" data-toggle="tags" class="form-control"
                                v-model="model.overlay.meta_keywords" @input="showSaveBtn('overlay')"/>

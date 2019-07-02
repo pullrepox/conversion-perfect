@@ -74,6 +74,17 @@
                         color: #909090;
                     }
                 }
+                
+                .video-code-preview {
+                    iframe {
+                        width: 280px !important;
+                        height: 158px !important;
+                    }
+                }
+                
+                textarea.form-control {
+                    height: calc(1.5em + 1.25rem + 5px);
+                }
             }
             
             .division-card-header {

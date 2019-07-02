@@ -58,7 +58,7 @@
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="message">Message</label>
                     <textarea id="message" name="message" v-model="model.autoresponder.message" data-parent="autoresponder"
-                              class="form-control" @input="showSaveBtn('autoresponder')"></textarea>
+                              class="form-control" @input="showSaveBtn('autoresponder')" rows="1"></textarea>
                 </div>
             </div>
             <div class="col-md-4" v-show="model.autoresponder.after_submit === 'show_message'">

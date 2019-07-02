@@ -541,7 +541,7 @@ new Vue({
                     } else if (flag === 'content_vimeo_url') {
                         this.model[parent][flag] = `https://player.vimeo.com/video`;
                     } else {
-                        this.model[parent][flag] = `https://`;
+                        this.model[parent][flag] = `http`;
                     }
                     break;
             }
