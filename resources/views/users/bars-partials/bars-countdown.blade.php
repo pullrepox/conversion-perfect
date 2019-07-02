@@ -104,40 +104,37 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="countdown_days">Days</label>
-                    <input type="number" min="0" class="form-control @error('countdown_days') is-invalid @enderror"
-                           @keydown="tabKeyPress('#countdown_hours', false, $event)" @keypress="tabKeyPress('#countdown_hours', false, $event)"
-                           id="countdown_days" name="countdown_days" @input="showSaveBtn('countdown')" data-parent="countdown" v-model="model.countdown.countdown_days"/>
-                    @error('countdown_days')
-                    <span class="invalid-feedback" role="alert">
-                        {{ $message }}
-                    </span>
-                    @enderror
+                    <div class="row">
+                        <div class="col-md-10 col-sm-9">
+                            <vue-slider :speed="1" :min="0" :max="30" v-model="model.countdown.countdown_days" id="countdown_days" @change="showSaveBtn('countdown')"></vue-slider>
+                        </div>
+                        <div class="col-md-2 col-sm-3 pl-0 mt--1">@{{ model.countdown.countdown_days }}</div>
+                        <input type="hidden" name="countdown_days" v-model="model.countdown.countdown_days"/>
+                    </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="countdown_hours">Hours</label>
-                    <input type="number" min="0" max="23" class="form-control @error('countdown_hours') is-invalid @enderror"
-                           @keydown="tabKeyPress('#countdown_minutes', false, $event)" @keypress="tabKeyPress('#countdown_minutes', false, $event)"
-                           id="countdown_hours" name="countdown_hours" @input="showSaveBtn('countdown')" data-parent="countdown" v-model="model.countdown.countdown_hours"/>
-                    @error('countdown_hours')
-                    <span class="invalid-feedback" role="alert">
-                        {{ $message }}
-                    </span>
-                    @enderror
+                    <div class="row">
+                        <div class="col-md-10 col-sm-9">
+                            <vue-slider :speed="1" :min="0" :max="23" v-model="model.countdown.countdown_hours" id="countdown_hours" @change="showSaveBtn('countdown')"></vue-slider>
+                        </div>
+                        <div class="col-md-2 col-sm-3 pl-0 mt--1">@{{ model.countdown.countdown_hours }}</div>
+                        <input type="hidden" name="countdown_hours" v-model="model.countdown.countdown_hours"/>
+                    </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="countdown_minutes">Minutes</label>
-                    <input type="number" min="0" max="59" class="form-control @error('countdown_minutes') is-invalid @enderror"
-                           @keydown="tabKeyPress('#countdown_background_color', false, $event)" @keypress="tabKeyPress('#countdown_background_color', false, $event)"
-                           id="countdown_minutes" name="countdown_minutes" @input="showSaveBtn('countdown')" data-parent="countdown" v-model="model.countdown.countdown_minutes"/>
-                    @error('countdown_minutes')
-                    <span class="invalid-feedback" role="alert">
-                        {{ $message }}
-                    </span>
-                    @enderror
+                    <div class="row">
+                        <div class="col-md-10 col-sm-9">
+                            <vue-slider :speed="1" :min="0" :max="59" v-model="model.countdown.countdown_minutes" id="countdown_minutes" @change="showSaveBtn('countdown')"></vue-slider>
+                        </div>
+                        <div class="col-md-2 col-sm-3 pl-0 mt--1">@{{ model.countdown.countdown_minutes }}</div>
+                        <input type="hidden" name="countdown_minutes" v-model="model.countdown.countdown_minutes"/>
+                    </div>
                 </div>
             </div>
         </div>

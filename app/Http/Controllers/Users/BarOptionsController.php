@@ -131,7 +131,9 @@ class BarOptionsController extends Controller
                 $rules['countdown_end_date'] = 'date_format:m/d/Y';
             }
             if ($request->input('countdown') == 'evergreen') {
-                $rules['countdown_days'] = 'min:0|max:365';
+                $rules['countdown_days'] = 'numeric|min:0|max:30';
+                $rules['countdown_hours'] = 'numeric|min:0|max:23';
+                $rules['countdown_minutes'] = 'numeric|min:0|max:59';
             }
         }
     
