@@ -1,5 +1,5 @@
 @extends('layouts.base')
-@section('title', 'Training - ' . config('app.name'))
+@section('title', 'Bonuses - ' . config('app.name'))
 @section('content')
     <div class="main-content">
         @include('layouts.page-header', ['data' => $header_data])
@@ -18,19 +18,18 @@
 {{--                </div>--}}
 {{--            </div>--}}
             <div class="form-row">
-                @if ($trainings)
-                    @foreach($trainings as $row)
-                        <div class="col-md-6 mt-1">
+                @if ($bonuses)
+                    @foreach($bonuses as $row)
+                        <div class="col-md-4 mt-1">
                             <div class="card">
                                 <!-- Card image -->
-                                <div class="w-100">
-                                    <iframe class="card-img-top" width="100%" height="100%" style="border: 0; min-height: 450px;width: 100%;"
-                                            src="{{ $row->video_url }}" allow="autoplay; fullscreen;" allowfullscreen></iframe>
-                                </div>
+                                <img class="card-img-top" src="{{ $row->image_url }}" alt="Bonus Image">
                                 <!-- Card body -->
                                 <div class="card-body">
                                     <h5 class="h2 card-title mb-0">{{ $row->title }}</h5>
                                     <p class="card-text mt-4">{{ $row->description }}</p>
+                                    <a href="{{ strpos($row->bonus_url, 'http') === false ? 'https://' . $row->bonus_url : $row->bonus_url }}" class="btn btn-link px-0"
+                                       target="{{ $row->new_window ? '_blank' : '_self' }}">{{ $row->link_text }}</a>
                                 </div>
                             </div>
                         </div>

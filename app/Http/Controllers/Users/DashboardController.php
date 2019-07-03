@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
+use App\Models\Bonus;
 use App\Models\Training;
 use Illuminate\Http\Request;
 
@@ -45,5 +46,17 @@ class DashboardController extends Controller
         $trainings = Training::all();
         
         return view('users.trainings', compact('trainings', 'header_data'));
+    }
+    
+    public function bonusesIndex()
+    {
+        $header_data = [
+            'main_name'   => 'Bonuses',
+            'parent_data' => []
+        ];
+        
+        $bonuses = Bonus::all();
+    
+        return view('users.bonuses', compact('bonuses', 'header_data'));
     }
 }
