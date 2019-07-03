@@ -243,5 +243,14 @@
                 </div>
             </div>
         </div>
+        <div class="form-row" v-show="model.opt_in.opt_in_type !== 'none'">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="form-control-label ml-1" for="disclaimer">Disclaimer</label>
+                    <textarea id="disclaimer" name="disclaimer" class="form-control"
+                              v-model="model.opt_in.disclaimer" data-parent="opt_in" @input="showSaveBtn('opt_in')" rows="1"></textarea>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
