@@ -100,7 +100,7 @@
                     <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <div class="media align-items-center">
                             <span class="avatar avatar-sm rounded-circle">
-                                <img alt="Image placeholder" src="{{asset('/assets/img/theme/team-4.jpg')}}">
+                                <img alt="Image placeholder" src="https://www.gravatar.com/avatar/{{ md5(strtolower(trim(auth()->user()->email))) }}?s=36&d=mp&r=g">
                             </span>
                             <div class="media-body ml-2 d-none d-lg-block">
                                 <span class="mb-0 text-sm  font-weight-bold">{{ auth()->user()->name }}</span>
@@ -116,7 +116,7 @@
                             <span class="text-capitalize">Profile</span>
                         </a>
                         <a href="#" class="dropdown-item">
-                            <i class="ni-settings-gear-65 text-cp"></i>
+                            <i class="ni ni-settings-gear-65 text-cp"></i>
                             <span class="text-capitalize">Settings</span>
                         </a>
                         <div class="dropdown-divider"></div>
