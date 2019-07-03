@@ -59,7 +59,7 @@ class GroupsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|max:200'
+            'name' => 'required|max:200|unique:groups,name,user_id'
         ]);
         
         $ins_data = [
@@ -134,7 +134,7 @@ class GroupsController extends Controller
             }
         } else {
             $this->validate($request, [
-                'name' => 'required|max:200'
+                'name' => 'required|max:200|unique:groups,name,' . $group->id . ',user_id'
             ]);
             
             $group->fill($request->all());

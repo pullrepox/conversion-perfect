@@ -58,7 +58,7 @@ class EmailListsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'list_name' => 'required|max:200'
+            'list_name' => 'required|max:200|unique:email_lists,list_name,user_id'
         ]);
         
         $ins_data = [
@@ -118,7 +118,7 @@ class EmailListsController extends Controller
     public function update(Request $request, EmailList $emailList)
     {
         $this->validate($request, [
-            'list_name' => 'required|max:200'
+            'list_name' => 'required|max:200|unique:email_lists,list_name,' . $emailList->id . ',user_id'
         ]);
     
         $emailList->fill($request->all());
