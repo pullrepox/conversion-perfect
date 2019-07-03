@@ -6,7 +6,7 @@
     <div v-if="!model.appearance.close_button" style="position: absolute; top: -4px; right: 6px;font-size: 24px;z-index: 9999;"
          :style="{ color: model.headline_color.indexOf('#') > -1 ? model.headline_color : `#${model.headline_color}` }">&times;
     </div>
-    <div style="height: 45px; width: 100%; font-size: 20px;line-height: 45px;"
+    <div style="height: 45px; width: 100%; font-size: 20px;line-height: 45px;margin-top: 15px;"
          :style="{
          'background': (model.background_color.indexOf('#') > -1 ? model.background_color : `#${model.background_color}`),
          color: model.headline_color.indexOf('#') > -1 ? model.headline_color : `#${model.headline_color}`
