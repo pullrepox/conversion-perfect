@@ -1,11 +1,53 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c58e1a9e9c9dd19372f09b5121708c28",
+    "content-hash": "6ed4d91c15c24fa3aa8ab70d9d7d6b3e",
     "packages": [
+        {
+            "name": "activecampaign/api-php",
+            "version": "v1.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ActiveCampaign/activecampaign-api-php.git",
+                "reference": "169d2c60e191869d431cbadf170641d71ca2a378"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ActiveCampaign/activecampaign-api-php/zipball/169d2c60e191869d431cbadf170641d71ca2a378",
+                "reference": "169d2c60e191869d431cbadf170641d71ca2a378",
+                "shasum": ""
+            },
+            "require": {
+                "lib-curl": "*",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "includes/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Official PHP wrapper for the ActiveCampaign API.",
+            "homepage": "https://github.com/ActiveCampaign/activecampaign-api-php",
+            "keywords": [
+                "Forms",
+                "activecampaign",
+                "automation",
+                "email-marketing",
+                "emails",
+                "marketing-automation",
+                "newsletter",
+                "subscribe"
+            ],
+            "time": "2016-09-08T00:00:00+00:00"
+        },
         {
             "name": "brian2694/laravel-toastr",
             "version": "5.5.2",
@@ -279,50 +321,6 @@
             "time": "2019-03-31T00:38:28+00:00"
         },
         {
-            "name": "drewm/mailchimp-api",
-            "version": "v2.5.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/drewm/mailchimp-api.git",
-                "reference": "a6519cafba509e754e748d93f3532ad7f3aa515a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/drewm/mailchimp-api/zipball/a6519cafba509e754e748d93f3532ad7f3aa515a",
-                "reference": "a6519cafba509e754e748d93f3532ad7f3aa515a",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "ext-json": "*",
-                "php": ">=5.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "7.0.*",
-                "vlucas/phpdotenv": "^2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "DrewM\\MailChimp\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Drew McLellan",
-                    "email": "drew.mclellan@gmail.com",
-                    "homepage": "http://allinthehead.com/"
-                }
-            ],
-            "description": "Super-simple, minimum abstraction MailChimp API v3 wrapper",
-            "homepage": "https://github.com/drewm/mailchimp-api",
-            "time": "2019-03-28T15:20:43+00:00"
-        },
-        {
             "name": "egulias/email-validator",
             "version": "2.1.8",
             "source": {
@@ -478,6 +476,48 @@
                 "trusted proxy"
             ],
             "time": "2019-01-10T14:06:47+00:00"
+        },
+        {
+            "name": "gentor/activecampaign",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gentor/activecampaign.git",
+                "reference": "a3a8e2db758ae50558014216be3e8fcff1498c95"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gentor/activecampaign/zipball/a3a8e2db758ae50558014216be3e8fcff1498c95",
+                "reference": "a3a8e2db758ae50558014216be3e8fcff1498c95",
+                "shasum": ""
+            },
+            "require": {
+                "activecampaign/api-php": "^1.3",
+                "php": ">= 5.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Gentor\\ActiveCampaign\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Evgeni Nurkov",
+                    "email": "evgeni.nurkov@gmail.com"
+                }
+            ],
+            "description": "Wrapper on the ActiveCampaign PHP API - with custom methods and support for Laravel 5.x",
+            "keywords": [
+                "activecampaign",
+                "api",
+                "laravel"
+            ],
+            "time": "2016-09-28T09:20:06+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -3486,6 +3526,50 @@
                 "instantiate"
             ],
             "time": "2019-03-17T17:37:11+00:00"
+        },
+        {
+            "name": "drewm/mailchimp-api",
+            "version": "v2.5.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/drewm/mailchimp-api.git",
+                "reference": "a6519cafba509e754e748d93f3532ad7f3aa515a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/drewm/mailchimp-api/zipball/a6519cafba509e754e748d93f3532ad7f3aa515a",
+                "reference": "a6519cafba509e754e748d93f3532ad7f3aa515a",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "7.0.*",
+                "vlucas/phpdotenv": "^2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DrewM\\MailChimp\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Drew McLellan",
+                    "email": "drew.mclellan@gmail.com",
+                    "homepage": "http://allinthehead.com/"
+                }
+            ],
+            "description": "Super-simple, minimum abstraction MailChimp API v3 wrapper",
+            "homepage": "https://github.com/drewm/mailchimp-api",
+            "time": "2019-03-28T15:20:43+00:00"
         },
         {
             "name": "filp/whoops",
