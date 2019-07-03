@@ -53,7 +53,7 @@
                     <label class="form-control-label ml-1" for="opt_in_vimeo_url">Vimeo URL</label>
                     <input type="text" class="form-control @error('opt_in_vimeo_url') is-invalid @enderror"
                            id="opt_in_vimeo_url" name="opt_in_vimeo_url" @input="changeVideoUrl('opt_in_vimeo_url', 'opt_in')" data-parent="opt_in"
-                           v-model="model.opt_in.opt_in_vimeo_url" placeholder="https://www.youtube.com/embed/_UbDeqPdUek"/>
+                           v-model="model.opt_in.opt_in_vimeo_url" placeholder="https://player.vimeo.com/video/20732587"/>
                     @error('opt_in_vimeo_url')
                     <span class="invalid-feedback" role="alert">
                         {{ $message }}
