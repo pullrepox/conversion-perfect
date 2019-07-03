@@ -1,7 +1,7 @@
 <div style="width:100%; font-size: 20px; font-family: 'Nunito', sans-serif; color: rgb(255, 255, 255); position: relative;min-height: 76px;"
      :style="{
-     'background': (model.background_color.indexOf('#') > -1 ? model.background_color : `#${model.background_color}`),
-     'background-image': model.appearance.background_gradient ? (`linear-gradient(${model.appearance.gradient_angle}deg, ${(model.appearance.gradient_end_color.indexOf('#') > -1 ? model.appearance.gradient_end_color : `#${model.appearance.gradient_end_color}`)}, ${(model.background_color.indexOf('#') > -1 ? model.background_color : `#${model.background_color}`)})`) : 'none',
+     'background': model.appearance.background_gradient ? 'none' : (model.background_color.indexOf('#') > -1 ? model.background_color : `#${model.background_color}`),
+     'background-image': model.appearance.background_gradient ? (`linear-gradient(${model.appearance.gradient_angle}deg, ${(model.background_color.indexOf('#') > -1 ? model.background_color : `#${model.background_color}`)}, ${(model.appearance.gradient_end_color.indexOf('#') > -1 ? model.appearance.gradient_end_color : `#${model.appearance.gradient_end_color}`)})`) : 'none',
      'opacity': (model.appearance.opacity / 100), 'box-shadow': (model.appearance.drop_shadow ? `0 10px 10px -10px #120f0f` : 'none')
      }">
     <div v-if="!model.appearance.close_button" style="position: absolute; top: -4px; right: 6px;font-size: 24px;z-index: 9999;"
