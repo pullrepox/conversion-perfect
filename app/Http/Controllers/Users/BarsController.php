@@ -172,6 +172,8 @@ class BarsController extends Controller
         $bar->integration_type = (is_null($bar->integration_type) || $bar->integration_type == '') ? 'none' : $bar->integration_type;
         $bar->after_submit = (is_null($bar->after_submit) || $bar->after_submit == '') ? 'show_message' : $bar->after_submit;
         $bar->message = (is_null($bar->message) || $bar->message == '') ? 'Thank You!' : $bar->message;
+        $bar->panel_color = (is_null($bar->panel_color) || $bar->panel_color == '') ? '#F0F0F0' : $bar->panel_color;
+        $bar->subscribe_text_color = (is_null($bar->subscribe_text_color) || $bar->subscribe_text_color == '') ? '#666666' : $bar->subscribe_text_color;
         
         $re = [['key' => '', 'name' => '-- Choose List --']];
         if (!is_null($bar->list) && $bar->list != '') {
@@ -244,16 +246,16 @@ class BarsController extends Controller
                 ]];
                 for ($i = 0; $i < count($val); $i++) {
                     $upd_headline[$i]['insert'] = addslashes($val[$i] . ($i < (count($val) - 1) ? ' ' : ''));
-                    if (!is_null($request->input($key. '_bold')[$i])) {
+                    if (!is_null($request->input($key . '_bold')[$i])) {
                         $upd_headline[$i]['attributes']['bold'] = true;
                     }
-                    if (!is_null($request->input($key. '_italic')[$i])) {
+                    if (!is_null($request->input($key . '_italic')[$i])) {
                         $upd_headline[$i]['attributes']['italic'] = true;
                     }
-                    if (!is_null($request->input($key. '_underline')[$i])) {
+                    if (!is_null($request->input($key . '_underline')[$i])) {
                         $upd_headline[$i]['attributes']['underline'] = true;
                     }
-                    if (!is_null($request->input($key. '_strike')[$i])) {
+                    if (!is_null($request->input($key . '_strike')[$i])) {
                         $upd_headline[$i]['attributes']['strike'] = true;
                     }
                 }
@@ -331,7 +333,7 @@ class BarsController extends Controller
                 }
             }
         }
-    
+        
         if ($request->input('opt_opt_in') == 'true') {
             if ($request->input('opt_in_type') != 'none') {
                 $rules['call_to_action'] = 'required';

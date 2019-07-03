@@ -68,8 +68,8 @@ new Vue({
             },
             opt_in: {
                 opt_in_type: 'none', opt_in_youtube_url: '', opt_in_vimeo_url: '', opt_in_video_code: '', opt_in_video_auto_play: 0, image_url: '', image_upload: '',
-                call_to_action: [{attributes: {}, insert: 'Call To Action Text Here'}], panel_color: '',
-                subscribe_text: [{attributes: {}, insert: 'Enter Your Name And Email Below...'}], subscribe_text_color: '#ffffff',
+                call_to_action: [{attributes: {}, insert: 'Call To Action Text Here'}], panel_color: '#F0F0F0',
+                subscribe_text: [{attributes: {}, insert: 'Enter Your Name And Email Below...'}], subscribe_text_color: '#666666',
                 opt_in_button_type: 'match_main_button', opt_in_button_label: 'Click Here', opt_in_button_bg_color: '#515f7f', opt_in_button_label_color: '#ffffff',
                 opt_in_button_animation: 'none'
             },

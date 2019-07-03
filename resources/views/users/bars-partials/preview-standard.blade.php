@@ -1,8 +1,11 @@
-<div style="height: 230px; width: 100%; font-size: 20px; font-family: 'Nunito', sans-serif; text-align: center;"
+<div style="height: 230px; width: 100%; font-size: 20px; font-family: 'Nunito', sans-serif; text-align: center;position: relative;"
      :style="{
      'background': model.opt_in.panel_color === '' ? 'transparent' : (model.opt_in.panel_color.indexOf('#') > -1 ? model.opt_in.panel_color : `#${model.opt_in.panel_color}`),
      'color': (model.opt_in.subscribe_text_color.indexOf('#') > -1 ? model.opt_in.subscribe_text_color : `#${model.opt_in.subscribe_text_color}`)
      }">
+    <div v-if="!model.appearance.close_button" style="position: absolute; top: -4px; right: 6px;font-size: 24px;z-index: 9999;"
+         :style="{ color: model.headline_color.indexOf('#') > -1 ? model.headline_color : `#${model.headline_color}` }">&times;
+    </div>
     <div style="height: 45px; width: 100%; font-size: 20px;line-height: 45px;"
          :style="{
          'background': (model.background_color.indexOf('#') > -1 ? model.background_color : `#${model.background_color}`),
@@ -21,10 +24,6 @@
             </span>
         </span>
     </div>
-    <div style="margin: 0 auto; width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent;"
-         :style="{
-        'border-top': `15px solid ${(model.background_color.indexOf('#') > -1 ? model.background_color : `#${model.background_color}`)}`
-        }"></div>
     <div style="margin-top: 10px; width: 100%; height: 30px; font-size: 17px;"
          :style="{'color': (model.opt_in.subscribe_text_color.indexOf('#') > -1 ? model.opt_in.subscribe_text_color : `#${model.opt_in.subscribe_text_color}`)}">
         <span v-for="(st, s_t_i) in model.opt_in.subscribe_text" :key="`st_preview_attr_${s_t_i}`" v-if="st.insert.trim() != ''">
