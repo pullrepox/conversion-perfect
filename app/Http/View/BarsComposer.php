@@ -3,6 +3,7 @@
 namespace App\Http\View;
 
 use App\Integration;
+use App\Models\Group;
 use App\Models\Utils;
 use Illuminate\View\View;
 
@@ -13,10 +14,10 @@ class BarsComposer
         $timezone_list = Utils::timeZones();
         
         $custom_links = [
-            0 => 'https://' . auth()->user()->subdomain . '.cnvp.me/',
+            0  => 'https://' . auth()->user()->subdomain . '.cnvp.me/',
             -1 => 'http://' . auth()->user()->subdomain . '.cnvp.in/'
         ];
-    
+        
         $responder_list = [
             'none' => 'None'
         ];
@@ -28,6 +29,15 @@ class BarsComposer
         }
         $responder_list['conversion_perfect'] = 'Conversion Perfect';
         
+        $group_list['0'] = 'All Bars';
+        $groups = Group::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->get();
+        if ($groups) {
+            foreach ($groups as $g_row) {
+                $group_list[$g_row->id] = $g_row->name;
+            }
+        }
+        
+        $view->with('group_list', $group_list);
         $view->with('timezone_list', $timezone_list);
         $view->with('custom_links', $custom_links);
         $view->with('responder_list', $responder_list);

@@ -23,7 +23,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="show_bar_type">Show Bar</label>
-                    <select class="form-control" data-toggle="select" id="show_bar_type" name="show_bar_type" required
+                    <select class="form-control" data-toggle="select" id="show_bar_type" name="show_bar_type"
                             v-model="model.display.show_bar_type" data-parent="display">
                         <option value="immediate">Immediate</option>
                         <option value="delay">Delay</option>
@@ -59,7 +59,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="frequency">Frequency</label>
-                    <select class="form-control" data-toggle="select" id="frequency" name="frequency" required
+                    <select class="form-control" data-toggle="select" id="frequency" name="frequency"
                             v-model="model.display.frequency" data-parent="display">
                         <option value="every">Every Visit</option>
                         <option value="day">Once a Day</option>

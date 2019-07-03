@@ -50,6 +50,7 @@ mix.js('./resources/src/common/js/main.js', 'public/js/main.js');
 mix.sass('./resources/src/users/index.scss', 'public/css/users.css');
 
 mix.js('./resources/src/users/js/slider-edit.js', 'public/js/slider-edit.js')
+    .js('./resources/src/users/js/group-edit.js', 'public/js/group-edit.js')
     .js('./resources/src/users/index.js', 'public/js/users.js')
     .extract(['vue', 'jquery', 'axios', 'vuex', 'bootstrap', 'perfect-scrollbar']);
 

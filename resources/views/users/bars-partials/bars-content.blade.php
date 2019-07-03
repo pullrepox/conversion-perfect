@@ -68,7 +68,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="video_type">Video</label>
-                    <select class="form-control" data-toggle="select" id="video_type" name="video_type" required v-model="model.content.video_type" data-parent="content">
+                    <select class="form-control" data-toggle="select" id="video_type" name="video_type" v-model="model.content.video_type" data-parent="content">
                         <option value="none">None</option>
                         <option value="youtube">Youtube</option>
                         <option value="vimeo">Vimeo</option>

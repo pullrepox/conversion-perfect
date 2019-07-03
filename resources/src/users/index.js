@@ -15,6 +15,7 @@ require('../common/js/argon.js');
 require('./js/user-common.js');
 require('./js/dashboard.js');
 require('./js/bar-list.js');
+require('./js/group-list.js');
 window.vEvent = new VEvent();
 
 if (document.querySelector('.main-content')) {

@@ -81,7 +81,9 @@
                                     <select class="form-control @error('group_id') is-invalid @enderror" data-toggle="select" id="group_id" name="group_id" required
                                             @keydown="tabKeyPress('#headline', false, $event)" @keypress="tabKeyPress('#headline', false, $event)"
                                             v-model="model.group_id">
-                                        <option value="0">All Bars</option>
+                                        @foreach($group_list as $g_id => $g_name)
+                                            <option value="{{ $g_id }}">{{ $g_name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>

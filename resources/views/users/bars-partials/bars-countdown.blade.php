@@ -23,7 +23,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="countdown">Countdown</label>
-                    <select class="form-control" data-toggle="select" id="countdown" name="countdown" required
+                    <select class="form-control" data-toggle="select" id="countdown" name="countdown"
                             @keydown="tabKeyPress('#countdown_location', true, $event)" @keypress="tabKeyPress('#countdown_location', true, $event)"
                             v-model="model.countdown.countdown" data-parent="countdown">
                         <option value="none">None</option>
@@ -35,7 +35,7 @@
             <div class="col-md-4" v-show="model.countdown.countdown !== 'none'">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="countdown_location">Location</label>
-                    <select class="form-control" data-toggle="select" id="countdown_location" name="countdown_location" required
+                    <select class="form-control" data-toggle="select" id="countdown_location" name="countdown_location"
                             @keydown="tabKeyPress('#countdown_format', true, $event)" @keypress="tabKeyPress('#countdown_format', true, $event)"
                             v-model="model.countdown.countdown_location" data-parent="countdown">
                         <option value="left">Left</option>
@@ -49,7 +49,7 @@
             <div class="col-md-4" v-show="model.countdown.countdown !== 'none'">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="countdown_format">Format</label>
-                    <select class="form-control" data-toggle="select" id="countdown_format" name="countdown_format" required
+                    <select class="form-control" data-toggle="select" id="countdown_format" name="countdown_format"
                             @keydown="tabKeyPress('#countdown_end_date', false, $event)" @keypress="tabKeyPress('#countdown_end_date', false, $event)"
                             v-model="model.countdown.countdown_format" data-parent="countdown">
                         <option value="dd">dd hh mm ss</option>
@@ -90,7 +90,7 @@
             <div class="col-md-4" v-show="model.countdown.countdown !== 'none'">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="countdown_timezone">Timezone</label>
-                    <select class="form-control" data-toggle="select" id="countdown_timezone" name="countdown_timezone" required
+                    <select class="form-control" data-toggle="select" id="countdown_timezone" name="countdown_timezone"
                             @keydown="tabKeyPress('#countdown_background_color', false, $event)" @keypress="tabKeyPress('#countdown_background_color', false, $event)"
                             v-model="model.countdown.countdown_timezone" data-parent="countdown">
                         @foreach($timezone_list as $t_key => $t_row)
@@ -167,7 +167,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="countdown_on_expiry">Expiration Action</label>
-                    <select class="form-control" data-toggle="select" id="countdown_on_expiry" name="countdown_on_expiry" required
+                    <select class="form-control" data-toggle="select" id="countdown_on_expiry" name="countdown_on_expiry"
                             v-model="model.countdown.countdown_on_expiry" data-parent="countdown">
                         <option value="hide_bar">Hide Bar</option>
                         <option value="redirect">Redirect to Expiration URL</option>

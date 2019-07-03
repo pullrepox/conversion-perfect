@@ -53,12 +53,13 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#navbar-settings" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-settings">
+                    <li class="nav-item {{ isActiveRoute(['groups', 'groups.create', 'autoresponder.index']) }}">
+                        <a class="nav-link {{ isActiveRoute(['groups', 'groups.create', 'autoresponder.index']) }}" href="#navbar-settings" data-toggle="collapse" role="button"
+                           aria-expanded="{{ isExpendRoute(['groups', 'groups.create', 'autoresponder.index']) }}" aria-controls="navbar-settings">
                             <i class="fas fa-cogs text-cp"></i>
                             <span class="nav-link-text text-capitalize">Settings</span>
                         </a>
-                        <div class="collapse" id="navbar-settings">
+                        <div class="collapse {{ isActiveRoute(['groups', 'groups.create', 'autoresponder.index'], 'show') }}" id="navbar-settings">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item {{ isActiveRoute(['autoresponder.index']) }}">
                                     <a href="{{route('autoresponder.index')}}" class="nav-link text-capitalize">Autoresponders</a>
@@ -69,8 +70,8 @@
                                 <li class="nav-item">
                                     <a href="#" class="nav-link text-capitalize">Email Lists</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link text-capitalize">Groups</a>
+                                <li class="nav-item {{ isActiveResource(['groups'], true) }}">
+                                    <a href="{{ secure_redirect(route('groups')) }}" class="nav-link text-capitalize {{ isActiveResource(['groups'], true) }}">Groups</a>
                                 </li>
                             </ul>
                         </div>

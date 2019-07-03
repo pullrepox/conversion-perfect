@@ -23,7 +23,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="button_type">Button</label>
-                    <select class="form-control" data-toggle="select" id="button_type" name="button_type" required
+                    <select class="form-control" data-toggle="select" id="button_type" name="button_type"
                             @keydown="tabKeyPress('#button_location', true, $event)" @keypress="tabKeyPress('#button_location', true, $event)"
                             v-model="model.button.button_type" data-parent="button">
                         <option value="none">None</option>
@@ -35,7 +35,7 @@
             <div class="col-md-4" v-show="model.button.button_type !== 'none'">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="button_location">Button Location</label>
-                    <select class="form-control" data-toggle="select" id="button_location" name="button_location" required
+                    <select class="form-control" data-toggle="select" id="button_location" name="button_location"
                             @keydown="tabKeyPress('#button_label', false, $event)" @keypress="tabKeyPress('#button_label', false, $event)"
                             v-model="model.button.button_location" data-parent="button">
                         <option value="right">Right</option>
@@ -77,7 +77,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="button_animation">Shake</label>
-                    <select class="form-control" data-toggle="select" id="button_animation" name="button_animation" required
+                    <select class="form-control" data-toggle="select" id="button_animation" name="button_animation"
                             @keydown="tabKeyPress('#button_action', true, $event)" @keypress="tabKeyPress('#button_action', true, $event)"
                             v-model="model.button.button_animation" data-parent="button">
                         <option value="none">None</option>
@@ -94,7 +94,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="button_action">Action</label>
-                    <select class="form-control" data-toggle="select" id="button_action" name="button_action" required
+                    <select class="form-control" data-toggle="select" id="button_action" name="button_action"
                             @keydown="tabKeyPress('#button_click_url', false, $event)" @keypress="tabKeyPress('#button_click_url', false, $event)"
                             v-model="model.button.button_action" data-parent="button">
                         <option value="hide_bar">Hide Bar</option>

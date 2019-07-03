@@ -228,13 +228,15 @@ class BarOptionsController extends Controller
     {
         if ($request->hasFile('image-upload')) {
             $bar_id = $request->route()->parameter('id');
+            $bar = $this->barsRepo->find($bar_id);
+//            $old_file = $bar->image_upload;
+            
             $tempImage = $request->file('image-upload');
             $extension = $tempImage->getClientOriginalExtension();
             $f_name = $bar_id . '_' . time() . '_opt_in_image_upload.' . $extension;
             Storage::PutFileAs('bars/options/' . $bar_id, $tempImage, $f_name, ['visibility' => 'public']);
             $image_url = Storage::url('bars/options/' . $bar_id . '/' . $f_name);
             
-            $bar = $this->barsRepo->find($bar_id);
             $bar->image_upload = $image_url;
             $bar->save();
             
