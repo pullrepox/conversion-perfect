@@ -17,7 +17,8 @@
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/app.css', config('site.ssl_tf')) }}"/>
     <link rel="stylesheet" href="{{ asset('css/users.css', config('site.ssl_tf')) }}"/>
-    
+    @section('styles')
+    @show
     <!-- Scripts -->
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

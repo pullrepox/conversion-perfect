@@ -7,15 +7,14 @@ use App\Integration;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreIntegration;
 use Illuminate\Validation\Rules\In;
-
 class AutoResponderController extends Controller
 {
     public function index()
     {
         $header_data = [
-            'main_name' => 'AutoResponders',
+            'main_name' => 'Autoresponders',
             'parent_data' => [
-                ['parent_name' => 'Overlay', 'parent_url' => '']
+                ['parent_name' => 'Settings', 'parent_url' => '']
             ],
             'button_show' => true,
             'button_data' => [
@@ -35,7 +34,7 @@ class AutoResponderController extends Controller
         $header_data = [
             'main_name' => ' New Autoresponder',
             'parent_data' => [
-                ['parent_name' => 'Overlay', 'parent_url' => ''],
+                ['parent_name' => 'Settings', 'parent_url' => ''],
                 ['parent_name' => 'Integration', 'parent_url' => secure_redirect(route('autoresponder.index'))],
             ],
             'button_show' => true,
@@ -58,6 +57,18 @@ class AutoResponderController extends Controller
             return $this->sendLane($data, $responder);
         } else if ($responder->title === 'mailchimp'){
             return $this->mailChimp($data, $responder);
+        } else if ($responder->title === 'activecampaign'){
+            return $this->activeCampaign($data, $responder);
+        } else if ($responder->title === 'mailerlite'){
+            return $this->mailerLite($data, $responder);
+        } else if ($responder->title === 'getresponse'){
+            return $this->getResponse($data, $responder);
+        } else if ($responder->title === 'sendinblue'){
+            return $this->sendInBlue($data, $responder);
+        }else if ($responder->title === 'sendinblue'){
+            return $this->sendInBlue($data, $responder);
+        } else if ($responder->title === 'campaignmonitor'){
+            return $this->campaignMonitor($data, $responder);
         }
     }
 
@@ -118,6 +129,115 @@ class AutoResponderController extends Controller
 
     }
 
+    public function activeCampaign($data, $responder)
+    {
+        $url     = $data['url'];
+        $api_key = $data['api_key'];
+        $ac = new \ActiveCampaign($url, $api_key);
+        if (!(int)$ac->credentials_test()) {
+            return [
+                'type' => 'error',
+                'message' => 'Invalid credentials (URL and/or API key)'
+            ];
+        }
+
+        return [
+            'type' => 'success',
+            'message' => null,
+        ];
+    }
+
+    public function mailerLite($data, $responder)
+    {
+        $client = new \GuzzleHttp\Client();
+        try{
+            $response = $client->request('GET', $responder->base_url, [
+                'headers' => [
+                    'X-MailerLite-ApiKey' => $data['api_key'],
+                ]
+            ]);
+            return [
+                'type' => 'success',
+                'message' => null,
+            ];
+        } catch (\Exception $e){
+            return [
+                'type' => 'error',
+                'message' => 'Unauthorized API-KEY'
+            ];
+        }
+
+    }
+
+    public function getResponse($data, $responder)
+    {
+        $client = new \GuzzleHttp\Client();
+        try{
+            $response = $client->request('GET', $responder->base_url, [
+                'headers' => [
+                 'X-Auth-Token' => 'api-key ' . $data['api_key']
+                ]
+            ]);
+            return [
+                'type' => 'success',
+                'message' => null,
+            ];
+        } catch (\Exception $e){
+            return [
+                'type' => 'error',
+                'message' => 'Unauthorized API-KEY'
+            ];
+        }
+    }
+
+    public function sendInBlue($data, $responder)
+    {
+        $client = new \GuzzleHttp\Client();
+        try{
+            $response = $client->request('GET', $responder->base_url, [
+                'headers' => [
+                 'Content-Type' => 'application/json',
+                 'api-key'      => $data['api_key']
+                ]
+            ]);
+            return [
+                'type' => 'success',
+                'message' => null,
+            ];
+        } catch (\Exception $e){
+            return [
+                'type' => 'error',
+                'message' => 'Unauthorized API-KEY'
+            ];
+        }
+    }
+
+    public function campaignMonitor($data, $responder)
+    {
+        $client = new \GuzzleHttp\Client();
+        try{
+            $response = $client->request('GET', $responder->base_url, [
+                'headers' => [
+                 'Content-Type'     => 'application/json',
+                    'Authorization' => 'Basic ' . base64_encode($data['api_key'])
+                ]
+            ]);
+            $result = json_decode($response->getBody()->getContents());
+            if (isset($result) && isset($result[0])){
+                return [
+                    'type' => 'success',
+                    'message' => null,
+                ];
+            }
+
+        } catch (\Exception $e){
+            return [
+                'type' => 'error',
+                'message' => 'Unauthorized API-KEY'
+            ];
+        }
+    }
+
     public function store(Request $request)
     {
         $data = $request->all();
@@ -140,7 +260,7 @@ class AutoResponderController extends Controller
     {
         $integration = Integration::findOrFail($id);
         $header_data = [
-            'main_name' => 'Edit Auto-Responder',
+            'main_name' => 'Edit Autoresponder',
             'parent_data' => [
                 ['parent_name' => 'Overlay', 'parent_url' => ''],
                 ['parent_name' => 'Bars', 'parent_url' => secure_redirect(route('autoresponder.index'))],

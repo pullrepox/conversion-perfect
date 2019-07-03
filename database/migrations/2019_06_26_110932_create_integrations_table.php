@@ -20,6 +20,7 @@ class CreateIntegrationsTable extends Migration
             $table->integer('responder_id');
             $table->text('api_key');
             $table->text('hash')->nullable();
+            $table->text('url')->nullable();
             $table->timestamps();
         });
     }
