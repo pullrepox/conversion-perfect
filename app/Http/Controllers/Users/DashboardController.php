@@ -43,7 +43,7 @@ class DashboardController extends Controller
             ]
         ];
         
-        $trainings = Training::all();
+        $trainings = Training::orderBy('sort_order')->get();
         
         return view('users.trainings', compact('trainings', 'header_data'));
     }
@@ -55,7 +55,7 @@ class DashboardController extends Controller
             'parent_data' => []
         ];
         
-        $bonuses = Bonus::all();
+        $bonuses = Bonus::orderBy('sort_order')->get();
     
         return view('users.bonuses', compact('bonuses', 'header_data'));
     }
