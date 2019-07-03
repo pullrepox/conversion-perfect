@@ -53,25 +53,27 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="nav-item {{ isActiveRoute(['groups', 'groups.create', 'autoresponder.index']) }}">
-                        <a class="nav-link {{ isActiveRoute(['groups', 'groups.create', 'autoresponder.index']) }}" href="#navbar-settings" data-toggle="collapse" role="button"
-                           aria-expanded="{{ isExpendRoute(['groups', 'groups.create', 'autoresponder.index']) }}" aria-controls="navbar-settings">
+                    <li class="nav-item {{ isActiveResource(['groups', 'email-lists', 'autoresponder.index']) }}">
+                        <a class="nav-link {{ isActiveResource(['groups', 'email-lists', 'autoresponder.index']) }}" href="#navbar-settings" data-toggle="collapse" role="button"
+                           aria-expanded="{{ isExpendResource(['groups', 'email-lists', 'autoresponder.index']) }}" aria-controls="navbar-settings">
                             <i class="fas fa-cogs text-cp"></i>
                             <span class="nav-link-text text-capitalize">Settings</span>
                         </a>
-                        <div class="collapse {{ isActiveRoute(['groups', 'groups.create', 'autoresponder.index'], 'show') }}" id="navbar-settings">
+                        <div class="collapse {{ isActiveResource(['groups', 'email-lists', 'autoresponder.index', 'autoresponder.create', 'autoresponder.edit'], true, 'show') }}"
+                             id="navbar-settings">
                             <ul class="nav nav-sm flex-column">
-                                <li class="nav-item {{ isActiveRoute(['autoresponder.index']) }}">
-                                    <a href="{{route('autoresponder.index')}}" class="nav-link text-capitalize">Autoresponders</a>
+                                <li class="nav-item {{ isActiveRoute(['autoresponder.index', 'autoresponder.create', 'autoresponder.edit']) }}">
+                                    <a href="{{route('autoresponder.index')}}"
+                                       class="nav-link text-capitalize {{ isActiveRoute(['autoresponder.index', 'autoresponder.create', 'autoresponder.edit']) }}">Autoresponders</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="#" class="nav-link text-capitalize">Domains</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link text-capitalize">Email Lists</a>
+                                <li class="nav-item {{ isActiveResource(['email-lists']) }}">
+                                    <a href="{{ secure_redirect(route('email-lists')) }}" class="nav-link text-capitalize {{ isActiveResource(['email-lists']) }}">Email Lists</a>
                                 </li>
-                                <li class="nav-item {{ isActiveResource(['groups'], true) }}">
-                                    <a href="{{ secure_redirect(route('groups')) }}" class="nav-link text-capitalize {{ isActiveResource(['groups'], true) }}">Groups</a>
+                                <li class="nav-item {{ isActiveResource(['groups']) }}">
+                                    <a href="{{ secure_redirect(route('groups')) }}" class="nav-link text-capitalize {{ isActiveResource(['groups']) }}">Groups</a>
                                 </li>
                             </ul>
                         </div>

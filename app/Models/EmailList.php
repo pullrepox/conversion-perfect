@@ -5,10 +5,12 @@ namespace App\Models;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
-class Group extends Model
+class EmailList extends Model
 {
+    protected $table = 'email_lists';
+    
     protected $fillable = [
-        'user_id', 'name', 'notes', 'tags'
+        'user_id', 'list_name', 'description'
     ];
     
     protected $casts = [
@@ -18,5 +20,10 @@ class Group extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    
+    public function subscribers()
+    {
+        return $this->hasMany('App\Models\Subscriber');
     }
 }

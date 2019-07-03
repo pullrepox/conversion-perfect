@@ -27,7 +27,7 @@
         cursor: pointer;
     }
     
-    &#bar-edit-page, &#group-edit-page {
+    &#prod-edit-page {
         .card {
             .card-header {
                 .form-row {
@@ -212,7 +212,7 @@
     }
 }
 
-body.trackers-edit-page {
+body.prod-edit-page {
     .tooltip-inner {
         border: 2px solid #737373;
         background: #e4e4e4;

@@ -158,7 +158,22 @@ class GroupsController extends Controller
     {
         $group_id = $group->id;
         
-        Bar::where('group_id', $group_id)->delete();
+        $using_bars_check = Bar::where('group_id', $group_id)->count();
+        if ($using_bars_check > 0) {
+            $msg = 'Sorry, we cannot delete this group as it is being used in these Conversion Bars: ';
+            $using_bars = Bar::where('group_id', $group_id)->get();
+            foreach ($using_bars as $row) {
+                $msg .= $row->friendly_name . ', ';
+            }
+            $msg = substr($msg, 0, -2);
+            $msg .= '. Please remove this group from all Conversion Bars prior to deleting this group.';
+            session()->flash('error', $msg);
+            
+            return response()->json([
+                'result' => 'failure'
+            ]);
+        }
+        
         $group->delete();
         
         session()->flash('success', 'Successfully Deleted');

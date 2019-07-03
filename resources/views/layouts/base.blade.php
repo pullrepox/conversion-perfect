@@ -41,7 +41,7 @@
         };
     </script>
 </head>
-<body class="users-area g-sidenav-show g-sidenav-pinned{{ Route::currentRouteName() == 'trackers.create' || Route::currentRouteName() == 'trackers.edit' ? ' trackers-edit-page' : '' }}">
+<body class="users-area g-sidenav-show g-sidenav-pinned">
 <div id="app">
     @include('layouts.sidebar')
     @include('layouts.topnavbar')
