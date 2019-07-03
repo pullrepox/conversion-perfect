@@ -82,18 +82,19 @@
                         <!-- Divider -->
                         <hr class="my-3">
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#navbar-support" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-support">
+                    <li class="nav-item {{ isActiveRoute('training') }}">
+                        <a class="nav-link {{ isActiveRoute('training') }}" href="#navbar-support" data-toggle="collapse" role="button"
+                           aria-expanded=" {{ isExpendRoute('training') }}" aria-controls="navbar-support">
                             <i class="ni ni-support-16 text-cp"></i>
                             <span class="nav-link-text text-capitalize">Support</span>
                         </a>
-                        <div class="collapse" id="navbar-support">
+                        <div class="collapse {{ isActiveRoute('training', 'show') }}" id="navbar-support">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
                                     <a href="#" class="nav-link text-capitalize">FAQ</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link text-capitalize">Training</a>
+                                <li class="nav-item {{ isActiveRoute('training') }}">
+                                    <a href="{{ secure_redirect(route('training')) }}" class="nav-link text-capitalize {{ isActiveRoute('training') }}">Training</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="https://control.im.tools/" target="_blank" class="nav-link text-capitalize">Get Support</a>

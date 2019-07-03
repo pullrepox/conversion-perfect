@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
+use App\Models\Training;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -30,5 +31,19 @@ class DashboardController extends Controller
         $user->save();
         
         return redirect()->intended($this->redirectTo, 302, [], config('site.ssl_tf'));
+    }
+    
+    public function trainingIndex()
+    {
+        $header_data = [
+            'main_name'   => 'Training',
+            'parent_data' => [
+                ['parent_name' => 'Support', 'parent_url' => '']
+            ]
+        ];
+        
+        $trainings = Training::all();
+        
+        return view('users.trainings', compact('trainings', 'header_data'));
     }
 }
