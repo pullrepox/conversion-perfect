@@ -24,7 +24,7 @@
                             <div class="card">
                                 <!-- Card image -->
                                 <div class="w-100">
-                                    <iframe width="100%" height="100%" style="border: 0; min-height: 300px;width: 100%;"
+                                    <iframe width="100%" height="100%" style="border: 0; min-height: 450px;width: 100%;"
                                             src="{{ $row->video_url }}" allow="autoplay; fullscreen;" allowfullscreen></iframe>
                                 </div>
                                 <!-- Card body -->
