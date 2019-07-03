@@ -8,7 +8,7 @@ import Vue from 'vue';
 import vueSlider from 'vue-slider-component';
 
 new Vue({
-    el: '#bar-edit-page',
+    el: '#prod-edit-page',
     components: {
         'vue-slider': vueSlider
     },

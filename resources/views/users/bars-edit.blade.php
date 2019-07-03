@@ -1,7 +1,7 @@
 @extends('layouts.base')
 @section('title', 'Bars Edit - ' . config('app.name'))
 @section('content')
-    <div class="main-content" id="bar-edit-page" v-cloak>
+    <div class="main-content" id="prod-edit-page" v-cloak>
         <div class="show-loading" v-if="loading"></div>
         @include('layouts.page-header', ['data' => $header_data])
         {{-- Page content --}}
@@ -15,7 +15,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="form-row">
-                            <h3 class="mb-0 col">{{ $flag ? 'New' : 'Edit' }} Conversion Bar</h3>
+                            <h3 class="mb-0 col">{{ $header_data['main_name'] }}</h3>
                             <div class="col text-right">
                                 <button type="submit" class="btn btn-success btn-sm text-capitalize">{{ $flag ? 'Create' : 'Update' }}</button>
                                 <a href="{{ secure_redirect(route('bars')) }}" class="btn btn-light btn-sm text-capitalize">

@@ -20,11 +20,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/sub-domain-register', 'Users\DashboardController@setSubDomainRegister')->name('domain.register');
     Route::resource('bars', 'Users\BarsController', ['names' => ['index' => 'bars']]);
     Route::resource('groups', 'Users\GroupsController', ['names' => ['index' => 'groups']]);
+    Route::resource('email-lists', 'Users\EmailListsController', ['names' => ['index' => 'email-lists']]);
     Route::post('/hide-option/{id}', 'Users\BarOptionsController@hideBarOption');
     Route::post('/save-option/{id}', 'Users\BarOptionsController@saveBarOption');
     Route::post('/clear-option/{id}', 'Users\BarOptionsController@clearBarOption');
     Route::post('/image-upload/{id}', 'Users\BarOptionsController@uploadImageFile');
     Route::get('/get-responder-lists', 'Api\BarOptionsApiController@getAutoResponderLists');
-
-    Route::resource('/autoresponder','AutoResponderController');
+    
+    Route::resource('autoresponder', 'AutoResponderController');
+    
 });

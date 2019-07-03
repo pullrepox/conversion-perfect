@@ -4,7 +4,7 @@ import Vue from 'vue';
 require('bootstrap-tagsinput/dist/bootstrap-tagsinput.min');
 
 new Vue({
-    el: '#group-edit-page',
+    el: '#prod-edit-page',
     data: () => ({
         create_edit: false,
         changed_status: false,

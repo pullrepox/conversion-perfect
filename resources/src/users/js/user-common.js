@@ -77,7 +77,7 @@ import List from 'list.js';
             spacing: 10,
             z_index: 1080,
             delay: 2500,
-            timer: 1000,
+            timer: 2000,
             url_target: '_blank',
             mouse_over: null,
             animate: {

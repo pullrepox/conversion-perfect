@@ -14,9 +14,9 @@
     $('#deleteGroup').on('click', function () {
         window.axios.delete(`/groups/${delId}`).then((r) => {
             $('#delete-group-modal').modal('hide');
-            if (r.data.result === 'success') {
-                location.reload();
-            }
+            // if (r.data.result === 'success') {
+            location.reload();
+            // }
         });
     });
     

@@ -16,6 +16,7 @@ require('./js/user-common.js');
 require('./js/dashboard.js');
 require('./js/bar-list.js');
 require('./js/group-list.js');
+require('./js/email-list.js');
 window.vEvent = new VEvent();
 
 if (document.querySelector('.main-content')) {

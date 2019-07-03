@@ -3,7 +3,6 @@
 namespace App\Http\View;
 
 use App\Integration;
-use App\Models\Group;
 use App\Models\Utils;
 use Illuminate\View\View;
 
@@ -30,7 +29,7 @@ class BarsComposer
         $responder_list['conversion_perfect'] = 'Conversion Perfect';
         
         $group_list['0'] = 'All Bars';
-        $groups = Group::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->get();
+        $groups = auth()->user()->groups;
         if ($groups) {
             foreach ($groups as $g_row) {
                 $group_list[$g_row->id] = $g_row->name;

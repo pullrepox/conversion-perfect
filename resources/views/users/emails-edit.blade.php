@@ -1,5 +1,5 @@
 @extends('layouts.base')
-@section('title', 'Group Edit - ' . config('app.name'))
+@section('title', 'Email List Edit - ' . config('app.name'))
 @section('content')
     <div class="main-content" id="prod-edit-page" v-cloak>
         @include('layouts.page-header', ['data' => $header_data])
@@ -17,7 +17,7 @@
                             <h3 class="mb-0 col">{{ $header_data['main_name'] }}</h3>
                             <div class="col text-right">
                                 <button type="submit" class="btn btn-success btn-sm text-capitalize">{{ $flag ? 'Create' : 'Update' }}</button>
-                                <a href="{{ secure_redirect(route('groups')) }}" class="btn btn-light btn-sm text-capitalize">
+                                <a href="{{ secure_redirect(route('email-lists')) }}" class="btn btn-light btn-sm text-capitalize">
                                     @{{ changed_status ? 'Cancel' : 'Close' }}
                                 </a>
                                 @if (!$flag)
@@ -38,13 +38,13 @@
                         <div class="form-row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-control-label ml-1" for="name" data-id="name">
-                                        Group Name
+                                    <label class="form-control-label ml-1" for="list_name" data-id="name">
+                                        List Name
                                     </label>
-                                    <input type="text" id="name" name="name" v-model="model.name" class="form-control @error('name') is-invalid @enderror"
-                                           required autocomplete="name" @input="changed_status = true" placeholder="Group Name" />
-                                    @if ($errors->has('name'))
-                                        @error('name')
+                                    <input type="text" id="list_name" name="list_name" v-model="model.list_name" class="form-control @error('list_name') is-invalid @enderror"
+                                           required autocomplete="list_name" @input="changed_status = true" placeholder="List Name" />
+                                    @if ($errors->has('list_name'))
+                                        @error('list_name')
                                         <span class="invalid-feedback" role="alert">
                                             {{ $message }}
                                         </span>
@@ -56,26 +56,13 @@
                                     @endif
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-control-label ml-1" for="notes" data-id="notes">
-                                        Notes
+                                    <label class="form-control-label ml-1" for="description" data-id="description">
+                                        Description
                                     </label>
-                                    <textarea v-model="model.notes" class="form-control" id="notes" name="notes" rows="1"
-                                              @input="changed_status = true" placeholder="Notes"></textarea>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-control-label ml-1" for="tags" data-id="tags">
-                                        Tags
-                                    </label>
-                                    <div class="tags-area">
-                                        <input type="text" id="tags" name="tags" data-toggle="tags" class="form-control"
-                                               v-model="model.tags" @input="changed_status = true"/>
-                                    </div>
+                                    <textarea v-model="model.description" class="form-control" id="description" name="description" rows="1"
+                                              @input="changed_status = true" placeholder="Description"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -87,15 +74,14 @@
 @endsection
 @section('scripts')
     <script type="text/javascript">
-        window._group_opt_ary = {
-            group_id: "{{ $flag ? '' : $group->id }}",
+        window._list_opt_ary = {
+            list_id: "{{ $flag ? '' : $emailList->id }}",
             create_edit: "{{ $flag }}",
             model: {
-                name: "{{ (old('name') ? old('name') : ($flag ? '' : $group->name)) }}",
-                notes: "{{ (old('notes') ? old('notes') : ($flag ? '' : $group->notes)) }}",
-                tags: "{{ (old('tags') ? old('tags') : ($flag ? '' : $group->tags)) }}",
+                list_name: "{{ (old('list_name') ? old('list_name') : ($flag ? '' : $emailList->list_name)) }}",
+                description: "{{ (old('description') ? old('description') : ($flag ? '' : $emailList->description)) }}"
             }
         };
     </script>
-    <script type="text/javascript" src="{{ url(mix('js/group-edit.js')) }}"></script>
+    <script type="text/javascript" src="{{ url(mix('js/lists-edit.js')) }}"></script>
 @stop
