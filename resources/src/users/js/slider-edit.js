@@ -77,7 +77,8 @@ new Vue({
         },
         model: {},
         del_option: {key: '', label: ''},
-        showUpload: false
+        showUpload: false,
+        uploadPercentage: 0
     }),
     created() {
         this.model = JSON.parse(JSON.stringify(this.basic_model));
@@ -560,6 +561,38 @@ new Vue({
                     this.showGetErrorNotify();
                 });
             }
+        },
+        uploadImage(e) {
+            const file = e.target.files[0];
+            const formData = new FormData();
+            formData.enctype = 'multipart/form-data';
+            formData.append('image-upload', file, file.name);
+            this.uploadPercentage = 0;
+            this.showUpload = true;
+            axios.post(`/image-upload/${window._bar_opt_ary.bar_id}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+                onUploadProgress: function (progressEvent) {
+                    this.uploadPercentage = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                    if (this.uploadPercentage >= 100) {
+                        this.showUpload = false;
+                        this.loading = true;
+                    }
+                }.bind(this)
+            }).then((r) => {
+                this.loading = false;
+                if (r.data.result === 'success') {
+                    this.model.opt_in.image_upload = r.data.message;
+                } else {
+                    this.model.opt_in.image_upload = '';
+                    this.commonNotification('danger', r.data.message);
+                }
+            }).catch((e) => {
+                this.loading = false;
+                this.model.opt_in.image_upload = '';
+                this.commonNotification('danger', 'Internal Server Error');
+            });
         }
     }
 });

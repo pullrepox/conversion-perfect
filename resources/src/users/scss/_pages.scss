@@ -260,3 +260,9 @@ body.trackers-edit-page {
 .area-hidden {
     display: none;
 }
+
+.hidden {
+    opacity: 0.01;
+    width: 1px;
+    height: 0;
+}
