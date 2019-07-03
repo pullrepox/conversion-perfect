@@ -31,7 +31,7 @@
                                         Name
                                     </label>
                                     <input type="text" id="name" name="name" v-model="model.name" class="form-control @error('name') is-invalid @enderror"
-                                           required autocomplete="name" @input="changed_status = true" placeholder="Group Name" />
+                                           required autocomplete="name" @input="changed_status = true" placeholder="Name" />
                                     @if ($errors->has('name'))
                                         @error('name')
                                         <span class="invalid-feedback" role="alert">

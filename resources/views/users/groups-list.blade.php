@@ -59,7 +59,7 @@
                                                    data-original-title="Clone">
                                                     <i class="fas fa-clone"></i>
                                                 </a>
-                                                <a href="javascript: void(0)" data-id="{{ $group->id }}" class="table-action group-delete"
+                                                <a href="javascript: void(0)" data-id="{{ $group->id }}" class="table-action table-action-delete group-delete"
                                                    data-toggle="modal" data-target="#delete-group-modal">
                                                     <span data-toggle="tooltip" data-placement="top" title="Delete" class="w-100 h-100">
                                                         <i class="fas fa-trash"></i>

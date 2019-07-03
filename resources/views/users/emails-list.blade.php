@@ -23,8 +23,7 @@
                             <table class="table align-items-center table-flush">
                                 <thead class="thead-light">
                                 <tr>
-                                    <th scope="col" class="sort" data-sort="name">List Name</th>
-                                    <th scope="col">Description</th>
+                                    <th scope="col" class="sort" data-sort="name">Email List</th>
                                     <th scope="col">Subscribers</th>
                                     <th scope="col" class="sort" data-sort="created_at">Created</th>
                                     <th scope="col"></th>
@@ -34,25 +33,22 @@
                                 @if (sizeof($email_lists) > 0)
                                     @foreach($email_lists as $email_list)
                                         <tr>
-                                            <th scope="row">
-                                                <div class="align-items-center">
-                                                    <span class="name mb-0 text-sm">{{ $email_list->list_name }}</span>
-                                                </div>
-                                            </th>
-                                            <td>{{ $email_list->description }}</td>
+                                            <td class="align-items-center">
+                                                <span class="name mb-0 text-sm">{{ $email_list->list_name }}</span>
+                                            </td>
                                             <td>{{ count($email_list->subscribers) }}</td>
                                             <td>
                                                 {{ time_elapsed_string($email_list->created_at) }}
                                                 <span class="text-hide created_at">{{ $email_list->created_at }}</span>
                                             </td>
-                                            <td class="table-actions">
-                                                <a href="javascript: void(0)" class="table-action email-list-edit"
+                                            <td class="table-actions text-right">
+                                                <a href="javascript: void(0)" class="table-action table-action-cp email-list-edit"
                                                    data-target="{{ secure_redirect(route('email-lists.edit', ['emailList' => $email_list->id])) }}"
                                                    data-toggle="tooltip"
                                                    data-original-title="Edit">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <a href="javascript: void(0)" class="table-action email-list-export"
+                                                <a href="javascript: void(0)" class="table-action table-action-cp email-list-export"
                                                    data-target="{{ secure_redirect(route('email-lists.show', ['emailList' => $email_list->id])) }}"
                                                    data-toggle="tooltip"
                                                    data-original-title="Export" target="_blank">

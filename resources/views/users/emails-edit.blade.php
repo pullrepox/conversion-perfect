@@ -39,10 +39,10 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-control-label ml-1" for="list_name" data-id="name">
-                                        List Name
+                                        Name
                                     </label>
                                     <input type="text" id="list_name" name="list_name" v-model="model.list_name" class="form-control @error('list_name') is-invalid @enderror"
-                                           required autocomplete="list_name" @input="changed_status = true" placeholder="List Name" />
+                                           required autocomplete="list_name" @input="changed_status = true" placeholder="Name" />
                                     @if ($errors->has('list_name'))
                                         @error('list_name')
                                         <span class="invalid-feedback" role="alert">
