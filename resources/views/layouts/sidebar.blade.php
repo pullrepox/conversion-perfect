@@ -108,8 +108,8 @@
                             <span class="nav-link-text text-capitalize">Account</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
+                    <li class="nav-item {{ isActiveRoute('bonuses') }}">
+                        <a class="nav-link {{ isActiveRoute('bonuses') }}" href="{{ secure_redirect(route('bonuses')) }}">
                             <i class="ni ni-money-coins text-cp"></i>
                             <span class="nav-link-text text-capitalize">Bonuses</span>
                         </a>
