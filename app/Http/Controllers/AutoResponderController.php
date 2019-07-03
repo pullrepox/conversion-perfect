@@ -53,21 +53,19 @@ class AutoResponderController extends Controller
     public function validateCredentials($data)
     {
         $responder = Responder::findOrFail($data['responder_id']);
-        if ($responder->title === 'sendlane'){
+        if ($responder->title === 'Sendlane'){
             return $this->sendLane($data, $responder);
-        } else if ($responder->title === 'mailchimp'){
+        } else if ($responder->title === 'Mailchimp'){
             return $this->mailChimp($data, $responder);
-        } else if ($responder->title === 'activecampaign'){
+        } else if ($responder->title === 'Activecampaign'){
             return $this->activeCampaign($data, $responder);
-        } else if ($responder->title === 'mailerlite'){
+        } else if ($responder->title === 'Mailerlite'){
             return $this->mailerLite($data, $responder);
-        } else if ($responder->title === 'getresponse'){
+        } else if ($responder->title === 'Getresponse'){
             return $this->getResponse($data, $responder);
-        } else if ($responder->title === 'sendinblue'){
+        } else if ($responder->title === 'Sendinblue'){
             return $this->sendInBlue($data, $responder);
-        }else if ($responder->title === 'sendinblue'){
-            return $this->sendInBlue($data, $responder);
-        } else if ($responder->title === 'campaignmonitor'){
+        } else if ($responder->title === 'Campaignmonitor'){
             return $this->campaignMonitor($data, $responder);
         }
     }
