@@ -207,6 +207,12 @@ class BarOptionsController extends Controller
             if ($key == 'sub_headline') {
                 $params[$key] = json_encode([['attributes' => [], 'insert' => '']]);
             }
+            if ($key == 'call_to_action') {
+                $params[$key] = json_encode([['attributes' => [], 'insert' => 'Call To Action Text Here']]);
+            }
+            if ($key == 'subscribe_text') {
+                $params[$key] = json_encode([['attributes' => [], 'insert' => 'Enter Your Name And Email Below...']]);
+            }
         }
         
         $bar->fill($params);
@@ -224,7 +230,7 @@ class BarOptionsController extends Controller
             $bar_id = $request->route()->parameter('id');
             $tempImage = $request->file('image-upload');
             $extension = $tempImage->getClientOriginalExtension();
-            $f_name = $bar_id . '_opt_in_image_upload.' . $extension;
+            $f_name = $bar_id . '_' . time() . '_opt_in_image_upload.' . $extension;
             Storage::PutFileAs('bars/options/' . $bar_id, $tempImage, $f_name, ['visibility' => 'public']);
             $image_url = Storage::url('bars/options/' . $bar_id . '/' . $f_name);
             
