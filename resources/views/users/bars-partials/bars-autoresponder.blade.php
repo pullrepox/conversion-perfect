@@ -23,7 +23,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="integration_type">Autoresponder Service</label>
-                    <select class="form-control" data-toggle="select" id="integration_type" name="integration_type" required
+                    <select class="form-control" data-toggle="select" id="integration_type" name="integration_type"
                             @keydown="tabKeyPress('#list', true, $event)" @keypress="tabKeyPress('#list', true, $event)"
                             v-model="model.autoresponder.integration_type" data-parent="autoresponder">
                         @foreach($responder_list as $r_key => $r_row)
@@ -35,7 +35,7 @@
             <div class="col-md-4" v-show="model.autoresponder.integration_type !== 'none'">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="list">List</label>
-                    <select class="form-control" data-toggle="select" id="list" name="list" required
+                    <select class="form-control" data-toggle="select" id="list" name="list"
                             @keydown="tabKeyPress('#after_submit', true, $event)" @keypress="tabKeyPress('#after_submit', true, $event)"
                             v-model="model.autoresponder.list" data-parent="autoresponder">
                         <option :value="l_item.key" v-for="(l_item, l_i) in model.auto_responder_list" :key="`list_${l_i}`">@{{ l_item.name }}</option>
@@ -47,7 +47,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="after_submit">After Submit</label>
-                    <select class="form-control" data-toggle="select" id="after_submit" name="after_submit" required
+                    <select class="form-control" data-toggle="select" id="after_submit" name="after_submit"
                             v-model="model.autoresponder.after_submit" data-parent="autoresponder">
                         <option value="show_message">Show Message</option>
                         <option value="show_message_hide_bar">Show Message and Hide Bar</option>

@@ -103,7 +103,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="powered_by_position">Powered By Location</label>
-                    <select class="form-control" data-toggle="select" id="powered_by_position" name="powered_by_position" required
+                    <select class="form-control" data-toggle="select" id="powered_by_position" name="powered_by_position"
                             v-model="model.appearance.powered_by_position" data-parent="appearance">
                         <option value="bottom_right">Bottom Right</option>
                         <option value="bottom_left">Bottom Left</option>

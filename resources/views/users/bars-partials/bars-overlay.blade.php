@@ -38,7 +38,7 @@
                     <label class="form-control-label ml-1" for="custom_link">Custom Link</label>
                     <div class="form-row">
                         <div class="col-md-6 pr-2">
-                            <select class="form-control" data-toggle="select" id="custom_link" name="custom_link" required
+                            <select class="form-control" data-toggle="select" id="custom_link" name="custom_link"
                                     v-model="model.overlay.custom_link" data-parent="overlay">
                                 @foreach($custom_links as $c_key => $c_row)
                                     <option value="{{ $c_key }}">{{ $c_row }}</option>
