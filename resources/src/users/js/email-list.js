@@ -7,7 +7,7 @@
      * Lists Delete
      */
     let delId = '';
-    $('.email-list-delete').on('click', function () {
+    $('.email-list-delete, .email-list-clear').on('click', function () {
         delId = $(this).data('id');
     });
     
@@ -17,6 +17,16 @@
             // if (r.data.result === 'success') {
             location.reload();
             // }
+        });
+    });
+    
+    $('#clearList').on('click', function () {
+        window.axios.put(`/email-lists/${delId}`, {
+            flag: 'clear'
+        }).then((r) => {
+            if (r.data.result === 'success') {
+                location.reload();
+            }
         });
     });
 })(jQuery);

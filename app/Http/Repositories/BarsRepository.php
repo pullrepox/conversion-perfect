@@ -5,6 +5,7 @@ namespace App\Http\Repositories;
 
 
 use App\Models\Bar;
+use App\Models\EmailList;
 use DrewM\MailChimp\MailChimp;
 
 class BarsRepository extends Repository
@@ -60,8 +61,8 @@ class BarsRepository extends Repository
     
     /**
      * @param $integration
-     * @throws \Exception
      * @return array
+     * @throws \Exception
      */
     public function getMailChimpLists($integration)
     {
@@ -80,6 +81,28 @@ class BarsRepository extends Repository
                 'message' => 'Nothing in this account. Please add a list to this account.'
             ];
         }
+        
+        $reMsg = [[
+            'key'  => '',
+            'name' => '-- Choose List --'
+        ]];
+        
+        $i = 1;
+        foreach ($lists['lists'] as $list) {
+            $reMsg[$i]['key'] = $list['id'];
+            $reMsg[$i]['name'] = $list['name'];
+            $i++;
+        }
+        
+        return [
+            'result'  => 'success',
+            'message' => $reMsg
+        ];
+    }
+    
+    public function getConversionPerfectLists()
+    {
+        $lists = auth()->user()->email_lists;
     
         $reMsg = [[
             'key'  => '',
@@ -87,9 +110,9 @@ class BarsRepository extends Repository
         ]];
     
         $i = 1;
-        foreach ($lists['lists'] as $list) {
-            $reMsg[$i]['key'] = $list['id'];
-            $reMsg[$i]['name'] = $list['name'];
+        foreach ($lists as $list) {
+            $reMsg[$i]['key'] = $list->id;
+            $reMsg[$i]['name'] = $list->list_name;
             $i++;
         }
     

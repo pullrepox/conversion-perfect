@@ -21,7 +21,7 @@
     });
     
     /**
-     * Tracker Clone
+     * Group Clone
      */
     $('.group-clone').on('click', function () {
         window.axios.put(`/groups/${$(this).data('target')}`, {

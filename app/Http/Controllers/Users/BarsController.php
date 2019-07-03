@@ -174,18 +174,25 @@ class BarsController extends Controller
         $bar->message = (is_null($bar->message) || $bar->message == '') ? 'Thank You!' : $bar->message;
         
         $re = [['key' => '', 'name' => '-- Choose List --']];
-        if ($bar->integration_type != 'none' && $bar->integration_type != 'conversion_perfect' && !is_null($bar->list) && $bar->list != '') {
-            $integration = Integration::with('responder')->where('user_id', auth()->user()->id)->where('responder_id', $bar->integration_type)->first();
-            
-            $re_data['result'] = '';
-            if ($integration->responder->title == 'sendlane') {
-                $re_data = $this->barsRepo->getSendlaneList($integration);
-            } else if ($integration->responder->title == 'mailchimp') {
-                $re_data = $this->barsRepo->getMailChimpLists($integration);
-            }
-            
-            if ($re_data['result'] == 'success') {
-                $re = $re_data['message'];
+        if (!is_null($bar->list) && $bar->list != '') {
+            if ($bar->integration_type == 'conversion_perfect') {
+                $re_data = $this->barsRepo->getConversionPerfectLists();
+                if ($re_data['result'] == 'success') {
+                    $re = $re_data['message'];
+                }
+            } else if ($bar->integration_type != 'none') {
+                $integration = Integration::with('responder')->where('user_id', auth()->user()->id)->where('responder_id', $bar->integration_type)->first();
+                
+                $re_data['result'] = '';
+                if ($integration->responder->title == 'sendlane') {
+                    $re_data = $this->barsRepo->getSendlaneList($integration);
+                } else if ($integration->responder->title == 'mailchimp') {
+                    $re_data = $this->barsRepo->getMailChimpLists($integration);
+                }
+                
+                if ($re_data['result'] == 'success') {
+                    $re = $re_data['message'];
+                }
             }
         }
         $list_array = json_encode($re);

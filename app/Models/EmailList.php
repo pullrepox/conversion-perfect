@@ -24,6 +24,6 @@ class EmailList extends Model
     
     public function subscribers()
     {
-        return $this->hasMany('App\Models\Subscriber');
+        return $this->hasMany('App\Models\Subscriber', 'list_id', 'id');
     }
 }
