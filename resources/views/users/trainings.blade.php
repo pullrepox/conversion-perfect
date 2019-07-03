@@ -28,7 +28,7 @@
                                             src="{{ $row->video_url }}" allow="autoplay; fullscreen;" allowfullscreen></iframe>
                                 </div>
                                 <!-- Card body -->
-                                <div class="card-body" style="height: 175px;">
+                                <div class="card-body" style="height: 255px;">
                                     <h5 class="h2 card-title mb-0">{{ $row->title }}</h5>
                                     <p class="card-text mt-4">{{ $row->description }}</p>
                                 </div>
