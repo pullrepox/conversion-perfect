@@ -22,6 +22,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/hide-option/{id}', 'Users\BarOptionsController@hideBarOption');
     Route::post('/save-option/{id}', 'Users\BarOptionsController@saveBarOption');
     Route::post('/clear-option/{id}', 'Users\BarOptionsController@clearBarOption');
+    Route::post('/image-upload/{id}', 'Users\BarOptionsController@uploadImageFile');
     Route::get('/get-responder-lists', 'Api\BarOptionsApiController@getAutoResponderLists');
 
     Route::resource('/autoresponder','AutoResponderController');

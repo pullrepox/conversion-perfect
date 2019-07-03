@@ -102,12 +102,14 @@
                 <div class="form-group">
                     <label class="form-control-label ml-1">&nbsp;</label>
                     <div class="w-100">
-                        <button type="button" class="btn btn-light btn-sm">Upload Image</button>
-                        <input type="file" id="image_upload" name="image_upload" class="area-hidden"/>
+                        <button type="button" class="btn btn-light btn-sm" @click="$refs.image_selector.click()">Upload Image</button>
+                        <input type="file" class="area-hidden" accept="image/*" ref="image_selector" @change="uploadImage($event)"/>
                         <div class="progress mt-1" v-if="showUpload">
-                            <div class="progress-bar progress-bar-striped bg-success w-100" role="progressbar"
-                                 aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
+                                 :aria-valuenow="uploadPercentage" aria-valuemin="0" :aria-valuemax="100"
+                                 :style="{'width': `${uploadPercentage}%`}"></div>
                         </div>
+                        <input type="hidden" name="image-upload" v-model="model.opt_in.image_upload"/>
                     </div>
                 </div>
             </div>

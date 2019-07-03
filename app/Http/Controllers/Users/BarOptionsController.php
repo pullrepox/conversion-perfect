@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Users;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\BarsRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class BarOptionsController extends Controller
@@ -136,20 +137,20 @@ class BarOptionsController extends Controller
                 $rules['countdown_minutes'] = 'numeric|min:0|max:59';
             }
         }
-    
+        
         if ($opt_key == 'overlay') {
             $bar->opt_overlay = 1;
             $rules['custom_link_text'] = 'required';
             $rules['third_party_url'] = 'required';
         }
-    
+        
         if ($opt_key == 'autoresponder') {
             $bar->opt_autoresponder = 1;
             if ($request->input('integration_type') != 'none') {
                 if ($request->input('integration_type') != 'conversion_perfect') {
                     $rules['list'] = 'required';
                 }
-        
+                
                 if ($request->input('after_submit') == 'redirect') {
                     $rules['redirect_url'] = 'required';
                 } else {
@@ -157,7 +158,7 @@ class BarOptionsController extends Controller
                 }
             }
         }
-    
+        
         if ($opt_key == 'opt_in') {
             $bar->opt_opt_in = 1;
             if ($request->input('opt_in_type') != 'none') {
@@ -215,5 +216,31 @@ class BarOptionsController extends Controller
         return response()->json([
             'status' => 'success'
         ]);
+    }
+    
+    public function uploadImageFile(Request $request)
+    {
+        if ($request->hasFile('image-upload')) {
+            $bar_id = $request->route()->parameter('id');
+            $tempImage = $request->file('image-upload');
+            $extension = $tempImage->getClientOriginalExtension();
+            $f_name = $bar_id . '_opt_in_image_upload.' . $extension;
+            Storage::PutFileAs('bars/options/' . $bar_id, $tempImage, $f_name, ['visibility' => 'public']);
+            $image_url = Storage::url('bars/options/' . $bar_id . '/' . $f_name);
+            
+            $bar = $this->barsRepo->find($bar_id);
+            $bar->image_upload = $image_url;
+            $bar->save();
+            
+            return [
+                'result'  => 'success',
+                'message' => $image_url
+            ];
+        } else {
+            return [
+                'result'  => 'failure',
+                'message' => 'Image Upload Failed! Please make sure your image file.'
+            ];
+        }
     }
 }
