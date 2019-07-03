@@ -93,10 +93,10 @@
                                     <a href="#" class="nav-link text-capitalize">FAQ</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link text-capitalize">Tutorials</a>
+                                    <a href="#" class="nav-link text-capitalize">Training</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link text-capitalize">Get Support</a>
+                                    <a href="https://control.im.tools/" target="_blank" class="nav-link text-capitalize">Get Support</a>
                                 </li>
                             </ul>
                         </div>
