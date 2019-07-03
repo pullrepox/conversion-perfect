@@ -20,7 +20,7 @@
             <div class="form-row">
                 @if ($trainings)
                     @foreach($trainings as $row)
-                        <div class="col-lg-4 col-md-6 mt-1">
+                        <div class="col-md-6 mt-1">
                             <div class="card">
                                 <!-- Card image -->
                                 <div class="w-100">
