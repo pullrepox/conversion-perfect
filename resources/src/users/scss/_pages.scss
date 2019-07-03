@@ -152,6 +152,28 @@
                 }
             }
         }
+        
+        input[type="email"], input[type="text"] {
+            &::-webkit-input-placeholder {
+                color: inherit;
+                opacity: .5;
+            }
+    
+            &:-ms-input-placeholder {
+                color: inherit;
+                opacity: .5;
+            }
+    
+            &::-ms-input-placeholder {
+                color: inherit;
+                opacity: .5;
+            }
+    
+            &::placeholder {
+                color: inherit;
+                opacity: .5;
+            }
+        }
     }
     
     .btn-icon-only.help-icon, .btn.btn-icon-only {
