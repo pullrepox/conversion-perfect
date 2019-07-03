@@ -18,6 +18,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', 'Users\DashboardController@index')->name('customer.dashboard');
     Route::get('/sub-domain-register', 'Users\DashboardController@subDomainRegister');
     Route::post('/sub-domain-register', 'Users\DashboardController@setSubDomainRegister')->name('domain.register');
+    Route::get('/training', 'Users\DashboardController@trainingIndex')->name('training');
     Route::resource('bars', 'Users\BarsController', ['names' => ['index' => 'bars']]);
     Route::resource('groups', 'Users\GroupsController', ['names' => ['index' => 'groups']]);
     Route::resource('email-lists', 'Users\EmailListsController', ['names' => ['index' => 'email-lists']]);
