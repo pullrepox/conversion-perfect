@@ -20,11 +20,11 @@
             <div class="form-row">
                 @if ($trainings)
                     @foreach($trainings as $row)
-                        <div class="col-lg-4 col-md-6 mt-1">
+                        <div class="col-md-6 mt-1">
                             <div class="card">
                                 <!-- Card image -->
                                 <div class="w-100">
-                                    <iframe width="100%" height="100%" style="border: 0; min-height: 300px"
+                                    <iframe width="100%" height="100%" style="border: 0; min-height: 300px;width: 100%;"
                                             src="{{ $row->video_url }}" allow="autoplay; fullscreen;" allowfullscreen></iframe>
                                 </div>
                                 <!-- Card body -->
