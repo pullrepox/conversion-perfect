@@ -20,17 +20,6 @@
                                 <a href="{{ secure_redirect(route('groups')) }}" class="btn btn-light btn-sm text-capitalize">
                                     @{{ changed_status ? 'Cancel' : 'Close' }}
                                 </a>
-                                @if (!$flag)
-                                    <div class="dropdown">
-                                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                            <a class="dropdown-item" href="#">Reset Stats</a>
-                                            <a class="dropdown-item" href="#">Archive</a>
-                                        </div>
-                                    </div>
-                                @endif
                             </div>
                         </div>
                     </div>
@@ -39,7 +28,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-control-label ml-1" for="name" data-id="name">
-                                        Group Name
+                                        Name
                                     </label>
                                     <input type="text" id="name" name="name" v-model="model.name" class="form-control @error('name') is-invalid @enderror"
                                            required autocomplete="name" @input="changed_status = true" placeholder="Group Name" />

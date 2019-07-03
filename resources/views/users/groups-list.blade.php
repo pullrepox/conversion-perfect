@@ -23,8 +23,7 @@
                             <table class="table align-items-center table-flush">
                                 <thead class="thead-light">
                                 <tr>
-                                    <th scope="col" class="sort" data-sort="name">Group Name</th>
-                                    <th scope="col">Notes</th>
+                                    <th scope="col" class="sort" data-sort="name">Group</th>
                                     <th scope="col">Tags</th>
                                     <th scope="col" class="sort" data-sort="created_at">Created</th>
                                     <th scope="col"></th>
@@ -34,36 +33,33 @@
                                 @if (sizeof($groups) > 0)
                                     @foreach($groups as $group)
                                         <tr>
-                                            <th scope="row">
-                                                <div class="align-items-center">
-                                                    <span class="name mb-0 text-sm">{{ $group->name }}</span>
-                                                </div>
-                                            </th>
-                                            <td>{{ $group->notes }}</td>
+                                            <td class="align-items-center">
+                                                <span class="name mb-0 text-sm">{{ $group->name }}</span>
+                                            </td>
                                             <td>{{ $group->tags }}</td>
                                             <td>
                                                 {{ time_elapsed_string($group->created_at) }}
                                                 <span class="text-hide created_at">{{ $group->created_at }}</span>
                                             </td>
-                                            <td class="table-actions">
-                                                <a href="javascript: void(0)" class="table-action group-edit"
+                                            <td class="table-actions text-right">
+                                                <a href="javascript: void(0)" class="table-action table-action-cp group-edit"
                                                    data-target="{{ secure_redirect(route('groups.edit', ['group' => $group->id])) }}"
                                                    data-toggle="tooltip"
                                                    data-original-title="Edit">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <a href="javascript: void(0)" class="table-action group-report"
+                                                <a href="javascript: void(0)" class="table-action table-action-cp group-report"
                                                    data-target="{{ secure_redirect(route('groups.show', ['group' => $group->id])) }}"
                                                    data-toggle="tooltip"
                                                    data-original-title="Report" target="_blank">
                                                     <i class="fas fa-chart-pie"></i>
                                                 </a>
-                                                <a href="javascript: void(0)" class="table-action group-clone" data-target="{{ $group->id }}"
+                                                <a href="javascript: void(0)" class="table-action table-action-cp group-clone" data-target="{{ $group->id }}"
                                                    data-toggle="tooltip"
                                                    data-original-title="Clone">
                                                     <i class="fas fa-clone"></i>
                                                 </a>
-                                                <a href="javascript: void(0)" data-id="{{ $group->id }}" class="table-action table-action-delete group-delete"
+                                                <a href="javascript: void(0)" data-id="{{ $group->id }}" class="table-action group-delete"
                                                    data-toggle="modal" data-target="#delete-group-modal">
                                                     <span data-toggle="tooltip" data-placement="top" title="Delete" class="w-100 h-100">
                                                         <i class="fas fa-trash"></i>

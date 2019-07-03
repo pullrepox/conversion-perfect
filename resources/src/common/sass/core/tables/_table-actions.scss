@@ -23,3 +23,9 @@
         color: $table-dark-action-color;
     }
 }
+
+.table-action-cp {
+    &:hover {
+        color: theme-color("cp-default");
+    }
+}
