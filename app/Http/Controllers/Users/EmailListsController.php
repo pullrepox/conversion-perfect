@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
+use App\Models\Bar;
 use App\Models\EmailList;
 use Illuminate\Http\Request;
 
@@ -117,17 +118,34 @@ class EmailListsController extends Controller
      */
     public function update(Request $request, EmailList $emailList)
     {
-        $this->validate($request, [
-            'list_name' => 'required|max:200|unique:email_lists,list_name,' . $emailList->id . ',user_id'
-        ]);
-    
-        $emailList->fill($request->all());
-    
-        $emailList->save();
-    
-        session()->flash('success', 'Successfully Updated');
-    
-        return response()->redirectTo('email-lists');
+        if ($request->has('flag')) {
+            if ($request->input('flag') == 'clear') {
+                $subscribers = $emailList->subscribers;
+                if ($subscribers) {
+                    foreach ($subscribers as $subscriber) {
+                        $subscriber->delete();
+                    }
+                }
+                
+                session()->flash('success', 'Successfully Cleared Captured Emails to ' . $emailList->list_name . '\'s.');
+                
+                return response()->json([
+                    'result' => 'success'
+                ]);
+            }
+        } else {
+            $this->validate($request, [
+                'list_name' => 'required|max:200|unique:email_lists,list_name,' . $emailList->id . ',user_id'
+            ]);
+            
+            $emailList->fill($request->all());
+            
+            $emailList->save();
+            
+            session()->flash('success', 'Successfully Updated');
+            
+            return response()->redirectTo('email-lists');
+        }
     }
     
     /**
@@ -135,9 +153,34 @@ class EmailListsController extends Controller
      *
      * @param \App\Models\EmailList $emailList
      * @return \Illuminate\Http\Response
+     * @throws
      */
     public function destroy(EmailList $emailList)
     {
-        //
+        $list_id = $emailList->id;
+    
+        $using_bars_check = Bar::where('integration_type', 'conversion_perfect')->where('list', $list_id)->count();
+        if ($using_bars_check > 0) {
+            $msg = 'Sorry, we cannot delete this list as it is being used in these Conversion Bars: ';
+            $using_bars = Bar::where('integration_type', 'conversion_perfect')->where('list', $list_id)->get();
+            foreach ($using_bars as $row) {
+                $msg .= $row->friendly_name . ', ';
+            }
+            $msg = substr($msg, 0, -2);
+            $msg .= '. Please remove this list from all Conversion Bars prior to deleting this list.';
+            session()->flash('error', $msg);
+        
+            return response()->json([
+                'result' => 'failure'
+            ]);
+        }
+    
+        $emailList->delete();
+    
+        session()->flash('success', 'Successfully Deleted');
+    
+        return response()->json([
+            'result' => 'success'
+        ]);
     }
 }

@@ -25,6 +25,7 @@
                                 <tr>
                                     <th scope="col" class="sort" data-sort="name">List Name</th>
                                     <th scope="col">Description</th>
+                                    <th scope="col">Subscribers</th>
                                     <th scope="col" class="sort" data-sort="created_at">Created</th>
                                     <th scope="col"></th>
                                 </tr>
@@ -39,6 +40,7 @@
                                                 </div>
                                             </th>
                                             <td>{{ $email_list->description }}</td>
+                                            <td>{{ count($email_list->subscribers) }}</td>
                                             <td>
                                                 {{ time_elapsed_string($email_list->created_at) }}
                                                 <span class="text-hide created_at">{{ $email_list->created_at }}</span>
@@ -56,10 +58,11 @@
                                                    data-original-title="Export" target="_blank">
                                                     <i class="fas fa-file-export"></i>
                                                 </a>
-                                                <a href="javascript: void(0)" class="table-action table-action-delete email-list-clear" data-target="{{ $email_list->id }}"
-                                                   data-toggle="tooltip"
-                                                   data-original-title="Clear">
-                                                    <i class="fas fa-eraser"></i>
+                                                <a href="javascript: void(0)" class="table-action table-action-delete email-list-clear" data-id="{{ $email_list->id }}"
+                                                   data-toggle="modal" data-target="#clear-list-modal">
+                                                    <span data-toggle="tooltip" data-placement="top" title="Clear" class="w-100 h-100">
+                                                        <i class="fas fa-eraser"></i>
+                                                    </span>
                                                 </a>
                                                 <a href="javascript: void(0)" data-id="{{ $email_list->id }}" class="table-action table-action-delete email-list-delete"
                                                    data-toggle="modal" data-target="#delete-list-modal">
@@ -96,10 +99,30 @@
                         </div>
                         <div class="modal-body text-center">
                             <h1>Are you sure?</h1>
-                            <p>You will lose all settings and statistics for this Email List. You will not be able to restore this Email List.</p>
+                            <p>You will lose all captured emails to this Email List. You will not be able to restore this Email List.</p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger text-capitalize" id="deleteList">Delete</button>
+                            <button type="button" class="btn btn-light ml-auto" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="clear-list-modal" tabindex="-1" role="dialog" aria-labelledby="clear-list-modal" aria-hidden="true">
+                <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h6 class="modal-title" id="modal-title-default">Clear Email List</h6>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <h1>Are you sure?</h1>
+                            <p>You will lose all captured emails to this Email List. You will not be able to restore this captured emails to this Email List.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger text-capitalize" id="clearList">Clear</button>
                             <button type="button" class="btn btn-light ml-auto" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>

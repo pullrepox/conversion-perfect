@@ -538,9 +538,6 @@ new Vue({
             this.model.auto_responder_list = [{key: '', name: '-- Choose List --'}];
             if (this.model.autoresponder.integration_type === 'none') {
                 this.model.autoresponder.list = '';
-            } else if (this.model.autoresponder.integration_type === 'conversion_perfect') {
-                this.model.auto_responder_list = [{key: 'conversion_perfect', name: 'Conversion Perfect'}];
-                this.model.autoresponder.list = '';
             } else {
                 this.loading = true;
                 axios.get(`/get-responder-lists?responder_id=${this.model.autoresponder.integration_type}`).then((r) => {
