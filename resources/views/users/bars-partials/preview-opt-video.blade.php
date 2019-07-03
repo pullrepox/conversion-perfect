@@ -23,12 +23,12 @@
 
 <div style="width: auto;margin-right: 40px;padding-top: 8px;"
      v-if="model.opt_in.image_url !== '' && model.opt_in.opt_in_type === 'img-online'">
-    <img style="width: 304px; height: 176px;border: 0;" alt="" :src="model.opt_in.image_url"/>
+    <img style="width: auto; height: 176px;border: 0;" alt="" :src="model.opt_in.image_url"/>
 </div>
 
 <div style="width: auto;margin-right: 40px;padding-top: 8px;"
      v-if="model.opt_in.image_upload !== '' && model.opt_in.opt_in_type === 'img-upload'">
-    <img style="width: 304px; height: 176px;border: 0;" alt="" :src="model.opt_in.image_upload"/>
+    <img style="width: auto; height: 176px;border: 0;" alt="" :src="model.opt_in.image_upload"/>
 </div>
 
 <div style="margin-right: 40px;padding: 8px 0;"
