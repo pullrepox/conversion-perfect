@@ -45,7 +45,9 @@ new Vue({
                 opt_in_button_type: 'match_main_button', opt_in_button_label: 'Click Here', opt_in_button_bg_color: '#515f7f', opt_in_button_label_color: '#ffffff',
                 opt_in_button_animation: 'none'
             },
-            translation: {},
+            translation: {
+                days_label: 'Days', hours_label: 'Hours', minutes_label: 'Mins', seconds_label: 'Secs',
+            },
             auto_responder_list: []
         },
         model: {

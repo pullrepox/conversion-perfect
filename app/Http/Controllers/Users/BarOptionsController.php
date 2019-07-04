@@ -170,6 +170,13 @@ class BarOptionsController extends Controller
                 }
             }
         }
+    
+        if ($opt_key == 'translation') {
+            $rules['days_label'] = 'required';
+            $rules['hours_label'] = 'required';
+            $rules['minutes_label'] = 'required';
+            $rules['seconds_label'] = 'required';
+        }
         
         $validate = Validator::make($request->all(), $rules);
         

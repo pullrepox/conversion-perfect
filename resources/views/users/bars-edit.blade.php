@@ -125,7 +125,12 @@
                     opt_in_button_animation: "{{ $flag ? 'none' : (old('opt_in_button_animation') ? old('opt_in_button_animation') : $bar->opt_in_button_animation) }}",
                 },
                 auto_responder_list: JSON.parse('{!! $list_array !!}'),
-                translation: {}
+                translation: {
+                    days_label: 'Days',
+                    hours_label: 'Hours',
+                    minutes_label: 'Mins',
+                    seconds_label: 'Secs',
+                }
             }
         };
     </script>
