@@ -16,34 +16,28 @@ new Vue({
         loading: false,
         create_edit: false,
         changed_status: false,
+        sel_tab: 'main',
         bar_option: {
-            preview: true, display: false, content: false, appearance: false, button: false, countdown: false, overlay: false, autoresponder: false, opt_in: false, custom_text: false
+            preview: true, content: false, appearance: false, button: false, countdown: false, overlay: false, autoresponder: false, opt_in: false, custom_text: false
         },
         show_btn: {
-            preview: false, display: false, content: false, appearance: false, button: false, countdown: false, overlay: false, autoresponder: false, opt_in: false, custom_text: false
+            preview: false, content: false, appearance: false, button: false, countdown: false, overlay: false, autoresponder: false, opt_in: false, custom_text: false
         },
         options_list: [
-            {key: 'preview', name: 'Preview', class: 'btn-outline-primary'}, {key: 'display', name: 'Display', class: 'btn-outline-default'},
+            {key: 'preview', name: 'Preview', class: 'btn-outline-primary'},
             {key: 'content', name: 'Content', class: 'btn-outline-default'}, {key: 'appearance', name: 'Appearance', class: 'btn-outline-default'},
             {key: 'button', name: 'Button', class: 'btn-outline-default'}, {key: 'countdown', name: 'Countdown', class: 'btn-outline-success'},
             {key: 'overlay', name: 'Overlay', class: 'btn-outline-success'}, {key: 'autoresponder', name: 'Autoresponder', class: 'btn-outline-warning'},
             {key: 'opt_in', name: 'Opt-In', class: 'btn-outline-warning'}, {key: 'custom_text', name: 'Custom Text', class: 'btn-outline-info'},
         ],
         options_label: {
-            preview: 'Preview', display: 'Display', content: 'Content', appearance: 'Appearance', button: 'Button', countdown: 'Countdown',
+            preview: 'Preview', content: 'Content', appearance: 'Appearance', button: 'Button', countdown: 'Countdown',
             overlay: 'Overlay', autoresponder: 'Autoresponder', opt_in: 'Opt-In', custom_text: 'Custom Text'
         },
         show_options: {},
         basic_model: {
-            friendly_name: '',
-            position: 'top_sticky',
-            group_id: '0',
-            headline: [{attributes: {}, insert: 'Your Headline'}],
-            headline_color: '#ffffff',
-            background_color: '#3BAF85',
-            display: {
-                show_bar_type: 'immediate', frequency: 'every', delay_in_seconds: 3, scroll_point_percent: 10
-            },
+            friendly_name: '', position: 'top_sticky', group_id: '0', headline: [{attributes: {}, insert: 'Your Headline'}], headline_color: '#ffffff', background_color: '#3BAF85',
+            show_bar_type: 'immediate', frequency: 'every', delay_in_seconds: 3, scroll_point_percent: 10,
             content: {
                 sub_headline: [{attributes: {}, insert: ''}], sub_headline_color: '#ffffff', sub_background_color: '',
                 video_type: 'none', content_youtube_url: '', content_vimeo_url: '', video_auto_play: 0, video_code: ''

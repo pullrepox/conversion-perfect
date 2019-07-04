@@ -32,68 +32,6 @@
                         <i class="ni ni-zoom-split-in"></i>
                     </a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link font-weight-bold" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-plus-circle"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-dark bg-dark-gradient-cp dropdown-menu-right">
-                        <div class="row shortcuts px-4">
-                            <a href="{{ secure_redirect(route('bars.create')) }}" class="col-4 shortcut-item">
-                                <span class="shortcut-media avatar rounded-circle bg-gradient-white">
-                                  <i class="ni ni-square-pin text-cp"></i>
-                                </span>
-                                <small class="text-capitalize">Bar</small>
-                            </a>
-                            <a href="#" class="col-4 shortcut-item">
-                                <span class="shortcut-media avatar rounded-circle bg-gradient-white">
-                                  <i class="ni ni-spaceship text-cp"></i>
-                                </span>
-                                <small class="text-capitalize">Page</small>
-                            </a>
-                            <a href="#" class="col-4 shortcut-item">
-                                <span class="shortcut-media avatar rounded-circle bg-gradient-white">
-                                  <i class="far fa-object-group text-cp"></i>
-                                </span>
-                                <small class="text-capitalize">Email</small>
-                            </a>
-                        </div>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="ni ni-bell-55"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-xl dropdown-menu-right py-0 overflow-hidden">
-                        <!-- Dropdown header -->
-                        <div class="px-3 py-3">
-                            <h6 class="text-sm text-muted m-0">You have <strong class="text-primary">13</strong> notifications.</h6>
-                        </div>
-                        <!-- List group -->
-                        <div class="list-group list-group-flush">
-                            <a href="#" class="list-group-item list-group-item-action">
-                                <div class="row align-items-center">
-                                    <div class="col-auto">
-                                        <!-- Avatar -->
-                                        <img alt="Image placeholder" src="{{ asset('assets/img/theme/team-1.jpg') }}" class="avatar rounded-circle">
-                                    </div>
-                                    <div class="col ml--2">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <h4 class="mb-0 text-sm text-capitalize">John Snow</h4>
-                                            </div>
-                                            <div class="text-right text-muted">
-                                                <small>2 hrs ago</small>
-                                            </div>
-                                        </div>
-                                        <p class="text-sm mb-0">Let's meet at Starbucks at 11:30. Wdyt?</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <!-- View all -->
-                        <a href="#" class="dropdown-item text-center text-primary font-weight-bold py-3">View all</a>
-                    </div>
-                </li>
             </ul>
             <ul class="navbar-nav align-items-center ml-auto ml-md-0">
                 <li class="nav-item dropdown">

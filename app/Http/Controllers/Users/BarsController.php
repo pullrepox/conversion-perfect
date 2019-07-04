@@ -72,13 +72,17 @@ class BarsController extends Controller
         ]);
         
         $ins_data = [
-            'user_id'          => auth()->user()->id,
-            'friendly_name'    => $request->input('friendly_name'),
-            'position'         => $request->input('position'),
-            'group_id'         => $request->input('group_id'),
-            'headline_color'   => $request->input('headline_color'),
-            'background_color' => $request->input('background_color'),
-            'opt_preview'      => 1
+            'user_id'              => auth()->user()->id,
+            'friendly_name'        => $request->input('friendly_name'),
+            'position'             => $request->input('position'),
+            'group_id'             => $request->input('group_id'),
+            'headline_color'       => $request->input('headline_color'),
+            'background_color'     => $request->input('background_color'),
+            'show_bar_type'        => $request->input('show_bar_type'),
+            'delay_in_seconds'     => $request->input('delay_in_seconds'),
+            'scroll_point_percent' => $request->input('scroll_point_percent'),
+            'frequency'            => $request->input('frequency'),
+            'opt_preview'          => 1,
         ];
         
         $headline = $request->input('headline');
@@ -270,11 +274,6 @@ class BarsController extends Controller
             if ($key == 'countdown_end_time') {
                 $params[$key] = date('H:i:s', strtotime($val));
             }
-        }
-        
-        if ($request->input('opt_display') == 'true') {
-            $rules['delay_in_seconds'] = 'numeric';
-            $rules['scroll_point_percent'] = 'numeric';
         }
         
         if ($request->input('opt_content') == 'true') {

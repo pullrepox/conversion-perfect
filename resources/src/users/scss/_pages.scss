@@ -85,6 +85,19 @@
                 textarea.form-control {
                     height: calc(1.5em + 1.25rem + 5px);
                 }
+    
+                .nav-wrapper {
+                    .nav-pills {
+                        .nav-item {
+                            .nav-link {
+                                &.disabled {
+                                    color: inherit;
+                                    opacity: .4;
+                                }
+                            }
+                        }
+                    }
+                }
             }
             
             .division-card-header {
