@@ -45,7 +45,8 @@ new Vue({
                 opt_in_button_type: 'match_main_button', opt_in_button_label: 'Click Here', opt_in_button_bg_color: '#515f7f', opt_in_button_label_color: '#ffffff',
                 opt_in_button_animation: 'none'
             },
-            translation: {}
+            translation: {},
+            auto_responder_list: []
         },
         model: {
             friendly_name: '', position: 'top_sticky', group_id: '0', headline: [{attributes: {}, insert: 'Your Headline'}], headline_color: '#ffffff', background_color: '#3BAF85',

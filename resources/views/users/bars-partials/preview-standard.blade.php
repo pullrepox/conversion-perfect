@@ -1,4 +1,4 @@
-<div style="height: 230px; width: 100%; font-size: 20px; font-family: 'Nunito', sans-serif; text-align: center;position: relative;"
+<div style="height: 233px; width: 100%; font-size: 20px; font-family: 'Nunito', sans-serif; text-align: center;position: relative;"
      :style="{
      'background': model.lead_capture.panel_color === '' ? 'transparent' : (model.lead_capture.panel_color.indexOf('#') > -1 ? model.lead_capture.panel_color : `#${model.lead_capture.panel_color}`),
      'color': (model.lead_capture.subscribe_text_color.indexOf('#') > -1 ? model.lead_capture.subscribe_text_color : `#${model.lead_capture.subscribe_text_color}`)
@@ -67,7 +67,7 @@
             }">
         @{{ model.lead_capture.opt_in_button_label }}
     </button>
-    <div style="position: absolute; bottom: 3px; right: 3px;z-index: 9999;font-size: 12px;"
+    <div style="font-size: 12px; margin-bottom: 10px; margin-top: 5px;"
          :style="{'color': (model.lead_capture.subscribe_text_color.indexOf('#') > -1 ? model.lead_capture.subscribe_text_color : `#${model.lead_capture.subscribe_text_color}`)}">
         {{ trans('options.disclaimer') }}
     </div>
