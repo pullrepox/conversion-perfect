@@ -5,25 +5,29 @@
         @include('layouts.page-header', ['data' => $header_data])
         {{-- Page content --}}
         <div class="container-fluid mt--8">
-{{--            <div class="row">--}}
-{{--                <div class="col">--}}
-{{--                    <div class="card">--}}
-{{--                        <!-- Card header -->--}}
-{{--                        <div class="card-header border-0">--}}
-{{--                            <div class="row">--}}
-{{--                                <h3 class="mb-0 col">{{ $header_data['main_name'] }}</h3>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
+            {{--            <div class="row">--}}
+            {{--                <div class="col">--}}
+            {{--                    <div class="card">--}}
+            {{--                        <!-- Card header -->--}}
+            {{--                        <div class="card-header border-0">--}}
+            {{--                            <div class="row">--}}
+            {{--                                <h3 class="mb-0 col">{{ $header_data['main_name'] }}</h3>--}}
+            {{--                            </div>--}}
+            {{--                        </div>--}}
+            {{--                    </div>--}}
+            {{--                </div>--}}
+            {{--            </div>--}}
             <div class="form-row">
                 @if ($bonuses)
                     @foreach($bonuses as $row)
                         <div class="col-md-4 mt-1">
                             <div class="card">
                                 <!-- Card image -->
-                                <img class="card-img-top" src="{{ $row->image_url }}" alt="Bonus Image">
+                                <div class="card-img-top"
+                                     style="width: 100%; {{ ((!is_null($row->background_color) && $row->background_color != '') ? ('background-color: ' . $row->background_color . ';') : '') }}
+                                     {{ (($row->image_padding && $row->image_padding != '0') ? ('padding: ' . $row->image_padding . 'px;') : '') }}">
+                                    <img class="card-img-top" src="{{ $row->image_url }}" alt="Bonus Image"/>
+                                </div>
                                 <!-- Card body -->
                                 <div class="card-body">
                                     <h5 class="h2 card-title mb-0">{{ $row->title }}</h5>
