@@ -45,7 +45,7 @@
                 <label class="form-control-label ml-1" for="countdown_end_date">End Date</label>
                 <input type="text" class="form-control @error('countdown_end_date') is-invalid @enderror datepicker"
                        @keydown="tabKeyPress('#countdown_end_time', false, $event)" @keypress="tabKeyPress('#countdown_end_time', false, $event)"
-                       id="countdown_end_date" name="countdown_end_date" @input="changed_status = true" data-parent="timer" :value="model.timer.countdown_end_date">
+                       id="countdown_end_date" name="countdown_end_date" @input="changeStatusVal" data-parent="timer" :value="model.timer.countdown_end_date">
                 @error('countdown_end_date')
                 <span class="invalid-feedback" role="alert">
                     {{ $message }}
@@ -59,7 +59,7 @@
                 <input type="time" class="form-control @error('countdown_end_time') is-invalid @enderror" placeholder="Select time"
                        @keydown="tabKeyPress('#countdown_timezone', true, $event)" @keypress="tabKeyPress('#countdown_timezone', true, $event)"
                        id="countdown_end_time" name="countdown_end_time" v-model="model.timer.countdown_end_time"
-                       @input="changed_status = true" data-parent="timer">
+                       @input="changeStatusVal" data-parent="timer">
                 @error('countdown_end_time')
                 <span class="invalid-feedback" role="alert">
                     {{ $message }}
@@ -86,7 +86,7 @@
                 <label class="form-control-label ml-1" for="countdown_days">Days</label>
                 <div class="row">
                     <div class="col-md-10 col-sm-9">
-                        <vue-slider :speed="1" :min="0" :max="30" v-model="model.timer.countdown_days" id="countdown_days" @change="changed_status = true"></vue-slider>
+                        <vue-slider :speed="1" :min="0" :max="30" v-model="model.timer.countdown_days" id="countdown_days" @change="changeStatusVal"></vue-slider>
                     </div>
                     <div class="col-md-2 col-sm-3 pl-0 mt--1">@{{ model.timer.countdown_days }}</div>
                     <input type="hidden" name="countdown_days" v-model="model.timer.countdown_days"/>
@@ -98,7 +98,7 @@
                 <label class="form-control-label ml-1" for="countdown_hours">Hours</label>
                 <div class="row">
                     <div class="col-md-10 col-sm-9">
-                        <vue-slider :speed="1" :min="0" :max="23" v-model="model.timer.countdown_hours" id="countdown_hours" @change="changed_status = true"></vue-slider>
+                        <vue-slider :speed="1" :min="0" :max="23" v-model="model.timer.countdown_hours" id="countdown_hours" @change="changeStatusVal"></vue-slider>
                     </div>
                     <div class="col-md-2 col-sm-3 pl-0 mt--1">@{{ model.timer.countdown_hours }}</div>
                     <input type="hidden" name="countdown_hours" v-model="model.timer.countdown_hours"/>
@@ -110,7 +110,7 @@
                 <label class="form-control-label ml-1" for="countdown_minutes">Minutes</label>
                 <div class="row">
                     <div class="col-md-10 col-sm-9">
-                        <vue-slider :speed="1" :min="0" :max="59" v-model="model.timer.countdown_minutes" id="countdown_minutes" @change="changed_status = true"></vue-slider>
+                        <vue-slider :speed="1" :min="0" :max="59" v-model="model.timer.countdown_minutes" id="countdown_minutes" @change="changeStatusVal"></vue-slider>
                     </div>
                     <div class="col-md-2 col-sm-3 pl-0 mt--1">@{{ model.timer.countdown_minutes }}</div>
                     <input type="hidden" name="countdown_minutes" v-model="model.timer.countdown_minutes"/>

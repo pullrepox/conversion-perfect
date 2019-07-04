@@ -28,7 +28,7 @@
                     <div class="col-md-6 pl-2">
                         <div class="track-link-sept">
                             <input type="text" id="custom_link_text" name="custom_link_text" data-parent="overlay" class="form-control @error('custom_link_text') is-invalid @enderror"
-                                   v-model="model.overlay.custom_link_text" @input="changed_status = true"/>
+                                   v-model="model.overlay.custom_link_text" @input="changeStatusVal"/>
                             @error('custom_link_text')
                             <span class="invalid-feedback" role="alert">
                                     {{ $message }}
@@ -45,14 +45,14 @@
             <div class="form-group">
                 <label class="form-control-label ml-1" for="meta_title">SEO Title</label>
                 <input type="text" id="meta_title" name="meta_title" data-parent="overlay" class="form-control"
-                       v-model="model.overlay.meta_title" @input="changed_status = true"/>
+                       v-model="model.overlay.meta_title" @input="changeStatusVal"/>
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-group">
                 <label class="form-control-label ml-1" for="meta_description">SEO Description</label>
                 <textarea id="meta_description" name="meta_description" v-model="model.overlay.meta_description" data-parent="overlay"
-                          class="form-control" @input="changed_status = true" rows="1"></textarea>
+                          class="form-control" @input="changeStatusVal" rows="1"></textarea>
             </div>
         </div>
         <div class="col-md-4">
@@ -60,7 +60,7 @@
                 <label class="form-control-label ml-1" for="meta_keywords">SEO Keywords</label>
                 <div class="tags-area">
                     <input type="text" id="meta_keywords" name="meta_keywords" data-parent="overlay" data-toggle="tags" class="form-control"
-                           v-model="model.overlay.meta_keywords" @input="changed_status = true"/>
+                           v-model="model.overlay.meta_keywords" @input="changeStatusVal"/>
                 </div>
             </div>
         </div>

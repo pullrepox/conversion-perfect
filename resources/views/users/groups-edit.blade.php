@@ -31,7 +31,7 @@
                                         Name
                                     </label>
                                     <input type="text" id="name" name="name" v-model="model.name" class="form-control @error('name') is-invalid @enderror"
-                                           required autocomplete="name" @input="changed_status = true" placeholder="Name" />
+                                           required autocomplete="name" @input="changeStatusVal" placeholder="Name" />
                                     @if ($errors->has('name'))
                                         @error('name')
                                         <span class="invalid-feedback" role="alert">
@@ -53,7 +53,7 @@
                                         Notes
                                     </label>
                                     <textarea v-model="model.notes" class="form-control" id="notes" name="notes" rows="1"
-                                              @input="changed_status = true" placeholder="Notes"></textarea>
+                                              @input="changeStatusVal" placeholder="Notes"></textarea>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -63,7 +63,7 @@
                                     </label>
                                     <div class="tags-area">
                                         <input type="text" id="tags" name="tags" data-toggle="tags" class="form-control"
-                                               v-model="model.tags" @input="changed_status = true"/>
+                                               v-model="model.tags" @input="changeStatusVal"/>
                                     </div>
                                 </div>
                             </div>

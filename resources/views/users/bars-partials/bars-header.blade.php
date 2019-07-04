@@ -25,44 +25,45 @@
         <div class="nav-wrapper">
             <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="barsTab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link mb-sm-3 mb-md-0 active" id="tabs-main-tab" href="javascript: void(0)" data-toggle="pill" role="tab" aria-controls="tabs-main" aria-selected="true"
-                       @click="tabClick($event, 'main')">
+                    <a class="nav-link mb-sm-3 mb-md-0" :class="{'active': sel_tab === 'main'}" id="tabs-main-tab" href="javascript: void(0)" data-toggle="pill"
+                       role="tab" aria-controls="tabs-main" :aria-selected="sel_tab === 'main' ? 'true' : 'false'" @click="tabClick($event, 'main')">
                         Main
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link mb-sm-3 mb-md-0{{ $flag ? ' disabled' : '' }}" href="javascript: void(0)" id="tabs-appearance-tab" data-toggle="pill" role="tab"
-                       aria-controls="tabs-appearance" aria-selected="false" @click="tabClick($event, 'appearance')">
+                    <a class="nav-link mb-sm-3 mb-md-0{{ $flag ? ' disabled' : '' }}" :class="{'active': sel_tab === 'appearance'}" href="javascript: void(0)" id="tabs-appearance-tab"
+                       data-toggle="pill" role="tab" aria-controls="tabs-appearance" :aria-selected="sel_tab === 'appearance' ? 'true' : 'false'" @click="tabClick($event, 'appearance')">
                         Appearance
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link mb-sm-3 mb-md-0{{ $flag ? ' disabled' : '' }}" href="javascript: void(0)" id="tabs-content-tab" data-toggle="pill" role="tab"
-                       aria-controls="tabs-content" aria-selected="false" @click="tabClick($event, 'content')">
+                    <a class="nav-link mb-sm-3 mb-md-0{{ $flag ? ' disabled' : '' }}" :class="{'active': sel_tab === 'content'}" href="javascript: void(0)" id="tabs-content-tab"
+                       data-toggle="pill" role="tab" aria-controls="tabs-content" :aria-selected="sel_tab === 'content' ? 'true' : 'false'" @click="tabClick($event, 'content')">
                         Content
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link mb-sm-3 mb-md-0{{ $flag ? ' disabled' : '' }}" href="javascript: void(0)" id="tabs-timer-tab" data-toggle="pill" role="tab" aria-controls="tabs-timer"
-                       aria-selected="false" @click="tabClick($event, 'timer')">
+                    <a class="nav-link mb-sm-3 mb-md-0{{ $flag ? ' disabled' : '' }}" :class="{'active': sel_tab === 'timer'}" href="javascript: void(0)" id="tabs-timer-tab"
+                       data-toggle="pill" role="tab" aria-controls="tabs-timer" :aria-selected="sel_tab === 'timer' ? 'true' : 'false'" @click="tabClick($event, 'timer')">
                         Timer
                     </a>
                 </li>
                 <li class="nav-item disabled">
-                    <a class="nav-link mb-sm-3 mb-md-0{{ $flag ? ' disabled' : '' }}" href="javascript: void(0)" id="tabs-overlay-tab" data-toggle="pill" role="tab"
-                       aria-controls="tabs-overlay" aria-selected="false" @click="tabClick($event, 'overlay')">
+                    <a class="nav-link mb-sm-3 mb-md-0{{ $flag ? ' disabled' : '' }}" :class="{'active': sel_tab === 'overlay'}" href="javascript: void(0)" id="tabs-overlay-tab"
+                       data-toggle="pill" role="tab" aria-controls="tabs-overlay" :aria-selected="sel_tab === 'overlay' ? 'true' : 'false'" @click="tabClick($event, 'overlay')">
                         Overlay
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link mb-sm-3 mb-md-0{{ $flag ? ' disabled' : '' }}" href="javascript: void(0)" id="tabs-lead_capture-tab" data-toggle="pill" role="tab"
-                       aria-controls="tabs-lead_capture" aria-selected="false" @click="tabClick($event, 'lead_capture')">
+                    <a class="nav-link mb-sm-3 mb-md-0{{ $flag ? ' disabled' : '' }}" :class="{'active': sel_tab === 'lead_capture'}" href="javascript: void(0)" id="tabs-lead_capture-tab"
+                       data-toggle="pill" role="tab" aria-controls="tabs-lead_capture" :aria-selected="sel_tab === 'lead_capture' ? 'true' : 'false'"
+                       @click="tabClick($event, 'lead_capture')">
                         Lead Capture
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link mb-sm-3 mb-md-0{{ $flag ? ' disabled' : '' }}" href="javascript: void(0)" id="tabs-translation-tab" data-toggle="pill" role="tab"
-                       aria-controls="tabs-translation" aria-selected="false" @click="tabClick($event, 'translation')">
+                    <a class="nav-link mb-sm-3 mb-md-0{{ $flag ? ' disabled' : '' }}" :class="{'active': sel_tab === 'translation'}" href="javascript: void(0)" id="tabs-translation-tab"
+                       data-toggle="pill" role="tab" aria-controls="tabs-translation" :aria-selected="sel_tab === 'translation' ? 'true' : 'false'" @click="tabClick($event, 'translation')">
                         Translation
                     </a>
                 </li>

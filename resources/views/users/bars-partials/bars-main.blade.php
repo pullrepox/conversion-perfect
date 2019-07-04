@@ -8,7 +8,7 @@
                 <input type="text" class="form-control @error('friendly_name') is-invalid @enderror" id="friendly_name" name="friendly_name"
                        v-model="model.friendly_name"
                        @keydown="tabKeyPress('#position', true, $event)" @keypress="tabKeyPress('#position', true, $event)"
-                       placeholder="Friendly Name" required autocomplete="friendly_name" @input="changed_status = true"/>
+                       placeholder="Friendly Name" required autocomplete="friendly_name" @input="changeStatusVal"/>
                 @if ($errors->has('friendly_name'))
                     @error('friendly_name')
                     <span class="invalid-feedback" role="alert">
@@ -119,7 +119,7 @@
                 <label class="form-control-label ml-1" for="delay_in_seconds">Delay in Seconds</label>
                 <div class="row">
                     <div class="col-md-10 col-sm-9">
-                        <vue-slider :speed="1" :min="1" :max="10" v-model="model.delay_in_seconds" id="delay_in_seconds" @input="changed_status = true"></vue-slider>
+                        <vue-slider :speed="1" :min="1" :max="10" v-model="model.delay_in_seconds" id="delay_in_seconds" @change="changeStatusVal"></vue-slider>
                     </div>
                     <div class="col-md-2 col-sm-3 pl-0 mt--1">@{{ model.delay_in_seconds }}s</div>
                     <input type="hidden" name="delay_in_seconds" v-model="model.delay_in_seconds"/>
@@ -131,7 +131,7 @@
                 <label class="form-control-label ml-1" for="scroll_point_percent">Scroll Point Percent</label>
                 <div class="row">
                     <div class="col-md-10 col-sm-9">
-                        <vue-slider :speed="1" :min="0" :max="100" v-model="model.scroll_point_percent" id="scroll_point_percent" @input="changed_status = true"></vue-slider>
+                        <vue-slider :speed="1" :min="0" :max="100" v-model="model.scroll_point_percent" id="scroll_point_percent" @change="changeStatusVal"></vue-slider>
                     </div>
                     <div class="col-md-2 col-sm-3 pl-0 mt--1">@{{ model.scroll_point_percent }}%</div>
                     <input type="hidden" name="scroll_point_percent" v-model="model.scroll_point_percent"/>

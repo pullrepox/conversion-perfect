@@ -42,7 +42,7 @@
                                         Name
                                     </label>
                                     <input type="text" id="list_name" name="list_name" v-model="model.list_name" class="form-control @error('list_name') is-invalid @enderror"
-                                           required autocomplete="list_name" @input="changed_status = true" placeholder="Name" />
+                                           required autocomplete="list_name" @input="changeStatusVal" placeholder="Name" />
                                     @if ($errors->has('list_name'))
                                         @error('list_name')
                                         <span class="invalid-feedback" role="alert">
@@ -62,7 +62,7 @@
                                         Description
                                     </label>
                                     <textarea v-model="model.description" class="form-control" id="description" name="description" rows="1"
-                                              @input="changed_status = true" placeholder="Description"></textarea>
+                                              @input="changeStatusVal" placeholder="Description"></textarea>
                                 </div>
                             </div>
                         </div>

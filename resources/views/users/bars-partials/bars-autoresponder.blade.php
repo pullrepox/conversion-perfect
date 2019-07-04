@@ -40,7 +40,7 @@
             <div class="form-group">
                 <label class="form-control-label ml-1" for="message">Message</label>
                 <textarea id="message" name="message" v-model="model.lead_capture.message" data-parent="lead_capture"
-                          class="form-control" @input="changed_status = true" rows="1"></textarea>
+                          class="form-control" @input="changeStatusVal" rows="1"></textarea>
             </div>
         </div>
         <div class="col-md-4" v-show="model.lead_capture.after_submit === 'show_message_hide_bar'">
@@ -49,7 +49,7 @@
                 <div class="row">
                     <div class="col-md-10 col-sm-9">
                         <vue-slider :speed="1" :min="1" :max="10" v-model="model.lead_capture.autohide_delay_seconds" id="autohide_delay_seconds"
-                                    @change="changed_status = true"></vue-slider>
+                                    @change="changeStatusVal"></vue-slider>
                     </div>
                     <div class="col-md-2 col-sm-3 pl-0 mt--1">@{{ model.lead_capture.autohide_delay_seconds }}s</div>
                     <input type="hidden" name="autohide_delay_seconds" v-model="model.lead_capture.autohide_delay_seconds"/>

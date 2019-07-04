@@ -17,7 +17,7 @@
         <div class="form-group">
             <label class="form-control-label ml-1" for="opt_in_youtube_url">Youtube URL</label>
             <input type="text" class="form-control @error('opt_in_youtube_url') is-invalid @enderror"
-                   id="opt_in_youtube_url" name="opt_in_youtube_url" @input="changeToUrl('opt_in_youtube_url', 'opt_in')" data-parent="lead_capture"
+                   id="opt_in_youtube_url" name="opt_in_youtube_url" @input="changeToUrl('opt_in_youtube_url', 'lead_capture')" data-parent="lead_capture"
                    v-model="model.lead_capture.opt_in_youtube_url" placeholder="https://www.youtube.com/embed/_UbDeqPdUek"/>
             @error('opt_in_youtube_url')
             <span class="invalid-feedback" role="alert">
@@ -30,7 +30,7 @@
         <div class="form-group">
             <label class="form-control-label ml-1" for="opt_in_vimeo_url">Vimeo URL</label>
             <input type="text" class="form-control @error('opt_in_vimeo_url') is-invalid @enderror"
-                   id="opt_in_vimeo_url" name="opt_in_vimeo_url" @input="changeToUrl('opt_in_vimeo_url', 'opt_in')" data-parent="lead_capture"
+                   id="opt_in_vimeo_url" name="opt_in_vimeo_url" @input="changeToUrl('opt_in_vimeo_url', 'lead_capture')" data-parent="lead_capture"
                    v-model="model.lead_capture.opt_in_vimeo_url" placeholder="https://player.vimeo.com/video/20732587"/>
             @error('opt_in_vimeo_url')
             <span class="invalid-feedback" role="alert">
@@ -43,7 +43,7 @@
         <div class="form-group">
             <label class="form-control-label ml-1" for="opt_in_video_code">Video Embed Code</label>
             <textarea id="opt_in_video_code" name="opt_in_video_code" v-model="model.lead_capture.opt_in_video_code" data-parent="lead_capture"
-                      class="form-control @error('opt_in_video_code') is-invalid @enderror" @input="changed_status = true" rows="1"></textarea>
+                      class="form-control @error('opt_in_video_code') is-invalid @enderror" @input="changeStatusVal" rows="1"></textarea>
             @error('opt_in_video_code')
             <span class="invalid-feedback" role="alert">
                         {{ $message }}
@@ -57,7 +57,7 @@
             <div class="radio ml-1">
                 <label class="custom-toggle custom-toggle-light">
                     <input type="checkbox" id="opt_in_video_auto_play" name="opt_in_video_auto_play"
-                           data-parent="button" v-model="model.lead_capture.opt_in_video_auto_play" @input="changed_status = true">
+                           data-parent="button" v-model="model.lead_capture.opt_in_video_auto_play" @input="changeStatusVal">
                     <span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
                 </label>
             </div>
@@ -67,7 +67,7 @@
         <div class="form-group">
             <label class="form-control-label ml-1" for="image_url">Image URL</label>
             <input type="text" class="form-control @error('image_url') is-invalid @enderror"
-                   id="image_url" name="image_url" @input="changeToUrl('image_url', 'opt_in')" data-parent="lead_capture"
+                   id="image_url" name="image_url" @input="changeToUrl('image_url', 'lead_capture')" data-parent="lead_capture"
                    v-model="model.lead_capture.image_url"/>
             @error('image_url')
             <span class="invalid-feedback" role="alert">
@@ -186,7 +186,7 @@
         <div class="form-group">
             <label class="form-control-label ml-1" for="opt_in_button_label">Button Label</label>
             <input type="text" class="form-control"
-                   id="opt_in_button_label" name="opt_in_button_label" @input="changed_status = true" data-parent="lead_capture"
+                   id="opt_in_button_label" name="opt_in_button_label" @input="changeStatusVal" data-parent="lead_capture"
                    v-model="model.lead_capture.opt_in_button_label"/>
         </div>
     </div>
