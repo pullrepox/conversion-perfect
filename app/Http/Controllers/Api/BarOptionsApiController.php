@@ -44,9 +44,9 @@ class BarOptionsApiController extends Controller
         } else {
             $integration = Integration::with('responder')->where('user_id', auth()->user()->id)->where('responder_id', $responder_id)->first();
             
-            if ($integration->responder->title == 'sendlane') {
+            if ($integration->responder->title == 'Sendlane') {
                 $re = $this->barsRepo->getSendlaneList($integration);
-            } else if ($integration->responder->title == 'mailchimp') {
+            } else if ($integration->responder->title == 'Mailchimp') {
                 $re = $this->barsRepo->getMailChimpLists($integration);
             }
         }
