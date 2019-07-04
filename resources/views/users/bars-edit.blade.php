@@ -11,171 +11,23 @@
                 @if (!$flag)
                     @method('PUT')
                 @endif
+                <input type="hidden" id="sel_tab" name="sel_tab" v-model="sel_tab"/>
                 {{-- bar Base Content --}}
-                <div class="card">
-                    <div class="card-header">
-                        <div class="form-row">
-                            <h3 class="mb-0 col">{{ $header_data['main_name'] }}</h3>
-                            <div class="col text-right">
-                                <button type="submit" class="btn btn-success btn-sm text-capitalize">{{ $flag ? 'Create' : 'Update' }}</button>
-                                <a href="{{ secure_redirect(route('bars')) }}" class="btn btn-light btn-sm text-capitalize">
-                                    @{{ changed_status ? 'Cancel' : 'Close' }}
-                                </a>
-                                @if (!$flag)
-                                    <div class="dropdown">
-                                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                            <a class="dropdown-item" href="#">Reset Stats</a>
-                                            <a class="dropdown-item" href="#">Archive</a>
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body pb-0">
-                        <div class="form-row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label class="form-control-label ml-1" for="friendly_name" data-id="friendly_name">
-                                        Friendly Name
-                                    </label>
-                                    <input type="text" class="form-control @error('friendly_name') is-invalid @enderror" id="friendly_name" name="friendly_name"
-                                           v-model="model.friendly_name"
-                                           @keydown="tabKeyPress('#position', true, $event)" @keypress="tabKeyPress('#position', true, $event)"
-                                           placeholder="Friendly Name" required autocomplete="friendly_name" @input="changed_status = true"/>
-                                    @if ($errors->has('friendly_name'))
-                                        @error('friendly_name')
-                                        <span class="invalid-feedback" role="alert">
-                                            {{ $message }}
-                                        </span>
-                                        @enderror
-                                    @else
-                                        <span class="invalid-feedback" role="alert">
-                                            Please insert correct value.
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label class="form-control-label ml-1" for="position">
-                                        Position
-                                    </label>
-                                    <select class="form-control @error('position') is-invalid @enderror" data-toggle="select" id="position" name="position" required
-                                            @keydown="tabKeyPress('#group_id', true, $event)" @keypress="tabKeyPress('#group_id', true, $event)"
-                                            v-model="model.position">
-                                        <option value="top_sticky">Top Sticky</option>
-                                        <option value="top">Top</option>
-                                        <option value="bottom">Bottom</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label class="form-control-label ml-1" for="group_id">
-                                        Group
-                                    </label>
-                                    <select class="form-control @error('group_id') is-invalid @enderror" data-toggle="select" id="group_id" name="group_id" required
-                                            @keydown="tabKeyPress('#headline', false, $event)" @keypress="tabKeyPress('#headline', false, $event)"
-                                            v-model="model.group_id">
-                                        @foreach($group_list as $g_id => $g_name)
-                                            <option value="{{ $g_id }}">{{ $g_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label class="form-control-label ml-1" for="headline">
-                                        Headline Text
-                                    </label>
-                                    <div class="w-100 ql-editor-parent">
-                                        <div id="headline" data-toggle="quill" data-quill-placeholder="Headline Here."></div>
-                                        <input type="hidden" v-for="(h_l, h_i) in model.headline" :key="`hLine_${h_i}`" name="headline[]" :value="h_l.insert" v-if="h_l.insert.trim() != ''"/>
-                                    </div>
-                                    <span v-for="(h_l, h_i) in model.headline" :key="`hLine_attr_${h_i}`" v-if="h_l.insert.trim() != ''">
-                                        <span v-if="h_l.attributes">
-                                            <input type="hidden" name="headline_bold[]" :value="h_l.attributes.bold ? true : ''"/>
-                                            <input type="hidden" name="headline_italic[]" :value="h_l.attributes.italic ? true : ''"/>
-                                            <input type="hidden" name="headline_underline[]" :value="h_l.attributes.underline ? true : ''"/>
-                                            <input type="hidden" name="headline_strike[]" :value="h_l.attributes.strike ? true : ''"/>
-                                        </span>
-                                        <span v-else>
-                                            <input type="hidden" name="headline_bold[]" value=""/>
-                                            <input type="hidden" name="headline_italic[]" value=""/>
-                                            <input type="hidden" name="headline_underline[]" value=""/>
-                                            <input type="hidden" name="headline_strike[]" value=""/>
-                                        </span>
-                                    </span>
-                                    @error('headline')
-                                    <span class="invalid-feedback" style="display: block;" role="alert">
-                                        {{ $message }}
-                                    </span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label class="form-control-label ml-1" for="headline_color">
-                                        Headline Color
-                                    </label>
-                                    <input class="jscolor form-control" name="headline_color"
-                                           id="headline_color" v-model="model.headline_color" @change="updateJSColor('headline_color', false)"/>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label class="form-control-label ml-1" for="background_color">
-                                        Background Color
-                                    </label>
-                                    <input class="jscolor form-control" name="background_color"
-                                           id="background_color" v-model="model.background_color" @change="updateJSColor('background_color', false)"/>
-                                </div>
-                            </div>
+                @include('users.bars-partials.bars-header')
+                <div class="card shadow">
+                    <div class="card-body">
+                        <div class="tab-content" id="barsTabContent">
+                            @include('users.bars-partials.bars-main')
+                            @include('users.bars-partials.bars-appearance')
+                            @include('users.bars-partials.bars-content')
+                            @include('users.bars-partials.bars-countdown')
+                            @include('users.bars-partials.bars-overlay')
+                            @include('users.bars-partials.bars-autoresponder')
                         </div>
                     </div>
                 </div>
-                @if ($flag)
-                    @include('users.bars-partials.bars-preview')
-                @else
-                    @include('users.bars-partials.bars-options')
-                    @include('users.bars-partials.bars-preview')
-                    @include('users.bars-partials.bars-display')
-                    @include('users.bars-partials.bars-content')
-                    @include('users.bars-partials.bars-appearance')
-                    @include('users.bars-partials.bars-button')
-                    @include('users.bars-partials.bars-countdown')
-                    @include('users.bars-partials.bars-overlay')
-                    @include('users.bars-partials.bars-autoresponder')
-                    @include('users.bars-partials.bars-opt-in')
-                @endif
+                @include('users.bars-partials.bars-preview')
             </form>
-            {{-- Delete Options Modal Confirm --}}
-            <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modal" aria-hidden="true">
-                <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h6 class="modal-title" id="modal-title-default">Clear @{{ del_option.label }}</h6>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="modal-body text-center">
-                            <h1>Are you sure?</h1>
-                            <p>Once cleared, you won't be able to revert this @{{ del_option.label }} options</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger text-capitalize" @click="clearOption">Clear</button>
-                            <button type="button" class="btn btn-light ml-auto" data-dismiss="modal">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         @include('layouts.footer')
     </div>
@@ -185,16 +37,6 @@
         window._bar_opt_ary = {
             bar_id: "{{ $flag ? '' : $bar->id }}",
             create_edit: "{{ $flag }}",
-            preview: '{{ $flag ? 'true' : $bar->opt_preview }}',
-            display: '{{ $flag ? false : (old('opt_display') ? old('opt_display') : $bar->opt_display) }}',
-            content: '{{ $flag ? false : (old('opt_content') ? old('opt_content') : $bar->opt_content) }}',
-            appearance: '{{ $flag ? false : (old('opt_appearance') ? old('opt_appearance') : $bar->opt_appearance) }}',
-            button: '{{ $flag ? false : (old('opt_button') ? old('opt_button') : $bar->opt_button) }}',
-            countdown: '{{ $flag ? false : (old('opt_countdown') ? old('opt_countdown') : $bar->opt_countdown) }}',
-            overlay: '{{ $flag ? false : (old('opt_overlay') ? old('opt_overlay') : $bar->opt_overlay) }}',
-            autoresponder: '{{ $flag ? false : (old('opt_autoresponder') ? old('opt_autoresponder') : $bar->opt_autoresponder) }}',
-            opt_in: '{{ $flag ? false : (old('opt_opt_in') ? old('opt_opt_in') : $bar->opt_opt_in) }}',
-            custom_text: '{{ $flag ? false : (old('opt_custom_text') ? old('opt_custom_text') : $bar->opt_custom_text) }}',
             model: {
                 friendly_name: "{{ (old('friendly_name') ? old('friendly_name') : ($flag ? '' : $bar->friendly_name)) }}",
                 position: "{{ old('position') ? old('position') : ($flag ? 'top_sticky' : $bar->position) }}",
@@ -202,11 +44,18 @@
                 headline: JSON.parse('{!! $flag ? json_encode([['attributes' => [], 'insert' => 'Your Headline']]) : $bar->headline !!}'),
                 headline_color: "{{ old('headline_color') ? old('headline_color') : ($flag ? '#FFFFFF' : $bar->headline_color) }}",
                 background_color: "{{ old('background_color') ? old('background_color') : ($flag ? '#3BAF85' : $bar->background_color) }}",
-                display: {
-                    show_bar_type: "{{ $flag ? 'immediate' : (old('show_bar_type') ? old('show_bar_type') : $bar->show_bar_type) }}",
-                    frequency: "{{ $flag ? 'every' : (old('frequency') ? old('frequency') : $bar->frequency) }}",
-                    delay_in_seconds: "{{ $flag ? 3 : (old('delay_in_seconds') ? old('delay_in_seconds') : $bar->delay_in_seconds) }}",
-                    scroll_point_percent: "{{ $flag ? 10 : (old('scroll_point_percent') ? old('scroll_point_percent') : $bar->scroll_point_percent) }}"
+                show_bar_type: "{{ $flag ? 'immediate' : (old('show_bar_type') ? old('show_bar_type') : $bar->show_bar_type) }}",
+                frequency: "{{ $flag ? 'every' : (old('frequency') ? old('frequency') : $bar->frequency) }}",
+                delay_in_seconds: "{{ $flag ? 3 : (old('delay_in_seconds') ? old('delay_in_seconds') : $bar->delay_in_seconds) }}",
+                scroll_point_percent: "{{ $flag ? 10 : (old('scroll_point_percent') ? old('scroll_point_percent') : $bar->scroll_point_percent) }}",
+                appearance: {
+                    opacity: "{{ $flag ? 100 : (old('opacity') ? old('opacity') : $bar->opacity) }}",
+                    drop_shadow: "{{ $flag ? null : (old('drop_shadow') ? old('drop_shadow') : $bar->drop_shadow) }}",
+                    close_button: "{{ $flag ? null : (old('close_button') ? old('close_button') : $bar->close_button) }}",
+                    background_gradient: "{{ $flag ? null : (old('background_gradient') ? old('background_gradient') : $bar->background_gradient) }}",
+                    gradient_end_color: "{{ $flag ? '#3BAF85' : (old('gradient_end_color') ? old('gradient_end_color') : $bar->gradient_end_color) }}",
+                    gradient_angle: "{{ $flag ? 0 : (old('gradient_angle') ? old('gradient_angle') : $bar->gradient_angle) }}",
+                    powered_by_position: "{{ $flag ? 'bottom_right' : (old('powered_by_position') ? old('powered_by_position') : $bar->powered_by_position) }}",
                 },
                 content: {
                     sub_headline: JSON.parse('{!! $flag ? json_encode([['attributes' => [], 'insert' => '']]) : $bar->sub_headline !!}'),
@@ -217,17 +66,6 @@
                     content_vimeo_url: "{{ $flag ? '' : (old('content_vimeo_url') ? old('content_vimeo_url') : $bar->content_vimeo_url) }}",
                     video_code: "{{ $flag ? '' : (old('video_code') ? old('video_code') : htmlspecialchars_decode($bar->video_code)) }}",
                     video_auto_play: "{{ $flag ? null : (old('video_auto_play') ? old('video_auto_play') : $bar->video_auto_play) }}",
-                },
-                appearance: {
-                    opacity: "{{ $flag ? 100 : (old('opacity') ? old('opacity') : $bar->opacity) }}",
-                    drop_shadow: "{{ $flag ? null : (old('drop_shadow') ? old('drop_shadow') : $bar->drop_shadow) }}",
-                    close_button: "{{ $flag ? null : (old('close_button') ? old('close_button') : $bar->close_button) }}",
-                    background_gradient: "{{ $flag ? null : (old('background_gradient') ? old('background_gradient') : $bar->background_gradient) }}",
-                    gradient_end_color: "{{ $flag ? '#3BAF85' : (old('gradient_end_color') ? old('gradient_end_color') : $bar->gradient_end_color) }}",
-                    gradient_angle: "{{ $flag ? 0 : (old('gradient_angle') ? old('gradient_angle') : $bar->gradient_angle) }}",
-                    powered_by_position: "{{ $flag ? 'bottom_right' : (old('powered_by_position') ? old('powered_by_position') : $bar->powered_by_position) }}",
-                },
-                button: {
                     button_type: "{{ $flag ? 'none' : (old('button_type') ? old('button_type') : $bar->button_type) }}",
                     button_location: "{{ $flag ? 'right' : (old('button_location') ? old('button_location') : $bar->button_location) }}",
                     button_label: "{{ $flag ? 'Click Here' : (old('button_label') ? old('button_label') : $bar->button_label) }}",
@@ -238,7 +76,7 @@
                     button_click_url: "{{ $flag ? '' : (old('button_click_url') ? old('button_click_url') : $bar->button_click_url) }}",
                     button_open_new: "{{ $flag ? null : (old('button_open_new') ? old('button_open_new') : $bar->button_open_new) }}",
                 },
-                countdown: {
+                timer: {
                     countdown: "{{ $flag ? 'none' : (old('countdown') ? old('countdown') : $bar->countdown) }}",
                     countdown_location: "{{ $flag ? 'left' : (old('countdown_location') ? old('countdown_location') : $bar->countdown_location) }}",
                     countdown_format: "{{ $flag ? 'dd' : (old('countdown_format') ? old('countdown_format') : $bar->countdown_format) }}",
@@ -262,16 +100,13 @@
                     meta_description: "{{ $flag ? '' : (old('meta_description') ? old('meta_description') : $bar->meta_description) }}",
                     meta_keywords: "{{ $flag ? '' : (old('meta_keywords') ? old('meta_keywords') : $bar->meta_keywords) }}",
                 },
-                autoresponder: {
+                lead_capture: {
                     integration_type: "{{ $flag ? 'none' : (old('integration_type') ? old('integration_type') : $bar->integration_type) }}",
                     list: "{{ $flag ? '' : (old('list') ? old('list') : $bar->list) }}",
                     after_submit: "{{ $flag ? 'show_message' : (old('after_submit') ? old('after_submit') : $bar->after_submit) }}",
                     message: "{{ $flag ? 'Thank You!' : (old('message') ? old('message') : $bar->message) }}",
                     autohide_delay_seconds: "{{ $flag ? 3 : (old('autohide_delay_seconds') ? old('autohide_delay_seconds') : $bar->autohide_delay_seconds) }}",
                     redirect_url: "{{ $flag ? '' : (old('redirect_url') ? old('redirect_url') : $bar->redirect_url) }}",
-                },
-                auto_responder_list: JSON.parse('{!! $list_array !!}'),
-                opt_in: {
                     opt_in_type: "{{ $flag ? 'none' : (old('opt_in_type') ? old('opt_in_type') : $bar->opt_in_type) }}",
                     opt_in_youtube_url: "{{ $flag ? '' : (old('opt_in_youtube_url') ? old('opt_in_youtube_url') : $bar->opt_in_youtube_url) }}",
                     opt_in_vimeo_url: "{{ $flag ? '' : (old('opt_in_vimeo_url') ? old('opt_in_vimeo_url') : $bar->opt_in_vimeo_url) }}",
@@ -289,7 +124,8 @@
                     opt_in_button_label_color: "{{ $flag ? '#ffffff' : (old('opt_in_button_label_color') ? old('opt_in_button_label_color') : $bar->opt_in_button_label_color) }}",
                     opt_in_button_animation: "{{ $flag ? 'none' : (old('opt_in_button_animation') ? old('opt_in_button_animation') : $bar->opt_in_button_animation) }}",
                 },
-                custom_text: {}
+                auto_responder_list: JSON.parse('{!! $list_array !!}'),
+                translation: {}
             }
         };
     </script>
