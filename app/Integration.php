@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Integration extends Model
 {
 
-    protected $fillable = ['user_id','name','responder_id','api_key','hash'];
+    protected $fillable = ['user_id','name','responder_id','api_key','hash','url'];
 
     protected $casts = [
         'responder_id' => 'integer',

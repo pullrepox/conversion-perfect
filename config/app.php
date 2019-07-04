@@ -176,6 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\ViewServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
+        Gentor\ActiveCampaign\ActiveCampaignServiceProvider::class,
 
     ],
 
@@ -228,6 +229,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
+        'AC' => Gentor\ActiveCampaign\Facades\ActiveCampaign::class,
 
     ],
 
