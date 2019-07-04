@@ -47,11 +47,18 @@ class BarOptionsController extends Controller
             } else {
                 if (is_null($val)) $params[$key] = '';
             }
-            
-            if ($key == 'sub_headline' || $key == 'call_to_action' || $key == 'subscribe_text') {
-                $upd_sub_headline = [[
-                    'insert' => ($key == 'subscribe_text' ? 'Enter Your Name And Email Below...' : '')
-                ]];
+    
+            if ($key == 'headline' || $key == 'sub_headline' || $key == 'call_to_action' || $key == 'subscribe_text') {
+                if ($key == 'headline') {
+                    $upd_sub_headline = [['insert' => 'Your Headline']];
+                } else if ($key == 'subscribe_text') {
+                    $upd_sub_headline = [['insert' => 'Enter Your Name And Email Below...']];
+                } else if ($key == 'call_to_action') {
+                    $upd_sub_headline = [['insert' => 'Call To Action Text Here']];
+                } else {
+                    $upd_sub_headline = [['insert' => '']];
+                }
+                
                 for ($i = 0; $i < count($val); $i++) {
                     if (trim($val[$i]['insert']) == '' || is_null($val[$i]['insert'])) {
                         continue;
@@ -85,14 +92,19 @@ class BarOptionsController extends Controller
             }
         }
         
-        if ($opt_key == 'display') {
-            $bar->opt_display = 1;
-            $rules['delay_in_seconds'] = 'numeric';
-            $rules['scroll_point_percent'] = 'numeric';
+        if ($opt_key == 'main') {
+            $rules['friendly_name'] = 'required|max:100';
+            $rules['headline'] = 'required';
+            $rules['headline_color'] = 'required';
+            $rules['background_color'] = 'required';
+        }
+
+        if ($opt_key == 'appearance') {
+            $rules['opacity'] = 'numeric|max:100|min:0';
+            $rules['gradient_angle'] = 'numeric|max:360|min:0';
         }
         
         if ($opt_key == 'content') {
-            $bar->opt_content = 1;
             if ($request->input('video_type') != 'none') {
                 if ($request->input('video_type') == 'youtube') {
                     $rules['content_youtube_url'] = 'required|url';
@@ -102,16 +114,6 @@ class BarOptionsController extends Controller
                     $rules['video_code'] = 'required';
                 }
             }
-        }
-        
-        if ($opt_key == 'appearance') {
-            $bar->opt_appearance = 1;
-            $rules['opacity'] = 'numeric|max:100|min:0';
-            $rules['gradient_angle'] = 'numeric|max:360|min:0';
-        }
-        
-        if ($opt_key == 'button') {
-            $bar->opt_button = 1;
             if ($request->input('button_type') != 'none') {
                 $rules['button_label'] = 'required';
             }
@@ -120,8 +122,7 @@ class BarOptionsController extends Controller
             }
         }
         
-        if ($opt_key == 'countdown') {
-            $bar->opt_countdown = 1;
+        if ($opt_key == 'timer') {
             if ($request->input('countdown_on_expiry') == 'display_text') {
                 $rules['countdown_expiration_text'] = 'required|max:200';
             }
@@ -139,13 +140,11 @@ class BarOptionsController extends Controller
         }
         
         if ($opt_key == 'overlay') {
-            $bar->opt_overlay = 1;
             $rules['custom_link_text'] = 'required';
             $rules['third_party_url'] = 'required';
         }
         
-        if ($opt_key == 'autoresponder') {
-            $bar->opt_autoresponder = 1;
+        if ($opt_key == 'lead_capture') {
             if ($request->input('integration_type') != 'none') {
                 if ($request->input('integration_type') != 'conversion_perfect') {
                     $rules['list'] = 'required';
@@ -156,12 +155,7 @@ class BarOptionsController extends Controller
                 } else {
                     $rules['message'] = 'required';
                 }
-            }
-        }
-        
-        if ($opt_key == 'opt_in') {
-            $bar->opt_opt_in = 1;
-            if ($request->input('opt_in_type') != 'none') {
+    
                 $rules['call_to_action'] = 'required';
                 if ($request->input('opt_in_type') != 'standard') {
                     if ($request->input('opt_in_type') == 'img-online') {

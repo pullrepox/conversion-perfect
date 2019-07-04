@@ -85,7 +85,7 @@
         <div class="form-group">
             <label class="form-control-label ml-1" for="button_click_url">Click URL</label>
             <input type="text" id="button_click_url" name="button_click_url" data-parent="content" class="form-control @error('button_click_url') is-invalid @enderror"
-                   v-model="model.content.button_click_url" @input="changed_status = true"/>
+                   v-model="model.content.button_click_url" @input="changeStatusVal"/>
             @error('button_click_url')
             <span class="invalid-feedback" role="alert">
                         {{ $message }}
@@ -99,7 +99,7 @@
             <div class="radio ml-1">
                 <label class="custom-toggle custom-toggle-light">
                     <input type="checkbox" id="button_open_new" name="button_open_new"
-                           data-parent="content" v-model="model.content.button_open_new" @input="changed_status = true">
+                           data-parent="content" v-model="model.content.button_open_new" @input="changeStatusVal">
                     <span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
                 </label>
             </div>

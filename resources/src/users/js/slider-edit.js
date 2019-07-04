@@ -47,7 +47,10 @@ new Vue({
             },
             translation: {}
         },
-        model: {},
+        model: {
+            friendly_name: '', position: 'top_sticky', group_id: '0', headline: [{attributes: {}, insert: 'Your Headline'}], headline_color: '#ffffff', background_color: '#3BAF85',
+            show_bar_type: 'immediate', frequency: 'every', delay_in_seconds: 3, scroll_point_percent: 10
+        },
         showUpload: false,
         uploadPercentage: 0
     }),
@@ -94,11 +97,23 @@ new Vue({
                 vm.changed_status = true;
             });
         });
+        
+        $('#barsTab a').on('click', function (e) {
+            e.preventDefault();
+            return false;
+        })
     },
     methods: {
+        changeStatusVal() {
+            this.changed_status = true;
+        },
         tabClick(e, id) {
             e.preventDefault();
-            this.sel_tab = id;
+            if (!this.changed_status) {
+                this.sel_tab = id;
+            } else {
+                this.saveOption(id);
+            }
         },
         initSelect2() {
             let $select = $('[data-toggle="select"]');
@@ -290,14 +305,32 @@ new Vue({
             return b.join("").toUpperCase();
         },
         saveOption(key) {
-            let save_data = this.model[key];
-            save_data.option_key = key;
+            let save_data = {};
+            if (this.sel_tab === 'main') {
+                save_data = {
+                    friendly_name: this.model.friendly_name,
+                    position: this.model.position,
+                    group_id: this.model.group_id,
+                    headline: this.model.headline,
+                    headline_color: this.model.headline_color,
+                    background_color: this.model.background_color,
+                    show_bar_type: this.model.show_bar_type,
+                    frequency: this.model.frequency,
+                    delay_in_seconds: this.model.delay_in_seconds,
+                    scroll_point_percent: this.model.scroll_point_percent
+                };
+            } else {
+                save_data = this.model[this.sel_tab];
+            }
+            save_data.option_key = this.sel_tab;
             this.loading = true;
             axios.post(`/save-option/${window._bar_opt_ary.bar_id}`, save_data).then((r) => {
                 this.loading = false;
                 if (r.data.status === 'success') {
                     $('.invalid-feedback').hide();
                     $('.form-control').removeClass('is-invalid');
+                    this.sel_tab = key;
+                    this.changed_status = false;
                 } else {
                     this.showSaveErrorNotify();
                 }

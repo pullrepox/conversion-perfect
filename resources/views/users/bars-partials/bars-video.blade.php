@@ -40,7 +40,7 @@
         <div class="form-group">
             <label class="form-control-label ml-1" for="video_code">Video Embed Code</label>
             <textarea id="video_code" name="video_code" v-model="model.content.video_code" data-parent="content"
-                      class="form-control @error('video_code') is-invalid @enderror" @input="changed_status = true" rows="1"></textarea>
+                      class="form-control @error('video_code') is-invalid @enderror" @input="changeStatusVal" rows="1"></textarea>
             @error('video_code')
             <span class="invalid-feedback" role="alert">
                 {{ $message }}
@@ -54,7 +54,7 @@
             <div class="radio ml-1">
                 <label class="custom-toggle custom-toggle-light">
                     <input type="checkbox" id="video_auto_play" name="video_auto_play"
-                           data-parent="button" v-model="model.content.video_auto_play" @input="changed_status = true">
+                           data-parent="button" v-model="model.content.video_auto_play" @input="changeStatusVal">
                     <span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
                 </label>
             </div>

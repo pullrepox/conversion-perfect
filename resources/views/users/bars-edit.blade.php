@@ -26,8 +26,8 @@
                         </div>
                     </div>
                 </div>
-                @include('users.bars-partials.bars-preview')
             </form>
+            @include('users.bars-partials.bars-preview')
         </div>
         @include('layouts.footer')
     </div>

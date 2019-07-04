@@ -223,20 +223,23 @@ class BarsController extends Controller
         
         $params = $request->all();
         $radio_keys = ['video_auto_play', 'drop_shadow', 'close_button', 'background_gradient', 'button_open_new', 'opt_in_video_auto_play'];
-        $option_keys = ['opt_preview', 'opt_display', 'opt_content', 'opt_appearance', 'opt_button', 'opt_countdown', 'opt_overlay', 'opt_opt_in', 'opt_custom_text'];
         foreach ($params as $key => $val) {
             if (false !== array_search($key, $radio_keys)) {
                 $params[$key] = $val ? 1 : 0;
-            } else if (false !== array_search($key, $option_keys)) {
-                $params[$key] = $val == 'true' ? 1 : 0;
             } else {
                 if (is_null($val)) $params[$key] = '';
             }
             
             if ($key == 'headline' || $key == 'sub_headline' || $key == 'call_to_action' || $key == 'subscribe_text') {
-                $upd_headline = [[
-                    'insert' => ($key == 'headline' ? 'Your Headline' : ($key == 'subscribe_text' ? 'Enter Your Name And Email Below...' : ''))
-                ]];
+                if ($key == 'headline') {
+                    $upd_headline = [['insert' => 'Your Headline']];
+                } else if ($key == 'subscribe_text') {
+                    $upd_headline = [['insert' => 'Enter Your Name And Email Below...']];
+                } else if ($key == 'call_to_action') {
+                    $upd_headline = [['insert' => 'Call To Action Text Here']];
+                } else {
+                    $upd_headline = [['insert' => '']];
+                }
                 for ($i = 0; $i < count($val); $i++) {
                     $upd_headline[$i]['insert'] = addslashes($val[$i] . ($i < (count($val) - 1) ? ' ' : ''));
                     if (!is_null($request->input($key . '_bold')[$i])) {
@@ -265,7 +268,7 @@ class BarsController extends Controller
             }
         }
         
-        if ($request->input('opt_content') == 'true') {
+        if ($request->input('sel_tab') == 'content') {
             if ($request->input('video_type') != 'none') {
                 if ($request->input('video_type') == 'youtube') {
                     $rules['content_youtube_url'] = 'required|url';
@@ -275,14 +278,6 @@ class BarsController extends Controller
                     $rules['video_code'] = 'required';
                 }
             }
-        }
-        
-        if ($request->input('opt_appearance') == 'true') {
-            $rules['opacity'] = 'numeric|max:100|min:0';
-            $rules['gradient_angle'] = 'numeric|max:360|min:0';
-        }
-        
-        if ($request->input('opt_button') == 'true') {
             if ($request->input('button_type') != 'none') {
                 $rules['button_label'] = 'required';
             }
@@ -291,7 +286,12 @@ class BarsController extends Controller
             }
         }
         
-        if ($request->input('opt_countdown') == 'true') {
+        if ($request->input('sel_tab') == 'appearance') {
+            $rules['opacity'] = 'numeric|max:100|min:0';
+            $rules['gradient_angle'] = 'numeric|max:360|min:0';
+        }
+        
+        if ($request->input('sel_tab') == 'timer') {
             if ($request->input('countdown_on_expiry') == 'display_text') {
                 $rules['countdown_expiration_text'] = 'required|max:200';
             }
@@ -303,12 +303,12 @@ class BarsController extends Controller
             }
         }
         
-        if ($request->input('opt_overlay') == 'true') {
+        if ($request->input('sel_tab') == 'overlay') {
             $rules['third_party_url'] = 'required';
             $rules['custom_link_text'] = 'required';
         }
         
-        if ($request->input('opt_autoresponder') == 'true') {
+        if ($request->input('sel_tab') == 'lead_capture') {
             if ($request->input('integration_type') != 'none') {
                 if ($request->input('integration_type') != 'conversion_perfect') {
                     $rules['list'] = 'required';
@@ -319,11 +319,7 @@ class BarsController extends Controller
                 } else {
                     $rules['message'] = 'required';
                 }
-            }
-        }
-        
-        if ($request->input('opt_opt_in') == 'true') {
-            if ($request->input('opt_in_type') != 'none') {
+
                 $rules['call_to_action'] = 'required';
                 if ($request->input('opt_in_type') != 'standard') {
                     if ($request->input('opt_in_type') == 'img-online') {
@@ -341,6 +337,7 @@ class BarsController extends Controller
         
         $this->validate($request, $rules);
         
+        unset($params['sel_tab']);
         $bar->fill($params);
         
         $bar->save();
