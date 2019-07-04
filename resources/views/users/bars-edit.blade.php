@@ -288,7 +288,6 @@
                     opt_in_button_bg_color: "{{ $flag ? '#515f7f' : (old('opt_in_button_bg_color') ? old('opt_in_button_bg_color') : $bar->opt_in_button_bg_color) }}",
                     opt_in_button_label_color: "{{ $flag ? '#ffffff' : (old('opt_in_button_label_color') ? old('opt_in_button_label_color') : $bar->opt_in_button_label_color) }}",
                     opt_in_button_animation: "{{ $flag ? 'none' : (old('opt_in_button_animation') ? old('opt_in_button_animation') : $bar->opt_in_button_animation) }}",
-                    disclaimer: "{{ $flag ? 'We respect your privacy and will never share your information.' : (old('disclaimer') ? old('disclaimer') : $bar->disclaimer) }}",
                 },
                 custom_text: {}
             }

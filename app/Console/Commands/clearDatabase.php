@@ -39,11 +39,16 @@ class clearDatabase extends Command
     public function handle()
     {
         Schema::dropIfExists('migrations');
-        Schema::dropIfExists('pages');
-        Schema::dropIfExists('sliders');
-        Schema::dropIfExists('bars');
         Schema::dropIfExists('password_resets');
         Schema::dropIfExists('subscriptions');
+        Schema::dropIfExists('bonuses');
+        Schema::dropIfExists('trainings');
+        Schema::dropIfExists('bars');
+        Schema::dropIfExists('integrations');
+        Schema::dropIfExists('responders');
+        Schema::dropIfExists('subscribers');
+        Schema::dropIfExists('email_lists');
+        Schema::dropIfExists('groups');
         Schema::dropIfExists('users');
     }
 }

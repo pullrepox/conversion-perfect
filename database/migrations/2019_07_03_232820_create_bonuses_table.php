@@ -22,6 +22,9 @@ class CreateBonusesTable extends Migration
             $table->string('bonus_url');
             $table->string('link_text');
             $table->boolean('new_window')->default(1);
+            $table->string('background_color', 50);
+            $table->tinyInteger('image_padding');
+            $table->tinyInteger('sort_order');
             $table->timestamps();
         });
     }
