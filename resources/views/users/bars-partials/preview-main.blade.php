@@ -7,10 +7,10 @@
     <div v-if="!model.appearance.close_button" style="position: absolute; top: -4px; right: 6px;font-size: 24px;z-index: 9999;"
          :style="{ color: model.headline_color.indexOf('#') > -1 ? model.headline_color : `#${model.headline_color}` }">&times;
     </div>
-    <div v-if="model.countdown.countdown !== 'none' && model.countdown.countdown_location === 'left_edge'"
+    <div v-if="model.timer.countdown !== 'none' && model.timer.countdown_location === 'left_edge'"
          style="width:auto; height:100%; min-height:40px; top:0; left: 0; position: absolute;">
         <div style="width: auto;min-height: 40px;height: 100%;display: flex;align-items: center;justify-content: left;"
-             :style="{'background-color': model.countdown.countdown_background_color !== '' ? (model.countdown.countdown_background_color.indexOf('#') > -1 ? model.countdown.countdown_background_color : `#${model.countdown.countdown_background_color}`) : 'transparent'}">
+             :style="{'background-color': model.timer.countdown_background_color !== '' ? (model.timer.countdown_background_color.indexOf('#') > -1 ? model.timer.countdown_background_color : `#${model.timer.countdown_background_color}`) : 'transparent'}">
             <div style="width: 100%">
                 @include('users.bars-partials.countdown-edge-top')
                 @include('users.bars-partials.countdown-edge-bottom')
@@ -20,13 +20,13 @@
     <div style="width:100%; font-size:20px; font-family: 'Nunito', sans-serif; display: flex; align-items: center; justify-content: center;min-height: 76px;">
         @include('users.bars-partials.preview-video')
         <div
-            v-if="(model.button.button_type !== 'none' && model.button.button_location === 'left') || (model.countdown.countdown !== 'none' && model.countdown.countdown_location === 'left')"
+            v-if="(model.content.button_type !== 'none' && model.content.button_location === 'left') || (model.timer.countdown !== 'none' && model.timer.countdown_location === 'left')"
             style="display: inline-block; width:auto; margin-right: 20px;padding: 10px 0;text-align: center;">
-            <div v-if="model.button.button_type !== 'none' && model.button.button_location === 'left'"
+            <div v-if="model.content.button_type !== 'none' && model.content.button_location === 'left'"
                  style="width: 100%; min-width: 100%;">
                 @include('users.bars-partials.preview-button')
             </div>
-            <div v-if="model.countdown.countdown !== 'none' && model.countdown.countdown_location === 'left'"
+            <div v-if="model.timer.countdown !== 'none' && model.timer.countdown_location === 'left'"
                  style="width:100%; height:40px; min-height:40px; margin-top:5px;">
                 <div style="height: 40px; width: 100%;">
                     @include('users.bars-partials.countdown-top')
@@ -71,13 +71,13 @@
                     </span>
                 </div>
                 <div
-                    v-if="(model.button.button_type !== 'none' && model.button.button_location === 'below_text') || (model.countdown.countdown !== 'none' && model.countdown.countdown_location === 'below_text')"
+                    v-if="(model.content.button_type !== 'none' && model.content.button_location === 'below_text') || (model.timer.countdown !== 'none' && model.timer.countdown_location === 'below_text')"
                     style="width: 100%; min-width: 100%; margin: 0 0 5px auto; text-align: center;">
-                    <div v-if="model.button.button_type !== 'none' && model.button.button_location === 'below_text'"
+                    <div v-if="model.content.button_type !== 'none' && model.content.button_location === 'below_text'"
                          style="width: 100%; min-width: 100%;">
                         @include('users.bars-partials.preview-button')
                     </div>
-                    <div v-if="model.countdown.countdown !== 'none' && model.countdown.countdown_location === 'below_text'"
+                    <div v-if="model.timer.countdown !== 'none' && model.timer.countdown_location === 'below_text'"
                          style="width:100%; height:40px; min-height:40px; margin-top:5px;display: flex;justify-content: center;">
                         <div style="height: 40px; width: auto;">
                             @include('users.bars-partials.countdown-top')
@@ -89,13 +89,13 @@
         </div>
         
         <div
-            v-if="(model.button.button_type !== 'none' && model.button.button_location === 'right') || (model.countdown.countdown !== 'none' && model.countdown.countdown_location === 'right')"
+            v-if="(model.content.button_type !== 'none' && model.content.button_location === 'right') || (model.timer.countdown !== 'none' && model.timer.countdown_location === 'right')"
             style="display: inline-block; width:auto; margin-left: 20px;padding: 10px 0;text-align: center;">
-            <div v-if="model.button.button_type !== 'none' && model.button.button_location === 'right'"
+            <div v-if="model.content.button_type !== 'none' && model.content.button_location === 'right'"
                  style="width: 100%; min-width: 100%;">
                 @include('users.bars-partials.preview-button')
             </div>
-            <div v-if="model.countdown.countdown !== 'none' && model.countdown.countdown_location === 'right'"
+            <div v-if="model.timer.countdown !== 'none' && model.timer.countdown_location === 'right'"
                  style="width:100%; height:40px; min-height:40px; margin-top:5px;">
                 <div style="height: 40px; width: 100%;">
                     @include('users.bars-partials.countdown-top')
@@ -104,10 +104,10 @@
             </div>
         </div>
     </div>
-    <div v-if="model.countdown.countdown !== 'none' && model.countdown.countdown_location === 'right_edge'"
+    <div v-if="model.timer.countdown !== 'none' && model.timer.countdown_location === 'right_edge'"
          style="width:auto; height:100%; min-height:40px; top: 0; right: 0; position: absolute;">
         <div style="width: auto;min-height: 40px;height: 100%;display: flex;align-items: center;justify-content: left;"
-             :style="{'background-color': model.countdown.countdown_background_color !== '' ? (model.countdown.countdown_background_color.indexOf('#') > -1 ? model.countdown.countdown_background_color : `#${model.countdown.countdown_background_color}`) : 'transparent'}">
+             :style="{'background-color': model.timer.countdown_background_color !== '' ? (model.timer.countdown_background_color.indexOf('#') > -1 ? model.timer.countdown_background_color : `#${model.timer.countdown_background_color}`) : 'transparent'}">
             <div style="width: 100%">
                 @include('users.bars-partials.countdown-edge-top')
                 @include('users.bars-partials.countdown-edge-bottom')

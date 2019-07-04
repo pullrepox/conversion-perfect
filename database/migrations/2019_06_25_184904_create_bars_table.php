@@ -24,25 +24,12 @@ class CreateBarsTable extends Migration
             $table->text('headline')->nullable();
             $table->string('headline_color', 50)->nullable();
             $table->string('background_color', 50)->nullable();
-            $table->boolean('opt_preview');
-            
-            $table->boolean('opt_display')->default(0);
             $table->enum('show_bar_type', ['immediate', 'delay', 'scroll', 'exit'])->default('immediate');
             $table->enum('frequency', ['every', 'day', 'week', 'once'])->default('every');
             $table->double('delay_in_seconds')->default(0);
             $table->double('scroll_point_percent')->default(0);
             
-            $table->boolean('opt_content')->default(0);
-            $table->text('sub_headline')->nullable();
-            $table->string('sub_headline_color', 50)->default('#666666');
-            $table->string('sub_background_color', 50)->nullable();
-            $table->enum('video_type', ['none', 'youtube', 'vimeo', 'other'])->default('none');
-            $table->string('content_youtube_url')->nullable();
-            $table->string('content_vimeo_url')->nullable();
-            $table->text('video_code')->nullable();
-            $table->boolean('video_auto_play')->default(0);
-            
-            $table->boolean('opt_appearance')->default(0);
+            // Appearance
             $table->tinyInteger('opacity')->default(100);
             $table->boolean('drop_shadow');
             $table->boolean('close_button');
@@ -51,7 +38,15 @@ class CreateBarsTable extends Migration
             $table->tinyInteger('gradient_angle');
             $table->enum('powered_by_position', ['bottom_right', 'bottom_left', 'top_left', 'hidden'])->default('bottom_right');
             
-            $table->boolean('opt_button')->default(0);
+            // Content
+            $table->text('sub_headline')->nullable();
+            $table->string('sub_headline_color', 50)->default('#666666');
+            $table->string('sub_background_color', 50)->nullable();
+            $table->enum('video_type', ['none', 'youtube', 'vimeo', 'other'])->default('none');
+            $table->string('content_youtube_url')->nullable();
+            $table->string('content_vimeo_url')->nullable();
+            $table->text('video_code')->nullable();
+            $table->boolean('video_auto_play')->default(0);
             $table->enum('button_type', ['none', 'square', 'rounded'])->default('none');
             $table->enum('button_location', ['right', 'left', 'below_text'])->default('right');
             $table->string('button_label', 100)->nullable();
@@ -62,7 +57,7 @@ class CreateBarsTable extends Migration
             $table->string('button_click_url')->nullable();
             $table->boolean('button_open_new')->default(0);
             
-            $table->boolean('opt_countdown')->default(0);
+            // Timer
             $table->enum('countdown', ['none', 'calendar', 'evergreen'])->default('none');
             $table->enum('countdown_location', ['left', 'right', 'left_edge', 'right_edge', 'below_text'])->default('left');
             $table->enum('countdown_format', ['dd', 'hh', 'mm'])->default('dd');
@@ -78,23 +73,22 @@ class CreateBarsTable extends Migration
             $table->string('countdown_expiration_text')->nullable();
             $table->string('countdown_expiration_url')->nullable();
             
-            $table->boolean('opt_overlay')->default(0);
+            // Overlay
             $table->string('third_party_url')->nullable();
             $table->tinyInteger('custom_link');
             $table->string('custom_link_text')->nullable();
             $table->string('meta_title')->nullable();
             $table->text('meta_description')->nullable();
             $table->text('meta_keywords')->nullable();
-            $table->boolean('opt_autoresponder');
+            
+            // Lead Capture
             $table->string('integration_type')->default('none')->index();
             $table->string('list')->nullable()->index();
             $table->enum('after_submit', ['show_message', 'show_message_hide_bar', 'redirect'])->default('show_message');
             $table->text('message')->nullable();
             $table->double('autohide_delay_seconds')->nullable();
             $table->string('redirect_url')->nullable();
-            
-            $table->boolean('opt_opt_in')->default(0);
-            $table->enum('opt_in_type', ['none', 'standard', 'img-online', 'img-upload', 'vid-youtube', 'vid-vimeo', 'vid-other'])->default('none');
+            $table->enum('opt_in_type', ['standard', 'img-online', 'img-upload', 'vid-youtube', 'vid-vimeo', 'vid-other'])->default('standard');
             $table->string('opt_in_youtube_url')->nullable();
             $table->string('opt_in_vimeo_url')->nullable();
             $table->text('opt_in_video_code')->nullable();
@@ -112,7 +106,7 @@ class CreateBarsTable extends Migration
                 ->default('none');
             $table->string('panel_color', 30)->nullable();
             
-            $table->boolean('opt_custom_text')->default(0);
+            // Translation
             $table->string('days_label', 100)->default('Days');
             $table->string('hours_label', 100)->default('Hours');
             $table->string('minutes_label', 100)->default('Minutes');

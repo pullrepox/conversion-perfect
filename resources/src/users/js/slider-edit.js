@@ -17,39 +17,19 @@ new Vue({
         create_edit: false,
         changed_status: false,
         sel_tab: 'main',
-        bar_option: {
-            preview: true, content: false, appearance: false, button: false, countdown: false, overlay: false, autoresponder: false, opt_in: false, custom_text: false
-        },
-        show_btn: {
-            preview: false, content: false, appearance: false, button: false, countdown: false, overlay: false, autoresponder: false, opt_in: false, custom_text: false
-        },
-        options_list: [
-            {key: 'preview', name: 'Preview', class: 'btn-outline-primary'},
-            {key: 'content', name: 'Content', class: 'btn-outline-default'}, {key: 'appearance', name: 'Appearance', class: 'btn-outline-default'},
-            {key: 'button', name: 'Button', class: 'btn-outline-default'}, {key: 'countdown', name: 'Countdown', class: 'btn-outline-success'},
-            {key: 'overlay', name: 'Overlay', class: 'btn-outline-success'}, {key: 'autoresponder', name: 'Autoresponder', class: 'btn-outline-warning'},
-            {key: 'opt_in', name: 'Opt-In', class: 'btn-outline-warning'}, {key: 'custom_text', name: 'Custom Text', class: 'btn-outline-info'},
-        ],
-        options_label: {
-            preview: 'Preview', content: 'Content', appearance: 'Appearance', button: 'Button', countdown: 'Countdown',
-            overlay: 'Overlay', autoresponder: 'Autoresponder', opt_in: 'Opt-In', custom_text: 'Custom Text'
-        },
-        show_options: {},
         basic_model: {
             friendly_name: '', position: 'top_sticky', group_id: '0', headline: [{attributes: {}, insert: 'Your Headline'}], headline_color: '#ffffff', background_color: '#3BAF85',
             show_bar_type: 'immediate', frequency: 'every', delay_in_seconds: 3, scroll_point_percent: 10,
-            content: {
-                sub_headline: [{attributes: {}, insert: ''}], sub_headline_color: '#ffffff', sub_background_color: '',
-                video_type: 'none', content_youtube_url: '', content_vimeo_url: '', video_auto_play: 0, video_code: ''
-            },
             appearance: {
                 opacity: 100, drop_shadow: 0, close_button: 0, background_gradient: 0, gradient_end_color: '#3BAF85', gradient_angle: 0, powered_by_position: 'bottom_right',
             },
-            button: {
+            content: {
+                sub_headline: [{attributes: {}, insert: ''}], sub_headline_color: '#ffffff', sub_background_color: '',
+                video_type: 'none', content_youtube_url: '', content_vimeo_url: '', video_auto_play: 0, video_code: '',
                 button_type: 'none', button_location: 'right', button_label: 'Click Here', button_background_color: '#515f7f', button_text_color: '#FFFFFF', button_animation: 'none',
                 button_action: 'hide_bar', button_click_url: '', button_open_new: 0,
             },
-            countdown: {
+            timer: {
                 countdown: 'none', countdown_location: 'left', countdown_format: 'dd', countdown_end_date: '0000-00-00', countdown_end_time: '00:00:00',
                 countdown_timezone: 'Canada/Central', countdown_days: 0, countdown_hours: 0, countdown_minutes: 0, countdown_background_color: '', countdown_text_color: '#FFFFFF',
                 countdown_on_expiry: 'hide_bar', countdown_expiration_text: 'Expired!', countdown_expiration_url: ''
@@ -57,20 +37,17 @@ new Vue({
             overlay: {
                 third_party_url: '', custom_link: 0, custom_link_text: '', meta_title: '', meta_description: '', meta_keywords: ''
             },
-            autoresponder: {
+            lead_capture: {
                 integration_type: 'none', list: '', after_submit: 'show_message', message: 'Thank You!', autohide_delay_seconds: 3, redirect_url: '',
-            },
-            opt_in: {
                 opt_in_type: 'none', opt_in_youtube_url: '', opt_in_vimeo_url: '', opt_in_video_code: '', opt_in_video_auto_play: 0, image_url: '', image_upload: '',
                 call_to_action: [{attributes: {}, insert: 'Call To Action Text Here'}], panel_color: '#F0F0F0',
                 subscribe_text: [{attributes: {}, insert: 'Enter Your Name And Email Below...'}], subscribe_text_color: '#666666',
                 opt_in_button_type: 'match_main_button', opt_in_button_label: 'Click Here', opt_in_button_bg_color: '#515f7f', opt_in_button_label_color: '#ffffff',
                 opt_in_button_animation: 'none'
             },
-            custom_text: {}
+            translation: {}
         },
         model: {},
-        del_option: {key: '', label: ''},
         showUpload: false,
         uploadPercentage: 0
     }),
@@ -78,10 +55,6 @@ new Vue({
         this.model = JSON.parse(JSON.stringify(this.basic_model));
         this.create_edit = (window._bar_opt_ary.create_edit || window._bar_opt_ary.create_edit === 'true');
         let vm = this;
-        Object.keys(this.bar_option).forEach(function (item) {
-            vm.bar_option[item] = !window._bar_opt_ary[item] ? false : (window._bar_opt_ary[item] === 'true')
-        });
-        
         Object.keys(this.model).forEach(function (item) {
             if (window._bar_opt_ary.model[item]) {
                 vm.model[item] = window._bar_opt_ary.model[item];
@@ -113,16 +86,20 @@ new Vue({
             
             $(this).on('itemAdded', function () {
                 vm.model[$(this).data('parent')][$(this).attr('id')] = $(this).val();
-                vm.showSaveBtn($(this).data('parent'));
+                vm.changed_status = true;
             });
             
             $(this).on('itemRemoved', function () {
                 vm.model[$(this).data('parent')][$(this).attr('id')] = $(this).val();
-                vm.showSaveBtn($(this).data('parent'));
+                vm.changed_status = true;
             });
         });
     },
     methods: {
+        tabClick(e, id) {
+            e.preventDefault();
+            this.sel_tab = id;
+        },
         initSelect2() {
             let $select = $('[data-toggle="select"]');
             let vm = this;
@@ -138,7 +115,6 @@ new Vue({
                         vm.changed_status = true;
                         if ($(this).data('parent')) {
                             vm.model[$(this).data('parent')][$(this).attr('id')] = $(this).val();
-                            vm.showSaveBtn($(this).data('parent'));
                             if ($(this).attr('id') === 'integration_type') {
                                 vm.getResponderList();
                             }
@@ -146,6 +122,7 @@ new Vue({
                             vm.model[$(this).attr('id')] = $(this).val();
                         }
                     }).on('select2:close', function () {
+                        vm.changed_status = true;
                         switch ($(this).attr('id')) {
                             case 'position':
                                 vm.select2Open('#group_id');
@@ -167,14 +144,6 @@ new Vue({
             $(next_input).select2('focus');
             $(next_input).select2('open');
         },
-        changeDisableEnable(sel, parent, other_sel) {
-            if ($(`#${sel}`).val().length > 0) {
-                this.model[parent][other_sel] = [];
-                $(`#${other_sel}`).attr('disabled', 'disabled');
-            } else {
-                $(`#${other_sel}`).removeAttr('disabled');
-            }
-        },
         initDatePicker() {
             let vm = this;
             let $datepicker = $('.datepicker');
@@ -194,7 +163,7 @@ new Vue({
                             } else {
                                 vm.model[$(this).attr('id')] = $(this).val();
                             }
-                            vm.showSaveBtn('countdown');
+                            vm.changed_status = true;
                         } else {
                             if (parent) {
                                 $(this).val(vm.model[parent][$(this).attr('id')]);
@@ -209,7 +178,7 @@ new Vue({
                             } else {
                                 vm.model[$(this).attr('id')] = $(this).val();
                             }
-                            vm.showSaveBtn('countdown');
+                            vm.changed_status = true;
                         } else {
                             if (parent) {
                                 $(this).val(vm.model[parent][$(this).attr('id')]);
@@ -274,7 +243,6 @@ new Vue({
                         
                         if (parentId !== '') {
                             vm.model[parentId][attrId] = JSON.parse(JSON.stringify(quill.getContents().ops));
-                            vm.showSaveBtn(parentId);
                         } else {
                             vm.model[attrId] = JSON.parse(JSON.stringify(quill.getContents().ops));
                         }
@@ -296,6 +264,7 @@ new Vue({
             }
         },
         updateJSColor(id, flag) {
+            this.changed_status = true;
             if (!flag) {
                 if ($(`#${id}`).val() === '') {
                     this.model[id] = '';
@@ -308,8 +277,6 @@ new Vue({
                 } else {
                     this.model[flag][id] = this.rgbToHex($(`#${id}`).get(0).style['background-color']);
                 }
-                this.showSaveBtn(flag);
-                this.changed_status = true;
             }
         },
         rgbToHex(rgbStr) {
@@ -322,54 +289,6 @@ new Vue({
             
             return b.join("").toUpperCase();
         },
-        // Option Hide Show Event
-        toggleOption(name) {
-            this.bar_option[name] = !this.bar_option[name];
-            axios.post(`/hide-option/${window._bar_opt_ary.bar_id}`, {
-                option_key: name
-            }).then((r) => {
-            }).catch((e) => {
-            });
-        },
-        isUrlValid(userInput) {
-            let res = userInput.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
-            return !(res === null);
-        },
-        clearOptionConfirm(key) {
-            this.del_option.key = key;
-            this.del_option.label = this.options_label[key];
-            $('#delete-modal').modal('show');
-        },
-        clearOption() {
-            this.model[this.del_option.key] = JSON.parse(JSON.stringify(this.basic_model[this.del_option.key]));
-            axios.post(`/clear-option/${window._bar_opt_ary.bar_id}`, {
-                option_key: this.del_option.key,
-                data: this.model[this.del_option.key]
-            }).then((r) => {
-                if (r.data.status === 'success') {
-                    this.commonNotification('success', 'Successfully cleared!');
-                    $('#delete-modal').modal('hide');
-                    this.show_btn[this.del_option.key] = false;
-                    this.bar_option[this.del_option.key] = false;
-                    let vm = this;
-                    Object.keys(this.model[this.del_option.key]).forEach(function (item) {
-                        if ($(`#${item}`).data('toggle')) {
-                            if ($(`#${item}`).data('toggle') === 'select') {
-                                $(`#${item}`).val(vm.model[vm.del_option.key][item]).trigger('change.select2');
-                            }
-                        }
-                    });
-                } else {
-                    this.showClearErrorNotify();
-                }
-            }).catch((e) => {
-                this.showClearErrorNotify();
-            });
-        },
-        showSaveBtn(key) {
-            this.changed_status = true;
-            this.show_btn[key] = true;
-        },
         saveOption(key) {
             let save_data = this.model[key];
             save_data.option_key = key;
@@ -377,7 +296,6 @@ new Vue({
             axios.post(`/save-option/${window._bar_opt_ary.bar_id}`, save_data).then((r) => {
                 this.loading = false;
                 if (r.data.status === 'success') {
-                    this.show_btn[key] = false;
                     $('.invalid-feedback').hide();
                     $('.form-control').removeClass('is-invalid');
                 } else {
@@ -426,27 +344,25 @@ new Vue({
             return txt.value;
         },
         matchMainBar() {
-            this.model.countdown.countdown_background_color = this.model.background_color;
-            this.model.countdown.countdown_text_color = this.model.headline_color;
+            this.model.timer.countdown_background_color = this.model.background_color;
+            this.model.timer.countdown_text_color = this.model.headline_color;
             $('#countdown_background_color').css('background-color', this.model.background_color.indexOf('#') > -1 ? this.model.background_color : `#${this.model.background_color}`);
             $('#countdown_background_color').val(this.model.background_color);
             $('#countdown_text_color').val(this.model.headline_color);
             $('#countdown_text_color').css('background-color', this.model.headline_color.indexOf('#') > -1 ? this.model.headline_color : `#${this.model.headline_color}`);
-            this.show_btn.countdown = true;
         },
         countdownCalculate() {
             let vm = this;
-            let date_val = new Date(vm.model.countdown.countdown_end_date);
+            let date_val = new Date(vm.model.timer.countdown_end_date);
             let change_date = new Date(date_val.toLocaleString('en-US', {
-                timeZone: vm.model.countdown.countdown_timezone
+                timeZone: vm.model.timer.countdown_timezone
             }));
             let curr_date = new Date();
             let date_diff = Math.abs(change_date.getTime() - curr_date.getTime());
-            // parseInt(date_diff / (24 * 60 * 60 * 1000), 10)
             return (`0${Math.ceil(date_diff / (24 * 60 * 60 * 1000))}`).slice(-2);
         },
         validationCheck(flag, parent) {
-            this.showSaveBtn(parent);
+            this.changed_status = true;
             switch (flag) {
                 case 'button_label':
                     if (this.model[parent][flag] === '') {
@@ -469,8 +385,8 @@ new Vue({
                     break;
             }
         },
-        changeVideoUrl(flag, parent) {
-            this.showSaveBtn(parent);
+        changeToUrl(flag, parent) {
+            this.changed_status = true;
             switch (this.model[parent][flag]) {
                 case 'h':
                 case 'ht':
@@ -530,25 +446,25 @@ new Vue({
         },
         getResponderList() {
             this.model.auto_responder_list = [{key: '', name: '-- Choose List --'}];
-            if (this.model.autoresponder.integration_type === 'none') {
-                this.model.autoresponder.list = '';
+            if (this.model.lead_capture.integration_type === 'none') {
+                this.model.lead_capture.list = '';
             } else {
                 this.loading = true;
-                axios.get(`/get-responder-lists?responder_id=${this.model.autoresponder.integration_type}`).then((r) => {
+                axios.get(`/get-responder-lists?responder_id=${this.model.lead_capture.integration_type}`).then((r) => {
                     this.loading = false;
                     if (r.data.result === 'success') {
                         this.model.auto_responder_list = JSON.parse(JSON.stringify(r.data.message));
-                        this.model.autoresponder.list = '';
+                        this.model.lead_capture.list = '';
                     } else if (r.data.result === 'failure') {
-                        this.model.autoresponder.list = '';
+                        this.model.lead_capture.list = '';
                         this.commonNotification('danger', r.data.message);
                     } else {
-                        this.model.autoresponder.list = '';
+                        this.model.lead_capture.list = '';
                         this.showGetErrorNotify();
                     }
                 }).catch((e) => {
                     this.loading = false;
-                    this.model.autoresponder.list = '';
+                    this.model.lead_capture.list = '';
                     this.showGetErrorNotify();
                 });
             }
@@ -574,14 +490,14 @@ new Vue({
             }).then((r) => {
                 this.loading = false;
                 if (r.data.result === 'success') {
-                    this.model.opt_in.image_upload = r.data.message;
+                    this.model.lead_capture.image_upload = r.data.message;
                 } else {
-                    this.model.opt_in.image_upload = '';
+                    this.model.lead_capture.image_upload = '';
                     this.commonNotification('danger', r.data.message);
                 }
             }).catch((e) => {
                 this.loading = false;
-                this.model.opt_in.image_upload = '';
+                this.model.lead_capture.image_upload = '';
                 this.commonNotification('danger', 'Internal Server Error');
             });
         }

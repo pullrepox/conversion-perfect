@@ -82,7 +82,6 @@ class BarsController extends Controller
             'delay_in_seconds'     => $request->input('delay_in_seconds'),
             'scroll_point_percent' => $request->input('scroll_point_percent'),
             'frequency'            => $request->input('frequency'),
-            'opt_preview'          => 1,
         ];
         
         $headline = $request->input('headline');
@@ -140,16 +139,6 @@ class BarsController extends Controller
                 ['parent_name' => 'Conversion Bars', 'parent_url' => secure_redirect(route('bars'))],
             ]
         ];
-        
-        $bar->opt_preview = $bar->opt_preview ? 'true' : 'false';
-        $bar->opt_display = $bar->opt_display ? 'true' : 'false';
-        $bar->opt_content = $bar->opt_content ? 'true' : 'false';
-        $bar->opt_appearance = $bar->opt_appearance ? 'true' : 'false';
-        $bar->opt_button = $bar->opt_button ? 'true' : 'false';
-        $bar->opt_countdown = $bar->opt_countdown ? 'true' : 'false';
-        $bar->opt_opt_in = $bar->opt_opt_in ? 'true' : 'false';
-        $bar->opt_overlay = $bar->opt_overlay ? 'true' : 'false';
-        $bar->opt_custom_text = $bar->opt_custom_text ? 'true' : 'false';
         
         $bar->headline = !is_null(trim($bar->headline)) && !empty(trim($bar->headline)) ? addslashes(stripslashes($bar->headline)) : json_encode([['attributes' => [], 'insert' => 'Your Headline']]);
         
