@@ -12,13 +12,13 @@
                 @if ($errors->has('friendly_name'))
                     @error('friendly_name')
                     <span class="invalid-feedback" role="alert">
-                            {{ $message }}
-                        </span>
+                        {{ $message }}
+                    </span>
                     @enderror
                 @else
                     <span class="invalid-feedback" role="alert">
-                            Please insert correct value.
-                        </span>
+                        Please insert correct value.
+                    </span>
                 @endif
             </div>
         </div>
@@ -77,8 +77,8 @@
                     </span>
                 @error('headline')
                 <span class="invalid-feedback" style="display: block;" role="alert">
-                        {{ $message }}
-                    </span>
+                    {{ $message }}
+                </span>
                 @enderror
             </div>
         </div>

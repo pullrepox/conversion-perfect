@@ -37,8 +37,8 @@
                     <input type="hidden" name="opacity" v-model="model.appearance.opacity"/>
                     @error('opacity')
                     <span class="invalid-feedback" style="display: block;" role="alert">
-                            {{ $message }}
-                        </span>
+                        {{ $message }}
+                    </span>
                     @enderror
                 </div>
             </div>

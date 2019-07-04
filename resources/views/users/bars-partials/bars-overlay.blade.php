@@ -31,8 +31,8 @@
                                    v-model="model.overlay.custom_link_text" @input="changeStatusVal"/>
                             @error('custom_link_text')
                             <span class="invalid-feedback" role="alert">
-                                    {{ $message }}
-                                </span>
+                                {{ $message }}
+                            </span>
                             @enderror
                         </div>
                     </div>
