@@ -6,7 +6,7 @@
     <div v-if="!model.appearance.close_button" style="position: absolute; top: -4px; right: 6px;font-size: 24px;z-index: 9999;"
          :style="{ color: model.headline_color.indexOf('#') > -1 ? model.headline_color : `#${model.headline_color}` }">&times;
     </div>
-    <div style="height: 45px; width: 100%; font-size: 20px;line-height: 45px;margin-top: 15px;"
+    <div style="height: 45px; width: 100%; font-size: 20px;line-height: 45px;"
          :style="{
          'background': (model.background_color.indexOf('#') > -1 ? model.background_color : `#${model.background_color}`),
          color: model.headline_color.indexOf('#') > -1 ? model.headline_color : `#${model.headline_color}`
@@ -24,7 +24,7 @@
             </span>
         </span>
     </div>
-    <div style="width: 100%; text-align: center; display: flex; justify-content: center; align-items: center;">
+    <div style="width: 100%; text-align: center; display: flex; justify-content: center; align-items: center;margin-top: 10px;">
         @include('users.bars-partials.preview-opt-video')
         <div style="width: 320px;">
             <div style="width: 100%; height: 30px; font-size: 17px;"
@@ -72,6 +72,6 @@
     </div>
     <div style="position: absolute; bottom: 3px; right: 3px;z-index: 9999;font-size: 12px;"
          :style="{'color': (model.opt_in.subscribe_text_color.indexOf('#') > -1 ? model.opt_in.subscribe_text_color : `#${model.opt_in.subscribe_text_color}`)}">
-        @{{ model.opt_in.disclaimer }}
+        {{ trans('options.disclaimer') }}
     </div>
 </div>

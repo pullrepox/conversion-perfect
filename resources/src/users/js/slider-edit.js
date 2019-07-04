@@ -71,7 +71,7 @@ new Vue({
                 call_to_action: [{attributes: {}, insert: 'Call To Action Text Here'}], panel_color: '#F0F0F0',
                 subscribe_text: [{attributes: {}, insert: 'Enter Your Name And Email Below...'}], subscribe_text_color: '#666666',
                 opt_in_button_type: 'match_main_button', opt_in_button_label: 'Click Here', opt_in_button_bg_color: '#515f7f', opt_in_button_label_color: '#ffffff',
-                opt_in_button_animation: 'none', disclaimer: 'We respect your privacy and will never share your information.'
+                opt_in_button_animation: 'none'
             },
             custom_text: {}
         },

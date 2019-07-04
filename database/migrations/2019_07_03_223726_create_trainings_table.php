@@ -18,6 +18,7 @@ class CreateTrainingsTable extends Migration
             $table->string('title');
             $table->text('description');
             $table->string('video_url');
+            $table->tinyInteger('sort_order');
             $table->timestamps();
         });
     }

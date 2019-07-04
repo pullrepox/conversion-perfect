@@ -69,6 +69,6 @@
     </button>
     <div style="position: absolute; bottom: 3px; right: 3px;z-index: 9999;font-size: 12px;"
          :style="{'color': (model.opt_in.subscribe_text_color.indexOf('#') > -1 ? model.opt_in.subscribe_text_color : `#${model.opt_in.subscribe_text_color}`)}">
-        @{{ model.opt_in.disclaimer }}
+        {{ trans('options.disclaimer') }}
     </div>
 </div>
