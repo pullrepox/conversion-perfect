@@ -179,9 +179,9 @@ class BarsController extends Controller
                 $integration = Integration::with('responder')->where('user_id', auth()->user()->id)->where('responder_id', $bar->integration_type)->first();
                 
                 $re_data['result'] = '';
-                if ($integration->responder->title == 'sendlane') {
+                if ($integration->responder->title == 'Sendlane') {
                     $re_data = $this->barsRepo->getSendlaneList($integration);
-                } else if ($integration->responder->title == 'mailchimp') {
+                } else if ($integration->responder->title == 'Mailchimp') {
                     $re_data = $this->barsRepo->getMailChimpLists($integration);
                 }
                 
@@ -319,7 +319,7 @@ class BarsController extends Controller
                 } else {
                     $rules['message'] = 'required';
                 }
-
+                
                 $rules['call_to_action'] = 'required';
                 if ($request->input('opt_in_type') != 'standard') {
                     if ($request->input('opt_in_type') == 'img-online') {

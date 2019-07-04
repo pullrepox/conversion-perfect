@@ -71,7 +71,9 @@
                                     @endforeach
                                 @else
                                     <tr>
-                                        <th scope="row" colspan="5" class="text-center">Email Lists data does not exist</th>
+                                        <th scope="row" colspan="5" class="text-center">
+                                            You have no Email Lists. Please add an Email List by clicking the [New Email List] button
+                                        </th>
                                     </tr>
                                 @endif
                                 </tbody>

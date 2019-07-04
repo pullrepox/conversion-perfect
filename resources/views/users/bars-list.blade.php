@@ -61,7 +61,9 @@
                                     @endforeach
                                 @else
                                     <tr>
-                                        <th scope="row" colspan="8" class="text-center">Bar data does not exist</th>
+                                        <th scope="row" colspan="8" class="text-center">
+                                            You have no Conversion Bars. Please add a Conversion Bar by clicking the [New Conversion Bar] button
+                                        </th>
                                     </tr>
                                 @endif
                                 </tbody>

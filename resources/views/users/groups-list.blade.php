@@ -70,7 +70,9 @@
                                     @endforeach
                                 @else
                                     <tr>
-                                        <th scope="row" colspan="5" class="text-center">Groups data does not exist</th>
+                                        <th scope="row" colspan="5" class="text-center">
+                                            You have no Groups. Please add a Group by clicking the [New Group] button
+                                        </th>
                                     </tr>
                                 @endif
                                 </tbody>
