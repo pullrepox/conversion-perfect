@@ -334,6 +334,13 @@ class BarsController extends Controller
                 }
             }
         }
+    
+        if ($request->input('sel_tab') == 'translation') {
+            $rules['days_label'] = 'required';
+            $rules['hours_label'] = 'required';
+            $rules['minutes_label'] = 'required';
+            $rules['seconds_label'] = 'required';
+        }
         
         $this->validate($request, $rules);
         
