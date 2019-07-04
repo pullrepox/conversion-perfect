@@ -18,9 +18,7 @@ class CreateBarsTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->bigInteger('group_id')->unsigned()->index();
-            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
-            
+            $table->bigInteger('group_id')->index();
             $table->string('friendly_name');
             $table->enum('position', ['top_sticky', 'top', 'bottom']);
             $table->text('headline')->nullable();
