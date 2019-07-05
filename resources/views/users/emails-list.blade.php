@@ -44,14 +44,12 @@
                                             <td class="table-actions text-right">
                                                 <a href="javascript: void(0)" class="table-action table-action-cp email-list-edit"
                                                    data-target="{{ secure_redirect(route('email-lists.edit', ['emailList' => $email_list->id])) }}"
-                                                   data-toggle="tooltip"
-                                                   data-original-title="Edit">
+                                                   data-toggle="tooltip" data-original-title="Edit">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
                                                 <a href="javascript: void(0)" class="table-action table-action-cp email-list-export"
                                                    data-target="{{ secure_redirect(route('email-lists.show', ['emailList' => $email_list->id])) }}"
-                                                   data-toggle="tooltip"
-                                                   data-original-title="Export" target="_blank">
+                                                   data-toggle="tooltip" data-original-title="Export" target="_blank">
                                                     <i class="fas fa-file-export"></i>
                                                 </a>
                                                 <a href="javascript: void(0)" class="table-action table-action-delete email-list-clear" data-id="{{ $email_list->id }}"

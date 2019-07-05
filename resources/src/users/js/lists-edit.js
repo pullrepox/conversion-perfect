@@ -29,5 +29,9 @@ new Vue({
             minScrollbarLength: 20
         });
     },
-    methods: {}
+    methods: {
+        changeStatusVal() {
+            this.changed_status = true;
+        }
+    }
 });

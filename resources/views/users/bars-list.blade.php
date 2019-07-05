@@ -23,13 +23,11 @@
                             <table class="table align-items-center table-flush">
                                 <thead class="thead-light">
                                 <tr>
-                                    <th>Bar Name</th>
-                                    <th>Created</th>
-                                    <th>Type</th>
-                                    <th>Link Clicks</th>
-                                    <th>Email Options</th>
-                                    <th>Total Views</th>
-                                    <th>Unique Views</th>
+                                    <th></th>
+                                    <th>Friendly Name</th>
+                                    <th>Click Count</th>
+                                    <th>Unique Click Count</th>
+                                    <th>Added</th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -37,18 +35,32 @@
                                 @if (sizeof($bars) > 0)
                                     @foreach($bars as $bar)
                                         <tr>
-                                            <td class="table-user">{{ $bar->friendly_name }}</td>
-                                            <td>{{ time_elapsed_string($bar->created_at) }}</td>
-                                            <td>{{ $bar->type }}</td>
-                                            <td>{{ $bar->link_click }}</td>
-                                            <td>{{ $bar->email_options }}</td>
-                                            <td>{{ $bar->total_views }}</td>
-                                            <td>{{ $bar->unique_views }}</td>
                                             <td class="table-actions">
-                                                <a href="{{ route('bars.edit', ['bar' => $bar->id]) }}" class="table-action"
-                                                   data-toggle="tooltip"
-                                                   data-original-title="Edit Bar">
+                                                <a href="{{ route('bars.show', ['bar' => $bar->id]) }}" class="table-action table-action-cp"
+                                                   data-toggle="tooltip" data-original-title="Report" target="_blank">
+                                                    <i class="fas fa-chart-pie"></i>
+                                                </a>
+                                                <a href="javascript: void(0)" class="table-action table-action-cp" data-target="{{ $bar->id }}"
+                                                   data-toggle="tooltip" data-placement="top" title="Preview">
+                                                    <i class="fas fa-external-link-square-alt"></i>
+                                                </a>
+                                                <a href="javascript: void(0)" class="table-action table-action-cp" data-target="{{ $bar->id }}"
+                                                   data-toggle="tooltip" data-placement="top" title="Get Code">
+                                                    <i class="fas fa-clipboard"></i>
+                                                </a>
+                                            </td>
+                                            <td class="table-user">{{ $bar->friendly_name }}</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>{{ time_elapsed_string($bar->created_at) }}</td>
+                                            <td class="table-actions text-right">
+                                                <a href="{{ route('bars.edit', ['bar' => $bar->id]) }}" class="table-action table-action-cp"
+                                                   data-toggle="tooltip" data-original-title="Edit Bar">
                                                     <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a href="javascript: void(0)" class="table-action table-action-cp bar-clone" data-target="{{ $bar->id }}"
+                                                   data-toggle="tooltip" data-placement="top" title="Clone">
+                                                    <i class="fas fa-clone"></i>
                                                 </a>
                                                 <a href="javascript: void(0)" data-id="{{ $bar->id }}" class="table-action table-action-delete bar-delete"
                                                    data-toggle="modal" data-target="#delete-modal">
