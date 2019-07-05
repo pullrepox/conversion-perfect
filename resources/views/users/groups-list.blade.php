@@ -44,19 +44,16 @@
                                             <td class="table-actions text-right">
                                                 <a href="javascript: void(0)" class="table-action table-action-cp group-edit"
                                                    data-target="{{ secure_redirect(route('groups.edit', ['group' => $group->id])) }}"
-                                                   data-toggle="tooltip"
-                                                   data-original-title="Edit">
+                                                   data-toggle="tooltip" data-original-title="Edit">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
                                                 <a href="javascript: void(0)" class="table-action table-action-cp group-report"
                                                    data-target="{{ secure_redirect(route('groups.show', ['group' => $group->id])) }}"
-                                                   data-toggle="tooltip"
-                                                   data-original-title="Report" target="_blank">
+                                                   data-toggle="tooltip" data-original-title="Report" target="_blank">
                                                     <i class="fas fa-chart-pie"></i>
                                                 </a>
                                                 <a href="javascript: void(0)" class="table-action table-action-cp group-clone" data-target="{{ $group->id }}"
-                                                   data-toggle="tooltip"
-                                                   data-original-title="Clone">
+                                                   data-toggle="tooltip" data-original-title="Clone">
                                                     <i class="fas fa-clone"></i>
                                                 </a>
                                                 <a href="javascript: void(0)" data-id="{{ $group->id }}" class="table-action table-action-delete group-delete"

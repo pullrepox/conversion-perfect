@@ -215,155 +215,175 @@ class BarsController extends Controller
      */
     public function update(Request $request, Bar $bar)
     {
-        $rules = [
-            'friendly_name'    => 'required|max:100',
-            'headline'         => 'required',
-            'headline_color'   => 'required',
-            'background_color' => 'required'
-        ];
+        if ($request->has('flag')) {
+            // Clone Bar
+            if ($request->input('flag') == 'clone') {
+                $duplicate_row = $bar->replicate(['id', 'created_at', 'updated_at']);
+                $duplicate_row->friendly_name = $bar->friendly_name . ' - Clone';
+                $duplicate_row->save();
         
-        $params = $request->all();
-        $radio_keys = ['video_auto_play', 'drop_shadow', 'close_button', 'background_gradient', 'button_open_new', 'opt_in_video_auto_play'];
-        foreach ($params as $key => $val) {
-            if (false !== array_search($key, $radio_keys)) {
-                $params[$key] = $val ? 1 : 0;
+                session()->flash('success', 'Successfully Cloned.');
+        
+                return response()->json([
+                    'result' => 'success',
+                    'id'     => $duplicate_row->id
+                ]);
             } else {
-                if (is_null($val)) $params[$key] = '';
+                return response()->json([
+                    'result' => 'success'
+                ]);
             }
+        } else {
+            $rules = [
+                'friendly_name'    => 'required|max:100',
+                'headline'         => 'required',
+                'headline_color'   => 'required',
+                'background_color' => 'required'
+            ];
             
-            if ($key == 'headline' || $key == 'sub_headline' || $key == 'call_to_action' || $key == 'subscribe_text') {
-                if ($key == 'headline') {
-                    $upd_headline = [['insert' => 'Your Headline']];
-                } else if ($key == 'subscribe_text') {
-                    $upd_headline = [['insert' => 'Enter Your Name And Email Below...']];
-                } else if ($key == 'call_to_action') {
-                    $upd_headline = [['insert' => 'Call To Action Text Here']];
+            $params = $request->all();
+            $radio_keys = ['video_auto_play', 'drop_shadow', 'close_button', 'background_gradient', 'button_open_new', 'opt_in_video_auto_play'];
+            foreach ($params as $key => $val) {
+                if (false !== array_search($key, $radio_keys)) {
+                    $params[$key] = $val ? 1 : 0;
                 } else {
-                    $upd_headline = [['insert' => '']];
-                }
-                for ($i = 0; $i < count($val); $i++) {
-                    $upd_headline[$i]['insert'] = addslashes($val[$i] . ($i < (count($val) - 1) ? ' ' : ''));
-                    if (!is_null($request->input($key . '_bold')[$i])) {
-                        $upd_headline[$i]['attributes']['bold'] = true;
-                    }
-                    if (!is_null($request->input($key . '_italic')[$i])) {
-                        $upd_headline[$i]['attributes']['italic'] = true;
-                    }
-                    if (!is_null($request->input($key . '_underline')[$i])) {
-                        $upd_headline[$i]['attributes']['underline'] = true;
-                    }
-                    if (!is_null($request->input($key . '_strike')[$i])) {
-                        $upd_headline[$i]['attributes']['strike'] = true;
-                    }
+                    if (is_null($val)) $params[$key] = '';
                 }
                 
-                $params[$key] = json_encode($upd_headline);
-            }
-            
-            if ($key == 'countdown_end_date') {
-                $params[$key] = date('m/d/Y', strtotime($val));
-            }
-            
-            if ($key == 'countdown_end_time') {
-                $params[$key] = date('H:i:s', strtotime($val));
-            }
-        }
-        
-        if ($request->input('sel_tab') == 'content') {
-            if ($request->input('video_type') != 'none') {
-                if ($request->input('video_type') == 'youtube') {
-                    $rules['content_youtube_url'] = 'required|url';
-                } else if ($request->input('video_type') == 'vimeo') {
-                    $rules['content_vimeo_url'] = 'required|url';
-                } else {
-                    $rules['video_code'] = 'required';
-                }
-            }
-            if ($request->input('button_type') != 'none') {
-                $rules['button_label'] = 'required';
-            }
-            if ($request->input('button_action') == 'open_click_url') {
-                $rules['button_click_url'] = 'required';
-            }
-        }
-        
-        if ($request->input('sel_tab') == 'appearance') {
-            $rules['opacity'] = 'numeric|max:100|min:0';
-            $rules['gradient_angle'] = 'numeric|max:360|min:0';
-        }
-        
-        if ($request->input('sel_tab') == 'timer') {
-            if ($request->input('countdown_on_expiry') == 'display_text') {
-                $rules['countdown_expiration_text'] = 'required|max:200';
-            }
-            if ($request->input('countdown_on_expiry') == 'redirect') {
-                $rules['countdown_expiration_url'] = 'required|max:200';
-            }
-            if ($request->input('countdown') == 'calendar') {
-                $rules['countdown_end_date'] = 'date_format:m/d/Y';
-            }
-        }
-        
-//        if ($request->input('sel_tab') == 'overlay') {
-////            $rules['third_party_url'] = 'required';
-////            $rules['custom_link_text'] = 'required';
-//        }
-        
-        if ($request->input('sel_tab') == 'lead_capture') {
-            if ($request->input('integration_type') != 'none') {
-                if ($request->input('integration_type') != 'conversion_perfect') {
-                    $rules['list'] = 'required';
-                }
-                
-                if ($request->input('after_submit') == 'redirect') {
-                    $rules['redirect_url'] = 'required';
-                } else {
-                    $rules['message'] = 'required';
-                }
-                
-                $rules['call_to_action'] = 'required';
-                if ($request->input('opt_in_type') != 'standard') {
-                    if ($request->input('opt_in_type') != 'img-upload') {
-                        $old_file = $bar->image_upload;
-                        $file_name = basename($old_file);
-                        $old_path = 'bars/options/' . $bar->id . '/' . $file_name;
-                        if (Storage::exists($old_path)) {
-                            Storage::delete($old_path);
-                            Storage::deleteDirectory('bars/options/' . $bar->id);
+                if ($key == 'headline' || $key == 'sub_headline' || $key == 'call_to_action' || $key == 'subscribe_text') {
+                    if ($key == 'headline') {
+                        $upd_headline = [['insert' => 'Your Headline']];
+                    } else if ($key == 'subscribe_text') {
+                        $upd_headline = [['insert' => 'Enter Your Name And Email Below...']];
+                    } else if ($key == 'call_to_action') {
+                        $upd_headline = [['insert' => 'Call To Action Text Here']];
+                    } else {
+                        $upd_headline = [['insert' => '']];
+                    }
+                    for ($i = 0; $i < count($val); $i++) {
+                        $upd_headline[$i]['insert'] = addslashes($val[$i] . ($i < (count($val) - 1) ? ' ' : ''));
+                        if (!is_null($request->input($key . '_bold')[$i])) {
+                            $upd_headline[$i]['attributes']['bold'] = true;
+                        }
+                        if (!is_null($request->input($key . '_italic')[$i])) {
+                            $upd_headline[$i]['attributes']['italic'] = true;
+                        }
+                        if (!is_null($request->input($key . '_underline')[$i])) {
+                            $upd_headline[$i]['attributes']['underline'] = true;
+                        }
+                        if (!is_null($request->input($key . '_strike')[$i])) {
+                            $upd_headline[$i]['attributes']['strike'] = true;
                         }
                     }
-                    if ($request->input('opt_in_type') == 'img-online') {
-                        $rules['image_url'] = 'required|url';
-                    } else if ($request->input('opt_in_type') == 'vid-youtube') {
-                        $rules['opt_in_youtube_url'] = 'required|url';
-                    } else if ($request->input('opt_in_type') == 'vid-vimeo') {
-                        $rules['opt_in_vimeo_url'] = 'required|url';
-                    } else if ($request->input('opt_in_type') == 'vid-other') {
-                        $rules['opt_in_video_code'] = 'required';
+                    
+                    $params[$key] = json_encode($upd_headline);
+                }
+                
+                if ($key == 'countdown_end_date') {
+                    $params[$key] = date('m/d/Y', strtotime($val));
+                }
+                
+                if ($key == 'countdown_end_time') {
+                    $params[$key] = date('H:i:s', strtotime($val));
+                }
+            }
+            
+            if ($request->input('sel_tab') == 'content') {
+                if ($request->input('video_type') != 'none') {
+                    if ($request->input('video_type') == 'youtube') {
+                        $rules['content_youtube_url'] = 'required|url';
+                    } else if ($request->input('video_type') == 'vimeo') {
+                        $rules['content_vimeo_url'] = 'required|url';
+                    } else {
+                        $rules['video_code'] = 'required';
+                    }
+                }
+                if ($request->input('button_type') != 'none') {
+                    $rules['button_label'] = 'required';
+                }
+                if ($request->input('button_action') == 'open_click_url') {
+                    $rules['button_click_url'] = 'required';
+                }
+            }
+            
+            if ($request->input('sel_tab') == 'appearance') {
+                $rules['opacity'] = 'numeric|max:100|min:0';
+                $rules['gradient_angle'] = 'numeric|max:360|min:0';
+            }
+            
+            if ($request->input('sel_tab') == 'timer') {
+                if ($request->input('countdown_on_expiry') == 'display_text') {
+                    $rules['countdown_expiration_text'] = 'required|max:200';
+                }
+                if ($request->input('countdown_on_expiry') == 'redirect') {
+                    $rules['countdown_expiration_url'] = 'required|max:200';
+                }
+                if ($request->input('countdown') == 'calendar') {
+                    $rules['countdown_end_date'] = 'date_format:m/d/Y';
+                }
+            }
+            
+            //        if ($request->input('sel_tab') == 'overlay') {
+            ////            $rules['third_party_url'] = 'required';
+            ////            $rules['custom_link_text'] = 'required';
+            //        }
+            
+            if ($request->input('sel_tab') == 'lead_capture') {
+                if ($request->input('integration_type') != 'none') {
+                    if ($request->input('integration_type') != 'conversion_perfect') {
+                        $rules['list'] = 'required';
+                    }
+                    
+                    if ($request->input('after_submit') == 'redirect') {
+                        $rules['redirect_url'] = 'required';
+                    } else {
+                        $rules['message'] = 'required';
+                    }
+                    
+                    $rules['call_to_action'] = 'required';
+                    if ($request->input('opt_in_type') != 'standard') {
+                        if ($request->input('opt_in_type') != 'img-upload') {
+                            $old_file = $bar->image_upload;
+                            $file_name = basename($old_file);
+                            $old_path = 'bars/options/' . $bar->id . '/' . $file_name;
+                            if (Storage::exists($old_path)) {
+                                Storage::delete($old_path);
+                                Storage::deleteDirectory('bars/options/' . $bar->id);
+                            }
+                        }
+                        if ($request->input('opt_in_type') == 'img-online') {
+                            $rules['image_url'] = 'required|url';
+                        } else if ($request->input('opt_in_type') == 'vid-youtube') {
+                            $rules['opt_in_youtube_url'] = 'required|url';
+                        } else if ($request->input('opt_in_type') == 'vid-vimeo') {
+                            $rules['opt_in_vimeo_url'] = 'required|url';
+                        } else if ($request->input('opt_in_type') == 'vid-other') {
+                            $rules['opt_in_video_code'] = 'required';
+                        }
                     }
                 }
             }
+            
+            if ($request->input('sel_tab') == 'translation') {
+                $rules['days_label'] = 'required';
+                $rules['hours_label'] = 'required';
+                $rules['minutes_label'] = 'required';
+                $rules['seconds_label'] = 'required';
+                $rules['opt_in_name_placeholder'] = 'required';
+                $rules['opt_in_email_placeholder'] = 'required';
+            }
+            
+            $this->validate($request, $rules);
+            
+            unset($params['sel_tab']);
+            $bar->fill($params);
+            
+            $bar->save();
+            
+            session()->flash('success', 'Successfully Updated');
+            
+            return response()->redirectTo('bars');
         }
-    
-        if ($request->input('sel_tab') == 'translation') {
-            $rules['days_label'] = 'required';
-            $rules['hours_label'] = 'required';
-            $rules['minutes_label'] = 'required';
-            $rules['seconds_label'] = 'required';
-            $rules['opt_in_name_placeholder'] = 'required';
-            $rules['opt_in_email_placeholder'] = 'required';
-        }
-        
-        $this->validate($request, $rules);
-        
-        unset($params['sel_tab']);
-        $bar->fill($params);
-        
-        $bar->save();
-        
-        session()->flash('success', 'Successfully Updated');
-        
-        return response()->redirectTo('bars');
     }
     
     /**

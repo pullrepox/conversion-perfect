@@ -50,5 +50,9 @@ new Vue({
             });
         });
     },
-    methods: {}
+    methods: {
+        changeStatusVal() {
+            this.changed_status = true;
+        }
+    }
 });

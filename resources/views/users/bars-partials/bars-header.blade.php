@@ -7,6 +7,9 @@
                 <a href="{{ secure_redirect(route('bars')) }}" class="btn btn-light btn-sm text-capitalize">
                     @{{ changed_status ? 'Cancel' : 'Close' }}
                 </a>
+                <a>
+                
+                </a>
                 @if (!$flag)
                     <div class="dropdown">
                         <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
