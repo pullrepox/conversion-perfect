@@ -5,10 +5,11 @@
         </div>
     </div>
     <div class="card-body">
-        <div class="w-100 h-100">
+        <div class="w-100 h-100" v-if="sel_tab === 'translation' || (sel_tab !== 'lead_capture' || model.lead_capture.integration_type === 'none')">
             @include('users.bars-partials.preview-main')
         </div>
-        <div v-if="model.lead_capture.integration_type !== 'none'" class="w-100 h-100 mt-3">
+        <div v-if="sel_tab === 'translation' || (model.lead_capture.integration_type !== 'none' && sel_tab === 'lead_capture')"
+             class="w-100 h-100" :class="{'mt-3': sel_tab === 'translation'}">
             <div v-if="model.lead_capture.opt_in_type === 'standard'">
                 @include('users.bars-partials.preview-standard')
             </div>

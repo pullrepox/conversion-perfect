@@ -7,6 +7,7 @@ use App\Http\Repositories\BarsRepository;
 use App\Integration;
 use App\Models\Bar;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BarsController extends Controller
 {
@@ -303,10 +304,10 @@ class BarsController extends Controller
             }
         }
         
-        if ($request->input('sel_tab') == 'overlay') {
-            $rules['third_party_url'] = 'required';
-            $rules['custom_link_text'] = 'required';
-        }
+//        if ($request->input('sel_tab') == 'overlay') {
+////            $rules['third_party_url'] = 'required';
+////            $rules['custom_link_text'] = 'required';
+//        }
         
         if ($request->input('sel_tab') == 'lead_capture') {
             if ($request->input('integration_type') != 'none') {
@@ -322,6 +323,15 @@ class BarsController extends Controller
                 
                 $rules['call_to_action'] = 'required';
                 if ($request->input('opt_in_type') != 'standard') {
+                    if ($request->input('opt_in_type') != 'img-upload') {
+                        $old_file = $bar->image_upload;
+                        $file_name = basename($old_file);
+                        $old_path = 'bars/options/' . $bar->id . '/' . $file_name;
+                        if (Storage::exists($old_path)) {
+                            Storage::delete($old_path);
+                            Storage::deleteDirectory('bars/options/' . $bar->id);
+                        }
+                    }
                     if ($request->input('opt_in_type') == 'img-online') {
                         $rules['image_url'] = 'required|url';
                     } else if ($request->input('opt_in_type') == 'vid-youtube') {
@@ -340,6 +350,8 @@ class BarsController extends Controller
             $rules['hours_label'] = 'required';
             $rules['minutes_label'] = 'required';
             $rules['seconds_label'] = 'required';
+            $rules['opt_in_name_placeholder'] = 'required';
+            $rules['opt_in_email_placeholder'] = 'required';
         }
         
         $this->validate($request, $rules);
@@ -363,6 +375,14 @@ class BarsController extends Controller
      */
     public function destroy(Bar $bar)
     {
+        $old_file = $bar->image_upload;
+        $file_name = basename($old_file);
+        $old_path = 'bars/options/' . $bar->id . '/' . $file_name;
+        if (Storage::exists($old_path)) {
+            Storage::delete($old_path);
+            Storage::deleteDirectory('bars/options/' . $bar->id);
+        }
+        
         $bar->delete();
         
         return response()->json([

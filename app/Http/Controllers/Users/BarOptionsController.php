@@ -139,10 +139,10 @@ class BarOptionsController extends Controller
             }
         }
         
-        if ($opt_key == 'overlay') {
-            $rules['custom_link_text'] = 'required';
-            $rules['third_party_url'] = 'required';
-        }
+//        if ($opt_key == 'overlay') {
+////            $rules['custom_link_text'] = 'required';
+////            $rules['third_party_url'] = 'required';
+//        }
         
         if ($opt_key == 'lead_capture') {
             if ($request->input('integration_type') != 'none') {
@@ -158,6 +158,15 @@ class BarOptionsController extends Controller
     
                 $rules['call_to_action'] = 'required';
                 if ($request->input('opt_in_type') != 'standard') {
+                    if ($request->input('opt_in_type') != 'img-upload') {
+                        $old_file = $bar->image_upload;
+                        $file_name = basename($old_file);
+                        $old_path = 'bars/options/' . $bar_id . '/' . $file_name;
+                        if (Storage::exists($old_path)) {
+                            Storage::delete($old_path);
+                            Storage::deleteDirectory('bars/options/' . $bar_id);
+                        }
+                    }
                     if ($request->input('opt_in_type') == 'img-online') {
                         $rules['image_url'] = 'required|url';
                     } else if ($request->input('opt_in_type') == 'vid-youtube') {
@@ -176,6 +185,8 @@ class BarOptionsController extends Controller
             $rules['hours_label'] = 'required';
             $rules['minutes_label'] = 'required';
             $rules['seconds_label'] = 'required';
+            $rules['opt_in_name_placeholder'] = 'required';
+            $rules['opt_in_email_placeholder'] = 'required';
         }
         
         $validate = Validator::make($request->all(), $rules);
@@ -197,11 +208,7 @@ class BarOptionsController extends Controller
     {
         $bar_id = $request->route()->parameter('id');
         $bar = $this->barsRepo->find($bar_id);
-        $opt_key = $request->input('option_key');
-        
-        $opt_param = 'opt_' . $opt_key;
-        $bar->$opt_param = 0;
-        
+
         $params = $request->input('data');
         foreach ($params as $key => $val) {
             if (is_null($val)) $params[$key] = '';
@@ -230,7 +237,12 @@ class BarOptionsController extends Controller
         if ($request->hasFile('image-upload')) {
             $bar_id = $request->route()->parameter('id');
             $bar = $this->barsRepo->find($bar_id);
-//            $old_file = $bar->image_upload;
+            $old_file = $bar->image_upload;
+            $file_name = basename($old_file);
+            $old_path = 'bars/options/' . $bar_id . '/' . $file_name;
+            if (Storage::exists($old_path)) {
+                Storage::delete($old_path);
+            }
             
             $tempImage = $request->file('image-upload');
             $extension = $tempImage->getClientOriginalExtension();

@@ -83,6 +83,7 @@ new Vue({
         this.initSelect2();
         this.initDatePicker();
         this.initQuillEditor();
+        
         this.model.content.video_code = this.decodeHTML(this.model.content.video_code);
         $('[data-toggle="tags"]').each(function () {
             $(this).val(vm.model[$(this).data('parent')][$(this).attr('id')]);
