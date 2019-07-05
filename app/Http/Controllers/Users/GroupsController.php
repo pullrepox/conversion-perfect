@@ -58,22 +58,77 @@ class GroupsController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required|max:200|unique:groups,name,user_id'
-        ]);
-        
-        $ins_data = [
-            'user_id' => auth()->user()->id,
-            'name'    => $request->input('name'),
-            'notes'   => is_null($request->input('notes')) ? '' : $request->input('notes'),
-            'tags'    => is_null($request->input('tags')) ? '' : $request->input('tags'),
-        ];
-        
-        Group::insertGetId($ins_data);
-        
-        session()->flash('success', 'Successfully Created');
-        
-        return response()->redirectTo('groups');
+        if ($request->has('flag') && $request->ajax()) {
+            if ($request->input('flag') == 'quick-add') {
+                if ($request->input('name') == '' || is_null($request->input('name'))) {
+                    $re = [
+                        'result'  => 'failure',
+                        'message' => 'Group name is required.'
+                    ];
+    
+                    return response()->json($re);
+                }
+                $group_check = Group::where('user_id', auth()->user()->id)->where('name', $request->input('name'))->count();
+                
+                if ($group_check > 0) {
+                    $re = [
+                        'result'  => 'failure',
+                        'message' => 'Group name is already exist.'
+                    ];
+                } else {
+                    $group_id = Group::insertGetId([
+                        'user_id' => auth()->user()->id,
+                        'name'    => $request->input('name'),
+                        'notes'   => '',
+                        'tags'    => '',
+                    ]);
+                    
+                    $group_list[0] = [
+                        'id'   => '0',
+                        'name' => 'All Bars'
+                    ];
+                    
+                    $groups = auth()->user()->groups;
+                    if ($groups) {
+                        foreach ($groups as $key => $g_row) {
+                            $group_list[($key + 1)] = [
+                                'id'   => $g_row->id,
+                                'name' => $g_row->name,
+                            ];
+                        }
+                    }
+                    
+                    $re = [
+                        'result'     => 'success',
+                        'id'         => $group_id,
+                        'group_list' => $group_list
+                    ];
+                }
+                
+                return response()->json($re);
+            }
+            
+            return response()->json([
+                'result' => 'success'
+            ]);
+        } else {
+            $this->validate($request, [
+                'name' => 'required|max:200|unique:groups,name,user_id'
+            ]);
+            
+            $ins_data = [
+                'user_id' => auth()->user()->id,
+                'name'    => $request->input('name'),
+                'notes'   => is_null($request->input('notes')) ? '' : $request->input('notes'),
+                'tags'    => is_null($request->input('tags')) ? '' : $request->input('tags'),
+            ];
+            
+            Group::insertGetId($ins_data);
+            
+            session()->flash('success', 'Successfully Created');
+            
+            return response()->redirectTo('groups');
+        }
     }
     
     /**

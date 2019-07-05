@@ -29,6 +29,31 @@
                 </div>
             </form>
             @include('users.bars-partials.bars-preview')
+            <div class="modal fade" id="group-add-modal" tabindex="-1" role="dialog" aria-labelledby="group-add-modal" aria-hidden="true">
+                <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h6 class="modal-title" id="modal-title-default">Quick Add Group</h6>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label class="form-control-label ml-1" for="group_name">Group Name</label>
+                                <input type="text" class="form-control" id="group_name" v-model="group_name" placeholder="Your Group Name"/>
+                                <span class="invalid-feedback" role="alert">
+                                    @{{ error_message }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success bg-cp text-capitalize" @click="quickAddGroup">Add</button>
+                            <button type="button" class="btn btn-light ml-auto" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         @include('layouts.footer')
     </div>
@@ -42,6 +67,7 @@
                 friendly_name: "{{ (old('friendly_name') ? old('friendly_name') : ($flag ? '' : $bar->friendly_name)) }}",
                 position: "{{ old('position') ? old('position') : ($flag ? 'top_sticky' : $bar->position) }}",
                 group_id: "{{ old('group_id') ? old('group_id') : ($flag ? '0' : $bar->group_id) }}",
+                group_list: JSON.parse('{!! json_encode($group_list) !!}'),
                 headline: JSON.parse('{!! $flag ? json_encode([['attributes' => [], 'insert' => 'Your Headline']]) : $bar->headline !!}'),
                 headline_color: "{{ old('headline_color') ? old('headline_color') : ($flag ? '#FFFFFF' : $bar->headline_color) }}",
                 background_color: "{{ old('background_color') ? old('background_color') : ($flag ? '#3BAF85' : $bar->background_color) }}",
