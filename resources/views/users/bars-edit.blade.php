@@ -6,27 +6,14 @@
         @include('layouts.page-header', ['data' => $header_data])
         {{-- Page content --}}
         <div class="container-fluid mt--8">
-            <form action="{{ $form_action }}" method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
+            <form action="{{ $form_action }}" method="post" id="edit-form" class="needs-validation" enctype="multipart/form-data" novalidate>
                 @csrf
                 @if (!$flag)
                     @method('PUT')
                 @endif
                 <input type="hidden" id="sel_tab" name="sel_tab" v-model="sel_tab"/>
                 {{-- bar Base Content --}}
-                @include('users.bars-partials.bars-header')
-                <div class="card shadow">
-                    <div class="card-body">
-                        <div class="tab-content" id="barsTabContent">
-                            @include('users.bars-partials.bars-main')
-                            @include('users.bars-partials.bars-appearance')
-                            @include('users.bars-partials.bars-content')
-                            @include('users.bars-partials.bars-countdown')
-                            @include('users.bars-partials.bars-overlay')
-                            @include('users.bars-partials.bars-lead-capture')
-                            @include('users.bars-partials.bars-translation')
-                        </div>
-                    </div>
-                </div>
+                @include('users.bars-partials.bars-editor-tabs')
             </form>
             @include('users.bars-partials.bars-preview')
             <div class="modal fade" id="group-add-modal" tabindex="-1" role="dialog" aria-labelledby="group-add-modal" aria-hidden="true">
@@ -64,7 +51,7 @@
             bar_id: "{{ $flag ? '' : $bar->id }}",
             create_edit: "{{ $flag }}",
             model: {
-                friendly_name: "{{ (old('friendly_name') ? old('friendly_name') : ($flag ? '' : $bar->friendly_name)) }}",
+                friendly_name: "{{ (old('friendly_name') ? old('friendly_name') : ($flag ? 'Bar ' . date('YmdHis') : $bar->friendly_name)) }}",
                 position: "{{ old('position') ? old('position') : ($flag ? 'top_sticky' : $bar->position) }}",
                 group_id: "{{ old('group_id') ? old('group_id') : ($flag ? '0' : $bar->group_id) }}",
                 group_list: JSON.parse('{!! json_encode($group_list) !!}'),

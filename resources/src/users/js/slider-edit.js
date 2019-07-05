@@ -88,6 +88,35 @@ new Vue({
         this.initQuillEditor();
         
         this.model.content.video_code = this.decodeHTML(this.model.content.video_code);
+        this.model.content.button_label = this.decodeHTML(this.model.content.button_label);
+        this.model.timer.countdown_expiration_text = this.decodeHTML(this.model.timer.countdown_expiration_text);
+        this.model.overlay.custom_link_text = this.decodeHTML(this.model.overlay.custom_link_text);
+        this.model.overlay.meta_title = this.decodeHTML(this.model.overlay.meta_title);
+        this.model.lead_capture.opt_in_button_label = this.decodeHTML(this.model.lead_capture.opt_in_button_label);
+        
+        let decodeList = {
+            'friendly_name': 'friendly_name',
+            'timer': 'countdown_expiration_text',
+            'lead_capture': 'opt_in_button_label',
+            'content': ['video_code', 'button_label'],
+            'overlay': ['custom_link_text', 'meta_title'],
+            'translation': ['days_label', 'hours_label', 'minutes_label', 'seconds_label', 'opt_in_name_placeholder', 'opt_in_email_placeholder', 'powered_by_label', 'disclaimer'],
+        };
+        
+        Object.keys(decodeList).forEach(function (item) {
+            if (Array.isArray(decodeList[item])) {
+                for (let i = 0; i < decodeList[item].length; i++) {
+                    vm.model[item][decodeList[item][i]] = vm.decodeHTML(vm.model[item][decodeList[item][i]]);
+                }
+            } else {
+                if (decodeList[item] === item) {
+                    vm.model[item] = vm.decodeHTML(vm.model[item]);
+                } else {
+                    vm.model[item][decodeList[item]] = vm.decodeHTML(vm.model[item][decodeList[item]]);
+                }
+            }
+        });
+        
         $('[data-toggle="tags"]').each(function () {
             $(this).val(vm.model[$(this).data('parent')][$(this).attr('id')]);
             
@@ -109,7 +138,7 @@ new Vue({
         $('#barsTab a').on('click', function (e) {
             e.preventDefault();
             return false;
-        })
+        });
     },
     methods: {
         changeStatusVal() {
@@ -313,6 +342,10 @@ new Vue({
             return b.join("").toUpperCase();
         },
         saveOption(key) {
+            if (this.create_edit) {
+                $('#edit-form').submit();
+                return;
+            }
             let save_data = {};
             if (this.sel_tab === 'main') {
                 save_data = {
@@ -547,7 +580,7 @@ new Vue({
                 this.error_message = 'Group Name is required';
                 $('#group_name').addClass('is-invalid').focus();
             }
-    
+            
             $('#group_name').removeClass('is-invalid');
             axios.post(`/groups`, {
                 flag: 'quick-add',

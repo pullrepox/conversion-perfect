@@ -124,7 +124,7 @@
         left: (model.appearance.powered_by_position === 'top_left' || model.appearance.powered_by_position === 'bottom_left') ? '5px' : 'auto'
         }">
         <a style="color:inherit; text-decoration:inherit; text-transform: uppercase;" href="{{ config('site.home_url') }}" target="_BLANK">
-            @{{ model.translation.powered_by_label }} {{ config('site.full_url') }}
+            @{{ model.translation.powered_by_label }} {{ config('app.name') }}
         </a>
     </div>
 </div>

@@ -41,9 +41,15 @@ class BarOptionsController extends Controller
         
         $params = $request->all();
         $radio_keys = ['video_auto_play', 'drop_shadow', 'close_button', 'background_gradient', 'button_open_new', 'opt_in_video_auto_play'];
+        $string_keys = [
+            'friendly_name', 'button_label', 'countdown_expiration_text', 'custom_link_text', 'meta_title', 'opt_in_button_label',
+            'days_label', 'hours_label', 'minutes_label', 'seconds_label', 'opt_in_name_placeholder', 'opt_in_email_placeholder', 'powered_by_label', 'disclaimer'
+        ];
         foreach ($params as $key => $val) {
             if (false !== array_search($key, $radio_keys)) {
                 $params[$key] = $val ? 1 : 0;
+            } else if (false !== array_search($key, $string_keys)) {
+                $params[$key] = htmlspecialchars($val);
             } else {
                 if (is_null($val)) $params[$key] = '';
             }
@@ -98,11 +104,6 @@ class BarOptionsController extends Controller
             $rules['headline_color'] = 'required';
             $rules['background_color'] = 'required';
         }
-
-        if ($opt_key == 'appearance') {
-            $rules['opacity'] = 'numeric|max:100|min:0';
-            $rules['gradient_angle'] = 'numeric|max:360|min:0';
-        }
         
         if ($opt_key == 'content') {
             if ($request->input('video_type') != 'none') {
@@ -138,11 +139,6 @@ class BarOptionsController extends Controller
                 $rules['countdown_minutes'] = 'numeric|min:0|max:59';
             }
         }
-        
-//        if ($opt_key == 'overlay') {
-////            $rules['custom_link_text'] = 'required';
-////            $rules['third_party_url'] = 'required';
-//        }
         
         if ($opt_key == 'lead_capture') {
             if ($request->input('integration_type') != 'none') {
