@@ -28,11 +28,17 @@ class BarsComposer
         }
         $responder_list['conversion_perfect'] = 'Conversion Perfect';
         
-        $group_list['0'] = 'All Bars';
+        $group_list[0] = [
+            'id'   => '0',
+            'name' => 'All Bars'
+        ];
         $groups = auth()->user()->groups;
         if ($groups) {
-            foreach ($groups as $g_row) {
-                $group_list[$g_row->id] = $g_row->name;
+            foreach ($groups as $key => $g_row) {
+                $group_list[($key + 1)] = [
+                    'id'   => $g_row->id,
+                    'name' => $g_row->name,
+                ];
             }
         }
         

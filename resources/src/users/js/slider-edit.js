@@ -49,14 +49,17 @@ new Vue({
                 days_label: 'Days', hours_label: 'Hours', minutes_label: 'Mins', seconds_label: 'Secs', opt_in_name_placeholder: 'Your Name',
                 opt_in_email_placeholder: 'you@yourdomain.com', powered_by_label: 'Powered by', disclaimer: 'We respect your privacy and will never share your information.',
             },
-            auto_responder_list: []
+            auto_responder_list: [],
+            group_list: []
         },
         model: {
             friendly_name: '', position: 'top_sticky', group_id: '0', headline: [{attributes: {}, insert: 'Your Headline'}], headline_color: '#ffffff', background_color: '#3BAF85',
-            show_bar_type: 'immediate', frequency: 'every', delay_in_seconds: 3, scroll_point_percent: 10
+            show_bar_type: 'immediate', frequency: 'every', delay_in_seconds: 3, scroll_point_percent: 10, auto_responder_list: [], group_list: []
         },
         showUpload: false,
-        uploadPercentage: 0
+        uploadPercentage: 0,
+        group_name: '',
+        error_message: 'Please insert correct value.'
     }),
     created() {
         this.model = JSON.parse(JSON.stringify(this.basic_model));
@@ -537,6 +540,30 @@ new Vue({
                 this.loading = false;
                 this.model.lead_capture.image_upload = '';
                 this.commonNotification('danger', 'Internal Server Error');
+            });
+        },
+        quickAddGroup() {
+            if (this.group_name === '' || this.group_name === null) {
+                this.error_message = 'Group Name is required';
+                $('#group_name').addClass('is-invalid').focus();
+            }
+    
+            $('#group_name').removeClass('is-invalid');
+            axios.post(`/groups`, {
+                flag: 'quick-add',
+                name: this.group_name
+            }).then((r) => {
+                if (r.data.result === 'success') {
+                    this.model.group_id = r.data.id;
+                    this.model.group_list = r.data.group_list;
+                    $('#group-add-modal').modal('hide');
+                } else {
+                    this.error_message = r.data.message;
+                    $('#group_name').addClass('is-invalid').focus();
+                }
+            }).catch((e) => {
+                this.error_message = 'Internal Server Error';
+                $('#group_name').addClass('is-invalid').focus();
             });
         }
     }
