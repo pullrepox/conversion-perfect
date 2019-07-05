@@ -228,6 +228,7 @@ class BarsController extends Controller
                 ['parent_name' => 'Conversion Bars', 'parent_url' => secure_redirect(route('bars'))],
             ]
         ];
+        
         $bar->headline = !is_null(trim($bar->headline)) && !empty(trim($bar->headline)) ? addslashes(stripslashes($bar->headline)) : json_encode([['attributes' => [], 'insert' => 'Your Headline']]);
         
         $bar->sub_headline = !is_null(trim($bar->sub_headline)) && !empty(trim($bar->sub_headline)) ? addslashes(stripslashes($bar->sub_headline)) : json_encode([['attributes' => [], 'insert' => '']]);
@@ -246,7 +247,7 @@ class BarsController extends Controller
         $bar->delay_in_seconds = $bar->delay_in_seconds ? $bar->delay_in_seconds : 3;
         $bar->scroll_point_percent = $bar->scroll_point_percent ? $bar->scroll_point_percent : 10;
         
-        $bar->countdown_timezone = (is_null($bar->countdown_timezone) || $bar->countdown_timezone == '') ? 'Canada/Pacific' : $bar->countdown_timezone;
+        $bar->countdown_timezone = (is_null($bar->countdown_timezone) || $bar->countdown_timezone == '') ? 'America/New_York' : $bar->countdown_timezone;
         $bar->countdown_end_date = $bar->countdown_end_date != '0000-00-00' ? date('m/d/Y', strtotime($bar->countdown_end_date)) : date('m/d/Y');
         
         $bar->autohide_delay_seconds = $bar->autohide_delay_seconds ? $bar->autohide_delay_seconds : 3;

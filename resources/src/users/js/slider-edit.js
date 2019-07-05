@@ -59,7 +59,15 @@ new Vue({
         showUpload: false,
         uploadPercentage: 0,
         group_name: '',
-        error_message: 'Please insert correct value.'
+        error_message: 'Please insert correct value.',
+        decodeList: {
+            'friendly_name': 'friendly_name',
+            'timer': 'countdown_expiration_text',
+            'lead_capture': 'opt_in_button_label',
+            'content': ['video_code', 'button_label'],
+            'overlay': ['custom_link_text', 'meta_title'],
+            'translation': ['days_label', 'hours_label', 'minutes_label', 'seconds_label', 'opt_in_name_placeholder', 'opt_in_email_placeholder', 'powered_by_label', 'disclaimer'],
+        }
     }),
     created() {
         this.model = JSON.parse(JSON.stringify(this.basic_model));
@@ -94,25 +102,16 @@ new Vue({
         this.model.overlay.meta_title = this.decodeHTML(this.model.overlay.meta_title);
         this.model.lead_capture.opt_in_button_label = this.decodeHTML(this.model.lead_capture.opt_in_button_label);
         
-        let decodeList = {
-            'friendly_name': 'friendly_name',
-            'timer': 'countdown_expiration_text',
-            'lead_capture': 'opt_in_button_label',
-            'content': ['video_code', 'button_label'],
-            'overlay': ['custom_link_text', 'meta_title'],
-            'translation': ['days_label', 'hours_label', 'minutes_label', 'seconds_label', 'opt_in_name_placeholder', 'opt_in_email_placeholder', 'powered_by_label', 'disclaimer'],
-        };
-        
-        Object.keys(decodeList).forEach(function (item) {
-            if (Array.isArray(decodeList[item])) {
-                for (let i = 0; i < decodeList[item].length; i++) {
-                    vm.model[item][decodeList[item][i]] = vm.decodeHTML(vm.model[item][decodeList[item][i]]);
+        Object.keys(this.decodeList).forEach(function (item) {
+            if (Array.isArray(vm.decodeList[item])) {
+                for (let i = 0; i < vm.decodeList[item].length; i++) {
+                    vm.model[item][vm.decodeList[item][i]] = vm.decodeHTML(vm.model[item][vm.decodeList[item][i]]);
                 }
             } else {
-                if (decodeList[item] === item) {
+                if (vm.decodeList[item] === item) {
                     vm.model[item] = vm.decodeHTML(vm.model[item]);
                 } else {
-                    vm.model[item][decodeList[item]] = vm.decodeHTML(vm.model[item][decodeList[item]]);
+                    vm.model[item][vm.decodeList[item]] = vm.decodeHTML(vm.model[item][vm.decodeList[item]]);
                 }
             }
         });

@@ -21,8 +21,8 @@
                    v-model="model.lead_capture.opt_in_youtube_url" placeholder="https://www.youtube.com/embed/_UbDeqPdUek"/>
             @error('opt_in_youtube_url')
             <span class="invalid-feedback" role="alert">
-                        {{ $message }}
-                    </span>
+                {{ $message }}
+            </span>
             @enderror
         </div>
     </div>
@@ -34,8 +34,8 @@
                    v-model="model.lead_capture.opt_in_vimeo_url" placeholder="https://player.vimeo.com/video/20732587"/>
             @error('opt_in_vimeo_url')
             <span class="invalid-feedback" role="alert">
-                        {{ $message }}
-                    </span>
+                {{ $message }}
+            </span>
             @enderror
         </div>
     </div>
@@ -46,8 +46,8 @@
                       class="form-control @error('opt_in_video_code') is-invalid @enderror" @input="changeStatusVal" rows="1"></textarea>
             @error('opt_in_video_code')
             <span class="invalid-feedback" role="alert">
-                        {{ $message }}
-                    </span>
+                {{ $message }}
+            </span>
             @enderror
         </div>
     </div>
@@ -71,8 +71,8 @@
                    v-model="model.lead_capture.image_url"/>
             @error('image_url')
             <span class="invalid-feedback" role="alert">
-                        {{ $message }}
-                    </span>
+                {{ $message }}
+            </span>
             @enderror
         </div>
     </div>
@@ -119,8 +119,8 @@
                     </span>
             @error('call_to_action')
             <span class="invalid-feedback" style="display: block;" role="alert">
-                        {{ $message }}
-                    </span>
+                {{ $message }}
+            </span>
             @enderror
         </div>
     </div>
@@ -150,8 +150,8 @@
                     </span>
             @error('subscribe_text')
             <span class="invalid-feedback" style="display: block;" role="alert">
-                        {{ $message }}
-                    </span>
+                {{ $message }}
+            </span>
             @enderror
         </div>
     </div>
