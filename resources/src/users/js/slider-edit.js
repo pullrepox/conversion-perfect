@@ -46,7 +46,8 @@ new Vue({
                 opt_in_button_animation: 'none'
             },
             translation: {
-                days_label: 'Days', hours_label: 'Hours', minutes_label: 'Mins', seconds_label: 'Secs',
+                days_label: 'Days', hours_label: 'Hours', minutes_label: 'Mins', seconds_label: 'Secs', opt_in_name_placeholder: 'Your Name',
+                opt_in_email_placeholder: 'you@yourdomain.com', powered_by_label: 'Powered by', disclaimer: 'We respect your privacy and will never share your information.',
             },
             auto_responder_list: []
         },

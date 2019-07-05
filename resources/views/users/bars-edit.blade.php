@@ -22,7 +22,8 @@
                             @include('users.bars-partials.bars-content')
                             @include('users.bars-partials.bars-countdown')
                             @include('users.bars-partials.bars-overlay')
-                            @include('users.bars-partials.bars-autoresponder')
+                            @include('users.bars-partials.bars-lead-capture')
+                            @include('users.bars-partials.bars-translation')
                         </div>
                     </div>
                 </div>
@@ -126,10 +127,14 @@
                 },
                 auto_responder_list: JSON.parse('{!! $list_array !!}'),
                 translation: {
-                    days_label: 'Days',
-                    hours_label: 'Hours',
-                    minutes_label: 'Mins',
-                    seconds_label: 'Secs',
+                    days_label: "{{ $flag ? 'Days' : (old('days_label') ? old('days_label') : $bar->days_label) }}",
+                    hours_label: "{{ $flag ? 'Hours' : (old('hours_label') ? old('hours_label') : $bar->hours_label) }}",
+                    minutes_label: "{{ $flag ? 'Mins' : (old('minutes_label') ? old('minutes_label') : $bar->minutes_label) }}",
+                    seconds_label: "{{ $flag ? 'Secs' : (old('seconds_label') ? old('seconds_label') : $bar->seconds_label) }}",
+                    opt_in_name_placeholder: "{{ $flag ? 'Your Name' : (old('opt_in_name_placeholder') ? old('opt_in_name_placeholder') : $bar->opt_in_name_placeholder) }}",
+                    opt_in_email_placeholder: "{{ $flag ? 'you@yourdomain.com' : (old('opt_in_email_placeholder') ? old('opt_in_email_placeholder') : $bar->opt_in_email_placeholder) }}",
+                    powered_by_label: "{{ $flag ? 'Powered by' : (old('powered_by_label') ? old('powered_by_label') : $bar->powered_by_label) }}",
+                    disclaimer: "{{ $flag ? 'We respect your privacy and will never share your information.' : (old('disclaimer') ? old('disclaimer') : $bar->disclaimer) }}",
                 }
             }
         };
