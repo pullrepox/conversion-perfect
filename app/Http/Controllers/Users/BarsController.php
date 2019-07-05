@@ -72,46 +72,134 @@ class BarsController extends Controller
             'background_color' => 'required'
         ]);
         
-        $ins_data = [
-            'user_id'              => auth()->user()->id,
-            'friendly_name'        => $request->input('friendly_name'),
-            'position'             => $request->input('position'),
-            'group_id'             => $request->input('group_id'),
-            'headline_color'       => $request->input('headline_color'),
-            'background_color'     => $request->input('background_color'),
-            'show_bar_type'        => $request->input('show_bar_type'),
-            'delay_in_seconds'     => $request->input('delay_in_seconds'),
-            'scroll_point_percent' => $request->input('scroll_point_percent'),
-            'frequency'            => $request->input('frequency'),
+        $rules = [
+            'friendly_name'    => 'required|max:100',
+            'headline'         => 'required',
+            'headline_color'   => 'required',
+            'background_color' => 'required'
         ];
         
-        $headline = $request->input('headline');
-        $ins_data['headline'] = [[
-            'insert' => 'Your Headline'
-        ]];
-        for ($i = 0; $i < count($headline); $i++) {
-            $ins_data['headline'][$i]['insert'] = addslashes($headline[$i] . ($i < (count($headline) - 1) ? ' ' : ''));
-            if (!is_null($request->input('headline_bold')[$i])) {
-                $ins_data['headline'][$i]['attributes']['bold'] = true;
+        $params = $request->all();
+        $radio_keys = ['video_auto_play', 'drop_shadow', 'close_button', 'background_gradient', 'button_open_new', 'opt_in_video_auto_play'];
+        $string_keys = [
+            'friendly_name', 'button_label', 'countdown_expiration_text', 'custom_link_text', 'meta_title', 'opt_in_button_label',
+            'days_label', 'hours_label', 'minutes_label', 'seconds_label', 'opt_in_name_placeholder', 'opt_in_email_placeholder', 'powered_by_label', 'disclaimer'
+        ];
+        foreach ($params as $key => $val) {
+            if (false !== array_search($key, $radio_keys)) {
+                $params[$key] = $val ? 1 : 0;
+            } else if (false !== array_search($key, $string_keys)) {
+                $params[$key] = htmlspecialchars($val);
+            } else {
+                if (is_null($val)) $params[$key] = '';
             }
-            if (!is_null($request->input('headline_italic')[$i])) {
-                $ins_data['headline'][$i]['attributes']['italic'] = true;
+            
+            if ($key == 'headline' || $key == 'sub_headline' || $key == 'call_to_action' || $key == 'subscribe_text') {
+                if ($key == 'headline') {
+                    $upd_headline = [['insert' => 'Your Headline']];
+                } else if ($key == 'subscribe_text') {
+                    $upd_headline = [['insert' => 'Enter Your Name And Email Below...']];
+                } else if ($key == 'call_to_action') {
+                    $upd_headline = [['insert' => 'Call To Action Text Here']];
+                } else {
+                    $upd_headline = [['insert' => '']];
+                }
+                for ($i = 0; $i < count($val); $i++) {
+                    $upd_headline[$i]['insert'] = addslashes($val[$i] . ($i < (count($val) - 1) ? ' ' : ''));
+                    if (!is_null($request->input($key . '_bold')[$i])) {
+                        $upd_headline[$i]['attributes']['bold'] = true;
+                    }
+                    if (!is_null($request->input($key . '_italic')[$i])) {
+                        $upd_headline[$i]['attributes']['italic'] = true;
+                    }
+                    if (!is_null($request->input($key . '_underline')[$i])) {
+                        $upd_headline[$i]['attributes']['underline'] = true;
+                    }
+                    if (!is_null($request->input($key . '_strike')[$i])) {
+                        $upd_headline[$i]['attributes']['strike'] = true;
+                    }
+                }
+                
+                $params[$key] = json_encode($upd_headline);
             }
-            if (!is_null($request->input('headline_underline')[$i])) {
-                $ins_data['headline'][$i]['attributes']['underline'] = true;
+            
+            if ($key == 'countdown_end_date') {
+                $params[$key] = date('m/d/Y', strtotime($val));
             }
-            if (!is_null($request->input('headline_strike')[$i])) {
-                $ins_data['headline'][$i]['attributes']['strike'] = true;
+            
+            if ($key == 'countdown_end_time') {
+                $params[$key] = date('H:i:s', strtotime($val));
             }
         }
         
-        $ins_data['headline'] = json_encode($ins_data['headline']);
+        if ($request->input('video_type') != 'none') {
+            if ($request->input('video_type') == 'youtube') {
+                $rules['content_youtube_url'] = 'required|url';
+            } else if ($request->input('video_type') == 'vimeo') {
+                $rules['content_vimeo_url'] = 'required|url';
+            } else {
+                $rules['video_code'] = 'required';
+            }
+        }
+        if ($request->input('button_type') != 'none') {
+            $rules['button_label'] = 'required';
+        }
+        if ($request->input('button_action') == 'open_click_url') {
+            $rules['button_click_url'] = 'required';
+        }
         
-        $bar_id = $this->barsRepo->model()->insertGetId($ins_data);
+        if ($request->input('countdown_on_expiry') == 'display_text') {
+            $rules['countdown_expiration_text'] = 'required|max:200';
+        }
+        if ($request->input('countdown_on_expiry') == 'redirect') {
+            $rules['countdown_expiration_url'] = 'required|max:200';
+        }
+        if ($request->input('countdown') == 'calendar') {
+            $rules['countdown_end_date'] = 'date_format:m/d/Y';
+        }
+        if ($request->input('integration_type') != 'none') {
+            if ($request->input('integration_type') != 'conversion_perfect') {
+                $rules['list'] = 'required';
+            }
+            
+            if ($request->input('after_submit') == 'redirect') {
+                $rules['redirect_url'] = 'required';
+            } else {
+                $rules['message'] = 'required';
+            }
+            
+            $rules['call_to_action'] = 'required';
+            if ($request->input('opt_in_type') != 'standard') {
+                if ($request->input('opt_in_type') == 'img-online') {
+                    $rules['image_url'] = 'required|url';
+                } else if ($request->input('opt_in_type') == 'vid-youtube') {
+                    $rules['opt_in_youtube_url'] = 'required|url';
+                } else if ($request->input('opt_in_type') == 'vid-vimeo') {
+                    $rules['opt_in_vimeo_url'] = 'required|url';
+                } else if ($request->input('opt_in_type') == 'vid-other') {
+                    $rules['opt_in_video_code'] = 'required';
+                }
+            }
+        }
+        $rules['days_label'] = 'required';
+        $rules['hours_label'] = 'required';
+        $rules['minutes_label'] = 'required';
+        $rules['seconds_label'] = 'required';
+        $rules['opt_in_name_placeholder'] = 'required';
+        $rules['opt_in_email_placeholder'] = 'required';
+        
+        $this->validate($request, $rules);
+        
+        unset($params['sel_tab']);
+        
+        $bar = new Bar();
+        $bar->fill($params);
+        $bar->user_id = auth()->user()->id;
+        $bar->save();
         
         session()->flash('success', 'Successfully Created');
         
-        return response()->redirectTo('bars/' . $bar_id . '/edit');
+        return response()->redirectTo('bars/' . $bar->id . '/edit');
     }
     
     /**
@@ -140,7 +228,6 @@ class BarsController extends Controller
                 ['parent_name' => 'Conversion Bars', 'parent_url' => secure_redirect(route('bars'))],
             ]
         ];
-        
         $bar->headline = !is_null(trim($bar->headline)) && !empty(trim($bar->headline)) ? addslashes(stripslashes($bar->headline)) : json_encode([['attributes' => [], 'insert' => 'Your Headline']]);
         
         $bar->sub_headline = !is_null(trim($bar->sub_headline)) && !empty(trim($bar->sub_headline)) ? addslashes(stripslashes($bar->sub_headline)) : json_encode([['attributes' => [], 'insert' => '']]);
@@ -221,9 +308,9 @@ class BarsController extends Controller
                 $duplicate_row = $bar->replicate(['id', 'created_at', 'updated_at']);
                 $duplicate_row->friendly_name = $bar->friendly_name . ' - Clone';
                 $duplicate_row->save();
-        
+                
                 session()->flash('success', 'Successfully Cloned.');
-        
+                
                 return response()->json([
                     'result' => 'success',
                     'id'     => $duplicate_row->id
@@ -243,9 +330,15 @@ class BarsController extends Controller
             
             $params = $request->all();
             $radio_keys = ['video_auto_play', 'drop_shadow', 'close_button', 'background_gradient', 'button_open_new', 'opt_in_video_auto_play'];
+            $string_keys = [
+                'friendly_name', 'button_label', 'countdown_expiration_text', 'custom_link_text', 'meta_title', 'opt_in_button_label',
+                'days_label', 'hours_label', 'minutes_label', 'seconds_label', 'opt_in_name_placeholder', 'opt_in_email_placeholder', 'powered_by_label', 'disclaimer'
+            ];
             foreach ($params as $key => $val) {
                 if (false !== array_search($key, $radio_keys)) {
                     $params[$key] = $val ? 1 : 0;
+                } else if (false !== array_search($key, $string_keys)) {
+                    $params[$key] = htmlspecialchars($val);
                 } else {
                     if (is_null($val)) $params[$key] = '';
                 }
@@ -306,11 +399,6 @@ class BarsController extends Controller
                 }
             }
             
-            if ($request->input('sel_tab') == 'appearance') {
-                $rules['opacity'] = 'numeric|max:100|min:0';
-                $rules['gradient_angle'] = 'numeric|max:360|min:0';
-            }
-            
             if ($request->input('sel_tab') == 'timer') {
                 if ($request->input('countdown_on_expiry') == 'display_text') {
                     $rules['countdown_expiration_text'] = 'required|max:200';
@@ -322,11 +410,6 @@ class BarsController extends Controller
                     $rules['countdown_end_date'] = 'date_format:m/d/Y';
                 }
             }
-            
-            //        if ($request->input('sel_tab') == 'overlay') {
-            ////            $rules['third_party_url'] = 'required';
-            ////            $rules['custom_link_text'] = 'required';
-            //        }
             
             if ($request->input('sel_tab') == 'lead_capture') {
                 if ($request->input('integration_type') != 'none') {

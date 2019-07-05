@@ -21,7 +21,7 @@
             </div>
         </div>
     </div>
-    <div class="card-body pb-0 pt-0">
+    <div class="card-body pt-0">
         <div class="nav-wrapper">
             <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="barsTab" role="tablist">
                 <li class="nav-item">
@@ -31,43 +31,52 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link mb-sm-3 mb-md-0{{ $flag ? ' disabled' : '' }}" :class="{'active': sel_tab === 'appearance'}" href="javascript: void(0)" id="tabs-appearance-tab"
+                    <a class="nav-link mb-sm-3 mb-md-0" :class="{'active': sel_tab === 'appearance'}" href="javascript: void(0)" id="tabs-appearance-tab"
                        data-toggle="pill" role="tab" aria-controls="tabs-appearance" :aria-selected="sel_tab === 'appearance' ? 'true' : 'false'" @click="tabClick($event, 'appearance')">
                         Appearance
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link mb-sm-3 mb-md-0{{ $flag ? ' disabled' : '' }}" :class="{'active': sel_tab === 'content'}" href="javascript: void(0)" id="tabs-content-tab"
+                    <a class="nav-link mb-sm-3 mb-md-0" :class="{'active': sel_tab === 'content'}" href="javascript: void(0)" id="tabs-content-tab"
                        data-toggle="pill" role="tab" aria-controls="tabs-content" :aria-selected="sel_tab === 'content' ? 'true' : 'false'" @click="tabClick($event, 'content')">
                         Content
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link mb-sm-3 mb-md-0{{ $flag ? ' disabled' : '' }}" :class="{'active': sel_tab === 'timer'}" href="javascript: void(0)" id="tabs-timer-tab"
+                    <a class="nav-link mb-sm-3 mb-md-0" :class="{'active': sel_tab === 'timer'}" href="javascript: void(0)" id="tabs-timer-tab"
                        data-toggle="pill" role="tab" aria-controls="tabs-timer" :aria-selected="sel_tab === 'timer' ? 'true' : 'false'" @click="tabClick($event, 'timer')">
                         Timer
                     </a>
                 </li>
                 <li class="nav-item disabled">
-                    <a class="nav-link mb-sm-3 mb-md-0{{ $flag ? ' disabled' : '' }}" :class="{'active': sel_tab === 'overlay'}" href="javascript: void(0)" id="tabs-overlay-tab"
+                    <a class="nav-link mb-sm-3 mb-md-0" :class="{'active': sel_tab === 'overlay'}" href="javascript: void(0)" id="tabs-overlay-tab"
                        data-toggle="pill" role="tab" aria-controls="tabs-overlay" :aria-selected="sel_tab === 'overlay' ? 'true' : 'false'" @click="tabClick($event, 'overlay')">
                         Overlay
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link mb-sm-3 mb-md-0{{ $flag ? ' disabled' : '' }}" :class="{'active': sel_tab === 'lead_capture'}" href="javascript: void(0)" id="tabs-lead_capture-tab"
+                    <a class="nav-link mb-sm-3 mb-md-0" :class="{'active': sel_tab === 'lead_capture'}" href="javascript: void(0)" id="tabs-lead_capture-tab"
                        data-toggle="pill" role="tab" aria-controls="tabs-lead_capture" :aria-selected="sel_tab === 'lead_capture' ? 'true' : 'false'"
                        @click="tabClick($event, 'lead_capture')">
                         Lead Capture
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link mb-sm-3 mb-md-0{{ $flag ? ' disabled' : '' }}" :class="{'active': sel_tab === 'translation'}" href="javascript: void(0)" id="tabs-translation-tab"
+                    <a class="nav-link mb-sm-3 mb-md-0" :class="{'active': sel_tab === 'translation'}" href="javascript: void(0)" id="tabs-translation-tab"
                        data-toggle="pill" role="tab" aria-controls="tabs-translation" :aria-selected="sel_tab === 'translation' ? 'true' : 'false'" @click="tabClick($event, 'translation')">
                         Translation
                     </a>
                 </li>
             </ul>
+        </div>
+        <div class="tab-content mt-2" id="barsTabContent">
+            @include('users.bars-partials.bars-main')
+            @include('users.bars-partials.bars-appearance')
+            @include('users.bars-partials.bars-content')
+            @include('users.bars-partials.bars-countdown')
+            @include('users.bars-partials.bars-overlay')
+            @include('users.bars-partials.bars-lead-capture')
+            @include('users.bars-partials.bars-translation')
         </div>
     </div>
 </div>
