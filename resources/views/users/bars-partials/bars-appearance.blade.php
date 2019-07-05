@@ -35,11 +35,6 @@
                     </div>
                     <div class="col-md-2 col-sm-3 pl-0 mt--1">@{{ model.appearance.opacity }}%</div>
                     <input type="hidden" name="opacity" v-model="model.appearance.opacity"/>
-                    @error('opacity')
-                    <span class="invalid-feedback" style="display: block;" role="alert">
-                        {{ $message }}
-                    </span>
-                    @enderror
                 </div>
             </div>
         </div>
