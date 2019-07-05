@@ -42,10 +42,10 @@
     <div style="width: 100%; margin-top: 5px;">
         <input type="text"
                style="width: 250px; display: inline-block; padding: .625rem .75rem; font-weight: 400; line-height: 1.5; color: #8898aa; background-clip: padding-box; border: 1px solid #dee2e6; border-radius: .25rem; margin-right: 5px; background-color: #ffffff; font-size: 0.875rem; transition: all .15s ease-in-out; height: calc(1.5em + 1.25rem + 5px);"
-               placeholder="Your Name"/>
+               :placeholder="model.translation.opt_in_name_placeholder"/>
         <input type="email"
                style="width: 250px; display: inline-block; padding: .625rem .75rem; font-weight: 400; line-height: 1.5; color: #8898aa; background-clip: padding-box; border: 1px solid #dee2e6; border-radius: .25rem; margin-left: 5px; background-color: #ffffff; font-size: 0.875rem; transition: all .15s ease-in-out; height: calc(1.5em + 1.25rem + 5px);"
-               placeholder="youremail@domain.com"/>
+               :placeholder="model.translation.opt_in_email_placeholder"/>
     </div>
     <button type="button" v-if="model.lead_capture.opt_in_button_type === 'match_main_button'"
             style="width: 514px; padding: .625rem .75rem; margin-top: 15px; line-height: 1.5; border: none; text-decoration: none; font-size: 0.875rem; white-space: nowrap; height: calc(1.5em + 1.25rem + 5px);"
@@ -69,6 +69,6 @@
     </button>
     <div style="font-size: 12px; margin-bottom: 10px; margin-top: 5px;"
          :style="{'color': (model.lead_capture.subscribe_text_color.indexOf('#') > -1 ? model.lead_capture.subscribe_text_color : `#${model.lead_capture.subscribe_text_color}`)}">
-        {{ trans('options.disclaimer') }}
+        @{{ model.translation.disclaimer }}
     </div>
 </div>
