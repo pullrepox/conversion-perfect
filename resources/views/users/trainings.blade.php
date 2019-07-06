@@ -9,7 +9,7 @@
                 @if ($trainings)
                     @foreach($trainings as $row)
                         <div class="col-md-6 mt-1">
-                            <div class="card">
+                            <div class="card training-card">
                                 <!-- Card image -->
                                 <div class="card-img-top embed-responsive embed-responsive-16by9">
                                     <iframe class="card-img-top embed-responsive-item"

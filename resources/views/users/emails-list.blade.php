@@ -69,9 +69,9 @@
                                     @endforeach
                                 @else
                                     <tr>
-                                        <th scope="row" colspan="5" class="text-center">
+                                        <td colspan="5" class="text-center">
                                             You have no Email Lists. Please add an Email List by clicking the [New Email List] button
-                                        </th>
+                                        </td>
                                     </tr>
                                 @endif
                                 </tbody>
