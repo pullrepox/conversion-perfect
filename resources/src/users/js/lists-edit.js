@@ -1,4 +1,3 @@
-import PerfectScrollbar from 'perfect-scrollbar';
 import Vue from 'vue';
 
 new Vue({
@@ -22,12 +21,6 @@ new Vue({
     },
     mounted() {
         let vm = this;
-        
-        new PerfectScrollbar('.main-content', {
-            wheelSpeed: 2,
-            wheelPropagation: true,
-            minScrollbarLength: 20
-        });
     },
     methods: {
         changeStatusVal() {

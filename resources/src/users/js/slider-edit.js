@@ -16,8 +16,8 @@ new Vue({
         loading: false,
         create_edit: false,
         changed_status: false,
-        sel_tab: 'main',
         basic_model: {
+            sel_tab: 'main',
             friendly_name: '', position: 'top_sticky', group_id: '0', headline: [{attributes: {}, insert: 'Your Headline'}], headline_color: '#ffffff', background_color: '#3BAF85',
             show_bar_type: 'immediate', frequency: 'every', delay_in_seconds: 3, scroll_point_percent: 10,
             appearance: {
@@ -53,6 +53,7 @@ new Vue({
             group_list: []
         },
         model: {
+            sel_tab: 'main',
             friendly_name: '', position: 'top_sticky', group_id: '0', headline: [{attributes: {}, insert: 'Your Headline'}], headline_color: '#ffffff', background_color: '#3BAF85',
             show_bar_type: 'immediate', frequency: 'every', delay_in_seconds: 3, scroll_point_percent: 10, auto_responder_list: [], group_list: []
         },
@@ -83,12 +84,6 @@ new Vue({
         let vm = this;
         $('[data-toggle="tooltip"]').tooltip({
             container: 'body'
-        });
-        
-        new PerfectScrollbar('.main-content', {
-            wheelSpeed: 2,
-            wheelPropagation: true,
-            minScrollbarLength: 20
         });
         
         this.initSelect2();
@@ -125,12 +120,12 @@ new Vue({
             
             $(this).on('itemAdded', function () {
                 vm.model[$(this).data('parent')][$(this).attr('id')] = $(this).val();
-                vm.changed_status = true;
+                vm.changeStatusVal();
             });
             
             $(this).on('itemRemoved', function () {
                 vm.model[$(this).data('parent')][$(this).attr('id')] = $(this).val();
-                vm.changed_status = true;
+                vm.changeStatusVal();
             });
         });
         
@@ -138,6 +133,12 @@ new Vue({
             e.preventDefault();
             return false;
         });
+        
+        this.initScrollTab();
+        
+        if (!this.changed_status && this.model.sel_tab !== 'main') {
+            this.changeStatusVal();
+        }
     },
     methods: {
         changeStatusVal() {
@@ -146,10 +147,28 @@ new Vue({
         tabClick(e, id) {
             e.preventDefault();
             if (!this.changed_status) {
-                this.sel_tab = id;
+                this.model.sel_tab = id;
             } else {
                 this.saveOption(id);
             }
+        },
+        initScrollTab() {
+            new PerfectScrollbar('#prod-edit-page', {
+                wheelSpeed: 2,
+                wheelPropagation: true,
+                minScrollbarLength: 20
+            });
+            
+            $('.tab-pane').each(function () {
+                let classN = '.' + $(this).attr('id');
+                new PerfectScrollbar(classN, {
+                    wheelSpeed: 2,
+                    wheelPropagation: true,
+                    minScrollbarLength: 20,
+                    useBothWheelAxes: false,
+                    suppressScrollX: true
+                });
+            });
         },
         initSelect2() {
             let $select = $('[data-toggle="select"]');
@@ -163,7 +182,7 @@ new Vue({
                         $('.form-control-label').css('color', '#525f7f');
                         $('label[data-id="' + $(this).attr('id') + '"]').css('color', '#515f7f');
                     }).on('select2:select', function () {
-                        vm.changed_status = true;
+                        vm.changeStatusVal();
                         if ($(this).data('parent')) {
                             vm.model[$(this).data('parent')][$(this).attr('id')] = $(this).val();
                             if ($(this).attr('id') === 'integration_type') {
@@ -173,7 +192,6 @@ new Vue({
                             vm.model[$(this).attr('id')] = $(this).val();
                         }
                     }).on('select2:close', function () {
-                        vm.changed_status = true;
                         switch ($(this).attr('id')) {
                             case 'position':
                                 vm.select2Open('#group_id');
@@ -214,7 +232,7 @@ new Vue({
                             } else {
                                 vm.model[$(this).attr('id')] = $(this).val();
                             }
-                            vm.changed_status = true;
+                            vm.changeStatusVal();
                         } else {
                             if (parent) {
                                 $(this).val(vm.model[parent][$(this).attr('id')]);
@@ -229,7 +247,7 @@ new Vue({
                             } else {
                                 vm.model[$(this).attr('id')] = $(this).val();
                             }
-                            vm.changed_status = true;
+                            vm.changeStatusVal();
                         } else {
                             if (parent) {
                                 $(this).val(vm.model[parent][$(this).attr('id')]);
@@ -287,7 +305,7 @@ new Vue({
                     
                     let limit = 60;
                     quill.on('text-change', function (delta, old, source) {
-                        vm.changed_status = true;
+                        vm.changeStatusVal();
                         if (quill.getLength() > limit) {
                             quill.deleteText(limit, quill.getLength());
                         }
@@ -315,7 +333,7 @@ new Vue({
             }
         },
         updateJSColor(id, flag) {
-            this.changed_status = true;
+            this.changeStatusVal();
             if (!flag) {
                 if ($(`#${id}`).val() === '') {
                     this.model[id] = '';
@@ -342,11 +360,13 @@ new Vue({
         },
         saveOption(key) {
             if (this.create_edit) {
+                this.model.sel_tab = key;
+                
                 $('#edit-form').submit();
                 return;
             }
             let save_data = {};
-            if (this.sel_tab === 'main') {
+            if (this.model.sel_tab === 'main') {
                 save_data = {
                     friendly_name: this.model.friendly_name,
                     position: this.model.position,
@@ -360,16 +380,16 @@ new Vue({
                     scroll_point_percent: this.model.scroll_point_percent
                 };
             } else {
-                save_data = this.model[this.sel_tab];
+                save_data = this.model[this.model.sel_tab];
             }
-            save_data.option_key = this.sel_tab;
+            save_data.option_key = this.model.sel_tab;
             this.loading = true;
             axios.post(`/save-option/${window._bar_opt_ary.bar_id}`, save_data).then((r) => {
                 this.loading = false;
                 if (r.data.status === 'success') {
                     $('.invalid-feedback').hide();
                     $('.form-control').removeClass('is-invalid');
-                    this.sel_tab = key;
+                    this.model.sel_tab = key;
                     this.changed_status = false;
                 } else {
                     this.showSaveErrorNotify();
@@ -435,7 +455,7 @@ new Vue({
             return (`0${Math.ceil(date_diff / (24 * 60 * 60 * 1000))}`).slice(-2);
         },
         validationCheck(flag, parent) {
-            this.changed_status = true;
+            this.changeStatusVal();
             switch (flag) {
                 case 'button_label':
                     if (this.model[parent][flag] === '') {
@@ -459,7 +479,7 @@ new Vue({
             }
         },
         changeToUrl(flag, parent) {
-            this.changed_status = true;
+            this.changeStatusVal();
             switch (this.model[parent][flag]) {
                 case 'h':
                 case 'ht':

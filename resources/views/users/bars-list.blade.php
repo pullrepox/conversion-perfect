@@ -73,9 +73,9 @@
                                     @endforeach
                                 @else
                                     <tr>
-                                        <th scope="row" colspan="8" class="text-center">
+                                        <td colspan="8" class="text-center">
                                             You have no Conversion Bars. Please add a Conversion Bar by clicking the [New Conversion Bar] button
-                                        </th>
+                                        </td>
                                     </tr>
                                 @endif
                                 </tbody>

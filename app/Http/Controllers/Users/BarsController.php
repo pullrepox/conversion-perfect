@@ -52,8 +52,9 @@ class BarsController extends Controller
         $flag = true;
         $form_action = secure_redirect(route('bars.store'));
         $list_array = json_encode([['key' => '', 'name' => '-- Choose List --']]);
+        $sel_tab = 'main';
         
-        return view('users.bars-edit', compact('header_data', 'flag', 'form_action', 'list_array'));
+        return view('users.bars-edit', compact('header_data', 'flag', 'form_action', 'list_array', 'sel_tab'));
     }
     
     /**
@@ -190,13 +191,15 @@ class BarsController extends Controller
         
         $this->validate($request, $rules);
         
+        session(['sel_tab' => $params['sel_tab']]);
+        
         unset($params['sel_tab']);
         
         $bar = new Bar();
         $bar->fill($params);
         $bar->user_id = auth()->user()->id;
         $bar->save();
-        
+    
         session()->flash('success', 'Successfully Created');
         
         return response()->redirectTo('bars/' . $bar->id . '/edit');
@@ -290,7 +293,10 @@ class BarsController extends Controller
         $flag = false;
         $form_action = secure_redirect(route('bars.update', ['bar' => $bar->id]));
         
-        return view('users.bars-edit', compact('header_data', 'flag', 'form_action', 'bar', 'list_array'));
+        $sel_tab = session()->get('sel_tab') && !is_null(session()->get('sel_tab')) && session()->get('sel_tab') != '' ? session()->get('sel_tab') : 'main';
+        session(['sel_tab' => '']);
+        
+        return view('users.bars-edit', compact('header_data', 'flag', 'form_action', 'bar', 'list_array', 'sel_tab'));
     }
     
     /**

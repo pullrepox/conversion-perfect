@@ -1,4 +1,3 @@
-import PerfectScrollbar from 'perfect-scrollbar';
 import Vue from 'vue';
 
 require('bootstrap-tagsinput/dist/bootstrap-tagsinput.min');
@@ -25,12 +24,6 @@ new Vue({
     },
     mounted() {
         let vm = this;
-        
-        new PerfectScrollbar('.main-content', {
-            wheelSpeed: 2,
-            wheelPropagation: true,
-            minScrollbarLength: 20
-        });
         
         $('[data-toggle="tags"]').each(function () {
             $(this).val(vm.model[$(this).attr('id')]);

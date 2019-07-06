@@ -67,9 +67,9 @@
                                     @endforeach
                                 @else
                                     <tr>
-                                        <th scope="row" colspan="5" class="text-center">
+                                        <td colspan="5" class="text-center">
                                             You have no Groups. Please add a Group by clicking the [New Group] button
-                                        </th>
+                                        </td>
                                     </tr>
                                 @endif
                                 </tbody>

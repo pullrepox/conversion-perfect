@@ -35,8 +35,8 @@ if (document.querySelector('.table-responsive')) {
     });
 }
 
-if (document.querySelector('.card')) {
-    new PerfectScrollbar('.card', {
+if (document.querySelector('.training-card')) {
+    new PerfectScrollbar('.training-card', {
         wheelSpeed: 2,
         wheelPropagation: true,
         minScrollbarLength: 20
