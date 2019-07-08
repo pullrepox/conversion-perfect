@@ -45,36 +45,6 @@
                             </div>
                         </div>
                     </a>
-{{--                    <div class="dropdown-menu dropdown-menu-right">--}}
-{{--                        <div class="dropdown-header noti-title">--}}
-{{--                            <h6 class="text-overflow m-0"></h6>--}}
-{{--                        </div>--}}
-{{--                        <a href="#" class="dropdown-item">--}}
-{{--                            <i class="ni ni-single-02 text-cp"></i>--}}
-{{--                            <span class="text-capitalize">Profile</span>--}}
-{{--                        </a>--}}
-{{--                        <a href="#" class="dropdown-item">--}}
-{{--                            <i class="ni ni-settings-gear-65 text-cp"></i>--}}
-{{--                            <span class="text-capitalize">Settings</span>--}}
-{{--                        </a>--}}
-{{--                        <div class="dropdown-divider"></div>--}}
-{{--                        <a href="#" class="dropdown-item">--}}
-{{--                            <i class="ni ni-calendar-grid-58 text-cp"></i>--}}
-{{--                            <span class="text-capitalize">Activity</span>--}}
-{{--                        </a>--}}
-{{--                        <a href="#" class="dropdown-item">--}}
-{{--                            <i class="ni ni-support-16 text-cp"></i>--}}
-{{--                            <span class="text-capitalize">Support</span>--}}
-{{--                        </a>--}}
-{{--                        <div class="dropdown-divider"></div>--}}
-{{--                        <a class="dropdown-item" href="{{ secure_redirect(route('logout')) }}" onclick="event.preventDefault(); document.getElementById('logout-top-form').submit();">--}}
-{{--                            <i class="fas fa-sign-out-alt text-cp"></i>--}}
-{{--                            <span class="text-capitalize">Logout</span>--}}
-{{--                        </a>--}}
-{{--                        <form id="logout-top-form" action="{{ secure_redirect(route('logout')) }}" method="POST" class="opacity-1 w-1">--}}
-{{--                            @csrf--}}
-{{--                        </form>--}}
-{{--                    </div>--}}
                 </li>
             </ul>
         </div>

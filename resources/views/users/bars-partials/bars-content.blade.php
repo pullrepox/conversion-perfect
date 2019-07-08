@@ -5,7 +5,7 @@
                 <div class="form-group">
                     <label class="form-control-label ml-1" for="sub_headline">Sub Headline</label>
                     <div class="w-100 ql-editor-parent">
-                        <div id="sub_headline" data-parent="content" data-toggle="quill" data-quill-placeholder="Sub Headline"></div>
+                        <div id="sub_headline" data-parent="content" data-toggle="quill" data-quill-placeholder="Your Subheadline"></div>
                         <input type="hidden" v-for="(s_h_l, h_i) in model.content.sub_headline" :key="`s_hLine_${h_i}`" name="sub_headline[]" :value="s_h_l.insert"
                                v-if="s_h_l.insert.trim() != ''"/>
                     </div>

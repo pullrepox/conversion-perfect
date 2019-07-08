@@ -70,7 +70,7 @@
                                 @else
                                     <tr>
                                         <td colspan="5" class="text-center">
-                                            You have no Email Lists. Please add an Email List by clicking the [New Email List] button
+                                            You have no Email Lists. Please add an Email List by clicking the [New Email List] button.
                                         </td>
                                     </tr>
                                 @endif

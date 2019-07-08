@@ -68,7 +68,7 @@
                                 @else
                                     <tr>
                                         <td colspan="5" class="text-center">
-                                            You have no Groups. Please add a Group by clicking the [New Group] button
+                                            You have no Groups. Please add a Group by clicking the [New Group] button.
                                         </td>
                                     </tr>
                                 @endif

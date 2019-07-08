@@ -9,7 +9,7 @@
                     <input type="text" class="form-control @error('friendly_name') is-invalid @enderror" id="friendly_name" name="friendly_name"
                            v-model="model.friendly_name"
                            @keydown="tabKeyPress('#position', true, $event)" @keypress="tabKeyPress('#position', true, $event)"
-                           placeholder="Friendly Name" required autocomplete="friendly_name" @input="changeStatusVal"/>
+                           placeholder="Friendly Name" required autocomplete="friendly_name" @input="changeStatusVal" autofocus/>
                     @if ($errors->has('friendly_name'))
                         @error('friendly_name')
                         <span class="invalid-feedback" role="alert">
@@ -33,7 +33,7 @@
                             v-model="model.position">
                         <option value="top_sticky">Top Sticky</option>
                         <option value="top">Top</option>
-                        <option value="bottom">Bottom</option>
+                        <option value="bottom">Bottom Sticky</option>
                     </select>
                 </div>
             </div>
@@ -62,7 +62,7 @@
                         Headline Text
                     </label>
                     <div class="w-100 ql-editor-parent">
-                        <div id="headline" data-toggle="quill" data-quill-placeholder="Headline Here."></div>
+                        <div id="headline" data-toggle="quill" data-quill-placeholder="Headline Here"></div>
                         <input type="hidden" v-for="(h_l, h_i) in model.headline" :key="`hLine_${h_i}`" name="headline[]" :value="h_l.insert" v-if="h_l.insert.trim() != ''"/>
                     </div>
                     <span v-for="(h_l, h_i) in model.headline" :key="`hLine_attr_${h_i}`" v-if="h_l.insert.trim() != ''">

@@ -3,21 +3,19 @@
         <div class="form-row">
             <h3 class="mb-0 col">{{ $header_data['main_name'] }}</h3>
             <div class="col text-right">
-                <button type="submit" class="btn btn-success btn-sm text-capitalize">{{ $flag ? 'Create' : 'Update' }}</button>
+                <button type="submit" class="btn btn-success btn-sm text-capitalize">@{{ create_edit ? 'Create' : 'Update' }}</button>
                 <a href="{{ secure_redirect(route('bars')) }}" class="btn btn-light btn-sm text-capitalize">
                     @{{ changed_status ? 'Cancel' : 'Close' }}
                 </a>
-                @if (!$flag)
-                    <div class="dropdown">
-                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                            <a class="dropdown-item" href="#">Reset Stats</a>
-                            <a class="dropdown-item" href="#">Archive</a>
-                        </div>
+                <div class="dropdown" v-if="!create_edit">
+                    <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                        <a class="dropdown-item" href="#">Reset Stats</a>
+                        <a class="dropdown-item" href="#">Archive</a>
                     </div>
-                @endif
+                </div>
             </div>
         </div>
     </div>
