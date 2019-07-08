@@ -266,9 +266,9 @@ class BarsController extends Controller
             ]
         ];
         
-        $bar->headline = !is_null(trim($bar->headline)) && !empty(trim($bar->headline)) ? addslashes(stripslashes($bar->headline)) : json_encode([['attributes' => [], 'insert' => 'Your Headline']]);
+        $bar->headline = !is_null(trim($bar->headline)) && !empty(trim($bar->headline)) ? stripslashes($bar->headline) : json_encode([['attributes' => [], 'insert' => 'Your Headline']]);
         
-        $bar->sub_headline = !is_null(trim($bar->sub_headline)) && !empty(trim($bar->sub_headline)) ? addslashes(stripslashes($bar->sub_headline)) : json_encode([['attributes' => [], 'insert' => '']]);
+        $bar->sub_headline = !is_null(trim($bar->sub_headline)) && !empty(trim($bar->sub_headline)) ? stripslashes($bar->sub_headline) : json_encode([['attributes' => [], 'insert' => '']]);
         $bar->sub_headline_color = (is_null($bar->sub_headline_color) || $bar->sub_headline_color == '') ? '#FFFFFF' : $bar->sub_headline_color;
         $bar->video_auto_play = $bar->video_auto_play ? true : false;
         
@@ -320,9 +320,9 @@ class BarsController extends Controller
         
         $bar->opt_in_video_auto_play = $bar->opt_in_video_auto_play ? true : false;
         $bar->call_to_action = !is_null(trim($bar->call_to_action)) && !empty(trim($bar->call_to_action)) ?
-            addslashes(stripslashes($bar->call_to_action)) : json_encode([['attributes' => [], 'insert' => 'Call To Action Text Here']]);
+            stripslashes($bar->call_to_action) : json_encode([['attributes' => [], 'insert' => 'Call To Action Text Here']]);
         $bar->subscribe_text = !is_null(trim($bar->subscribe_text)) && !empty(trim($bar->subscribe_text)) ?
-            addslashes(stripslashes($bar->subscribe_text)) : json_encode([['attributes' => [], 'insert' => 'Enter Your Name And Email Below...']]);
+            stripslashes($bar->subscribe_text) : json_encode([['attributes' => [], 'insert' => 'Enter Your Name And Email Below...']]);
         
         $flag = false;
         $form_action = secure_redirect(route('bars.update', ['bar' => $bar->id]));
