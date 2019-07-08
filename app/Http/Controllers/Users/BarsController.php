@@ -105,19 +105,45 @@ class BarsController extends Controller
                 } else {
                     $upd_headline = [['insert' => '']];
                 }
-                for ($i = 0; $i < count($val); $i++) {
-                    $upd_headline[$i]['insert'] = addslashes($val[$i] . ($i < (count($val) - 1) ? ' ' : ''));
-                    if (!is_null($request->input($key . '_bold')[$i])) {
-                        $upd_headline[$i]['attributes']['bold'] = true;
+                if ($request->ajax()) {
+                    for ($i = 0; $i < count($val); $i++) {
+                        if (trim($val[$i]['insert']) == '' || is_null($val[$i]['insert'])) {
+                            continue;
+                        }
+                        $upd_headline[$i]['insert'] = addslashes($val[$i]['insert'] . ($i < (count($val) - 1) ? ' ' : ''));
+                        if (isset($val[$i]['attributes'])) {
+                            if (isset($val[$i]['attributes']['bold'])) {
+                                $upd_headline[$i]['attributes']['bold'] = true;
+                            }
+                            if (isset($val[$i]['attributes']['italic'])) {
+                                $upd_headline[$i]['attributes']['italic'] = true;
+                            }
+                            if (isset($val[$i]['attributes']['underline'])) {
+                                $upd_headline[$i]['attributes']['underline'] = true;
+                            }
+                            if (isset($val[$i]['attributes']['strike'])) {
+                                $upd_headline[$i]['attributes']['strike'] = true;
+                            }
+                        }
                     }
-                    if (!is_null($request->input($key . '_italic')[$i])) {
-                        $upd_headline[$i]['attributes']['italic'] = true;
-                    }
-                    if (!is_null($request->input($key . '_underline')[$i])) {
-                        $upd_headline[$i]['attributes']['underline'] = true;
-                    }
-                    if (!is_null($request->input($key . '_strike')[$i])) {
-                        $upd_headline[$i]['attributes']['strike'] = true;
+                } else {
+                    for ($i = 0; $i < count($val); $i++) {
+                        if (trim($val[$i]) == '' || is_null($val[$i])) {
+                            continue;
+                        }
+                        $upd_headline[$i]['insert'] = addslashes($val[$i] . ($i < (count($val) - 1) ? ' ' : ''));
+                        if (!is_null($request->input($key . '_bold')[$i])) {
+                            $upd_headline[$i]['attributes']['bold'] = true;
+                        }
+                        if (!is_null($request->input($key . '_italic')[$i])) {
+                            $upd_headline[$i]['attributes']['italic'] = true;
+                        }
+                        if (!is_null($request->input($key . '_underline')[$i])) {
+                            $upd_headline[$i]['attributes']['underline'] = true;
+                        }
+                        if (!is_null($request->input($key . '_strike')[$i])) {
+                            $upd_headline[$i]['attributes']['strike'] = true;
+                        }
                     }
                 }
                 
@@ -191,7 +217,7 @@ class BarsController extends Controller
         
         $this->validate($request, $rules);
         
-        session(['sel_tab' => $params['sel_tab']]);
+//        session(['sel_tab' => $request->input('sel_tab')]);
         
         unset($params['sel_tab']);
         
@@ -199,10 +225,18 @@ class BarsController extends Controller
         $bar->fill($params);
         $bar->user_id = auth()->user()->id;
         $bar->save();
-    
-        session()->flash('success', 'Successfully Created');
         
-        return response()->redirectTo('bars/' . $bar->id . '/edit');
+        if ($request->ajax()) {
+            return response()->json([
+                'result'      => 'success',
+                'id'          => $bar->id,
+                'form_action' => secure_redirect(route('bars.update', ['bar' => $bar->id]))
+            ]);
+        } else {
+            session()->flash('success', 'Successfully Created');
+            
+            return response()->redirectTo('bars/' . $bar->id . '/edit');
+        }
     }
     
     /**
@@ -293,7 +327,7 @@ class BarsController extends Controller
         $flag = false;
         $form_action = secure_redirect(route('bars.update', ['bar' => $bar->id]));
         
-        $sel_tab = session()->get('sel_tab') && !is_null(session()->get('sel_tab')) && session()->get('sel_tab') != '' ? session()->get('sel_tab') : 'main';
+        $sel_tab = !session()->get('sel_tab') || session()->get('sel_tab') == '' ? 'main' : session()->get('sel_tab');
         session(['sel_tab' => '']);
         
         return view('users.bars-edit', compact('header_data', 'flag', 'form_action', 'bar', 'list_array', 'sel_tab'));
@@ -361,6 +395,9 @@ class BarsController extends Controller
                         $upd_headline = [['insert' => '']];
                     }
                     for ($i = 0; $i < count($val); $i++) {
+                        if (trim($val[$i]) == '' || is_null($val[$i])) {
+                            continue;
+                        }
                         $upd_headline[$i]['insert'] = addslashes($val[$i] . ($i < (count($val) - 1) ? ' ' : ''));
                         if (!is_null($request->input($key . '_bold')[$i])) {
                             $upd_headline[$i]['attributes']['bold'] = true;
@@ -387,6 +424,8 @@ class BarsController extends Controller
                     $params[$key] = date('H:i:s', strtotime($val));
                 }
             }
+            
+//            session(['sel_tab' => $request->input('sel_tab')]);
             
             if ($request->input('sel_tab') == 'content') {
                 if ($request->input('video_type') != 'none') {

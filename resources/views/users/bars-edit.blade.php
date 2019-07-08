@@ -6,11 +6,9 @@
         @include('layouts.page-header', ['data' => $header_data])
         {{-- Page content --}}
         <div class="container-fluid mt--8">
-            <form action="{{ $form_action }}" method="post" id="edit-form" class="needs-validation" enctype="multipart/form-data" novalidate>
+            <form :action="form_action" method="post" id="edit-form" class="needs-validation" enctype="multipart/form-data" novalidate>
                 @csrf
-                @if (!$flag)
-                    @method('PUT')
-                @endif
+                <input type="hidden" name="_method" value="PUT" v-if="!create_edit"/>
                 <input type="hidden" id="sel_tab" name="sel_tab" v-model="model.sel_tab"/>
                 {{-- bar Base Content --}}
                 @include('users.bars-partials.bars-editor-tabs')
@@ -50,6 +48,7 @@
         window._bar_opt_ary = {
             bar_id: "{{ $flag ? '' : $bar->id }}",
             create_edit: "{{ $flag }}",
+            form_action: "{{ $form_action }}",
             model: {
                 sel_tab: "{{ (old('sel_tab') ? old('sel_tab') : $sel_tab) }}",
                 friendly_name: "{{ (old('friendly_name') ? old('friendly_name') : ($flag ? 'Bar ' . date('YmdHis') : $bar->friendly_name)) }}",

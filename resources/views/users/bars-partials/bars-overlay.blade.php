@@ -6,7 +6,7 @@
                     <label class="form-control-label ml-1" for="third_party_url">3rd Party URL</label>
                     <input type="text" id="third_party_url" name="third_party_url" data-parent="overlay" class="form-control @error('third_party_url') is-invalid @enderror"
                            @keydown="tabKeyPress('#custom_link', true, $event)" @keypress="tabKeyPress('#custom_link', true, $event)"
-                           v-model="model.overlay.third_party_url" @input="changeToUrl('third_party_url', 'overlay')"/>
+                           v-model="model.overlay.third_party_url" @input="changeToUrl('third_party_url', 'overlay')" autofocus/>
                     @error('third_party_url')
                     <span class="invalid-feedback" role="alert">
                         {{ $message }}

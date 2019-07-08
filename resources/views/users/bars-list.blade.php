@@ -74,7 +74,7 @@
                                 @else
                                     <tr>
                                         <td colspan="8" class="text-center">
-                                            You have no Conversion Bars. Please add a Conversion Bar by clicking the [New Conversion Bar] button
+                                            You have no Conversion Bars. Please add a Conversion Bar by clicking the [New Conversion Bar] button.
                                         </td>
                                     </tr>
                                 @endif

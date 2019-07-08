@@ -15,6 +15,8 @@ new Vue({
     data: () => ({
         loading: false,
         create_edit: false,
+        bar_id: '',
+        form_action: '/bars',
         changed_status: false,
         basic_model: {
             sel_tab: 'main',
@@ -68,11 +70,14 @@ new Vue({
             'content': ['video_code', 'button_label'],
             'overlay': ['custom_link_text', 'meta_title'],
             'translation': ['days_label', 'hours_label', 'minutes_label', 'seconds_label', 'opt_in_name_placeholder', 'opt_in_email_placeholder', 'powered_by_label', 'disclaimer'],
-        }
+        },
+        quill: {}
     }),
     created() {
         this.model = JSON.parse(JSON.stringify(this.basic_model));
         this.create_edit = (window._bar_opt_ary.create_edit || window._bar_opt_ary.create_edit === 'true');
+        this.form_action = window._bar_opt_ary.form_action;
+        this.bar_id = window._bar_opt_ary.bar_id;
         let vm = this;
         Object.keys(this.model).forEach(function (item) {
             if (window._bar_opt_ary.model[item]) {
@@ -148,8 +153,27 @@ new Vue({
             e.preventDefault();
             if (!this.changed_status) {
                 this.model.sel_tab = id;
+                this.autoFocusField();
             } else {
                 this.saveOption(id);
+            }
+        },
+        autoFocusField() {
+            let vm = this;
+            let inputOptions = {main: '#friendly_name', overlay: '#third_party_url', translation: '#days_label'};
+            let selOptions = {timer: '#countdown', lead_capture: '#integration_type'};
+            if (this.model.sel_tab === 'content') {
+                this.$nextTick(function () {
+                    vm.quill['sub_headline'].focus();
+                });
+            } else if (this.model.sel_tab in inputOptions) {
+                this.$nextTick(function () {
+                    $(inputOptions[vm.model.sel_tab]).focus();
+                });
+            } else if (this.model.sel_tab in selOptions) {
+                this.$nextTick(function () {
+                    vm.select2Open(selOptions[vm.model.sel_tab]);
+                });
             }
         },
         initScrollTab() {
@@ -197,7 +221,7 @@ new Vue({
                                 vm.select2Open('#group_id');
                                 break;
                             case 'group_id':
-                                $('#headline').focus();
+                                vm.quill['headline'].focus();
                                 break;
                         }
                     });
@@ -272,7 +296,7 @@ new Vue({
                     let placeholder = $(this).data('quill-placeholder');
                     
                     // Init editor
-                    let quill = new Quill($(this).get(0), {
+                    vm.quill[$(this).attr('id')] = new Quill($(this).get(0), {
                         modules: {
                             toolbar: [
                                 ['bold', 'italic', 'underline', 'strike']
@@ -295,25 +319,25 @@ new Vue({
                     
                     let parentId = '';
                     if ($(this).data('parent')) {
-                        quill.setContents(vm.model[$(this).data('parent')][$(this).attr('id')]);
+                        vm.quill[$(this).attr('id')].setContents(vm.model[$(this).data('parent')][$(this).attr('id')]);
                         parentId = $(this).data('parent');
                     } else {
-                        quill.setContents(vm.model[$(this).attr('id')]);
+                        vm.quill[$(this).attr('id')].setContents(vm.model[$(this).attr('id')]);
                     }
                     
                     let attrId = $(this).attr('id');
                     
                     let limit = 60;
-                    quill.on('text-change', function (delta, old, source) {
+                    vm.quill[$(this).attr('id')].on('text-change', function (delta, old, source) {
                         vm.changeStatusVal();
-                        if (quill.getLength() > limit) {
-                            quill.deleteText(limit, quill.getLength());
+                        if (vm.quill[attrId].getLength() > limit) {
+                            vm.quill[attrId].deleteText(limit, vm.quill[attrId].getLength());
                         }
                         
                         if (parentId !== '') {
-                            vm.model[parentId][attrId] = JSON.parse(JSON.stringify(quill.getContents().ops));
+                            vm.model[parentId][attrId] = JSON.parse(JSON.stringify(vm.quill[attrId].getContents().ops));
                         } else {
-                            vm.model[attrId] = JSON.parse(JSON.stringify(quill.getContents().ops));
+                            vm.model[attrId] = JSON.parse(JSON.stringify(vm.quill[attrId].getContents().ops));
                         }
                     });
                 });
@@ -358,60 +382,90 @@ new Vue({
             
             return b.join("").toUpperCase();
         },
+        saveErrorEvent(e, save_data) {
+            this.loading = false;
+            if (e.response.status === 422) {
+                let vm = this;
+                let notify_happened = false;
+                Object.keys(save_data).forEach(function (item) {
+                    if (e.response.data[item]) {
+                        vm.commonNotification('danger', e.response.data[item][0]);
+                        notify_happened = true;
+                    }
+                });
+                if (!notify_happened) {
+                    this.showSaveErrorNotify();
+                }
+            } else {
+                this.showSaveErrorNotify();
+            }
+        },
         saveOption(key) {
             if (this.create_edit) {
-                this.model.sel_tab = key;
-                
-                $('#edit-form').submit();
-                return;
-            }
-            let save_data = {};
-            if (this.model.sel_tab === 'main') {
-                save_data = {
-                    friendly_name: this.model.friendly_name,
-                    position: this.model.position,
-                    group_id: this.model.group_id,
-                    headline: this.model.headline,
-                    headline_color: this.model.headline_color,
-                    background_color: this.model.background_color,
-                    show_bar_type: this.model.show_bar_type,
-                    frequency: this.model.frequency,
-                    delay_in_seconds: this.model.delay_in_seconds,
-                    scroll_point_percent: this.model.scroll_point_percent
-                };
-            } else {
-                save_data = this.model[this.model.sel_tab];
-            }
-            save_data.option_key = this.model.sel_tab;
-            this.loading = true;
-            axios.post(`/save-option/${window._bar_opt_ary.bar_id}`, save_data).then((r) => {
-                this.loading = false;
-                if (r.data.status === 'success') {
-                    $('.invalid-feedback').hide();
-                    $('.form-control').removeClass('is-invalid');
-                    this.model.sel_tab = key;
-                    this.changed_status = false;
-                } else {
-                    this.showSaveErrorNotify();
-                }
-            }).catch((e) => {
-                this.loading = false;
-                if (e.response.status === 422) {
-                    let vm = this;
-                    let notify_happened = false;
-                    Object.keys(save_data).forEach(function (item) {
-                        if (e.response.data[item]) {
-                            vm.commonNotification('danger', e.response.data[item][0]);
-                            notify_happened = true;
+                let save_data = {};
+                let vm = this;
+                Object.keys(this.model).forEach(function (item) {
+                    if (item !== 'auto_responder_list' && item !== 'group_list') {
+                        if (item !== 'headline' && typeof vm.model[item] === 'object') {
+                            Object.keys(vm.model[item]).forEach(function (s_item) {
+                                save_data[s_item] = vm.model[item][s_item];
+                            });
+                        } else {
+                            save_data[item] = vm.model[item];
                         }
-                    });
-                    if (!notify_happened) {
+                    }
+                });
+                this.loading = true;
+                axios.post(this.form_action, save_data).then((r) => {
+                    this.loading = false;
+                    if (r.data.result === 'success') {
+                        this.bar_id = r.data.id;
+                        this.form_action = `${window._clickAppConfig.BASE}/bars/${this.bar_id}`;
+                        this.changed_status = false;
+                        this.create_edit = false;
+                        this.model.sel_tab = key;
+                        this.autoFocusField();
+                    } else {
                         this.showSaveErrorNotify();
                     }
+                }).catch((e) => {
+                    this.saveErrorEvent(e, save_data);
+                });
+            } else {
+                let save_data = {};
+                if (this.model.sel_tab === 'main') {
+                    save_data = {
+                        friendly_name: this.model.friendly_name,
+                        position: this.model.position,
+                        group_id: this.model.group_id,
+                        headline: this.model.headline,
+                        headline_color: this.model.headline_color,
+                        background_color: this.model.background_color,
+                        show_bar_type: this.model.show_bar_type,
+                        frequency: this.model.frequency,
+                        delay_in_seconds: this.model.delay_in_seconds,
+                        scroll_point_percent: this.model.scroll_point_percent
+                    };
                 } else {
-                    this.showSaveErrorNotify();
+                    save_data = this.model[this.model.sel_tab];
                 }
-            });
+                save_data.option_key = this.model.sel_tab;
+                this.loading = true;
+                axios.post(`/save-option/${this.bar_id}`, save_data).then((r) => {
+                    this.loading = false;
+                    if (r.data.status === 'success') {
+                        $('.invalid-feedback').hide();
+                        $('.form-control').removeClass('is-invalid');
+                        this.model.sel_tab = key;
+                        this.changed_status = false;
+                        this.autoFocusField();
+                    } else {
+                        this.showSaveErrorNotify();
+                    }
+                }).catch((e) => {
+                    this.saveErrorEvent(e, save_data);
+                });
+            }
         },
         showGetErrorNotify() {
             this.commonNotification('danger', 'Failed! Please make sure your internet connection or contact to support.');
@@ -569,7 +623,7 @@ new Vue({
             formData.append('image-upload', file, file.name);
             this.uploadPercentage = 0;
             this.showUpload = true;
-            axios.post(`/image-upload/${window._bar_opt_ary.bar_id}`, formData, {
+            axios.post(`/image-upload/${this.bar_id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 },
