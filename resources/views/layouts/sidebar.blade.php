@@ -72,9 +72,6 @@
                                     <a href="{{route('autoresponder.index')}}"
                                        class="nav-link text-capitalize {{ isActiveRoute(['autoresponder.index', 'autoresponder.create', 'autoresponder.edit']) }}">Autoresponders</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link text-capitalize">Domains</a>
-                                </li>
                                 <li class="nav-item {{ isActiveResource(['email-lists']) }}">
                                     <a href="{{ secure_redirect(route('email-lists')) }}" class="nav-link text-capitalize {{ isActiveResource(['email-lists']) }}">Email Lists</a>
                                 </li>

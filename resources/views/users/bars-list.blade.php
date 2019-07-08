@@ -37,7 +37,7 @@
                                         <tr>
                                             <td class="table-actions">
                                                 <a href="{{ route('bars.show', ['bar' => $bar->id]) }}" class="table-action table-action-cp"
-                                                   data-toggle="tooltip" data-original-title="Report" target="_blank">
+                                                   data-toggle="tooltip" data-original-title="Report">
                                                     <i class="fas fa-chart-pie"></i>
                                                 </a>
                                                 <a href="javascript: void(0)" class="table-action table-action-cp" data-target="{{ $bar->id }}"
