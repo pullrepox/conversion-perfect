@@ -161,7 +161,7 @@ new Vue({
         autoFocusField() {
             let vm = this;
             let inputOptions = {main: '#friendly_name', overlay: '#third_party_url', translation: '#days_label'};
-            let selOptions = {timer: '#countdown', lead_capture: '#integration_type'};
+            // let selOptions = {timer: '#countdown', lead_capture: '#integration_type'};
             if (this.model.sel_tab === 'content') {
                 this.$nextTick(function () {
                     vm.quill['sub_headline'].focus();
@@ -170,11 +170,11 @@ new Vue({
                 this.$nextTick(function () {
                     $(inputOptions[vm.model.sel_tab]).focus();
                 });
-            } else if (this.model.sel_tab in selOptions) {
+            }/* else if (this.model.sel_tab in selOptions) {
                 this.$nextTick(function () {
                     vm.select2Open(selOptions[vm.model.sel_tab]);
                 });
-            }
+            }*/
         },
         initScrollTab() {
             new PerfectScrollbar('#prod-edit-page', {

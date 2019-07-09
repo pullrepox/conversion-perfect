@@ -118,7 +118,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ secure_redirect(route('logout')) }}" onclick="event.stopPropagation(); document.getElementById('logout-form').submit();">
+                        <a class="nav-link" href="{{ secure_redirect(route('logout')) }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             <i class="fas fa-sign-out-alt text-cp"></i>
                             <span class="nav-link-text text-capitalize">Logout</span>
                         </a>
