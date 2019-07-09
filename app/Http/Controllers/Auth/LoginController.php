@@ -44,17 +44,28 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $aMemberClient = new AmemberAPI();
+        
         $response = $aMemberClient->checkAccessByLogin($request->input('email'), $request->input('password'));
-        $user = User::findOrCreate($response->email, $response);
-        if ($user) {
-            Auth::login($user, $request->input('remember') == 'on');
+        
+        if ($response) {
+            $user = User::findOrCreate($response->email, $response);
             
-            return redirect()->intended($this->redirectPath(), 302, [], config('site.ssl_tf'));
+            if ($user) {
+                Auth::login($user, $request->input('remember') == 'on');
+                
+                return redirect()->intended($this->redirectPath(), 302, [], config('site.ssl_tf'));
+            } else {
+                $request->session()->flash('error', trans('auth.failed'));
+                
+                Auth::logout();
+                
+                return $this->sendFailedLoginResponse($request);
+            }
         } else {
             $request->session()->flash('error', trans('auth.failed'));
-            
+    
             Auth::logout();
-            
+    
             return $this->sendFailedLoginResponse($request);
         }
     }
