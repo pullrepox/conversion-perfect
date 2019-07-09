@@ -33,7 +33,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'email_verified_at' => 'datetime'
     ];
     
     public static function findOrCreate($email, $attribs)
@@ -68,6 +68,11 @@ class User extends Authenticatable
         }
         
         return substr($plans, 0, -1);
+    }
+    
+    public function getPermissionsAttribute()
+    {
+        return json_decode($this->attributes['permissions'], true);
     }
     
     public function bars()

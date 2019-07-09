@@ -12,7 +12,6 @@ class BarsRepository extends Repository
 {
     public function model()
     {
-        // TODO: Implement model() method.
         return app(Bar::class);
     }
     
