@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\AmemberAPI;
+use App\Http\Repositories\ApiRepository;
 use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -43,7 +43,7 @@ class LoginController extends Controller
     
     public function login(Request $request)
     {
-        $aMemberClient = new AmemberAPI();
+        $aMemberClient = new ApiRepository();
         
         $response = $aMemberClient->checkAccessByLogin($request->input('email'), $request->input('password'));
         
@@ -52,6 +52,10 @@ class LoginController extends Controller
             
             if ($user) {
                 Auth::login($user, $request->input('remember') == 'on');
+                
+                if (isset($response->subscriptions)) {
+                    $aMemberClient->setUserPermissions($response->subscriptions, $user);
+                }
                 
                 return redirect()->intended($this->redirectPath(), 302, [], config('site.ssl_tf'));
             } else {
@@ -63,9 +67,9 @@ class LoginController extends Controller
             }
         } else {
             $request->session()->flash('error', trans('auth.failed'));
-    
+            
             Auth::logout();
-    
+            
             return $this->sendFailedLoginResponse($request);
         }
     }

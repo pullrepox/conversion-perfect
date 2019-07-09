@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\AmemberAPI;
+use App\Http\Repositories\ApiRepository;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
@@ -39,8 +39,8 @@ class ForgotPasswordController extends Controller
             'email' => 'required|email'
         ]);
         
-        $amemberClient = new AmemberAPI();
-        $response = $amemberClient->sendResetPasswordEmail($request->input('email'));
+        $apiRepo = new ApiRepository();
+        $response = $apiRepo->sendResetPasswordEmail($request->input('email'));
         
         if ($response->ok) {
             Toastr::success('Password reset email sent to user', 'Success');

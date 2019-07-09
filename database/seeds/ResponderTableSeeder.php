@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-
 use Illuminate\Support\Facades\DB;
 
 class ResponderTableSeeder extends Seeder
@@ -58,7 +57,7 @@ class ResponderTableSeeder extends Seeder
                 'updated_at' => now(),
             ]
         ];
-
+        
         DB::table('responders')->insert($list);
     }
 }
