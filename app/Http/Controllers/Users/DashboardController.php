@@ -55,8 +55,22 @@ class DashboardController extends Controller
             'parent_data' => []
         ];
         
-        $bonuses = Bonus::orderBy('sort_order')->get();
-    
+        $bonuses = Bonus::orderBy('sort_order');
+        $user_plans = auth()->user()->amemberplans;
+        if ($user_plans != '') {
+            $plans = explode(",", $user_plans);
+            $bonuses->where(function ($q) use ($plans) {
+                for ($i = 0; $i < count($plans); $i++) {
+                    if ($i === 0) {
+                        $q->where('plans', 'like', '%' . $plans[$i] . '%');
+                    } else {
+                        $q->orWhere('plans', 'like', '%' . $plans[$i] . '%');
+                    }
+                }
+            });
+        }
+        $bonuses = $bonuses->get();
+        
         return view('users.bonuses', compact('bonuses', 'header_data'));
     }
 }

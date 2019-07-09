@@ -39,9 +39,7 @@ class User extends Authenticatable
     public static function findOrCreate($email, $attribs)
     {
         $obj = static::where('email', $email)->first();
-        if (null != $obj) {
-            return $obj;
-        } else {
+        if (is_null($obj)) {
             $obj = new static;
             $obj->amember_id = $attribs->user_id;
             $obj->name = $attribs->name;
@@ -49,9 +47,27 @@ class User extends Authenticatable
             $obj->name_f = $attribs->name_f;
             $obj->name_l = $attribs->name_l;
             $obj->login = $attribs->login;
-            $obj->save();
         }
+        
+        $plans = '';
+        if (isset($attribs->subscriptions)) {
+            $plans = static::getSubscriptions($attribs->subscriptions);
+        }
+        
+        $obj->amemberplans = $plans;
+        $obj->save();
+        
         return $obj;
+    }
+    
+    private static function getSubscriptions($subscriptions)
+    {
+        $plans = '';
+        foreach ($subscriptions as $id => $expiry) {
+            $plans .= $id . ',';
+        }
+        
+        return substr($plans, 0, -1);
     }
     
     public function bars()
