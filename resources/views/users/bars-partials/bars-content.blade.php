@@ -3,7 +3,7 @@
         <div class="form-row">
             <div class="col-md-4">
                 <div class="form-group">
-                    <label class="form-control-label ml-1" for="sub_headline">Sub Headline</label>
+                    <label class="form-control-label ml-1" for="sub_headline">Subheadline</label>
                     <div class="w-100 ql-editor-parent">
                         <div id="sub_headline" data-parent="content" data-toggle="quill" data-quill-placeholder="Your Subheadline"></div>
                         <input type="hidden" v-for="(s_h_l, h_i) in model.content.sub_headline" :key="`s_hLine_${h_i}`" name="sub_headline[]" :value="s_h_l.insert"
@@ -27,14 +27,14 @@
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label class="form-control-label ml-1" for="sub_headline_color">Sub Headline Color</label>
+                    <label class="form-control-label ml-1" for="sub_headline_color">Subheadline Color</label>
                     <input class="jscolor form-control" name="sub_headline_color"
                            id="sub_headline_color" v-model="model.content.sub_headline_color" @change="updateJSColor('sub_headline_color', 'content')"/>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label class="form-control-label ml-1" for="sub_background_color">Sub Headline Highlight Color</label>
+                    <label class="form-control-label ml-1" for="sub_background_color">Subheadline Highlight Color</label>
                     <input class="form-control jscolor {required:false}" name="sub_background_color"
                            id="sub_background_color" v-model="model.content.sub_background_color" @change="updateJSColor('sub_background_color', 'content')"/>
                 </div>
