@@ -538,10 +538,6 @@ new Vue({
                 case 'h':
                 case 'ht':
                 case 'htt':
-                case 'http':
-                case 'https':
-                case 'https:':
-                case 'https:/':
                 case 'y':
                 case 'yo':
                 case 'you':
@@ -561,7 +557,6 @@ new Vue({
                 case 'playe':
                 case 'player':
                 case 'player.':
-                case '':
                 case 'w':
                 case 'ww':
                 case 'www':

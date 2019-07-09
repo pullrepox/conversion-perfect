@@ -208,6 +208,10 @@ class BarsController extends Controller
                 }
             }
         }
+        if ($request->input('sel_tab') == 'overlay') {
+            $rules['third_party_url'] = 'required';
+            $rules['custom_link_text'] = 'required';
+        }
         $rules['days_label'] = 'required';
         $rules['hours_label'] = 'required';
         $rules['minutes_label'] = 'required';
@@ -216,7 +220,7 @@ class BarsController extends Controller
         $rules['opt_in_email_placeholder'] = 'required';
         
         $this->validate($request, $rules);
-        
+
 //        session(['sel_tab' => $request->input('sel_tab')]);
         
         unset($params['sel_tab']);
@@ -424,7 +428,7 @@ class BarsController extends Controller
                     $params[$key] = date('H:i:s', strtotime($val));
                 }
             }
-            
+
 //            session(['sel_tab' => $request->input('sel_tab')]);
             
             if ($request->input('sel_tab') == 'content') {
@@ -455,6 +459,11 @@ class BarsController extends Controller
                 if ($request->input('countdown') == 'calendar') {
                     $rules['countdown_end_date'] = 'date_format:m/d/Y';
                 }
+            }
+            
+            if ($request->input('sel_tab') == 'overlay') {
+                $rules['third_party_url'] = 'required';
+                $rules['custom_link_text'] = 'required';
             }
             
             if ($request->input('sel_tab') == 'lead_capture') {

@@ -53,7 +53,7 @@ class BarOptionsController extends Controller
             } else {
                 if (is_null($val)) $params[$key] = '';
             }
-    
+            
             if ($key == 'headline' || $key == 'sub_headline' || $key == 'call_to_action' || $key == 'subscribe_text') {
                 if ($key == 'headline') {
                     $upd_sub_headline = [['insert' => 'Your Headline']];
@@ -139,6 +139,10 @@ class BarOptionsController extends Controller
                 $rules['countdown_minutes'] = 'numeric|min:0|max:59';
             }
         }
+        if ($opt_key == 'overlay') {
+            $rules['third_party_url'] = 'required';
+            $rules['custom_link_text'] = 'required';
+        }
         
         if ($opt_key == 'lead_capture') {
             if ($request->input('integration_type') != 'none') {
@@ -151,7 +155,7 @@ class BarOptionsController extends Controller
                 } else {
                     $rules['message'] = 'required';
                 }
-    
+                
                 $rules['call_to_action'] = 'required';
                 if ($request->input('opt_in_type') != 'standard') {
                     if ($request->input('opt_in_type') != 'img-upload') {
@@ -175,7 +179,7 @@ class BarOptionsController extends Controller
                 }
             }
         }
-    
+        
         if ($opt_key == 'translation') {
             $rules['days_label'] = 'required';
             $rules['hours_label'] = 'required';
@@ -204,7 +208,7 @@ class BarOptionsController extends Controller
     {
         $bar_id = $request->route()->parameter('id');
         $bar = $this->barsRepo->find($bar_id);
-
+        
         $params = $request->input('data');
         foreach ($params as $key => $val) {
             if (is_null($val)) $params[$key] = '';
