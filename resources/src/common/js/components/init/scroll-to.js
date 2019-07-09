@@ -27,7 +27,7 @@ var ScrollTo = (function() {
         // Animate scroll to the selected section
         $('html, body').stop(true, true).animate(options, 600);
 
-        event.stopPropagation();
+        event.preventDefault();
 	}
 
 
