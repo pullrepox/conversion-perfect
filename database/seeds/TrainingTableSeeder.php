@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class TrainingsTableSeeder extends Seeder
+class TrainingTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -47,7 +47,7 @@ class TrainingsTableSeeder extends Seeder
                 'updated_at'  => now(),
             ]
         ];
-    
+        
         DB::table('trainings')->insert($list);
     }
 }
