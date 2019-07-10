@@ -58,7 +58,7 @@ class ApiRepository extends Repository
             }
             
             if (!$accessible) {
-                abort(419, 'You are not able to access to this app.');
+                abort(403, 'You are not able to access to this app.');
             }
             
             return $responseBody;
