@@ -53,6 +53,8 @@
         @endif
         <div style="width: 100%; font-size: 20px; font-family: 'Nunito', sans-serif; display: flex; align-items: center; justify-content: center;min-height: 76px;">
             {{--Preview Video Here--}}
+            @include('users.track-partials.preview-video')
+            
             @if (($bar->button_type != 'none' && $bar->button_location == 'left') || ($bar->countdown != 'none' && $bar->countdown_location == 'left'))
                 <div style="display: inline-block; width:auto; margin-right: 20px;padding: 10px 0;text-align: center;">
                     @if (($bar->button_type != 'none' && $bar->button_location == 'left'))
