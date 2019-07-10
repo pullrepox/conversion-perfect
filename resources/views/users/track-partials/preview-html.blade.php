@@ -67,6 +67,7 @@
                                 {{--Preview Countdown Top--}}
                                 @include('users.track-partials.countdown-top')
                                 {{--Preview Countdown Bottom--}}
+                                @include('users.track-partials.countdown-bottom')
                             </div>
                         </div>
                     @endif
@@ -133,6 +134,7 @@
                                         {{--Preview Countdown Top--}}
                                         @include('users.track-partials.countdown-top')
                                         {{--Preview Countdown Bottom--}}
+                                        @include('users.track-partials.countdown-bottom')
                                     </div>
                                 </div>
                             @endif
@@ -154,6 +156,7 @@
                                 {{--Preview Countdown Top--}}
                                 @include('users.track-partials.countdown-top')
                                 {{--Preview Countdown Bottom--}}
+                                @include('users.track-partials.countdown-bottom')
                             </div>
                         </div>
                     @endif
