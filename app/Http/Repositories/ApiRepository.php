@@ -41,7 +41,7 @@ class ApiRepository extends Repository
         $statusCode = $res->getStatusCode();
         $responseBody = json_decode($res->getBody());
         $access_list = $this->model()->where('description', 'access')->first();
-        $access_ary = explode(',', $access_list->am_plans);
+        $access_ary = $access_list && !is_null($access_list) ? explode(',', $access_list->am_plans) : [];
         if (200 == $statusCode && $responseBody->ok) {
             $accessible = false;
             if (isset($responseBody->subscriptions)) {
