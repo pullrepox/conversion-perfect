@@ -151,7 +151,7 @@ class BarsController extends Controller
             }
             
             if ($key == 'countdown_end_date') {
-                $params[$key] = date('m/d/Y', strtotime($val));
+                $params[$key] = date('Y-m-d', strtotime($val));
             }
             
             if ($key == 'countdown_end_time') {
@@ -251,7 +251,7 @@ class BarsController extends Controller
      */
     public function show(Bar $bar)
     {
-        //
+        return view('users.track-partials.preview-html', compact('bar'));
     }
     
     /**
@@ -421,7 +421,7 @@ class BarsController extends Controller
                 }
                 
                 if ($key == 'countdown_end_date') {
-                    $params[$key] = date('m/d/Y', strtotime($val));
+                    $params[$key] = date('Y-m-d', strtotime($val));
                 }
                 
                 if ($key == 'countdown_end_time') {

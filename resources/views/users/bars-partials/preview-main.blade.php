@@ -8,7 +8,7 @@
          :style="{ color: model.headline_color.indexOf('#') > -1 ? model.headline_color : `#${model.headline_color}` }">&times;
     </div>
     <div v-if="model.timer.countdown !== 'none' && model.timer.countdown_location === 'left_edge'"
-         style="width:auto; height:100%; min-height:40px; top:0; left: 0; position: absolute;">
+         style="width: auto; height: 100%; min-height: 40px; top: 0; left: 0; position: absolute;">
         <div style="width: auto;min-height: 40px;height: 100%;display: flex;align-items: center;justify-content: left;"
              :style="{'background-color': model.timer.countdown_background_color !== '' ? (model.timer.countdown_background_color.indexOf('#') > -1 ? model.timer.countdown_background_color : `#${model.timer.countdown_background_color}`) : 'transparent'}">
             <div style="width: 100%">
@@ -17,7 +17,7 @@
             </div>
         </div>
     </div>
-    <div style="width:100%; font-size:20px; font-family: 'Nunito', sans-serif; display: flex; align-items: center; justify-content: center;min-height: 76px;">
+    <div style="width: 100%; font-size: 20px; font-family: 'Nunito', sans-serif; display: flex; align-items: center; justify-content: center;min-height: 76px;">
         @include('users.bars-partials.preview-video')
         <div
             v-if="(model.content.button_type !== 'none' && model.content.button_location === 'left') || (model.timer.countdown !== 'none' && model.timer.countdown_location === 'left')"
@@ -123,7 +123,7 @@
         top: model.appearance.powered_by_position === 'top_left' ? '1px' : 'auto',
         left: (model.appearance.powered_by_position === 'top_left' || model.appearance.powered_by_position === 'bottom_left') ? '5px' : 'auto'
         }">
-        <a style="color:inherit; text-decoration:inherit; text-transform: uppercase;" href="{{ config('site.home_url') }}" target="_BLANK">
+        <a style="color:inherit; text-decoration:inherit; text-transform: uppercase;" href="{{ config('site.home_url') }}" target="_blank">
             @{{ model.translation.powered_by_label }} {{ config('app.name') }}
         </a>
     </div>

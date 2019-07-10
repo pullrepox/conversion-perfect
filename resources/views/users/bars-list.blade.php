@@ -40,8 +40,8 @@
                                                    data-toggle="tooltip" data-original-title="Report">
                                                     <i class="fas fa-chart-pie"></i>
                                                 </a>
-                                                <a href="javascript: void(0)" class="table-action table-action-cp" data-target="{{ $bar->id }}"
-                                                   data-toggle="tooltip" data-placement="top" title="Preview">
+                                                <a href="{{ route('bars.show', ['bar' => $bar->id]) }}" class="table-action table-action-cp" data-target="{{ $bar->id }}"
+                                                   data-toggle="tooltip" data-placement="top" title="Preview" target="_blank">
                                                     <i class="fas fa-external-link-square-alt"></i>
                                                 </a>
                                                 <a href="javascript: void(0)" class="table-action table-action-cp" data-target="{{ $bar->id }}"

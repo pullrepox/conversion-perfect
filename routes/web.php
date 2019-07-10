@@ -14,6 +14,14 @@ Route::get('/', 'IndexController@index');
 
 Auth::routes();
 
+Route::group(['domain' => '{sub_domain}.cnvp.me'], function () {
+    Route::get('/{link_name}', 'Api/OverlaysController@index');
+});
+
+Route::group(['domain' => '{sub_domain}.cnvp.in'], function () {
+    Route::get('/{link_name}', 'Api/OverlaysController@index');
+});
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', 'Users\DashboardController@index')->name('customer.dashboard');
     Route::get('/sub-domain-register', 'Users\DashboardController@subDomainRegister');
@@ -30,5 +38,4 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/get-responder-lists', 'Api\BarOptionsApiController@getAutoResponderLists');
     
     Route::resource('autoresponder', 'AutoResponderController');
-    
 });
