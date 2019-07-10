@@ -25,7 +25,7 @@
     </style>
 </head>
 <body style="padding: 0 !important;margin: 0 !important;width: 100vw;">
-<div style="width: 100%;height: 100%;margin: 0 !important;padding: 0 !important;z-index: 99999999;
+<div style="width: 100%;margin: 0 !important;padding: 0 !important;z-index: 99999999;
     top: {{ $bar->position == 'top' || $bar->position == 'top_sticky' ? 0 : 'auto' }};
     bottom: {{ $bar->position == 'bottom' ? 0 : 'auto' }};
     left: 0; position: {{ $bar->position == 'top' ? 'relative' : 'fixed' }}">
