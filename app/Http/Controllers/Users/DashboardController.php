@@ -62,10 +62,13 @@ class DashboardController extends Controller
             $bonuses->where(function ($q) use ($plans) {
                 for ($i = 0; $i < count($plans); $i++) {
                     if ($i === 0) {
-                        $q->where('plans', 'like', '%' . $plans[$i] . '%');
+                        $q->where('plans', $plans[$i]);
                     } else {
-                        $q->orWhere('plans', 'like', '%' . $plans[$i] . '%');
+                        $q->orWhere('plans', $plans[$i]);
                     }
+                    $q->orWhere('plans', 'like', $plans[$i] . ',%')
+                        ->orWhere('plans', 'like', '%,' . $plans[$i])
+                        ->orWhere('plans', 'like', '%,' . $plans[$i] . ',%');
                 }
             });
         }
