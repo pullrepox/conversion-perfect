@@ -3,17 +3,24 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Bar;
+use App\Http\Repositories\BarsRepository;
 use App\User;
 use Illuminate\Http\Request;
 
 class OverlaysController extends Controller
 {
+    protected $barRepo;
+    
+    public function __construct(BarsRepository $barsRepository)
+    {
+        $this->barRepo = $barsRepository;
+    }
+    
     public function index($sub_domain, $link_name, Request $request)
     {
         $user = User::where('subdomain', $sub_domain)->first();
-        $bar = Bar::where('user_id', $user->id)->where('custom_link_text', $link_name);
+        $bar = $this->barRepo->model()->where('user_id', $user->id)->where('custom_link_text', $link_name)->first();
         
-        
+        return view('users.track-partials.preview-html', compact('bar'));
     }
 }
