@@ -48,7 +48,7 @@ class ApiRepository extends Repository
                 foreach ($responseBody->subscriptions as $id => $expiry) {
                     if (array_search($id, $access_ary) !== false) {
                         if (date('Y-m-d') > date('Y-m-d', strtotime($expiry))) {
-                            abort(403, 'Your subscription has been expired.');
+                            abort(419, 'Your subscription has been expired.');
                         } else {
                             $accessible = true;
                             break;
