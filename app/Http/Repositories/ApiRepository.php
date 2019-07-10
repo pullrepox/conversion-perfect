@@ -16,6 +16,8 @@ class ApiRepository extends Repository
     protected $checkAccess = 'check-access/by-login-pass';
     protected $sendReset = 'check-access/send-pass';
     
+    const AM_ACCESS = ['14', '15', '16'];
+    
     public function __construct()
     {
         $this->baseUri = env('AMEMBER_BASE_URL');
@@ -41,7 +43,7 @@ class ApiRepository extends Repository
         $statusCode = $res->getStatusCode();
         $responseBody = json_decode($res->getBody());
         $access_list = $this->model()->where('description', 'access')->first();
-        $access_ary = $access_list && !is_null($access_list) ? explode(',', $access_list->am_plans) : [];
+        $access_ary = $access_list && !is_null($access_list) ? explode(',', $access_list->am_plans) : self::AM_ACCESS;
         if (200 == $statusCode && $responseBody->ok) {
             $accessible = false;
             if (isset($responseBody->subscriptions)) {
