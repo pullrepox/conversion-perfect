@@ -138,6 +138,8 @@
         
         window.localStorage.setItem('closed-cp-bar', 'closed');
     });
+    
+    
 </script>
 </body>
 </html>

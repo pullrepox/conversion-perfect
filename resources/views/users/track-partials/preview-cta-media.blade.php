@@ -57,7 +57,7 @@
                    style="width: calc(100% - .75rem - .75rem);padding: 0 .75rem;margin-top: 10px; font-weight: 400; line-height: 1.5; color: #8898aa; background-clip: padding-box; border: 1px solid #dee2e6; border-radius: .25rem; background-color: #ffffff; font-size: 0.875rem; transition: all .15s ease-in-out; height: calc(1.5em + 1.25rem + 5px);"
                    placeholder="{{ $bar->opt_in_email_placeholder }}"/>
             @if ($bar->opt_in_button_type == 'match_main_button')
-                <button type="button"
+                <button type="button" id="cta--cp-bar-button"
                         style="width: 100%; padding: .625rem .75rem; margin-top: 10px; line-height: 1.5; border: none; text-decoration: none; font-size: 0.875rem; white-space: nowrap; height: calc(1.5em + 1.25rem + 5px);
                             background-color: {{ (strpos($bar->button_background_color, '#') === false ? '#' . $bar->button_background_color : $bar->button_background_color) }};
                             color: {{ (strpos($bar->button_text_color, '#') === false ? '#' . $bar->button_text_color : $bar->button_text_color) }};
@@ -66,7 +66,7 @@
                     {{ $bar->opt_in_button_label }}
                 </button>
             @else
-                <button type="button"
+                <button type="button" id="cta--cp-bar-button"
                         style="width: 100%; padding: .625rem .75rem; margin-top: 10px; line-height: 1.5; border: none; text-decoration: none; font-size: 0.875rem; white-space: nowrap; height: calc(1.5em + 1.25rem + 5px);
                             background-color: {{ (strpos($bar->opt_in_button_bg_color, '#') === false ? '#' . $bar->opt_in_button_bg_color : $bar->opt_in_button_bg_color) }};
                             color: {{ (strpos($bar->opt_in_button_label_color, '#') === false ? '#' . $bar->opt_in_button_label_color : $bar->opt_in_button_label_color) }};

@@ -56,7 +56,7 @@
                placeholder="{{ $bar->opt_in_email_placeholder }}"/>
     </div>
     @if ($bar->opt_in_button_type == 'match_main_button')
-        <button type="button"
+        <button type="button" id="cta--cp-bar-button"
                 style="width: 514px; padding: .625rem .75rem; margin-top: 15px; line-height: 1.5; border: none; text-decoration: none; font-size: 0.875rem; white-space: nowrap; height: calc(1.5em + 1.25rem + 5px);
                     background-color: {{ (strpos($bar->button_background_color, '#') === false ? '#' . $bar->button_background_color : $bar->button_background_color) }};
                     color: {{ (strpos($bar->button_text_color, '#') === false ? '#' . $bar->button_text_color : $bar->button_text_color) }};
@@ -65,7 +65,7 @@
             {{ $bar->opt_in_button_label }}
         </button>
     @else
-        <button type="button"
+        <button type="button" id="cta--cp-bar-button"
                 style="width: 514px; padding: .625rem .75rem; margin-top: 15px; line-height: 1.5; border: none; text-decoration: none; font-size: 0.875rem; white-space: nowrap; height: calc(1.5em + 1.25rem + 5px);
                     background-color: {{ (strpos($bar->opt_in_button_bg_color, '#') === false ? '#' . $bar->opt_in_button_bg_color : $bar->opt_in_button_bg_color) }};
                     color: {{ (strpos($bar->opt_in_button_label_color, '#') === false ? '#' . $bar->opt_in_button_label_color : $bar->opt_in_button_label_color) }};
