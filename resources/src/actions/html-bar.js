@@ -61,6 +61,31 @@
                 // Find the distance between now and the count down date
                 let distance = countDownDate - now;
                 
+                // Time calculations for days, hours, minutes and seconds
+                let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                days = isNaN(days) ? 0 : days;
+                hours = isNaN(hours) ? 0 : hours;
+                minutes = isNaN(minutes) ? 0 : minutes;
+                seconds = isNaN(seconds) ? 0 : seconds;
+                
+                if (days === 0 && hours === 0 && minutes === 0 && seconds === 0) {
+                    distance = -1;
+                } else {
+                    if (window.__cp_bar_config.bar.countdown_format === 'dd') {
+                        $('#cp-bar--countdown-days').html((`0${days}`).slice(-2));
+                    }
+    
+                    if (window.__cp_bar_config.bar.countdown_format !== 'mm') {
+                        $('#cp-bar--countdown-hours').html((`0${hours}`).slice(-2));
+                    }
+    
+                    $('#cp-bar--countdown-minutes').html((`0${minutes}`).slice(-2));
+                    $('#cp-bar--countdown-seconds').html((`0${seconds}`).slice(-2));
+                }
+                
                 if (distance < 0) {
                     clearInterval(x);
                     //expired action here.
@@ -76,22 +101,6 @@
                         }, (window.__cp_bar_config.bar.autohide_delay_seconds * 1000));
                     }
                 }
-                
-                // Time calculations for days, hours, minutes and seconds
-                let days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                let seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                if (window.__cp_bar_config.bar.countdown_format === 'dd') {
-                    $('#cp-bar--countdown-days').html((`0${days}`).slice(-2));
-                }
-                
-                if (window.__cp_bar_config.bar.countdown_format !== 'mm') {
-                    $('#cp-bar--countdown-hours').html((`0${hours}`).slice(-2));
-                }
-                
-                $('#cp-bar--countdown-minutes').html((`0${minutes}`).slice(-2));
-                $('#cp-bar--countdown-seconds').html((`0${seconds}`).slice(-2));
             }, 1000);
         }
     });
