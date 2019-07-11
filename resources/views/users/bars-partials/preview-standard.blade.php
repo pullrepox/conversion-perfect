@@ -1,6 +1,6 @@
 <div style="height: 233px; width: 100%; font-size: 20px; font-family: 'Nunito', sans-serif; text-align: center;position: relative;"
      :style="{
-     'background': model.lead_capture.panel_color === '' ? 'transparent' : (model.lead_capture.panel_color.indexOf('#') > -1 ? model.lead_capture.panel_color : `#${model.lead_capture.panel_color}`),
+     'background-color': model.lead_capture.panel_color === '' ? 'transparent' : (model.lead_capture.panel_color.indexOf('#') > -1 ? model.lead_capture.panel_color : `#${model.lead_capture.panel_color}`),
      'color': (model.lead_capture.subscribe_text_color.indexOf('#') > -1 ? model.lead_capture.subscribe_text_color : `#${model.lead_capture.subscribe_text_color}`)
      }">
     <div v-if="!model.appearance.close_button" style="position: absolute; top: -4px; right: 6px;font-size: 24px;z-index: 9999;"
@@ -8,7 +8,7 @@
     </div>
     <div style="height: 45px; width: 100%; font-size: 20px;line-height: 45px;margin-top: 15px;"
          :style="{
-         'background': (model.background_color.indexOf('#') > -1 ? model.background_color : `#${model.background_color}`),
+         'background-color': (model.background_color.indexOf('#') > -1 ? model.background_color : `#${model.background_color}`),
          color: model.headline_color.indexOf('#') > -1 ? model.headline_color : `#${model.headline_color}`
          }">
         <span v-for="(cta, c_t_i) in model.lead_capture.call_to_action" :key="`cta_preview_attr_${c_t_i}`" v-if="cta.insert.trim() != ''">
