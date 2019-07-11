@@ -2,7 +2,7 @@
     background-color: {{ $bar->panel_color == '' ? 'transparent' : (strpos($bar->panel_color, '#') === false ? '#' . $bar->panel_color : $bar->panel_color) }};
     color: {{ (strpos($bar->subscribe_text_color, '#') === false ? '#' . $bar->subscribe_text_color : $bar->subscribe_text_color) }};">
     @if (!$bar->close_button)
-        <div id="cta--cp-bar-close-btn" class="cv--bar--close-btn" style="position: absolute; top: -4px; right: 6px;font-size: 24px;z-index: 9999;
+        <div id="cta--cp-bar-close-btn" class="cp--bar--close-btn" style="position: absolute; top: -4px; right: 6px;font-size: 24px;z-index: 9999;
             color: {{ (strpos($bar->headline_color, '#') === false ? '#' . $bar->headline_color : $bar->headline_color) }};">&times;
         </div>
     @endif

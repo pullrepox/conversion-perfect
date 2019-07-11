@@ -33,11 +33,11 @@
         }
         
         #main-preview--cp-bar, #cta-preview--cp-bar {
-            -webkit-transition: all .5s;
-            -moz-transition: all .5s;
-            -ms-transition: all .5s;
-            -o-transition: all .5s;
-            transition: all .5s;
+            -webkit-transition: all .5s ease-in-out .5s;
+            -moz-transition: all .5s ease-in-out .5s;
+            -ms-transition: all .5s ease-in-out .5s;
+            -o-transition: all .5s ease-in-out .5s;
+            transition: all .5s ease-in-out .5s;
         }
         
         input::-webkit-input-placeholder {
@@ -65,7 +65,7 @@
             box-shadow: none;
         }
         
-        .cv--bar--close-btn, button {
+        .cp--bar--close-btn, button {
             cursor: pointer;
         }
         
@@ -127,6 +127,12 @@
         window.localStorage.setItem('closed-cp-bar', 'closed');
     });
     
+    document.querySelector('#cta--cp-bar-close-btn').addEventListener('click', function () {
+        showHideCtaBar(true);
+        
+        window.localStorage.setItem('closed-cta-cp-bar', 'closed');
+    });
+    
     document.querySelector('#cp--bar-action-btn').addEventListener('click', function () {
         if (window.__cp_bar_config.bar.button_action === 'hide_bar') {
             showHideMainBar(true);
@@ -139,7 +145,9 @@
         window.localStorage.setItem('closed-cp-bar', 'closed');
     });
     
+    document.querySelector('#cta--cp-bar-button').addEventListener('click', function () {
     
+    });
 </script>
 </body>
 </html>

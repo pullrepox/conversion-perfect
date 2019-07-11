@@ -3,7 +3,7 @@
     background-image: {{ $bar->background_gradient ? ('linear-gradient(' . $bar->gradient_angle . 'deg, ' . (strpos($bar->background_color, '#') === false ? '#' . $bar->background_color : $bar->background_color) . ', ' . (strpos($bar->gradient_end_color, '#') === false ? '#' . $bar->gradient_end_color : $bar->gradient_end_color) . ')') : 'none' }};
     opacity: {{ ($bar->opacity / 100) }}; box-shadow: {{ $bar->drop_shadow ? '0 10px 10px -10px #120f0f' : 'none' }}">
     @if (!$bar->close_button)
-        <div id="main--cp-bar-close-btn" class="cv--bar--close-btn" style="position: absolute; top: -4px; right: 6px;font-size: 24px;z-index: 9999;
+        <div id="main--cp-bar-close-btn" class="cp--bar--close-btn" style="position: absolute; top: -4px; right: 6px;font-size: 24px;z-index: 9999;
             color: {{ (strpos($bar->headline_color, '#') === false ? '#' . $bar->headline_color : $bar->headline_color) }};">&times;
         </div>
     @endif
