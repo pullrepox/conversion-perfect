@@ -45,7 +45,8 @@ mix.options({
 });
 
 mix.sass('./resources/src/common/sass/main.scss', 'public/css/app.css');
-mix.js('./resources/src/common/js/main.js', 'public/js/main.js');
+mix.js('./resources/src/common/js/main.js', 'public/js/main.js')
+    .js('./resources/src/actions/html-bar.js', 'public/js/html-bar.js');
 
 mix.sass('./resources/src/users/index.scss', 'public/css/users.css');
 

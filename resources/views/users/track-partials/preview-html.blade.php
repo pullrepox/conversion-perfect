@@ -95,59 +95,16 @@
 @endif
 <script type="text/javascript">
     window.__cp_bar_config = {
-        integration_type: '{{ $bar->integration_type }}',
-        bar: eval({!! json_encode($bar) !!})
+        BASE: '{{ request()->root() }}',
+        bar: eval({!! json_encode($bar) !!}),
+        token: '{{ csrf_token() }}',
+        countdown_target: '{{ $bar->countdown == 'none' ? '' :
+        ($bar->countdown == 'calendar' ? (date('F d, Y', strtotime($bar->countdown_end_date)) . ' ' . $bar->countdown_end_time) :
+        getCountdownTarget($bar->countdown_days, $bar->countdown_hours, $bar->countdown_minutes, $bar->created_at)) }}'
     };
-    
-    function showHideMainBar(flag) {
-        if (window.__cp_bar_config.bar.position !== 'bottom') {
-            document.querySelector('#main-preview--cp-bar').style.top = flag ? '-450px' : 0;
-        } else {
-            document.querySelector('#main-preview--cp-bar').style.bottom = flag ? '-450px' : 0;
-        }
-    }
-    
-    function showHideCtaBar(flag) {
-        document.querySelector('#cta-preview--cp-bar').style.display = flag ? 'none' : 'block';
-        
-        if (window.__cp_bar_config.bar.position !== 'bottom') {
-            document.querySelector('#cta-preview--cp-bar').style.top = flag ? '-450px' : 0;
-        } else {
-            document.querySelector('#cta-preview--cp-bar').style.bottom = flag ? '-450px' : 0;
-        }
-    }
-    
-    window.onload = function () {
-        showHideMainBar(window.localStorage.getItem('closed-cp-bar') && window.localStorage.getItem('closed-cp-bar') === 'closed');
-    };
-    
-    document.querySelector('#main--cp-bar-close-btn').addEventListener('click', function () {
-        showHideMainBar(true);
-        
-        window.localStorage.setItem('closed-cp-bar', 'closed');
-    });
-    
-    document.querySelector('#cta--cp-bar-close-btn').addEventListener('click', function () {
-        showHideCtaBar(true);
-        
-        window.localStorage.setItem('closed-cta-cp-bar', 'closed');
-    });
-    
-    document.querySelector('#cp--bar-action-btn').addEventListener('click', function () {
-        if (window.__cp_bar_config.bar.button_action === 'hide_bar') {
-            showHideMainBar(true);
-        }
-        
-        if (window.__cp_bar_config.bar.integration_type !== 'none') {
-            showHideCtaBar((window.localStorage.getItem('closed-cta-cp-bar') && window.localStorage.getItem('closed-cta-cp-bar') === 'closed'));
-        }
-        
-        window.localStorage.setItem('closed-cp-bar', 'closed');
-    });
-    
-    document.querySelector('#cta--cp-bar-button').addEventListener('click', function () {
-    
-    });
 </script>
+<script type="text/javascript" src="{{ url(mix('js/manifest.js')) }}"></script>
+<script type="text/javascript" src="{{ url(mix('js/vendor.js')) }}"></script>
+<script type="text/javascript" src="{{ url(mix('js/html-bar.js')) }}"></script>
 </body>
 </html>

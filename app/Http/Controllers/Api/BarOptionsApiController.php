@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\BarsRepository;
 use App\Integration;
+use App\Models\Subscriber;
 use Illuminate\Http\Request;
 
 class BarOptionsApiController extends Controller
@@ -53,5 +54,27 @@ class BarOptionsApiController extends Controller
         
         
         return response()->json($re);
+    }
+    
+    public function setSubscribersOfLists($bar_id, Request $request)
+    {
+        $bar = $this->barsRepo->model()->find($bar_id);
+        $subscriber_name = $request->input('lead_capture_cta_name__cp_bar');
+        $subscriber_email = $request->input('lead_capture_cta_email__cp_bar');
+        $ip = $request->ip();
+        $list_id = $bar->list;
+        
+        if ($bar->integration_type == 'conversion_perfect') {
+            $subscriber = new Subscriber();
+            $subscriber->list_id = $list_id;
+            $subscriber->email_address = $subscriber_email;
+            $subscriber->user_name = $subscriber_name;
+            $subscriber->ip_address = $ip;
+            $subscriber->save();
+        }
+        
+        return response()->json([
+            'status' => 'success'
+        ]);
     }
 }

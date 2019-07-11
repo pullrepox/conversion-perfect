@@ -22,6 +22,8 @@ Route::group(['domain' => '{sub_domain}.cnvp.in'], function () {
     Route::get('/{link_name}', 'Api/OverlaysController@index');
 });
 
+Route::post('/cp-cta-set-subscribers/{bar_id}', 'Api\BarOptionsApiController@setSubscribersOfLists')->name('conversion.set-lead-capture-subscribers');
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', 'Users\DashboardController@index')->name('customer.dashboard');
     Route::get('/sub-domain-register', 'Users\DashboardController@subDomainRegister');

@@ -3,8 +3,7 @@
     color: {{ (strpos($bar->subscribe_text_color, '#') === false ? '#' . $bar->subscribe_text_color : $bar->subscribe_text_color) }};">
     @if (!$bar->close_button)
         <div id="cta--cp-bar-close-btn" class="cp--bar--close-btn" style="position: absolute; top: -4px; right: 6px;font-size: 24px;z-index: 9999;
-            color: {{ (strpos($bar->headline_color, '#') === false ? '#' . $bar->headline_color : $bar->headline_color) }};">&times;
-        </div>
+            color: {{ (strpos($bar->headline_color, '#') === false ? '#' . $bar->headline_color : $bar->headline_color) }};">&times;</div>
     @endif
     <div style="height: 45px; width: 100%; font-size: 20px;line-height: 45px;
         background-color: {{ (strpos($bar->background_color, '#') === false ? '#' . $bar->background_color : $bar->background_color) }};
@@ -27,7 +26,7 @@
             </span>
         @endforeach
     </div>
-    <div style="width: 100%; text-align: center; display: flex; justify-content: center; align-items: center; margin-top: 10px;">
+    <div id="cp-bar--cta-content-section" style="width: 100%; text-align: center; display: flex; justify-content: center; align-items: center; margin-top: 10px;">
         @include('users.track-partials.preview-cta-video')
         <div style="width: 320px;">
             <div style="width: 100%; height: 30px; font-size: 17px;
@@ -50,31 +49,34 @@
                     </span>
                 @endforeach
             </div>
-            <input type="text"
-                   style="width: calc(100% - .75rem - .75rem); padding: 0 .75rem;font-weight: 400; line-height: 1.5; color: #8898aa; background-clip: padding-box; border: 1px solid #dee2e6; border-radius: .25rem; background-color: #ffffff; font-size: 0.875rem; transition: all .15s ease-in-out; height: calc(1.5em + 1.25rem + 5px);"
-                   placeholder="{{ $bar->opt_in_name_placeholder }}"/>
-            <input type="email"
-                   style="width: calc(100% - .75rem - .75rem);padding: 0 .75rem;margin-top: 10px; font-weight: 400; line-height: 1.5; color: #8898aa; background-clip: padding-box; border: 1px solid #dee2e6; border-radius: .25rem; background-color: #ffffff; font-size: 0.875rem; transition: all .15s ease-in-out; height: calc(1.5em + 1.25rem + 5px);"
-                   placeholder="{{ $bar->opt_in_email_placeholder }}"/>
-            @if ($bar->opt_in_button_type == 'match_main_button')
-                <button type="button" id="cta--cp-bar-button"
-                        style="width: 100%; padding: .625rem .75rem; margin-top: 10px; line-height: 1.5; border: none; text-decoration: none; font-size: 0.875rem; white-space: nowrap; height: calc(1.5em + 1.25rem + 5px);
-                            background-color: {{ (strpos($bar->button_background_color, '#') === false ? '#' . $bar->button_background_color : $bar->button_background_color) }};
-                            color: {{ (strpos($bar->button_text_color, '#') === false ? '#' . $bar->button_text_color : $bar->button_text_color) }};
-                            box-shadow: 0 3px 10px -4px {{ (strpos($bar->button_background_color, '#') === false ? '#' . $bar->button_background_color : $bar->button_background_color) }};
-                            border-radius: {{ $bar->button_type === 'rounded' ? '6px' : 0 }};">
-                    {{ $bar->opt_in_button_label }}
-                </button>
-            @else
-                <button type="button" id="cta--cp-bar-button"
-                        style="width: 100%; padding: .625rem .75rem; margin-top: 10px; line-height: 1.5; border: none; text-decoration: none; font-size: 0.875rem; white-space: nowrap; height: calc(1.5em + 1.25rem + 5px);
-                            background-color: {{ (strpos($bar->opt_in_button_bg_color, '#') === false ? '#' . $bar->opt_in_button_bg_color : $bar->opt_in_button_bg_color) }};
-                            color: {{ (strpos($bar->opt_in_button_label_color, '#') === false ? '#' . $bar->opt_in_button_label_color : $bar->opt_in_button_label_color) }};
-                            box-shadow: 0 3px 10px -4px {{ (strpos($bar->opt_in_button_bg_color, '#') === false ? '#' . $bar->opt_in_button_bg_color : $bar->opt_in_button_bg_color) }};
-                            border-radius: {{ $bar->opt_in_button_type === 'rounded' ? '6px' : 0 }};">
-                    {{ $bar->opt_in_button_label }}
-                </button>
-            @endif
+            <form id="cp-bar--cta-form" data-action="{{ secure_redirect(route('conversion.set-lead-capture-subscribers', ['bar_id' => $bar->id])) }}" method="post">
+                @csrf
+                <input type="text" id="lead_capture_cta_name__cp_bar" name="lead_capture_cta_name__cp_bar"
+                       style="width: calc(100% - .75rem - .75rem); padding: 0 .75rem;font-weight: 400; line-height: 1.5; color: #8898aa; background-clip: padding-box; border: 1px solid #dee2e6; border-radius: .25rem; background-color: #ffffff; font-size: 0.875rem; transition: all .15s ease-in-out; height: calc(1.5em + 1.25rem + 5px);"
+                       placeholder="{{ $bar->opt_in_name_placeholder }}" required/>
+                <input type="email" id="lead_capture_cta_email__cp_bar" name="lead_capture_cta_email__cp_bar"
+                       style="width: calc(100% - .75rem - .75rem);padding: 0 .75rem;margin-top: 10px; font-weight: 400; line-height: 1.5; color: #8898aa; background-clip: padding-box; border: 1px solid #dee2e6; border-radius: .25rem; background-color: #ffffff; font-size: 0.875rem; transition: all .15s ease-in-out; height: calc(1.5em + 1.25rem + 5px);"
+                       placeholder="{{ $bar->opt_in_email_placeholder }}" required/>
+                @if ($bar->opt_in_button_type == 'match_main_button')
+                    <button type="button" id="cta--cp-bar-button"
+                            style="width: 100%; padding: .625rem .75rem; margin-top: 10px; line-height: 1.5; border: none; text-decoration: none; font-size: 0.875rem; white-space: nowrap; height: calc(1.5em + 1.25rem + 5px);
+                                background-color: {{ (strpos($bar->button_background_color, '#') === false ? '#' . $bar->button_background_color : $bar->button_background_color) }};
+                                color: {{ (strpos($bar->button_text_color, '#') === false ? '#' . $bar->button_text_color : $bar->button_text_color) }};
+                                box-shadow: 0 3px 10px -4px {{ (strpos($bar->button_background_color, '#') === false ? '#' . $bar->button_background_color : $bar->button_background_color) }};
+                                border-radius: {{ $bar->button_type === 'rounded' ? '6px' : 0 }};">
+                        {{ $bar->opt_in_button_label }}
+                    </button>
+                @else
+                    <button type="button" id="cta--cp-bar-button"
+                            style="width: 100%; padding: .625rem .75rem; margin-top: 10px; line-height: 1.5; border: none; text-decoration: none; font-size: 0.875rem; white-space: nowrap; height: calc(1.5em + 1.25rem + 5px);
+                                background-color: {{ (strpos($bar->opt_in_button_bg_color, '#') === false ? '#' . $bar->opt_in_button_bg_color : $bar->opt_in_button_bg_color) }};
+                                color: {{ (strpos($bar->opt_in_button_label_color, '#') === false ? '#' . $bar->opt_in_button_label_color : $bar->opt_in_button_label_color) }};
+                                box-shadow: 0 3px 10px -4px {{ (strpos($bar->opt_in_button_bg_color, '#') === false ? '#' . $bar->opt_in_button_bg_color : $bar->opt_in_button_bg_color) }};
+                                border-radius: {{ $bar->opt_in_button_type === 'rounded' ? '6px' : 0 }};">
+                        {{ $bar->opt_in_button_label }}
+                    </button>
+                @endif
+            </form>
             <div style="font-size: 12px;width: 100%;margin-top: 5px; margin-bottom: 10px;
                 color: {{ (strpos($bar->subscribe_text_color, '#') === false ? '#' . $bar->subscribe_text_color : $bar->subscribe_text_color) }};">
                 {{ $bar->disclaimer }}

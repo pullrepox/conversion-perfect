@@ -11,7 +11,6 @@ function jsonResponse($isSuccess, $statusCode = 200, $message = '', $data = [])
 
 function user()
 {
-//    return resolve('user');
     return \Illuminate\Support\Facades\Auth::user();
 }
 
@@ -23,35 +22,6 @@ function getSliderCode($slider)
 function getArrayValue($array, $key, $default)
 {
     return isset($array[$key]) ? $array[$key] : $default;
-}
-
-function routeGroup()
-{
-    $route = url()->current();
-    $urlPart = explode('/', $route)[3];
-    switch ($urlPart) {
-        case 'sliders':
-        case 'bars':
-        case 'pages':
-        case 'groups':
-            return 'slider';
-        case 'reports':
-            return 'reports';
-        case 'settings':
-        case 'domain':
-        case 'integration':
-            return 'settings';
-        case 'bonuses':
-            return 'bonuses';
-        case 'support':
-        case 'faq':
-            return 'faq';
-        case 'account':
-            return 'account';
-        default:
-            return 'dashboard';
-        
-    }
 }
 
 if (!function_exists('isActiveRoute')) {
@@ -298,14 +268,25 @@ if (!function_exists('calcCountdownTime')) {
         $end_time = strtotime($end_date);
         $now = time();
         $diff = abs($end_time - $now);
-        
+
 //        $years = floor($diff / (365 * 60 * 60 * 24));
 //        $months = floor(($diff - $years * 365 * 60 * 60 * 24) / (30 * 60 * 60 * 24));
 //        $days = floor(($diff - $years * 365 * 60 * 60 * 24 - $months * 30 * 60 * 60 * 24) / (60 * 60 * 24));
-    
+        
         $days = round($diff / (60 * 60 * 24));
         
         return $days;
+    }
+}
+
+if (!function_exists('getCountdownTarget')) {
+    function getCountdownTarget($days, $hours, $minutes, $start)
+    {
+        $min_start = date('Y-m-d H:i:s', strtotime('+' . $minutes . ' minutes', strtotime($start)));
+        $hour_start = date('Y-m-d H:i:s', strtotime('+' . $hours . ' hours', strtotime($min_start)));
+        $day_end = date('F d, Y H:i:s', strtotime('+' . $days . ' days', strtotime($hour_start)));
+        
+        return $day_end;
     }
 }
 
