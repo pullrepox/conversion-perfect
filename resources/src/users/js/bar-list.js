@@ -1,4 +1,8 @@
+import ClipboardJS from 'clipboard';
+
 (function ($) {
+    'use strict';
+    
     /**
      * Bar Delete
      */
@@ -26,5 +30,39 @@
                 location.reload();
             }
         });
+    });
+    
+    /**
+     * Clipboard
+     * @type {string}
+     */
+    let $element = '.clipboard-bar-embed-code';
+    if ($($element).length) {
+        clipboardInit($($element));
+    }
+    
+    // Methods
+    function clipboardInit($this) {
+        $this.tooltip().on('mouseleave', function () {
+            $this.tooltip('hide');
+        });
+        
+        let clipboard = new ClipboardJS($element);
+        
+        clipboard.on('success', function (e) {
+            $(e.trigger)
+                .attr('title', 'Copied')
+                .tooltip('_fixTitle')
+                .tooltip('show')
+                .attr('title', 'Copy to clipboard')
+                .tooltip('_fixTitle');
+            
+            e.clearSelection()
+        });
+    }
+    
+    $('.bar-copy-code').on('click', function () {
+        $('#script_copy').val(`<script data-cfasync="false" src="${$(this).data('link')}"></script>`);
+        $('#url_copy').val($(this).data('custom'));
     });
 })(jQuery);

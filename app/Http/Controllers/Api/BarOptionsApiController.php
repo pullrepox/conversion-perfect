@@ -59,18 +59,21 @@ class BarOptionsApiController extends Controller
     public function setSubscribersOfLists($bar_id, Request $request)
     {
         $bar = $this->barsRepo->model()->find($bar_id);
-        $subscriber_name = $request->input('lead_capture_cta_name__cp_bar');
-        $subscriber_email = $request->input('lead_capture_cta_email__cp_bar');
-        $ip = $request->ip();
-        $list_id = $bar->list;
         
-        if ($bar->integration_type == 'conversion_perfect') {
-            $subscriber = new Subscriber();
-            $subscriber->list_id = $list_id;
-            $subscriber->email_address = $subscriber_email;
-            $subscriber->user_name = $subscriber_name;
-            $subscriber->ip_address = $ip;
-            $subscriber->save();
+        if ($bar && !is_null($bar)) {
+            $subscriber_name = $request->input('lead_capture_cta_name__cp_bar_' . $bar->id);
+            $subscriber_email = $request->input('lead_capture_cta_email__cp_bar_' . $bar->id);
+            $ip = $request->ip();
+            $list_id = $bar->list;
+            
+            if ($bar->integration_type == 'conversion_perfect') {
+                $subscriber = new Subscriber();
+                $subscriber->list_id = $list_id;
+                $subscriber->email_address = $subscriber_email;
+                $subscriber->user_name = $subscriber_name;
+                $subscriber->ip_address = $ip;
+                $subscriber->save();
+            }
         }
         
         return response()->json([

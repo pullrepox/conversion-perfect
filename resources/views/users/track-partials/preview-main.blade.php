@@ -1,9 +1,9 @@
-<div style="width:100%; font-size: 20px; font-family: 'Nunito', sans-serif; color: rgb(255, 255, 255); position: relative; min-height: 76px;
-    background: {{ $bar->background_gradient ? 'none' : (strpos($bar->background_color, '#') === false ? '#' . $bar->background_color : $bar->background_color) }};
+<div style="width:100%; font-size: 20px; font-family: Nunito, sans-serif; color: rgb(255, 255, 255); position: relative; min-height: 76px;
+    background-color: {{ $bar->background_gradient ? 'none' : (strpos($bar->background_color, '#') === false ? '#' . $bar->background_color : $bar->background_color) }};
     background-image: {{ $bar->background_gradient ? ('linear-gradient(' . $bar->gradient_angle . 'deg, ' . (strpos($bar->background_color, '#') === false ? '#' . $bar->background_color : $bar->background_color) . ', ' . (strpos($bar->gradient_end_color, '#') === false ? '#' . $bar->gradient_end_color : $bar->gradient_end_color) . ')') : 'none' }};
     opacity: {{ ($bar->opacity / 100) }}; box-shadow: {{ $bar->drop_shadow ? '0 10px 10px -10px #120f0f' : 'none' }}">
     @if (!$bar->close_button)
-        <div id="main--cp-bar-close-btn" class="cp--bar--close-btn" style="position: absolute; top: -4px; right: 6px;font-size: 24px;z-index: 9999;
+        <div id="main--cp-bar-close-btn-{{ $bar->id }}" class="cp--bar--close-btn" style="position: absolute; top: -4px; right: 6px;font-size: 24px;z-index: 9999;
             color: {{ (strpos($bar->headline_color, '#') === false ? '#' . $bar->headline_color : $bar->headline_color) }};">&times;
         </div>
     @endif
@@ -148,12 +148,12 @@
         </div>
     @endif
     @if ($bar->powered_by_position != 'hidden')
-        <div style="font-size: 12px; line-height: 20px; font-family: 'Arial Narrow', sans-serif; padding-right: 5px;position: absolute;width: auto;z-index: 100;
+        <div style='font-size: 12px; line-height: 20px; font-family: "Arial Narrow", sans-serif; padding-right: 5px;position: absolute;width: auto;z-index: 100;
             color: {{ (strpos($bar->headline_color, '#') === false ? '#' . $bar->headline_color : $bar->headline_color) }};
             bottom: {{ ($bar->powered_by_position == 'bottom_left' || $bar->powered_by_position == 'bottom_right') ? 0 : 'auto' }};
             right: {{ ($bar->powered_by_position == 'bottom_right') ? 0 : 'auto' }};
             top: {{ ($bar->powered_by_position == 'top_left') ? '1px' : 'auto' }};
-            left: {{ ($bar->powered_by_position == 'top_left' || $bar->powered_by_position == 'bottom_left') ? '5px' : 'auto' }};">
+            left: {{ ($bar->powered_by_position == 'top_left' || $bar->powered_by_position == 'bottom_left') ? '5px' : 'auto' }};'>
             <a style="color:inherit; text-decoration:inherit; text-transform: uppercase;" href="{{ config('site.home_url') }}" target="_blank">
                 {{ $bar->powered_by_label }} {{ config('app.name') }}
             </a>

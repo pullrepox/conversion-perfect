@@ -1,4 +1,4 @@
-<button id="cp--bar-action-btn" type="button" style="border: 0;padding: 8px 12px;
+<button id="cp--bar-action-btn-{{ $bar->id }}" type="button" style="border: 0;padding: 8px 12px;
     background-color: {{ (strpos($bar->button_background_color, '#') === false ? '#' . $bar->button_background_color : $bar->button_background_color) }};
     color: {{ (strpos($bar->button_text_color, '#') === false ? '#' . $bar->button_text_color : $bar->button_text_color) }};
     box-shadow: 0 3px 10px -4px {{ (strpos($bar->button_background_color, '#') === false ? '#' . $bar->button_background_color : $bar->button_background_color) }};

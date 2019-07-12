@@ -36,7 +36,7 @@
                                     @foreach($bars as $bar)
                                         <tr>
                                             <td class="table-actions">
-                                                <a href="{{ route('bars.show', ['bar' => $bar->id]) }}" class="table-action table-action-cp"
+                                                <a href="{{ route('bars.show', ['bar' => $bar->id, 'report' => true]) }}" class="table-action table-action-cp"
                                                    data-toggle="tooltip" data-original-title="Report">
                                                     <i class="fas fa-chart-pie"></i>
                                                 </a>
@@ -44,9 +44,12 @@
                                                    data-toggle="tooltip" data-placement="top" title="Preview" target="_blank">
                                                     <i class="fas fa-external-link-square-alt"></i>
                                                 </a>
-                                                <a href="javascript: void(0)" class="table-action table-action-cp" data-target="{{ $bar->id }}"
-                                                   data-toggle="tooltip" data-placement="top" title="Get Code">
-                                                    <i class="fas fa-clipboard"></i>
+                                                <a href="javascript: void(0)" class="table-action table-action-cp bar-copy-code" data-toggle="modal" data-target="#copy-modal"
+                                                   data-link="{{ secure_redirect(route('conversion.get-scripts-code-for-embed', ['id' => $bar->id])) }}"
+                                                   data-custom="{{ $bar->custom_link_text != '' ? ($custom_links[$bar->custom_link] . $bar->custom_link_text) : 'No Existing Your Custom Link.' }}">
+                                                    <span data-toggle="tooltip" data-placement="top" title="Get Code" class="w-100 h-100">
+                                                        <i class="fas fa-clipboard-list"></i>
+                                                    </span>
                                                 </a>
                                             </td>
                                             <td class="table-user">{{ $bar->friendly_name }}</td>
@@ -109,16 +112,43 @@
                 </div>
             </div>
             <div class="modal fade" id="copy-modal" tabindex="-1" role="dialog" aria-labelledby="copy-modal" aria-hidden="true">
-                <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+                <div class="modal-dialog modal-lg modal-dialog-centered modal-" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h6 class="modal-title" id="modal-title-default">Get Code</h6>
+                            <h6 class="modal-title" id="modal-title-default">Get Code For Your Conversion Bar</h6>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                        
+                            <div class="container-fluid">
+                                <div class="form-group">
+                                    <label class="form-control-label ml-1" for="script_copy">
+                                        Copy and paste the following code into your web page just before the end body tag.
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="script_copy"/>
+                                        <a href="javascript: void(0)" data-clipboard-target="#script_copy"
+                                           class="input-group-addon btn btn-light table-action-cp border-left-radius-0 clipboard-bar-embed-code"
+                                           data-toggle="tooltip" data-placement="top" title="Copy to Clipboard">
+                                            <i class="fas fa-clipboard"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-control-label ml-1" for="url_copy">
+                                        Use the following url for your Custom Link.
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="url_copy"/>
+                                        <a href="javascript: void(0)" class="input-group-addon btn btn-light table-action-cp border-left-radius-0 clipboard-bar-embed-code"
+                                           data-clipboard-target="#url_copy"
+                                           data-toggle="tooltip" data-placement="top" title="Copy to Clipboard">
+                                            <i class="fas fa-clipboard"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-light ml-auto" data-dismiss="modal">Close</button>

@@ -22,7 +22,7 @@ Route::group(['domain' => '{sub_domain}.cnvp.in'], function () {
     Route::get('/{link_name}', 'Api/OverlaysController@index');
 });
 
-Route::post('/cp-cta-set-subscribers/{bar_id}', 'Api\BarOptionsApiController@setSubscribersOfLists')->name('conversion.set-lead-capture-subscribers');
+Route::get('/cp-embed-script/{id}', 'Api\OverlaysController@getCBScriptCode')->name('conversion.get-scripts-code-for-embed');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', 'Users\DashboardController@index')->name('customer.dashboard');

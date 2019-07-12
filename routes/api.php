@@ -15,7 +15,9 @@ use Illuminate\Http\Request;
 Route::get('/', function () {
     return 'This is test api';
 });
+
 Route::get('/reset-main-db', 'Api\DatabaseController@mainDbReset');
+Route::post('/cp-cta-set-subscribers/{bar_id}', 'Api\BarOptionsApiController@setSubscribersOfLists')->name('conversion.set-lead-capture-subscribers');
 
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
 //    return $request->user();

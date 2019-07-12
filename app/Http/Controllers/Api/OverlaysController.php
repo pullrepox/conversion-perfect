@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\BarsRepository;
+use App\Http\Repositories\TinyMinify;
 use App\User;
 
 class OverlaysController extends Controller
@@ -20,6 +21,28 @@ class OverlaysController extends Controller
         $user = User::where('subdomain', $sub_domain)->first();
         $bar = $this->barRepo->model()->where('user_id', $user->id)->where('custom_link_text', $link_name)->first();
         
-        return view('users.track-partials.preview-html', compact('bar'));
+        if ($bar && !is_null($bar)) {
+            return view('users.track-partials.preview-html', compact('bar'));
+        } else {
+            abort(404, 'No existing is matched Conversion Bar.');
+        }
+        
+        return response('No existing is matched Conversion Bar.');
+    }
+    
+    public function getCBScriptCode($id)
+    {
+        $bar = $this->barRepo->model()->find($id);
+        
+        if ($bar && !is_null($bar)) {
+            $html_code = view('users.track-partials.script', compact('bar'));
+            $code = TinyMinify::html($html_code);
+            
+            return view('users.track-partials.preview-scripts', compact('code'));
+        } else {
+            abort(404, 'No existing is matched Conversion Bar.');
+        }
+        
+        return response('No existing is matched Conversion Bar.');
     }
 }

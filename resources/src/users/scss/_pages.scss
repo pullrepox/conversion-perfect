@@ -34,6 +34,7 @@
                     .card-title {
                         display: flex;
                         align-items: center;
+                        
                         .help-icon {
                             margin-left: 0.25rem;
                             margin-top: -3px;
@@ -50,6 +51,7 @@
                     }
                 }
             }
+            
             .card-body {
                 .track-link-sept {
                     &:before {
@@ -75,13 +77,14 @@
                             border-bottom-right-radius: 0;
                         }
                     }
+                    
                     &.plus-group {
                         .select2.select2-container {
                             width: calc(100% - 54px) !important;
                         }
                     }
                 }
-    
+                
                 .no-hover-transform {
                     &:hover {
                         transform: none !important;
@@ -99,7 +102,7 @@
                 textarea.form-control {
                     height: calc(1.5em + 1.25rem + 5px);
                 }
-    
+                
                 .nav-wrapper {
                     .nav-pills {
                         .nav-item {
@@ -110,12 +113,14 @@
                                     color: inherit;
                                     opacity: .4;
                                 }
+                                
                                 &.active {
                                     color: #ffffff;
                                     background-color: #3baf85;
                                 }
                             }
                         }
+                        
                         .show {
                             > .nav-link {
                                 color: #ffffff;
@@ -127,6 +132,7 @@
                 
                 #barsTabContent.tab-content {
                     padding: 0;
+                    
                     .tab-pane {
                         .tabs-data-entry {
                             width: 100%;
@@ -134,9 +140,11 @@
                             overflow: scroll;
                             position: relative;
                             padding-top: .75rem;
+                            
                             .form-row {
                                 .form-group {
                                     margin-bottom: 1.2rem;
+                                    
                                     .form-row, .radio {
                                         height: calc(1.5em + 1.25rem + 5px);
                                     }
@@ -164,30 +172,35 @@
         .select2-container .select2-selection--single:focus, .select2-container--default.select2-container--focus .select2-selection--multiple:focus, .select2-container--default .select2-selection--multiple:focus, .select2-container--default .select2-search--dropdown .select2-search__field:focus {
             border-color: #3baf85;
         }
-    
+        
         .custom-toggle-light input:checked + .custom-toggle-slider {
             border-color: #3baf85;
+            
             &:before {
                 background: #3baf85;
             }
+            
             &:after {
                 color: #3baf85;
             }
         }
-    
+        
         .was-validated .form-control:valid, .form-control.is-valid, .was-validated .custom-select:valid, .custom-select.is-valid {
             border-color: #dee2e6 !important;
         }
         
         .ql-editor-parent {
             display: flex;
+            
             .ql-toolbar {
                 order: 1;
                 border-radius: 0 0.25rem 0.25rem 0;
                 flex-shrink: 0;
                 padding: 0.625rem 0.3rem;
+                
                 button {
                     padding: 0 0.15rem;
+                    
                     &:first-child {
                         margin-left: 0.1rem;
                     }
@@ -199,17 +212,20 @@
                 flex-grow: 1;
                 margin: 0;
                 min-width: 0;
+                
                 .ql-editor {
                     border-radius: 0.25rem 0 0 0.25rem;
                     min-height: 45px;
                     overflow: hidden;
                     padding: 0.52rem;
                     border-right: 0;
+                    
                     * {
                         //font-size: 0.875rem;
                         color: inherit;
                         font-weight: normal;
                     }
+                    
                     &.ql-blank::before {
                         color: inherit;
                         top: 0.82rem;
@@ -226,17 +242,17 @@
                 color: inherit;
                 opacity: .5;
             }
-    
+            
             &:-ms-input-placeholder {
                 color: inherit;
                 opacity: .5;
             }
-    
+            
             &::-ms-input-placeholder {
                 color: inherit;
                 opacity: .5;
             }
-    
+            
             &::placeholder {
                 color: inherit;
                 opacity: .5;
@@ -299,6 +315,11 @@
         position: fixed;
         left: 0;
         top: 0;
+    }
+    
+    .border-left-radius-0 {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
     }
 }
 

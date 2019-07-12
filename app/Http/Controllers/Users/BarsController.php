@@ -247,11 +247,16 @@ class BarsController extends Controller
      * Display the specified resource.
      *
      * @param \App\Models\Bar $bar
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function show(Bar $bar)
+    public function show(Bar $bar, Request $request)
     {
-        return view('users.track-partials.preview-html', compact('bar'));
+        if ($request->has('report')) {
+            return response('Report Here');
+        } else {
+            return view('users.track-partials.preview-html', compact('bar'));
+        }
     }
     
     /**
