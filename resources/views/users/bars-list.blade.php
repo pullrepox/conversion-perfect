@@ -53,7 +53,7 @@
                                             <td>0</td>
                                             <td>0</td>
                                             <td>{{ time_elapsed_string($bar->created_at) }}</td>
-                                            <td class="table-actions text-right">
+                                            <td class="table-actions text-right pl-0 pr-3" style="width: 90px;">
                                                 <a href="{{ route('bars.edit', ['bar' => $bar->id]) }}" class="table-action table-action-cp"
                                                    data-toggle="tooltip" data-original-title="Edit Bar">
                                                     <i class="fas fa-edit"></i>

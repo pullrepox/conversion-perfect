@@ -44,8 +44,6 @@
      * Show Main Bar when load window.
      */
     $(function () {
-        showHideMainBar(window.localStorage.getItem('closed-cp-bar') && window.localStorage.getItem('closed-cp-bar') === 'closed');
-        
         // console.log(window.__cp_bar_config.countdown_target);
         if (window.__cp_bar_config.bar.countdown !== 'none') {
             let countDownDate = new Date(window.__cp_bar_config.countdown_target.toLocaleString('en-US', {
@@ -54,10 +52,7 @@
             
             let x = setInterval(function () {
                 // Get today's date and time
-                let nowDate = new Date();
-                let now = new Date(nowDate.toLocaleString('en-US', {
-                    timeZone: window.__cp_bar_config.bar.countdown_timezone
-                })).getTime();
+                let now = new Date().getTime();
                 // Find the distance between now and the count down date
                 let distance = countDownDate - now;
                 
@@ -73,18 +68,18 @@
                 
                 if (days === 0 && hours === 0 && minutes === 0 && seconds === 0) {
                     distance = -1;
-                } else {
-                    if (window.__cp_bar_config.bar.countdown_format === 'dd') {
-                        $('#cp-bar--countdown-days').html((`0${days}`).slice(-2));
-                    }
-    
-                    if (window.__cp_bar_config.bar.countdown_format !== 'mm') {
-                        $('#cp-bar--countdown-hours').html((`0${hours}`).slice(-2));
-                    }
-    
-                    $('#cp-bar--countdown-minutes').html((`0${minutes}`).slice(-2));
-                    $('#cp-bar--countdown-seconds').html((`0${seconds}`).slice(-2));
                 }
+                
+                if (window.__cp_bar_config.bar.countdown_format === 'dd') {
+                    $('#cp-bar--countdown-days').html((`0${days}`).slice(-2));
+                }
+                
+                if (window.__cp_bar_config.bar.countdown_format !== 'mm') {
+                    $('#cp-bar--countdown-hours').html((`0${hours}`).slice(-2));
+                }
+                
+                $('#cp-bar--countdown-minutes').html((`0${minutes}`).slice(-2));
+                $('#cp-bar--countdown-seconds').html((`0${seconds}`).slice(-2));
                 
                 if (distance < 0) {
                     clearInterval(x);
@@ -104,6 +99,10 @@
             }, 1000);
         }
     });
+    
+    window.onload = function () {
+        showHideMainBar(window.localStorage.getItem('closed-cp-bar') && window.localStorage.getItem('closed-cp-bar') === 'closed');
+    };
     
     /**
      * close button click of main bar.

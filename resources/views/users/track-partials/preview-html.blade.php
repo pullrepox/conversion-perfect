@@ -33,11 +33,11 @@
         }
         
         #main-preview--cp-bar, #cta-preview--cp-bar {
-            -webkit-transition: all .5s ease-in-out .5s;
-            -moz-transition: all .5s ease-in-out .5s;
-            -ms-transition: all .5s ease-in-out .5s;
-            -o-transition: all .5s ease-in-out .5s;
-            transition: all .5s ease-in-out .5s;
+            -webkit-transition: top .7s, bottom .7s;
+            -moz-transition: top .7s, bottom .7s;
+            -ms-transition: top .7s, bottom .7s;
+            -o-transition: top .7s, bottom .7s;
+            transition: top .7s, bottom .7s;
         }
         
         input::-webkit-input-placeholder {
