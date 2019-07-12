@@ -39,7 +39,7 @@ class OverlaysController extends Controller
             $code = TinyMinify::html($html_code);
             
             header('Content-Type: application/javascript; charset=utf-8;');
-            exit('document.write("test")');
+            exit("document.write('" . addslashes($code) . "')");
 //            return view('users.track-partials.preview-scripts', compact('code'));
         } else {
             abort(404, 'No existing is matched Conversion Bar.');
