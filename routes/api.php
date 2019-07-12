@@ -18,7 +18,6 @@ Route::get('/', function () {
 
 Route::get('/reset-main-db', 'Api\DatabaseController@mainDbReset');
 Route::get('/cp-embed-script/{id}', 'Api\OverlaysController@getCBScriptCode')->name('conversion.get-scripts-code-for-embed');
-Route::get('/cp-embed-frame-code/{id}', 'Api\OverlaysController@getScriptFrameCode')->name('conversion.get-scripts-frame-code');
 Route::post('/cp-cta-set-subscribers/{bar_id}', 'Api\BarOptionsApiController@setSubscribersOfLists')->name('conversion.set-lead-capture-subscribers');
 
 //Route::middleware('auth:api')->get('/user', function (Request $request) {

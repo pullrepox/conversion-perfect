@@ -47,11 +47,4 @@ class OverlaysController extends Controller
         
         return response('No existing is matched Conversion Bar.');
     }
-    
-    public function getScriptFrameCode($id)
-    {
-        $bar = $this->barRepo->model()->find($id);
-        
-        return view('users.track-partials.preview-layout', compact('bar'));
-    }
 }
