@@ -1,7 +1,8 @@
 <div style="height: 233px; width: 100%; font-size: 20px; font-family: 'Nunito', sans-serif; text-align: center;position: relative;"
      :style="{
      'background-color': model.lead_capture.panel_color === '' ? 'transparent' : (model.lead_capture.panel_color.indexOf('#') > -1 ? model.lead_capture.panel_color : `#${model.lead_capture.panel_color}`),
-     'color': (model.lead_capture.subscribe_text_color.indexOf('#') > -1 ? model.lead_capture.subscribe_text_color : `#${model.lead_capture.subscribe_text_color}`)
+     'color': (model.lead_capture.subscribe_text_color.indexOf('#') > -1 ? model.lead_capture.subscribe_text_color : `#${model.lead_capture.subscribe_text_color}`),
+     'opacity': (model.appearance.opacity / 100)
      }">
     <div v-if="!model.appearance.close_button" style="position: absolute; top: -4px; right: 6px;font-size: 24px;z-index: 9999;"
          :style="{ color: model.headline_color.indexOf('#') > -1 ? model.headline_color : `#${model.headline_color}` }">&times;
