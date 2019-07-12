@@ -55,17 +55,17 @@ class AutoResponderController extends Controller
         $responder = Responder::findOrFail($data['responder_id']);
         if ($responder->title === 'Sendlane'){
             return $this->sendLane($data, $responder);
-        } else if ($responder->title === 'Mailchimp'){
+        } else if ($responder->title === 'MailChimp'){
             return $this->mailChimp($data, $responder);
-        } else if ($responder->title === 'Activecampaign'){
+        } else if ($responder->title === 'ActiveCampaign'){
             return $this->activeCampaign($data, $responder);
-        } else if ($responder->title === 'Mailerlite'){
+        } else if ($responder->title === 'MailerLite'){
             return $this->mailerLite($data, $responder);
-        } else if ($responder->title === 'Getresponse'){
+        } else if ($responder->title === 'GetResponse'){
             return $this->getResponse($data, $responder);
-        } else if ($responder->title === 'Sendinblue'){
+        } else if ($responder->title === 'Send In Blue'){
             return $this->sendInBlue($data, $responder);
-        } else if ($responder->title === 'Campaignmonitor'){
+        } else if ($responder->title === 'Campaign Monitor'){
             return $this->campaignMonitor($data, $responder);
         }
     }

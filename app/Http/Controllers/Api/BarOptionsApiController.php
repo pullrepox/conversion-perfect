@@ -47,7 +47,7 @@ class BarOptionsApiController extends Controller
             
             if ($integration->responder->title == 'Sendlane') {
                 $re = $this->barsRepo->getSendlaneList($integration);
-            } else if ($integration->responder->title == 'Mailchimp') {
+            } else if ($integration->responder->title == 'MailChimp') {
                 $re = $this->barsRepo->getMailChimpLists($integration);
             }
         }
@@ -83,7 +83,7 @@ class BarOptionsApiController extends Controller
                 $integration = Integration::with('responder')->where('user_id', auth()->user()->id)->where('responder_id', $bar->integration_type)->first();
                 if ($integration->responder->title == 'Sendlane') {
                     $this->barsRepo->setSendlaneList($integration, $subscriber_name, $subscriber_email, $list_id);
-                } else if ($integration->responder->title == 'Mailchimp') {
+                } else if ($integration->responder->title == 'MailChimp') {
                     $this->barsRepo->setMailChimpLists($integration, $subscriber_name, $subscriber_email, $list_id, $ip);
                 }
             }

@@ -2,7 +2,7 @@
 @section('styles')
 
 @endsection
-@section('title', 'Auto Responder Edit - ' . config('app.name'))
+@section('title', 'Autoresponder Edit - ' . config('app.name'))
 @section('content')
     <div class="main-content" id="autoresponder-edit-page">
         @include('layouts.page-header', ['data' => $header_data])
@@ -189,10 +189,10 @@
                 $('#friendly-name').show();
                 $('#api-key').show();
                 $('#hash').show();
-            } else if (value === 'Mailchimp'){
+            } else if (value === 'MailChimp'){
                 $('#friendly-name').show();
                 $('#api-key').show();
-            } else if (value === 'Activecampaign'){
+            } else if (value === 'ActiveCampaign'){
                 $('#friendly-name').show();
                 $('#url').show();
                 $('#api-key').show();
@@ -200,16 +200,16 @@
                 $('#friendly-name').show();
                 $('#url').show();
                 $('#api-key').show();
-            } else if (value === 'Mailerlite'){
+            } else if (value === 'MailerLite'){
                 $('#friendly-name').show();
                 $('#api-key').show();
-            } else if (value === 'Getresponse'){
+            } else if (value === 'GetResponse'){
                 $('#friendly-name').show();
                 $('#api-key').show();
-            } else if (value === 'Sendinblue'){
+            } else if (value === 'Send In Blue'){
                 $('#friendly-name').show();
                 $('#api-key').show();
-            } else if (value === 'Campaignmonitor'){
+            } else if (value === 'Campaign Monitor'){
                 $('#friendly-name').show();
                 $('#api-key').show();
             }

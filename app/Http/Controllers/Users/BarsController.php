@@ -316,7 +316,7 @@ class BarsController extends Controller
                 $re_data['result'] = '';
                 if ($integration->responder->title == 'Sendlane') {
                     $re_data = $this->barsRepo->getSendlaneList($integration);
-                } else if ($integration->responder->title == 'Mailchimp') {
+                } else if ($integration->responder->title == 'MailChimp') {
                     $re_data = $this->barsRepo->getMailChimpLists($integration);
                 }
                 

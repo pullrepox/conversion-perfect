@@ -1,5 +1,5 @@
 @extends('layouts.base')
-@section('title', 'Auto Responder - ' . config('app.name'))
+@section('title', 'Autoresponder - ' . config('app.name'))
 @section('content')
     <div class="main-content" id="auto-responder-list-panel">
         @include('layouts.page-header', ['data' => $header_data])
@@ -14,7 +14,7 @@
                             <div class="row">
                                 <h3 class="mb-0 col">Autoresponders</h3>
                                 <div class="col text-right">
-                                    <a href="{{ secure_redirect(route('autoresponder.create')) }}" class="btn btn-success btn-sm text-capitalize">New AutoResponder</a>
+                                    <a href="{{ secure_redirect(route('autoresponder.create')) }}" class="btn btn-success btn-sm text-capitalize">New Autoresponder</a>
                                 </div>
                             </div>
                         </div>
