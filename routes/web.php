@@ -22,8 +22,6 @@ Route::group(['domain' => '{sub_domain}.cnvp.in'], function () {
     Route::get('/{link_name}', 'Api/OverlaysController@index');
 });
 
-Route::get('/cp-embed-script/{id}', 'Api\OverlaysController@getCBScriptCode')->name('conversion.get-scripts-code-for-embed');
-
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', 'Users\DashboardController@index')->name('customer.dashboard');
     Route::get('/sub-domain-register', 'Users\DashboardController@subDomainRegister');
