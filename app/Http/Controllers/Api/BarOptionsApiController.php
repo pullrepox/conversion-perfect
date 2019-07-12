@@ -56,6 +56,12 @@ class BarOptionsApiController extends Controller
         return response()->json($re);
     }
     
+    /**
+     * @param $bar_id
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
     public function setSubscribersOfLists($bar_id, Request $request)
     {
         $bar = $this->barsRepo->model()->find($bar_id);
@@ -73,6 +79,13 @@ class BarOptionsApiController extends Controller
                 $subscriber->user_name = $subscriber_name;
                 $subscriber->ip_address = $ip;
                 $subscriber->save();
+            } else if ($bar->integration_type != 'none') {
+                $integration = Integration::with('responder')->where('user_id', auth()->user()->id)->where('responder_id', $bar->integration_type)->first();
+                if ($integration->responder->title == 'Sendlane') {
+                    $this->barsRepo->setSendlaneList($integration, $subscriber_name, $subscriber_email, $list_id);
+                } else if ($integration->responder->title == 'Mailchimp') {
+                    $this->barsRepo->setMailChimpLists($integration, $subscriber_name, $subscriber_email, $list_id, $ip);
+                }
             }
         }
         

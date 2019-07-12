@@ -5,7 +5,6 @@ namespace App\Http\Repositories;
 
 
 use App\Models\Bar;
-use App\Models\EmailList;
 use DrewM\MailChimp\MailChimp;
 
 class BarsRepository extends Repository
@@ -58,6 +57,34 @@ class BarsRepository extends Repository
         }
     }
     
+    public function setSendlaneList($integration, $name, $email, $list_id)
+    {
+        $api_key = $integration['api_key'];
+        $hash = $integration['hash'];
+        $url = $integration->responder->base_url . 'list-subscribers-add';
+        $nameAry = explode(' ', $name);
+        $f_name = $nameAry[0];
+        $l_name = isset($nameAry[1]) ? $nameAry[1] : '';
+        
+        $data = [
+            'api'     => $api_key,
+            'hash'    => $hash,
+            'email'   => $f_name . ' ' . $l_name . '<' . $email . '>',
+            'list_id' => $list_id,
+        ];
+        
+        try {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_exec($ch);
+            curl_close($ch);
+        } catch (\Exception $e) {
+        }
+    }
+    
     /**
      * @param $integration
      * @return array
@@ -99,22 +126,46 @@ class BarsRepository extends Repository
         ];
     }
     
+    /**
+     * @param $integration
+     * @param $name
+     * @param $email
+     * @param $list_id
+     * @param $ip
+     * @throws \Exception
+     */
+    public function setMailChimpLists($integration, $name, $email, $list_id, $ip)
+    {
+        $nameAry = explode(' ', $name);
+        $f_name = $nameAry[0];
+        $l_name = isset($nameAry[1]) ? $nameAry[1] : '';
+        $api_key = $integration['api_key'];
+        $MailChimp = new MailChimp($api_key);
+        $MailChimp->verify_ssl = false;
+        $MailChimp->post(("lists/" . $list_id . "/members"), [
+            'email_address' => $email,
+            'status'        => 'subscribed',
+            'merge_fields'  => ['FNAME' => $f_name, 'LNAME' => $l_name],
+            'ip_signup'     => $ip
+        ]);
+    }
+    
     public function getConversionPerfectLists()
     {
         $lists = auth()->user()->email_lists;
-    
+        
         $reMsg = [[
             'key'  => '',
             'name' => '-- Choose List --'
         ]];
-    
+        
         $i = 1;
         foreach ($lists as $list) {
             $reMsg[$i]['key'] = $list->id;
             $reMsg[$i]['name'] = $list->list_name;
             $i++;
         }
-    
+        
         return [
             'result'  => 'success',
             'message' => $reMsg
