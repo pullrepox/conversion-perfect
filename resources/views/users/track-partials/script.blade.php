@@ -247,71 +247,79 @@
                 }
             }
         }
-        
-        document.querySelector('#main--cp-bar-close-btn-' + bar_id).addEventListener('click', function () {
-            showHideMainBar(true);
-        });
-        
-        document.querySelector('#cta--cp-bar-close-btn-' + bar_id).addEventListener('click', function () {
-            showHideCtaBar(true);
-        });
-        
-        document.querySelector('#cp--bar-action-btn-' + bar_id).addEventListener('click', function () {
-            if (__cp_cf[bar_id].bar.button_action === 'open_click_url') {
-                window.open(__cp_cf[bar_id].bar.button_click_url, 'Conversion Perfect', '_blank');
+    
+        if (document.querySelector('#main--cp-bar-close-btn-' + bar_id)) {
+            document.querySelector('#main--cp-bar-close-btn-' + bar_id).addEventListener('click', function () {
                 showHideMainBar(true);
-            } else {
-                setTimeout(function () {
-                    showHideMainBar(true);
-                }, (__cp_cf[bar_id].bar.autohide_delay_seconds * 1000));
-            }
-            
-            if (__cp_cf[bar_id].bar.integration_type !== 'none') {
-                showHideCtaBar((window.localStorage.getItem('closed-cta-cp-bar-' + bar_id) && window.localStorage.getItem('closed-cta-cp-bar-' + bar_id) === 'closed'));
-            }
-        });
+            });
+        }
         
-        document.querySelector('#cta--cp-bar-button-' + bar_id).addEventListener('click', function () {
-            if (document.getElementById('lead_capture_cta_name__cp_bar_' + bar_id).value === ''
-                || document.getElementById('lead_capture_cta_email__cp_bar_' + bar_id).value === '') {
-                alert('Name and Email field is required.');
-                document.getElementById('lead_capture_cta_name__cp_bar_' + bar_id).focus();
-                return false;
-            }
-            
-            var form = document.getElementById('cp-bar--cta-form-' + bar_id);
-            var params = {};
-            for (var i = 0; i < form.elements.length; i++) {
-                if (form.elements[i].nodeName === 'INPUT') {
-                    params[form.elements[i].getAttribute('name')] = form.elements[i].value;
-                }
-            }
-            
-            var xml_http;
-            if (window.XMLHttpRequest) {
-                xml_http = new XMLHttpRequest();
-            } else {
-                xml_http = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xml_http.onreadystatechange = function () {
-                if (__cp_cf[bar_id].bar.after_submit === 'show_message' || __cp_cf[bar_id].bar.after_submit === 'show_message_hide_bar') {
-                    document.getElementById('cp-bar--cta-content-section-' + bar_id).innerHTML = '<div style="font-weight: bold;">' + __cp_cf[bar_id].bar.message + '</div>';
-                    if (__cp_cf[bar_id].bar.after_submit === 'show_message_hide_bar') {
-                        setTimeout(function () {
-                            showHideCtaBar(true);
-                        }, (__cp_cf[bar_id].bar.autohide_delay_seconds * 1000));
-                    }
+        if (document.querySelector('#cta--cp-bar-close-btn-' + bar_id)) {
+            document.querySelector('#cta--cp-bar-close-btn-' + bar_id).addEventListener('click', function () {
+                showHideCtaBar(true);
+            });
+        }
+        
+        if (document.querySelector('#cp--bar-action-btn-' + bar_id)) {
+            document.querySelector('#cp--bar-action-btn-' + bar_id).addEventListener('click', function () {
+                if (__cp_cf[bar_id].bar.button_action === 'open_click_url') {
+                    window.open(__cp_cf[bar_id].bar.button_click_url, 'Conversion Perfect', '_blank');
+                    showHideMainBar(true);
                 } else {
-                    showHideCtaBar(true);
-                    location.href = __cp_cf[bar_id].bar.redirect_url;
+                    setTimeout(function () {
+                        showHideMainBar(true);
+                    }, (__cp_cf[bar_id].bar.autohide_delay_seconds * 1000));
                 }
-            };
-            xml_http.open("POST", form.getAttribute('action'));
-            xml_http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-            xml_http.setRequestHeader('Content-type', 'application/json');
-            xml_http.setRequestHeader('X-CSRF-TOKEN', __cp_cf[bar_id].token);
-            xml_http.send(JSON.stringify(params));
-        });
+                
+                if (__cp_cf[bar_id].bar.integration_type !== 'none') {
+                    showHideCtaBar((window.localStorage.getItem('closed-cta-cp-bar-' + bar_id) && window.localStorage.getItem('closed-cta-cp-bar-' + bar_id) === 'closed'));
+                }
+            });
+        }
+    
+        if (document.querySelector('#cta--cp-bar-button-' + bar_id)) {
+            document.querySelector('#cta--cp-bar-button-' + bar_id).addEventListener('click', function () {
+                if (document.getElementById('lead_capture_cta_name__cp_bar_' + bar_id).value === ''
+                    || document.getElementById('lead_capture_cta_email__cp_bar_' + bar_id).value === '') {
+                    alert('Name and Email field is required.');
+                    document.getElementById('lead_capture_cta_name__cp_bar_' + bar_id).focus();
+                    return false;
+                }
+        
+                var form = document.getElementById('cp-bar--cta-form-' + bar_id);
+                var params = {};
+                for (var i = 0; i < form.elements.length; i++) {
+                    if (form.elements[i].nodeName === 'INPUT') {
+                        params[form.elements[i].getAttribute('name')] = form.elements[i].value;
+                    }
+                }
+        
+                var xml_http;
+                if (window.XMLHttpRequest) {
+                    xml_http = new XMLHttpRequest();
+                } else {
+                    xml_http = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xml_http.onreadystatechange = function () {
+                    if (__cp_cf[bar_id].bar.after_submit === 'show_message' || __cp_cf[bar_id].bar.after_submit === 'show_message_hide_bar') {
+                        document.getElementById('cp-bar--cta-content-section-' + bar_id).innerHTML = '<div style="font-weight: bold;">' + __cp_cf[bar_id].bar.message + '</div>';
+                        if (__cp_cf[bar_id].bar.after_submit === 'show_message_hide_bar') {
+                            setTimeout(function () {
+                                showHideCtaBar(true);
+                            }, (__cp_cf[bar_id].bar.autohide_delay_seconds * 1000));
+                        }
+                    } else {
+                        showHideCtaBar(true);
+                        location.href = __cp_cf[bar_id].bar.redirect_url;
+                    }
+                };
+                xml_http.open("POST", form.getAttribute('action'));
+                xml_http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                xml_http.setRequestHeader('Content-type', 'application/json');
+                xml_http.setRequestHeader('X-CSRF-TOKEN', __cp_cf[bar_id].token);
+                xml_http.send(JSON.stringify(params));
+            });
+        }
         
         function setCookie(cname, c_value, ex_days) {
             var d = new Date();
@@ -320,7 +328,7 @@
             document.cookie = cname + "=" + c_value + ";" + expires + ";path=/";
         }
         
-        function getCookie(cname) {
+        function getCookie(cname) {cta--cp-bar-close-btn
             var name = cname + "=";
             var ca = document.cookie.split(';');
             for (var i = 0; i < ca.length; i++) {

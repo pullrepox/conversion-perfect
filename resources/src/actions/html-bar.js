@@ -189,60 +189,68 @@
     /**
      * close button click of main bar.
      */
-    $('#main--cp-bar-close-btn-' + bar_id).on('click', function () {
-        showHideMainBar(true);
-    });
+    if (document.querySelector('#main--cp-bar-close-btn-' + bar_id)) {
+        $('#main--cp-bar-close-btn-' + bar_id).on('click', function () {
+            showHideMainBar(true);
+        });
+    }
     
     /**
      * close button click of cta bar.
      */
-    $('#cta--cp-bar-close-btn-' + bar_id).on('click', function () {
-        showHideCtaBar(true);
-    });
+    if (document.querySelector('#cta--cp-bar-close-btn-' + bar_id)) {
+        $('#cta--cp-bar-close-btn-' + bar_id).on('click', function () {
+            showHideCtaBar(true);
+        });
+    }
     
     /**
      * main bar button click.
      */
-    $('#cp--bar-action-btn-' + bar_id).on('click', function () {
-        if (__cp_cf[bar_id].bar.button_action === 'open_click_url') {
-            window.open(__cp_cf[bar_id].bar.button_click_url, 'Conversion Perfect', '_blank');
-            showHideMainBar(true);
-        } else {
-            setTimeout(function () {
+    if (document.querySelector('#cp--bar-action-btn-' + bar_id)) {
+        $('#cp--bar-action-btn-' + bar_id).on('click', function () {
+            if (__cp_cf[bar_id].bar.button_action === 'open_click_url') {
+                window.open(__cp_cf[bar_id].bar.button_click_url, 'Conversion Perfect', '_blank');
                 showHideMainBar(true);
-            }, (__cp_cf[bar_id].bar.autohide_delay_seconds * 1000));
-        }
-        
-        if (__cp_cf[bar_id].bar.integration_type !== 'none') {
-            showHideCtaBar((window.localStorage.getItem('closed-cta-cp-bar-' + bar_id) && window.localStorage.getItem('closed-cta-cp-bar-' + bar_id) === 'closed'));
-        }
-    });
+            } else {
+                setTimeout(function () {
+                    showHideMainBar(true);
+                }, (__cp_cf[bar_id].bar.autohide_delay_seconds * 1000));
+            }
+            
+            if (__cp_cf[bar_id].bar.integration_type !== 'none') {
+                showHideCtaBar((window.localStorage.getItem('closed-cta-cp-bar-' + bar_id) && window.localStorage.getItem('closed-cta-cp-bar-' + bar_id) === 'closed'));
+            }
+        });
+    }
     
-    $('#cta--cp-bar-button-' + bar_id).on('click', function () {
-        if ($('#lead_capture_cta_name__cp_bar_' + bar_id).val() === '' || $('#lead_capture_cta_email__cp_bar_' + bar_id).val() === '') {
-            alert('Name and Email field is required.');
-            $('#lead_capture_cta_name__cp_bar_' + bar_id).focus();
-            return false;
-        }
+    if (document.querySelector('#cta--cp-bar-button-' + bar_id)) {
+        $('#cta--cp-bar-button-' + bar_id).on('click', function () {
+            if ($('#lead_capture_cta_name__cp_bar_' + bar_id).val() === '' || $('#lead_capture_cta_email__cp_bar_' + bar_id).val() === '') {
+                alert('Name and Email field is required.');
+                $('#lead_capture_cta_name__cp_bar_' + bar_id).focus();
+                return false;
+            }
         
-        $.post($('#cp-bar--cta-form-' + bar_id).attr('action'), $('#cp-bar--cta-form-' + bar_id).serialize())
-            .done((r) => {
-                console.log(r);
-            })
-            .always(() => {
-                if (__cp_cf[bar_id].bar.after_submit === 'show_message' || __cp_cf[bar_id].bar.after_submit === 'show_message_hide_bar') {
-                    $('#cp-bar--cta-content-section-' + bar_id).html(`<div style="font-weight: bold;">${__cp_cf[bar_id].bar.message}</div>`);
-                    if (__cp_cf[bar_id].bar.after_submit === 'show_message_hide_bar') {
-                        setTimeout(function () {
-                            showHideCtaBar(true);
-                        }, (__cp_cf[bar_id].bar.autohide_delay_seconds * 1000));
+            $.post($('#cp-bar--cta-form-' + bar_id).attr('action'), $('#cp-bar--cta-form-' + bar_id).serialize())
+                .done((r) => {
+                    console.log(r);
+                })
+                .always(() => {
+                    if (__cp_cf[bar_id].bar.after_submit === 'show_message' || __cp_cf[bar_id].bar.after_submit === 'show_message_hide_bar') {
+                        $('#cp-bar--cta-content-section-' + bar_id).html(`<div style="font-weight: bold;">${__cp_cf[bar_id].bar.message}</div>`);
+                        if (__cp_cf[bar_id].bar.after_submit === 'show_message_hide_bar') {
+                            setTimeout(function () {
+                                showHideCtaBar(true);
+                            }, (__cp_cf[bar_id].bar.autohide_delay_seconds * 1000));
+                        }
+                    } else {
+                        showHideCtaBar(true);
+                        location.href = __cp_cf[bar_id].bar.redirect_url;
                     }
-                } else {
-                    showHideCtaBar(true);
-                    location.href = __cp_cf[bar_id].bar.redirect_url;
-                }
-            });
-    });
+                });
+        });
+    }
     
     function setCookie(cname, cvalue, exdays) {
         let d = new Date();
