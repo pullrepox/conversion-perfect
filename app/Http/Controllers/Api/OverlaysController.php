@@ -38,9 +38,8 @@ class OverlaysController extends Controller
             $html_code = view('users.track-partials.script', compact('bar'));
             $code = TinyMinify::html($html_code);
             
-            return view('users.track-partials.preview-scripts', compact('code'), [
-                'Content-Type' => 'application/javascript; charset=utf-8;'
-            ]);
+            header('Content-Type: application/javascript; charset=utf-8;');
+            return view('users.track-partials.preview-scripts', compact('code'));
         } else {
             abort(404, 'No existing is matched Conversion Bar.');
         }
