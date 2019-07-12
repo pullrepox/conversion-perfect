@@ -119,7 +119,7 @@
 <script type="text/javascript" src="{{ url(mix('js/manifest.js')) }}"></script>
 <script type="text/javascript" src="{{ url(mix('js/vendor.js')) }}"></script>
 <script type="text/javascript" src="{{ url(mix('js/html-bar.js')) }}"></script>
-{{--<script data-cfasync="false" src="https://app.conversionperfect.com/cp-embed-script/8"></script>--}}
-{{--<script data-cfasync="false" src="//localhost:3000/cp-embed-script/3"></script>--}}
+{{--<script data-cfasync="false" src="https://app.conversionperfect.com/api/cp-embed-script/8"></script>--}}
+{{--<script data-cfasync="false" src="//localhost:3000/api/cp-embed-script/3"></script>--}}
 </body>
 </html>
