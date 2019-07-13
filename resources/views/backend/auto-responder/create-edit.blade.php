@@ -20,9 +20,6 @@
                             <div class="col text-right">
                                 <button type="submit" class="btn btn-success btn-sm text-capitalize">{{ $flag ? 'Create' : 'Update' }}</button>
                                 <a href="{{ secure_redirect(route('autoresponder.index')) }}" class="btn btn-light btn-sm text-capitalize">Cancel</a>
-                                @if (!$flag)
-                                    <button type="button" class="btn btn-sm btn-primary text-capitalize">Archive</button>
-                                @endif
                             </div>
                         </div>
                     </div>
