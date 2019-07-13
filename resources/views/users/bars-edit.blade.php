@@ -39,6 +39,31 @@
                     </div>
                 </div>
             </div>
+            <div class="modal fade" id="template-save-modal" tabindex="-1" role="dialog" aria-labelledby="template-save-modal" aria-hidden="true">
+                <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h6 class="modal-title" id="modal-title-default">Save as Template</h6>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label class="form-control-label ml-1" for="template_name">Template Name</label>
+                                <input type="text" class="form-control" id="template_name" v-model="model.template_name" placeholder="Template Name"/>
+                                <span class="invalid-feedback" role="alert">
+                                    @{{ error_message }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success bg-cp text-capitalize" @click="saveAsTemplate">Save</button>
+                            <button type="button" class="btn btn-light ml-auto" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         @include('layouts.footer')
     </div>
@@ -148,7 +173,8 @@
                     opt_in_email_placeholder: "{{ old('opt_in_email_placeholder') ? old('opt_in_email_placeholder') : ($flag ? 'you@yourdomain.com' : $bar->opt_in_email_placeholder) }}",
                     powered_by_label: "{{ old('powered_by_label') ? old('powered_by_label') : ($flag ? 'Powered by' : $bar->powered_by_label) }}",
                     disclaimer: "{{ old('disclaimer') ? old('disclaimer') : ($flag ? 'We respect your privacy and will never share your information.' : $bar->disclaimer) }}",
-                }
+                },
+                template_name: "{{ $flag ? '' : ($bar->template_flag ? $bar->template_name : '') }}"
             }
         };
     </script>

@@ -52,12 +52,13 @@ new Vue({
                 opt_in_email_placeholder: 'you@yourdomain.com', powered_by_label: 'Powered by', disclaimer: 'We respect your privacy and will never share your information.',
             },
             auto_responder_list: [],
-            group_list: []
+            group_list: [],
+            template_name: ''
         },
         model: {
             sel_tab: 'main',
             friendly_name: '', position: 'top_sticky', group_id: '0', headline: [{attributes: {}, insert: 'Your Headline'}], headline_color: '#ffffff', background_color: '#3BAF85',
-            show_bar_type: 'immediate', frequency: 'every', delay_in_seconds: 3, scroll_point_percent: 10, auto_responder_list: [], group_list: []
+            show_bar_type: 'immediate', frequency: 'every', delay_in_seconds: 3, scroll_point_percent: 10, auto_responder_list: [], group_list: [], template_name: ''
         },
         showUpload: false,
         uploadPercentage: 0,
@@ -647,6 +648,7 @@ new Vue({
             if (this.group_name === '' || this.group_name === null) {
                 this.error_message = 'Group Name is required';
                 $('#group_name').addClass('is-invalid').focus();
+                return;
             }
             
             $('#group_name').removeClass('is-invalid');
@@ -665,6 +667,24 @@ new Vue({
             }).catch((e) => {
                 this.error_message = 'Internal Server Error';
                 $('#group_name').addClass('is-invalid').focus();
+            });
+        },
+        saveAsTemplate() {
+            if (this.model.template_name === '' || this.model.template_name === null) {
+                this.error_message = 'Template Name is required';
+                $('#template_name').addClass('is-invalid').focus();
+                return;
+            }
+            
+            axios.put(`/bars/${window._bar_opt_ary.bar_id}`, {
+                template_name: this.model.template_name,
+                flag: 'template'
+            }).then((r) => {
+                $('#template-save-modal').modal('hide');
+                this.commonNotification('success', 'Successfully saved.');
+            }).catch((e) => {
+                $('#template-save-modal').modal('hide');
+                this.commonNotification('danger', 'Internal Server Error. Please check your connection.');
             });
         }
     }

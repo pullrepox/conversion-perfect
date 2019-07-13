@@ -365,11 +365,16 @@ class BarsController extends Controller
                     'result' => 'success',
                     'id'     => $duplicate_row->id
                 ]);
-            } else {
-                return response()->json([
-                    'result' => 'success'
-                ]);
+            } elseif ($request->input('flag') == 'template') {
+                $bar->template_flag = 1;
+                $bar->template_name = $request->input('template_name');
+                
+                $bar->save();
             }
+            
+            return response()->json([
+                'result' => 'success'
+            ]);
         } else {
             $rules = [
                 'friendly_name'    => 'required|max:100',

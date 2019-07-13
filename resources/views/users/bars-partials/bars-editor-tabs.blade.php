@@ -12,6 +12,7 @@
                         <i class="fas fa-ellipsis-v"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                        <a class="dropdown-item" href="javascript: void(0)" data-toggle="modal" data-target="#template-save-modal">Save as Template</a>
                         <a class="dropdown-item" href="#">Reset Stats</a>
                         <a class="dropdown-item" href="#">Archive</a>
                     </div>
@@ -24,7 +25,7 @@
             <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="barsTab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link mb-sm-3 mb-md-0" :class="{'active': model.sel_tab=== 'main'}" id="tabs-main-tab" href="javascript: void(0)" data-toggle="pill"
-                       role="tab" aria-controls="tabs-main" :aria-selected="model.sel_tab=== 'main' ? 'true' : 'false'" @click="tabClick($event, 'main')">
+                       role="tab" aria-controls="tabs-main" :aria-selected="model.sel_tab === 'main' ? 'true' : 'false'" @click="tabClick($event, 'main')">
                         Main
                     </a>
                 </li>
