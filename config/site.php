@@ -14,4 +14,6 @@ return [
     'link_check_min'   => 10,
     'db_prefix'        => '',
     'home_url'         => (env('APP_ENV') == 'dev' ? 'http://app.conversionperfectdev.test' : 'https://conversionperfect.com'),
+    'sys_temp_creators'   => ((env('SYSTEM_TEMPLATE_CREATORS') && env('SYSTEM_TEMPLATE_CREATORS') != '') ?
+        env('SYSTEM_TEMPLATE_CREATORS') : "rmadison@lightspeedtech.com,daddy@themadisons.ca")
 ];

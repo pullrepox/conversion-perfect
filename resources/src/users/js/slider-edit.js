@@ -437,6 +437,7 @@ new Vue({
                 if (this.model.sel_tab === 'main') {
                     save_data = {
                         friendly_name: this.model.friendly_name,
+                        template_name: this.model.template_name,
                         position: this.model.position,
                         group_id: this.model.group_id,
                         headline: this.model.headline,

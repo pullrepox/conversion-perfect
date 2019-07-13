@@ -18,7 +18,7 @@ class Bar extends Model
         'integration_type', 'list', 'after_submit', 'message', 'autohide_delay_seconds', 'redirect_url',
         'opt_in_type', 'opt_in_youtube_url', 'opt_in_vimeo_url', 'opt_in_video_code', 'opt_in_video_auto_play', 'image_url', 'image_upload', 'call_to_action', 'panel_color',
         'subscribe_text', 'subscribe_text_color', 'opt_in_button_type', 'opt_in_button_label', 'opt_in_button_bg_color', 'opt_in_button_label_color', 'opt_in_button_animation',
-        'days_label', 'hours_label', 'minutes_label', 'seconds_label', 'opt_in_name_placeholder', 'opt_in_email_placeholder', 'powered_by_label', 'disclaimer'
+        'days_label', 'hours_label', 'minutes_label', 'seconds_label', 'opt_in_name_placeholder', 'opt_in_email_placeholder', 'powered_by_label', 'disclaimer', 'template_name'
     ];
     
     public function user()

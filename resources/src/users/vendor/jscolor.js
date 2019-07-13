@@ -174,10 +174,10 @@ var jsc = {
 			// IE
 			document.attachEvent('onreadystatechange', function () {
 				if (document.readyState === 'complete') {
-					document.detachEvent('onreadystatechange', arguments.callee);
+					document.detachEvent('onreadystatechange', arguments);
 					fireOnce();
 				}
-			})
+			});
 
 			// Fallback
 			window.attachEvent('onload', fireOnce);

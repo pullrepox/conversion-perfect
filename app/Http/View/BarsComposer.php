@@ -42,9 +42,12 @@ class BarsComposer
             }
         }
         
+        $sys_temp_avail = array_search(auth()->user()->email, explode(',', config('site.sys_temp_creators'))) !== false;
+        
         $view->with('group_list', $group_list);
         $view->with('timezone_list', $timezone_list);
         $view->with('custom_links', $custom_links);
         $view->with('responder_list', $responder_list);
+        $view->with('sys_temp_avail', $sys_temp_avail);
     }
 }

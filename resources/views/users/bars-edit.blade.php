@@ -9,7 +9,8 @@
             <form :action="form_action" method="post" id="edit-form" class="needs-validation" enctype="multipart/form-data" novalidate>
                 @csrf
                 <input type="hidden" name="_method" value="PUT" v-if="!create_edit"/>
-                <input type="hidden" id="sel_tab" name="sel_tab" v-model="model.sel_tab"/>
+                <input type="hidden" name="sel_tab" v-model="model.sel_tab"/>
+                <input type="hidden" name="template_name" v-model="model.template_name"/>
                 {{-- bar Base Content --}}
                 @include('users.bars-partials.bars-editor-tabs')
             </form>
@@ -174,7 +175,7 @@
                     powered_by_label: "{{ old('powered_by_label') ? old('powered_by_label') : ($flag ? 'Powered by' : $bar->powered_by_label) }}",
                     disclaimer: "{{ old('disclaimer') ? old('disclaimer') : ($flag ? 'We respect your privacy and will never share your information.' : $bar->disclaimer) }}",
                 },
-                template_name: "{{ $flag ? '' : ($bar->template_flag ? $bar->template_name : '') }}"
+                template_name: "{{ $flag ? '' : ($bar->template_flag ? ($bar->template_name == '' ? ($sys_temp_avail ? $bar->friendly_name : '') : $bar->template_name) : '') }}"
             }
         };
     </script>
