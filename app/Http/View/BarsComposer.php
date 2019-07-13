@@ -42,7 +42,7 @@ class BarsComposer
             }
         }
         
-        $sys_temp_avail = array_search(auth()->user()->email, explode(',', config('site.sys_temp_creators'))) !== false;
+        $sys_temp_avail = array_search(auth()->user()->email, explode(',', trim(config('site.sys_temp_creators')))) !== false;
         
         $view->with('group_list', $group_list);
         $view->with('timezone_list', $timezone_list);

@@ -103,7 +103,7 @@ class BarOptionsController extends Controller
             $rules['headline'] = 'required';
             $rules['headline_color'] = 'required';
             $rules['background_color'] = 'required';
-            if (array_search(auth()->user()->email, explode(',', config('site.sys_temp_creators'))) !== false) {
+            if (array_search(auth()->user()->email, explode(',', trim(config('site.sys_temp_creators')))) !== false) {
                 $bar->template_flag = 1;
                 $params['template_name'] = !is_null($params['template_name']) ? $params['template_name'] : $params['friendly_name'];
             } else {
@@ -204,7 +204,7 @@ class BarOptionsController extends Controller
         $bar->fill($params);
         
         if ($opt_key == 'main') {
-            if (array_search(auth()->user()->email, explode(',', config('site.sys_temp_creators'))) !== false) {
+            if (array_search(auth()->user()->email, explode(',', trim(config('site.sys_temp_creators')))) !== false) {
                 $bar->template_flag = 1;
                 $bar->template_name = !is_null($request->input('template_name')) ? $request->input('template_name') : $params['friendly_name'];
             } else {

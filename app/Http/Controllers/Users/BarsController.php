@@ -228,7 +228,7 @@ class BarsController extends Controller
         $bar = new Bar();
         $bar->fill($params);
         $bar->user_id = auth()->user()->id;
-        if (array_search(auth()->user()->email, explode(',', config('site.sys_temp_creators'))) !== false) {
+        if (array_search(auth()->user()->email, explode(',', trim(config('site.sys_temp_creators')))) !== false) {
             $bar->template_flag = 1;
             $bar->template_name = !is_null($request->input('template_name')) ? $request->input('template_name') : $params['friendly_name'];
         } else {
@@ -533,7 +533,7 @@ class BarsController extends Controller
             unset($params['sel_tab']);
             $bar->fill($params);
     
-            if (array_search(auth()->user()->email, explode(',', config('site.sys_temp_creators'))) !== false) {
+            if (array_search(auth()->user()->email, explode(',', trim(config('site.sys_temp_creators')))) !== false) {
                 $bar->template_flag = 1;
                 $bar->template_name = !is_null($request->input('template_name')) ? $request->input('template_name') : $params['friendly_name'];
             } else {
