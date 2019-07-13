@@ -20,7 +20,7 @@ class BarOptionsApiController extends Controller
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Exception
+     * @throws
      */
     public function getAutoResponderLists(Request $request)
     {
@@ -49,6 +49,16 @@ class BarOptionsApiController extends Controller
                 $re = $this->barsRepo->getSendlaneList($integration);
             } else if ($integration->responder->title == 'MailChimp') {
                 $re = $this->barsRepo->getMailChimpLists($integration);
+            } else if ($integration->responder->title == 'ActiveCampaign') {
+                $re = $this->barsRepo->getActiveCampaignList($integration);
+            } else if ($integration->responder->title == 'Campaign Monitor') {
+                $re = $this->barsRepo->getCampaignMonitorLists($integration);
+            } else if ($integration->responder->title == 'GetResponse') {
+                $re = $this->barsRepo->getResponseCampaigns($integration);
+            } else if ($integration->responder->title == 'MailerLite') {
+                $re = $this->barsRepo->getMailerLiteGroups($integration);
+            } else if ($integration->responder->title == 'Send In Blue') {
+                $re = $this->barsRepo->getSendInBlueLists($integration);
             }
         }
         
@@ -60,7 +70,7 @@ class BarOptionsApiController extends Controller
      * @param $bar_id
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Exception
+     * @throws
      */
     public function setSubscribersOfLists($bar_id, Request $request)
     {
@@ -85,6 +95,16 @@ class BarOptionsApiController extends Controller
                     $this->barsRepo->setSendlaneList($integration, $subscriber_name, $subscriber_email, $list_id);
                 } else if ($integration->responder->title == 'MailChimp') {
                     $this->barsRepo->setMailChimpLists($integration, $subscriber_name, $subscriber_email, $list_id, $ip);
+                } else if ($integration->responder->title == 'ActiveCampaign') {
+                    $this->barsRepo->setActiveCampaignLists($integration, $subscriber_name, $subscriber_email, $list_id, $ip);
+                } else if ($integration->responder->title == 'Campaign Monitor') {
+                    $this->barsRepo->setCampaignMonitorLists($integration, $subscriber_name, $subscriber_email, $list_id, $ip);
+                } else if ($integration->responder->title == 'GetResponse') {
+                    $this->barsRepo->setGetResponseContact($integration, $subscriber_email, $list_id);
+                } else if ($integration->responder->title == 'MailerLite') {
+                    $this->barsRepo->setMailerLiteSubscribers($integration, $subscriber_name, $subscriber_email, $list_id);
+                } else if ($integration->responder->title == 'Send In Blue') {
+                    $this->barsRepo->setSendInBlueSubscribers($integration, $subscriber_name, $subscriber_email, $list_id);
                 }
             }
         }

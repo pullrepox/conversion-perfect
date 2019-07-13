@@ -144,6 +144,12 @@ new Vue({
         if (!this.changed_status && this.model.sel_tab !== 'main') {
             this.changeStatusVal();
         }
+        
+        window.onbeforeunload = function () {
+            if (vm.changed_status) {
+                return 'Please Save Changed Data.';
+            }
+        };
     },
     methods: {
         changeStatusVal() {

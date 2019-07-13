@@ -6,6 +6,15 @@ namespace App\Http\Repositories;
 
 use App\Models\Bar;
 use DrewM\MailChimp\MailChimp;
+use Getresponse\Sdk\GetresponseClientFactory;
+use Getresponse\Sdk\Operation\Campaigns\GetCampaigns\GetCampaigns;
+use Getresponse\Sdk\Operation\Contacts\CreateContact\CreateContact;
+use Getresponse\Sdk\Operation\Model\CampaignReference;
+use Getresponse\Sdk\Operation\Model\NewContact;
+use GuzzleHttp\Client;
+use MailerLiteApi\MailerLite;
+use SendinBlue\Client\Api\ContactsApi;
+use SendinBlue\Client\Configuration;
 
 class BarsRepository extends Repository
 {
@@ -170,5 +179,337 @@ class BarsRepository extends Repository
             'result'  => 'success',
             'message' => $reMsg
         ];
+    }
+    
+    /**
+     * @param $integration
+     * @return array
+     */
+    public function getActiveCampaignList($integration)
+    {
+        $url = $integration['url'];
+        $api_key = $integration['api_key'];
+        
+        $ac = new \ActiveCampaign($url, $api_key);
+        
+        $list_params = [
+            'ids'  => 'all',
+            'full' => '0'
+        ];
+        
+        $lists = $ac->api('list/list', $list_params);
+        
+        $reMsg = [[
+            'key'  => '',
+            'name' => '-- Choose List --'
+        ]];
+        
+        if ($lists) {
+            $i = 1;
+            foreach ($lists as $list) {
+                if (!$list || !isset($list->id)) {
+                    continue;
+                }
+                $reMsg[$i]['key'] = $list->id;
+                $reMsg[$i]['name'] = $list->name;
+                $i++;
+            }
+        }
+        
+        return [
+            'result'  => 'success',
+            'message' => $reMsg
+        ];
+    }
+    
+    /**
+     * @param $integration
+     * @param $name
+     * @param $email
+     * @param $list_id
+     * @param $ip
+     */
+    public function setActiveCampaignLists($integration, $name, $email, $list_id, $ip)
+    {
+        $url = $integration['url'];
+        $api_key = $integration['api_key'];
+        
+        $ac = new \ActiveCampaign($url, $api_key);
+        
+        $list_params = [
+            'ids'  => $list_id,
+            'full' => '0'
+        ];
+        $list = $ac->api('list/list', $list_params);
+        
+        if ($list) {
+            $nameAry = explode(' ', $name);
+            $f_name = $nameAry[0];
+            $l_name = isset($nameAry[1]) ? $nameAry[1] : '';
+            $params = [
+                'email'                                 => $email,
+                'first_name'                            => $f_name,
+                'last_name'                             => $l_name,
+                'ip4'                                   => $ip,
+                ('p[' . $list_id . ']')                 => $list_id,
+                ('status[' . $list_id . ']')            => 1,
+                ('instantresponders[' . $list_id . ']') => 1
+            ];
+            
+            $ac->api('contact/add', $params);
+        }
+    }
+    
+    /**
+     * Get Campaign Monitor Lists.
+     * @param $integration
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getCampaignMonitorLists($integration)
+    {
+        $client = new Client();
+        $response = $client->request('GET', $integration->responder->base_url . 'clients/' . $integration['hash'] . '/lists.json', [
+            'headers' => [
+                'Content-Type'  => 'application/json',
+                'Authorization' => 'Basic ' . base64_encode($integration['api_key'])
+            ]
+        ]);
+        $lists = json_decode($response->getBody()->getContents());
+        
+        $reMsg = [[
+            'key'  => '',
+            'name' => '-- Choose List --'
+        ]];
+        
+        if (isset($lists) && isset($lists[0])) {
+            $i = 1;
+            foreach ($lists as $list) {
+                if (!$list || !isset($list->ListID)) {
+                    continue;
+                }
+                $reMsg[$i]['key'] = $list->ListID;
+                $reMsg[$i]['name'] = $list->Name;
+                $i++;
+            }
+        }
+        
+        return [
+            'result'  => 'success',
+            'message' => $reMsg
+        ];
+    }
+    
+    /**
+     * @param $integration
+     * @param $name
+     * @param $email
+     * @param $list_id
+     * @param $ip
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function setCampaignMonitorLists($integration, $name, $email, $list_id, $ip)
+    {
+        $client = new Client();
+        
+        $client->request('POST', $integration->responder->base_url . 'subscribers/' . $list_id . '.json', [
+            'headers' => [
+                'Content-Type'  => 'application/json',
+                'Authorization' => 'Basic ' . base64_encode($integration['api_key'])
+            ],
+            'body'    => [
+                'EmailAddress'                           => $email,
+                'Name'                                   => $name,
+                'CustomFields'                           => [
+                    [
+                        'Key'   => 'Conversion Perfect Bar',
+                        'Value' => 'https://conversionperfect.com'
+                    ],
+                    [
+                        'Key'   => 'Subscribed IP Address',
+                        'Value' => $ip
+                    ],
+                ],
+                'Resubscribe'                            => true,
+                'RestartSubscriptionBasedAutoresponders' => true,
+                'ConsentToTrack'                         => "Yes"
+            ]
+        ]);
+    }
+    
+    public function getResponseCampaigns($integration)
+    {
+        $reMsg = [[
+            'key'  => '',
+            'name' => '-- Choose List --'
+        ]];
+        
+        $client = GetresponseClientFactory::createWithApiKey($integration['api_key']);
+        $campaignsOperation = new GetCampaigns();
+        $response = $client->call($campaignsOperation);
+        if ($response->isSuccess()) {
+            $lists = $response->getData();
+            if ($lists) {
+                $i = 1;
+                foreach ($lists as $list) {
+                    if (!$list || !isset($list['campaignId'])) {
+                        continue;
+                    }
+                    $reMsg[$i]['key'] = $list['campaignId'];
+                    $reMsg[$i]['name'] = $list['name'];
+                    $i++;
+                }
+            }
+        }
+        
+        return [
+            'result'  => 'success',
+            'message' => $reMsg
+        ];
+    }
+    
+    /**
+     * @param $integration
+     * @param $email
+     * @param $list_id
+     */
+    public function setGetResponseContact($integration, $email, $list_id)
+    {
+        $createContact = new NewContact(
+            new CampaignReference($list_id),
+            $email
+        );
+        
+        $createContactOperation = new CreateContact($createContact);
+        $client = GetresponseClientFactory::createWithApiKey($integration['api_key']);
+        $response = $client->call($createContactOperation);
+        
+        if ($response->isSuccess()) {
+            print 'OK';
+        }
+    }
+    
+    /**
+     * @param $integration
+     * @return array
+     * @throws \MailerLiteApi\Exceptions\MailerLiteSdkException
+     */
+    public function getMailerLiteGroups($integration)
+    {
+        $reMsg = [[
+            'key'  => '',
+            'name' => '-- Choose List --'
+        ]];
+        
+        $groupsApi = (new MailerLite($integration['api_key']))->groups();
+        
+        $lists = $groupsApi->get();
+        
+        if ($lists) {
+            $i = 1;
+            foreach ($lists as $list) {
+                if (!$list || !isset($list->id)) {
+                    continue;
+                }
+                $reMsg[$i]['key'] = $list->id;
+                $reMsg[$i]['name'] = $list->name;
+                
+                $i++;
+            }
+        }
+        
+        return [
+            'result'  => 'success',
+            'message' => $reMsg
+        ];
+    }
+    
+    /**
+     * @param $integration
+     * @param $name
+     * @param $email
+     * @param $list_id
+     * @param $ip
+     * @throws \MailerLiteApi\Exceptions\MailerLiteSdkException
+     */
+    public function setMailerLiteSubscribers($integration, $name, $email, $list_id)
+    {
+        $groupsApi = (new MailerLite($integration['api_key']))->groups();
+        
+        if ($groupsApi) {
+            $nameAry = explode(' ', $name);
+            $f_name = $nameAry[0];
+            $l_name = isset($nameAry[1]) ? $nameAry[1] : '';
+            
+            $subscriber = [
+                'email'  => $email,
+                'fields' => [
+                    'name'      => $f_name,
+                    'last_name' => $l_name
+                ]
+            ];
+            
+            $groupsApi->addSubscriber($list_id, $subscriber);
+        }
+    }
+    
+    /**
+     * @param $integration
+     * @return array
+     * @throws \SendinBlue\Client\ApiException
+     */
+    public function getSendInBlueLists($integration)
+    {
+        $reMsg = [[
+            'key'  => '',
+            'name' => '-- Choose List --'
+        ]];
+        
+        $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', $integration['api_key']);
+        $apiInstance = new ContactsApi(new Client(), $config);
+        $result = $apiInstance->getLists();
+        if ($result) {
+            $lists = $result['lists'];
+            $i = 1;
+            foreach ($lists as $list) {
+                if (!$list || !isset($list['id'])) {
+                    continue;
+                }
+                $reMsg[$i]['key'] = $list['id'];
+                $reMsg[$i]['name'] = $list['name'];
+                
+                $i++;
+            }
+        }
+        
+        return [
+            'result'  => 'success',
+            'message' => $reMsg
+        ];
+    }
+    
+    /**
+     * @param $integration
+     * @param $name
+     * @param $email
+     * @param $list_id
+     * @throws \SendinBlue\Client\ApiException
+     */
+    public function setSendInBlueSubscribers($integration, $name, $email, $list_id)
+    {
+        $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', $integration['api_key']);
+        $apiInstance = new ContactsApi(new Client(), $config);
+        
+        $nameAry = explode(' ', $name);
+        $f_name = $nameAry[0];
+        $l_name = isset($nameAry[1]) ? $nameAry[1] : '';
+        
+        $createContact = new \SendinBlue\Client\Model\CreateContact([
+            'email'      => $email,
+            'attributes' => ['NAME' => $f_name, 'SURNAME' => $l_name],
+            'listid'     => [$list_id]
+        ]);
+        
+        $apiInstance->createContact($createContact);
     }
 }

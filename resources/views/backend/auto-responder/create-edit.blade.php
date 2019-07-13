@@ -26,7 +26,7 @@
                             </div>
                         </div>
                     </div>
-
+                    
                     <div class="card-body pb-0">
                         <div class="form-row">
                             <div class="col-md-4" id="auto-responder">
@@ -44,7 +44,7 @@
                                 </div>
                             </div>
                         </div>
-
+                        
                         <div class="form-row">
                             <div class="col-md-4 responder-group" id="friendly-name" style="display: none">
                                 <div class="form-group">
@@ -52,7 +52,7 @@
                                         Friendly Name
                                     </label>
                                     <input type="text" value="{{isset($integration) && $integration->name ? $integration->name: old('name')}}"
-                                           name="name" class="@error('name') is-invalid @enderror form-control required autocomplete="friendly_name"/>
+                                           name="name" class="@error('name') is-invalid @enderror form-control required autocomplete=" friendly_name"/>
                                     @if ($errors->has('name'))
                                         @error('name')
                                         <span class="invalid-feedback" role="alert">
@@ -66,7 +66,7 @@
                                     @endif
                                 </div>
                             </div>
-
+                            
                             <div class="col-md-4 responder-group" id="api-key" style="display: none">
                                 <div class="form-group">
                                     <label class="form-control-label ml-1" for="api_key" data-id="api_key">
@@ -87,11 +87,11 @@
                                     @endif
                                 </div>
                             </div>
-
+                            
                             <div class="col-md-4 responder-group" id="hash" style="display:none;">
                                 <div class="form-group">
                                     <label class="form-control-label ml-1" for="hash_key" data-id="hash_key">
-                                        Hash Key
+                                        {{ $integration->responder->title == 'Campaign Monitor' ? 'Client ID' : 'Hash Key' }}
                                     </label>
                                     <input type="text" value="{{isset($integration) && $integration->hash ? $integration->hash : old('hash')}}"
                                            class="@error('hash') is-invalid @enderror form-control" name="hash" id="hash"/>
@@ -108,16 +108,16 @@
                                     @endif
                                 </div>
                             </div>
-
+                            
                             <div class="col-md-4 responder-group" id="url" style="display:none;">
                                 <div class="form-group">
                                     <label class="form-control-label ml-1" for="hash_key" data-id="hash_key">
                                         URL
                                     </label>
                                     <input type="text" value="{{isset($integration) && $integration->url ? $integration->url : old('url')}}"
-                                           class="@error('hash') is-invalid @enderror form-control" name="url" id="url"/>
-                                    @if ($errors->has('hash'))
-                                        @error('hash')
+                                           class="@error('url') is-invalid @enderror form-control" name="url" id="url"/>
+                                    @if ($errors->has('url'))
+                                        @error('url')
                                         <span class="invalid-feedback" role="alert">
                                             {{ $message }}
                                         </span>
@@ -130,13 +130,13 @@
                                 </div>
                             </div>
                         </div>
-
+                    
                     </div>
                 </div>
             </form>
-
-        @include('layouts.footer')
-    </div>
+            
+            @include('layouts.footer')
+        </div>
     </div>
 @endsection
 
@@ -144,13 +144,12 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
     <script>
-        $('#responder_id').select2({
-        });
+        $('#responder_id').select2({});
         const capitalize = (s) => {
-            if (typeof s !== 'string') return ''
+            if (typeof s !== 'string') return '';
             return s.charAt(0).toUpperCase() + s.slice(1)
         }
-
+    
     </script>
     {{--edit--}}
     @if(!$flag)
@@ -158,18 +157,17 @@
             $(function () {
                 var responder_id =  {!! json_encode($integration->responder->id) !!};
                 var responder =  {!! json_encode($integration->responder) !!};
-                console.log(responder_id);
-                $('#responder_id').select2('val',responder_id.toString());
+                $('#responder_id').select2('val', responder_id.toString());
                 adjustChanges(capitalize(responder.title));
             })
         </script>
     @else
         <script>
-            $(function(){
+            $(function () {
                 var data = {!! json_encode(old()) !!};
-                var responder = $( "#responder_id  option[value="+data.responder_id+"]" ).text();
-                if (responder !== ''){
-                    $('#responder_id').select2('val',data.responder_id);
+                var responder = $("#responder_id  option[value=" + data.responder_id + "]").text();
+                if (responder !== '') {
+                    $('#responder_id').select2('val', data.responder_id);
                     adjustChanges(responder);
                 }
                 $('#responder_id').change(function () {
@@ -177,41 +175,41 @@
                     var value = $('#responder_id option:selected').text();
                     adjustChanges(value)
                 });
-
+                
             })
         </script>
     @endif
-
+    
     <script>
-        function adjustChanges(value)
-        {
-            if (value === 'Sendlane'){
+        function adjustChanges(value) {
+            if (value === 'Sendlane') {
                 $('#friendly-name').show();
                 $('#api-key').show();
                 $('#hash').show();
-            } else if (value === 'MailChimp'){
+            } else if (value === 'MailChimp') {
                 $('#friendly-name').show();
                 $('#api-key').show();
-            } else if (value === 'ActiveCampaign'){
-                $('#friendly-name').show();
-                $('#url').show();
-                $('#api-key').show();
-            } else if (value === 'Sendy'){
+            } else if (value === 'ActiveCampaign') {
                 $('#friendly-name').show();
                 $('#url').show();
                 $('#api-key').show();
-            } else if (value === 'MailerLite'){
+            } else if (value === 'Sendy') {
+                $('#friendly-name').show();
+                $('#url').show();
+                $('#api-key').show();
+            } else if (value === 'MailerLite') {
                 $('#friendly-name').show();
                 $('#api-key').show();
-            } else if (value === 'GetResponse'){
+            } else if (value === 'GetResponse') {
                 $('#friendly-name').show();
                 $('#api-key').show();
-            } else if (value === 'Send In Blue'){
+            } else if (value === 'Send In Blue') {
                 $('#friendly-name').show();
                 $('#api-key').show();
-            } else if (value === 'Campaign Monitor'){
+            } else if (value === 'Campaign Monitor') {
                 $('#friendly-name').show();
                 $('#api-key').show();
+                $('#hash').show();
             }
         }
     </script>

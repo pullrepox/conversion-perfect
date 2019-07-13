@@ -34,25 +34,25 @@ class ResponderTableSeeder extends Seeder
             ],
             [
                 'title'      => 'Campaign Monitor',
-                'base_url'   => 'https://api.createsend.com/api/v3.2/clients.json',
+                'base_url'   => 'https://api.createsend.com/api/v3.2/',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'title'      => 'GetResponse',
-                'base_url'   => 'https://api.getresponse.com/v3/accounts',
+                'base_url'   => 'https://api.getresponse.com/v3/',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'title'      => 'MailerLite',
-                'base_url'   => 'https://api.mailerlite.com/api/v2',
+                'base_url'   => 'https://api.mailerlite.com/api/v2/',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'title'      => 'Send In Blue',
-                'base_url'   => 'https://api.sendinblue.com/v3/account',
+                'base_url'   => 'https://api.sendinblue.com/v3/',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]
