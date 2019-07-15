@@ -17,6 +17,6 @@
      v-if="(model.content.video_code === '' && model.content.video_type === 'other')
      || (model.content.content_youtube_url === '' && model.content.video_type === 'youtube') || (model.content.content_vimeo_url === '' && model.content.video_type === 'vimeo')">
     <div style="width: 280px; height: 158px; background: #000000; display: flex; justify-content: center; align-items: center; font-size: 40px;">
-        <i class="fas fa-play"></i>
+        <i class="ni ni-button-play"></i>
     </div>
 </div>

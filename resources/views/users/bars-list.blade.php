@@ -14,7 +14,7 @@
                             <div class="row">
                                 <h3 class="mb-0 col">{{ $header_data['main_name'] }}</h3>
                                 <div class="col text-right">
-                                    <a href="{{ secure_redirect(route('bars.create')) }}" class="btn btn-success btn-sm text-capitalize">New Conversion Bar</a>
+                                    <a href="{{ secure_redirect(route('bars.create', ['flag' => 'template'])) }}" class="btn btn-success btn-sm text-capitalize">New Conversion Bar</a>
                                 </div>
                             </div>
                         </div>

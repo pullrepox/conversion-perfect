@@ -15,6 +15,9 @@
                 @include('users.bars-partials.bars-editor-tabs')
             </form>
             @include('users.bars-partials.bars-preview')
+            <div style="opacity: 0.01;height: 1px;" v-show="capturing">
+                @include('users.bars-partials.bars-capture')
+            </div>
             <div class="modal fade" id="group-add-modal" tabindex="-1" role="dialog" aria-labelledby="group-add-modal" aria-hidden="true">
                 <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
                     <div class="modal-content">

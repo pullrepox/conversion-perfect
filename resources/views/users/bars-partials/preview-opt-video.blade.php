@@ -17,7 +17,7 @@
      v-if="(model.lead_capture.opt_in_vimeo_url === '' && model.lead_capture.opt_in_type === 'vid-vimeo')
      || (model.lead_capture.opt_in_youtube_url === '' && model.lead_capture.opt_in_type === 'vid-youtube') || (model.lead_capture.opt_in_video_code === '' && model.lead_capture.opt_in_type === 'other')">
     <div style="width: 304px; height: 176px; background: #000000; display: flex; justify-content: center; align-items: center; font-size: 40px;">
-        <i class="fas fa-play"></i>
+        <i class="ni ni-button-play"></i>
     </div>
 </div>
 
@@ -34,6 +34,6 @@
 <div style="margin-right: 40px;padding: 8px 0;"
      v-if="(model.lead_capture.image_upload === '' && model.lead_capture.opt_in_type === 'img-upload') || (model.lead_capture.image_url === '' && model.lead_capture.opt_in_type === 'img-online')">
     <div style="width: 304px; height: 176px; background: #000000; display: flex; justify-content: center; align-items: center; font-size: 80px;">
-        <i class="fas fa-image"></i>
+        <i class="ni ni-image"></i>
     </div>
 </div>

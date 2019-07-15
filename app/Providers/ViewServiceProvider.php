@@ -24,7 +24,7 @@ class ViewServiceProvider extends ServiceProvider
     public function boot()
     {
         view()->composer([
-            'users/bars-edit', 'users/bars-list'
+            'users/bars-edit', 'users/bars-list', 'users/bars-template', 'users/bars-template-edit'
         ], 'App\Http\View\BarsComposer');
     }
 }

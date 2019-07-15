@@ -38,23 +38,74 @@ class BarsController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param $request
      * @return \Illuminate\Http\Response
+     * @throws
      */
-    public function create()
+    public function create(Request $request)
     {
         $header_data = [
             'main_name'   => 'New Conversion Bar',
-            'parent_data' => [
-                ['parent_name' => 'Conversion Bars', 'parent_url' => secure_redirect(route('bars'))],
-            ]
+            'parent_data' => []
         ];
-        
-        $flag = true;
-        $form_action = secure_redirect(route('bars.store'));
-        $list_array = json_encode([['key' => '', 'name' => '-- Choose List --']]);
-        $sel_tab = 'main';
-        
-        return view('users.bars-edit', compact('header_data', 'flag', 'form_action', 'list_array', 'sel_tab'));
+        if ($request->input('flag') == 'template') {
+            $header_data['main_name'] = 'Choose Bar Template';
+            
+            $template_list = $this->barsRepo->model()->where('sys_temp_flag', 1)->orWhere(function ($q) {
+                $q->where('user_id', auth()->user()->id)
+                    ->where('template_flag', 1);
+            })->orderBy('created_at', 'desc')->paginate(10);
+            
+            return view('users.bars-template', compact('header_data', 'template_list'));
+        } elseif ($request->input('flag') == 'template_edit') {
+            $bar_id = $request->input('number');
+            $bar = $this->barsRepo->model()->find($bar_id);
+            $re = [['key' => '', 'name' => '-- Choose List --']];
+            if (!is_null($bar->list) && $bar->list != '') {
+                if ($bar->integration_type == 'conversion_perfect') {
+                    $re_data = $this->barsRepo->getConversionPerfectLists();
+                    if ($re_data['result'] == 'success') {
+                        $re = $re_data['message'];
+                    }
+                } else if ($bar->integration_type != 'none') {
+                    $integration = Integration::with('responder')->where('user_id', auth()->user()->id)->where('responder_id', $bar->integration_type)->first();
+                    
+                    $re_data['result'] = '';
+                    if ($integration->responder->title == 'Sendlane') {
+                        $re_data = $this->barsRepo->getSendlaneList($integration);
+                    } else if ($integration->responder->title == 'MailChimp') {
+                        $re_data = $this->barsRepo->getMailChimpLists($integration);
+                    } else if ($integration->responder->title == 'ActiveCampaign') {
+                        $re_data = $this->barsRepo->getActiveCampaignList($integration);
+                    } else if ($integration->responder->title == 'Campaign Monitor') {
+                        $re_data = $this->barsRepo->getCampaignMonitorLists($integration);
+                    } else if ($integration->responder->title == 'GetResponse') {
+                        $re_data = $this->barsRepo->getResponseCampaigns($integration);
+                    } else if ($integration->responder->title == 'MailerLite') {
+                        $re_data = $this->barsRepo->getMailerLiteGroups($integration);
+                    } else if ($integration->responder->title == 'Send In Blue') {
+                        $re_data = $this->barsRepo->getSendInBlueLists($integration);
+                    }
+                    
+                    if ($re_data['result'] == 'success') {
+                        $re = $re_data['message'];
+                    }
+                }
+            }
+            $list_array = json_encode($re);
+            $sel_tab = 'main';
+            $flag = true;
+            $form_action = secure_redirect(route('bars.store'));
+            
+            return view('users.bars-template-edit', compact('header_data', 'flag', 'bar', 'form_action', 'list_array', 'sel_tab'));
+        } else {
+            $flag = true;
+            $form_action = secure_redirect(route('bars.store'));
+            $list_array = json_encode([['key' => '', 'name' => '-- Choose List --']]);
+            $sel_tab = 'main';
+            
+            return view('users.bars-edit', compact('header_data', 'flag', 'form_action', 'list_array', 'sel_tab'));
+        }
     }
     
     /**
@@ -220,8 +271,6 @@ class BarsController extends Controller
         $rules['opt_in_email_placeholder'] = 'required';
         
         $this->validate($request, $rules);
-
-//        session(['sel_tab' => $request->input('sel_tab')]);
         
         unset($params['sel_tab']);
         
@@ -230,8 +279,11 @@ class BarsController extends Controller
         $bar->user_id = auth()->user()->id;
         if (array_search(auth()->user()->email, explode(',', trim(config('site.sys_temp_creators')))) !== false) {
             $bar->template_flag = 1;
+            $bar->sys_temp_flag = 1;
             $bar->template_name = !is_null($request->input('template_name')) ? $request->input('template_name') : $params['friendly_name'];
         } else {
+            $bar->template_flag = 0;
+            $bar->sys_temp_flag = 0;
             $bar->template_name = is_null($request->input('template_name')) || empty($request->input('template_name')) ? '' : $request->input('template_name');
         }
         
@@ -325,6 +377,16 @@ class BarsController extends Controller
                     $re_data = $this->barsRepo->getSendlaneList($integration);
                 } else if ($integration->responder->title == 'MailChimp') {
                     $re_data = $this->barsRepo->getMailChimpLists($integration);
+                } else if ($integration->responder->title == 'ActiveCampaign') {
+                    $re_data = $this->barsRepo->getActiveCampaignList($integration);
+                } else if ($integration->responder->title == 'Campaign Monitor') {
+                    $re_data = $this->barsRepo->getCampaignMonitorLists($integration);
+                } else if ($integration->responder->title == 'GetResponse') {
+                    $re_data = $this->barsRepo->getResponseCampaigns($integration);
+                } else if ($integration->responder->title == 'MailerLite') {
+                    $re_data = $this->barsRepo->getMailerLiteGroups($integration);
+                } else if ($integration->responder->title == 'Send In Blue') {
+                    $re_data = $this->barsRepo->getSendInBlueLists($integration);
                 }
                 
                 if ($re_data['result'] == 'success') {
@@ -375,6 +437,16 @@ class BarsController extends Controller
             } elseif ($request->input('flag') == 'template') {
                 $bar->template_flag = 1;
                 $bar->template_name = $request->input('template_name');
+                
+                $temp_thumb_path = public_path('uploads/temp_thumb_' . $bar->id . '.png');
+                $success = file_put_contents($temp_thumb_path, file_get_contents($request->input('thumbnail')));
+                if ($success) {
+                    $content = file_get_contents($temp_thumb_path);
+                    Storage::put('bars/options/' . $bar->id . '/temp_thumb_' . $bar->id . '.png', $content, ['visibility' => 'public']);
+                    if (file_exists($temp_thumb_path)) {
+                        unlink($temp_thumb_path);
+                    }
+                }
                 
                 $bar->save();
             }
@@ -532,11 +604,13 @@ class BarsController extends Controller
             
             unset($params['sel_tab']);
             $bar->fill($params);
-    
+            
             if (array_search(auth()->user()->email, explode(',', trim(config('site.sys_temp_creators')))) !== false) {
                 $bar->template_flag = 1;
+                $bar->sys_temp_flag = 1;
                 $bar->template_name = !is_null($request->input('template_name')) ? $request->input('template_name') : $params['friendly_name'];
             } else {
+                $bar->sys_temp_flag = 0;
                 $bar->template_name = is_null($request->input('template_name')) ? '' : $request->input('template_name');
             }
             

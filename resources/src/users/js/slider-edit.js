@@ -1,11 +1,13 @@
 require('select2/dist/js/select2.min');
 require('bootstrap-tagsinput/dist/bootstrap-tagsinput.min');
 require('bootstrap-datepicker/dist/js/bootstrap-datepicker.min');
+require('iframe2image/dist/iframe2image.min');
 require('../vendor/jscolor');
 import Quill from 'quill';
 import PerfectScrollbar from 'perfect-scrollbar';
 import Vue from 'vue';
 import vueSlider from 'vue-slider-component';
+import html2canvas from 'html2canvas';
 
 new Vue({
     el: '#prod-edit-page',
@@ -72,7 +74,8 @@ new Vue({
             'overlay': ['custom_link_text', 'meta_title'],
             'translation': ['days_label', 'hours_label', 'minutes_label', 'seconds_label', 'opt_in_name_placeholder', 'opt_in_email_placeholder', 'powered_by_label', 'disclaimer'],
         },
-        quill: {}
+        quill: {},
+        capturing: false
     }),
     created() {
         this.model = JSON.parse(JSON.stringify(this.basic_model));
@@ -145,6 +148,8 @@ new Vue({
         if (!this.changed_status && this.model.sel_tab !== 'main') {
             this.changeStatusVal();
         }
+        
+        this.capturing = false;
     },
     methods: {
         changeStatusVal() {
@@ -426,6 +431,7 @@ new Vue({
                         this.create_edit = false;
                         this.model.sel_tab = key;
                         this.autoFocusField();
+                        $('#edit_page_title').html('Edit Conversion Bar');
                     } else {
                         this.showSaveErrorNotify();
                     }
@@ -677,15 +683,23 @@ new Vue({
                 return;
             }
             
-            axios.put(`/bars/${window._bar_opt_ary.bar_id}`, {
-                template_name: this.model.template_name,
-                flag: 'template'
-            }).then((r) => {
-                $('#template-save-modal').modal('hide');
-                this.commonNotification('success', 'Successfully saved.');
-            }).catch((e) => {
-                $('#template-save-modal').modal('hide');
-                this.commonNotification('danger', 'Internal Server Error. Please check your connection.');
+            this.capturing = true;
+            let vm = this;
+            this.$nextTick(function () {
+                html2canvas(document.querySelector('#bar-preview-section')).then((canvas) => {
+                    vm.capturing = false;
+                    axios.put(`/bars/${window._bar_opt_ary.bar_id}`, {
+                        template_name: vm.model.template_name,
+                        flag: 'template',
+                        thumbnail: canvas.toDataURL('image/png')
+                    }).then((r) => {
+                        $('#template-save-modal').modal('hide');
+                        vm.commonNotification('success', 'Successfully saved.');
+                    }).catch((e) => {
+                        $('#template-save-modal').modal('hide');
+                        vm.commonNotification('danger', 'Internal Server Error. Please check your connection.');
+                    });
+                });
             });
         }
     }

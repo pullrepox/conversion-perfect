@@ -1,7 +1,7 @@
 <div class="card mb-2">
     <div class="card-header">
         <div class="form-row">
-            <h3 class="mb-0 col">{{ $header_data['main_name'] }}</h3>
+            <h3 class="mb-0 col" id="edit_page_title">{{ $header_data['main_name'] }}</h3>
             <div class="col text-right">
                 <button type="submit" class="btn btn-success btn-sm text-capitalize">@{{ create_edit ? 'Create' : 'Update' }}</button>
                 <a href="{{ secure_redirect(route('bars')) }}" class="btn btn-light btn-sm text-capitalize">
