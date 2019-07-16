@@ -459,21 +459,37 @@ new Vue({
                 }
                 save_data.option_key = this.model.sel_tab;
                 this.loading = true;
-                axios.post(`/save-option/${this.bar_id}`, save_data).then((r) => {
-                    this.loading = false;
-                    if (r.data.status === 'success') {
-                        $('.invalid-feedback').hide();
-                        $('.form-control').removeClass('is-invalid');
-                        this.model.sel_tab = key;
-                        this.changed_status = false;
-                        this.autoFocusField();
-                    } else {
-                        this.showSaveErrorNotify();
-                    }
-                }).catch((e) => {
-                    this.saveErrorEvent(e, save_data);
-                });
+                if (this.template_name !== '') {
+                    this.capturing = true;
+                    let vm = this;
+                    this.$nextTick(function () {
+                        html2canvas(document.querySelector('#bar-preview-section')).then((canvas) => {
+                            vm.capturing = false;
+                            save_data.thumbnail = canvas.toDataURL('image/png');
+                            vm.saveOptionData(save_data, key);
+                        });
+                    });
+                } else {
+                    save_data.thumbnail = '';
+                    this.saveOptionData(save_data, key);
+                }
             }
+        },
+        saveOptionData(save_data, key) {
+            axios.post(`/save-option/${this.bar_id}`, save_data).then((r) => {
+                this.loading = false;
+                if (r.data.status === 'success') {
+                    $('.invalid-feedback').hide();
+                    $('.form-control').removeClass('is-invalid');
+                    this.model.sel_tab = key;
+                    this.changed_status = false;
+                    this.autoFocusField();
+                } else {
+                    this.showSaveErrorNotify();
+                }
+            }).catch((e) => {
+                this.saveErrorEvent(e, save_data);
+            });
         },
         showGetErrorNotify() {
             this.commonNotification('danger', 'Failed! Please make sure your internet connection or contact to support.');
@@ -684,6 +700,7 @@ new Vue({
             }
             
             this.capturing = true;
+            this.loading = true;
             let vm = this;
             this.$nextTick(function () {
                 html2canvas(document.querySelector('#bar-preview-section')).then((canvas) => {
@@ -693,10 +710,12 @@ new Vue({
                         flag: 'template',
                         thumbnail: canvas.toDataURL('image/png')
                     }).then((r) => {
+                        vm.loading = false;
                         $('#template-save-modal').modal('hide');
                         vm.commonNotification('success', 'Successfully saved.');
                     }).catch((e) => {
                         $('#template-save-modal').modal('hide');
+                        vm.loading = false;
                         vm.commonNotification('danger', 'Internal Server Error. Please check your connection.');
                     });
                 });

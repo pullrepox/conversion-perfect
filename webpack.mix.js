@@ -60,9 +60,9 @@ mix.setResourceRoot('/');
 mix.disableSuccessNotifications();
 
 if (mix.inProduction()) {
-    mix.version();
+    // mix.version();
 } else {
     mix.sourceMaps();
-    // mix.browserSync('app.conversionperfectdev.test');
+    mix.browserSync('app.conversionperfectdev.test');
 }
-mix.browserSync('app.conversionperfectdev.test');
+// mix.browserSync('app.conversionperfectdev.test');

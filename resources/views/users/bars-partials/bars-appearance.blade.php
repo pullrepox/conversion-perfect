@@ -1,4 +1,5 @@
-<div class="tab-pane fade" :class="{'show': model.sel_tab === 'appearance', 'active': model.sel_tab === 'appearance'}" id="tabs-appearance" role="tabpanel" aria-labelledby="tabs-appearance-tab">
+<div class="tab-pane fade" :class="{'show': model.sel_tab === 'appearance', 'active': model.sel_tab === 'appearance'}" id="tabs-appearance" role="tabpanel"
+     aria-labelledby="tabs-appearance-tab">
     <div class="tabs-appearance tabs-data-entry">
         <div class="form-row">
             <div class="col-md-4">
@@ -84,7 +85,11 @@
                         <option value="bottom_right">Bottom Right</option>
                         <option value="bottom_left">Bottom Left</option>
                         <option value="top_left">Top Left</option>
-                        <option value="hidden">Hidden</option>
+                        @if (!is_null(auth()->user()->permissions))
+                            @if (auth()->user()->permissions['remove-powered-by'])
+                                <option value="hidden">Hidden</option>
+                            @endif
+                        @endif
                     </select>
                 </div>
             </div>

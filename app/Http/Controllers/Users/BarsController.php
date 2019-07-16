@@ -117,12 +117,17 @@ class BarsController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'friendly_name'    => 'required|max:100',
-            'headline'         => 'required',
-            'headline_color'   => 'required',
-            'background_color' => 'required'
-        ]);
+        if (array_search(auth()->user()->email, explode(',', trim(config('site.sys_temp_creators')))) === false) {
+            $bars_count = auth()->user()->bars->count();
+            if (!is_null(auth()->user()->permissions)) {
+                if (auth()->user()->permissions['maximum-bars'] != '-1') {
+                    if ($bars_count >= auth()->user()->permissions['maximum-bars']) {
+                        session()->flash('error', 'Your Maximum Bars Permission is ' . auth()->user()->permissions['maximum-bars']);
+                        return response()->redirectTo('bars');
+                    }
+                }
+            }
+        }
         
         $rules = [
             'friendly_name'    => 'required|max:100',
@@ -435,6 +440,19 @@ class BarsController extends Controller
                     'id'     => $duplicate_row->id
                 ]);
             } elseif ($request->input('flag') == 'template') {
+//                if (array_search(auth()->user()->email, explode(',', trim(config('site.sys_temp_creators')))) === false) {
+//                    $bars_count = auth()->user()->bars->count();
+//                    if (!is_null(auth()->user()->permissions)) {
+//                        if (auth()->user()->permissions['pro-templates'] != '-1' &&
+//                            auth()->user()->permissions['120-templates'] != '-1' &&
+//                            auth()->user()->permissions['240-templates'] != '-1') {
+//                            if ($bars_count >= auth()->user()->permissions['pro-templates']) {
+//                                session()->flash('error', 'Your Maximum Bars Permission is ' . auth()->user()->permissions['maximum-bars']);
+//                                return response()->redirectTo('bars');
+//                            }
+//                        }
+//                    }
+//                }
                 $bar->template_flag = 1;
                 $bar->template_name = $request->input('template_name');
                 

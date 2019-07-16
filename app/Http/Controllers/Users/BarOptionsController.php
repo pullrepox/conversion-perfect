@@ -216,6 +216,18 @@ class BarOptionsController extends Controller
             }
         }
         
+        if (!is_null($request->input('thumbnail')) && $request->input('thumbnail') != '') {
+            $temp_thumb_path = public_path('uploads/temp_thumb_' . $bar->id . '.png');
+            $success = file_put_contents($temp_thumb_path, file_get_contents($request->input('thumbnail')));
+            if ($success) {
+                $content = file_get_contents($temp_thumb_path);
+                Storage::put('bars/options/' . $bar->id . '/temp_thumb_' . $bar->id . '.png', $content, ['visibility' => 'public']);
+                if (file_exists($temp_thumb_path)) {
+                    unlink($temp_thumb_path);
+                }
+            }
+        }
+        
         $bar->save();
         
         return response()->json([

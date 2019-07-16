@@ -43,8 +43,8 @@
         @if (!is_null(auth()->user()->permissions))
             @if (auth()->user()->permissions['social-buttons'])
                 @include('users.bars-partials.bars-button')
+                @include('users.bars-partials.bars-video')
             @endif
         @endif
-        @include('users.bars-partials.bars-video')
     </div>
 </div>
