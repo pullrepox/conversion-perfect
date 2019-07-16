@@ -30,7 +30,7 @@ class BarsController extends Controller
             'parent_data' => []
         ];
         
-        $bars = Bar::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->paginate(10);
+        $bars = Bar::where('user_id', auth()->user()->id)->where('archive_flag', '0')->orderBy('created_at', 'desc')->paginate(10);
         
         return view('users.bars-list', compact('header_data', 'bars'));
     }
@@ -51,9 +51,13 @@ class BarsController extends Controller
         if ($request->input('flag') == 'template') {
             $header_data['main_name'] = 'Choose Bar Template';
             
-            $template_list = $this->barsRepo->model()->where('sys_temp_flag', 1)->orWhere(function ($q) {
+            $template_list = $this->barsRepo->model()->where(function ($q) {
+                $q->where('sys_temp_flag', 1)
+                    ->where('archive_flag', '0');
+            })->orWhere(function ($q) {
                 $q->where('user_id', auth()->user()->id)
-                    ->where('template_flag', 1);
+                    ->where('template_flag', 1)
+                    ->where('archive_flag', '0');
             })->orderBy('created_at', 'desc')->paginate(10);
             
             return view('users.bars-template', compact('header_data', 'template_list'));
@@ -122,8 +126,15 @@ class BarsController extends Controller
             if (!is_null(auth()->user()->permissions)) {
                 if (auth()->user()->permissions['maximum-bars'] != '-1') {
                     if ($bars_count >= auth()->user()->permissions['maximum-bars']) {
-                        session()->flash('error', 'Your Maximum Bars Permission is ' . auth()->user()->permissions['maximum-bars']);
-                        return response()->redirectTo('bars');
+                        if ($request->ajax()) {
+                            return response()->json([
+                                'result'  => 'failure',
+                                'message' => ('Your Maximum Bars Permission is ' . auth()->user()->permissions['maximum-bars'])
+                            ]);
+                        } else {
+                            session()->flash('error', 'Your Maximum Bars Permission is ' . auth()->user()->permissions['maximum-bars']);
+                            return response()->redirectTo('bars');
+                        }
                     }
                 }
             }
@@ -439,6 +450,9 @@ class BarsController extends Controller
                     'result' => 'success',
                     'id'     => $duplicate_row->id
                 ]);
+            } elseif ($request->input('flag') == 'archive') {
+                $bar->archive_flag = 1;
+                $bar->save();
             } elseif ($request->input('flag') == 'template') {
 //                if (array_search(auth()->user()->email, explode(',', trim(config('site.sys_temp_creators')))) === false) {
 //                    $bars_count = auth()->user()->bars->count();

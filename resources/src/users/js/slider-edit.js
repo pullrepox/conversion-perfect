@@ -433,7 +433,12 @@ new Vue({
                         this.autoFocusField();
                         $('#edit_page_title').html('Edit Conversion Bar');
                     } else {
-                        this.showSaveErrorNotify();
+                        if (r.data.result === 'failure') {
+                            this.commonNotification('error', r.data.message);
+                            location.href = '/bars';
+                        } else {
+                            this.showSaveErrorNotify();
+                        }
                     }
                 }).catch((e) => {
                     this.saveErrorEvent(e, save_data);
@@ -719,6 +724,19 @@ new Vue({
                         vm.commonNotification('danger', 'Internal Server Error. Please check your connection.');
                     });
                 });
+            });
+        },
+        archiveBar() {
+            this.loading = true;
+            axios.put(`/bars/${window._bar_opt_ary.bar_id}`, {
+                flag: 'archive',
+            }).then((r) => {
+                this.loading = false;
+                this.commonNotification('success', 'Successfully archived.');
+                location.href = '/bars';
+            }).catch((e) => {
+                this.loading = false;
+                this.commonNotification('danger', 'Internal Server Error. Please check your connection.');
             });
         }
     }
