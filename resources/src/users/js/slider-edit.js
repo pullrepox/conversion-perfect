@@ -726,18 +726,26 @@ new Vue({
                 });
             });
         },
-        archiveBar() {
+        actionsBar(flag, message){
             this.loading = true;
             axios.put(`/bars/${window._bar_opt_ary.bar_id}`, {
-                flag: 'archive',
+                flag: flag,
             }).then((r) => {
                 this.loading = false;
-                this.commonNotification('success', 'Successfully archived.');
+                this.commonNotification('success', 'Successfully ' + message + '.');
                 location.href = '/bars';
             }).catch((e) => {
                 this.loading = false;
                 this.commonNotification('danger', 'Internal Server Error. Please check your connection.');
             });
+        },
+        archiveBar() {
+            this.loading = true;
+            this.actionsBar('archive', 'archived');
+        },
+        resetStats() {
+            this.loading = true;
+            this.actionsBar('reset_stats', 'reset');
         }
     }
 });

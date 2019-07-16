@@ -68,6 +68,44 @@
                     </div>
                 </div>
             </div>
+            <div class="modal fade" id="archive-modal" tabindex="-1" role="dialog" aria-labelledby="archive-modal" aria-hidden="true">
+                <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h6 class="modal-title" id="modal-title-default">Archive Conversion Bar</h6>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <h1>Are you sure?</h1>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-info text-capitalize" @click="archiveBar">Archive</button>
+                            <button type="button" class="btn btn-light ml-auto" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="reset-modal" tabindex="-1" role="dialog" aria-labelledby="reset-modal" aria-hidden="true">
+                <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h6 class="modal-title" id="modal-title-default">Reset Stats</h6>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <h1>Are you sure?</h1>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-warning text-capitalize" @click="resetStats">Reset</button>
+                            <button type="button" class="btn btn-light ml-auto" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         @include('layouts.footer')
     </div>

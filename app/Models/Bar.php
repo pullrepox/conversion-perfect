@@ -25,4 +25,9 @@ class Bar extends Model
     {
         return $this->belongsTo('App\User', 'user_id');
     }
+    
+    public function logs()
+    {
+        return $this->hasMany('App\Models\BarsClickLogs');
+    }
 }

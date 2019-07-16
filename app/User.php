@@ -80,6 +80,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Bar');
     }
     
+    public function bar_logs()
+    {
+        return $this->hasMany('App\Models\BarsClickLogs');
+    }
+    
     public function groups()
     {
         return $this->hasMany('App\Models\Group');

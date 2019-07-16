@@ -13,8 +13,8 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                         <a class="dropdown-item" href="javascript: void(0)" data-toggle="modal" data-target="#template-save-modal">Save as Template</a>
-                        <a class="dropdown-item" href="#">Reset Stats</a>
-                        <a class="dropdown-item" href="javascript: void(0)" @click="archiveBar">Archive</a>
+                        <a class="dropdown-item" href="javascript: void(0)" data-toggle="modal" data-target="#reset-modal">Reset Stats</a>
+                        <a class="dropdown-item" href="javascript: void(0)" data-toggle="modal" data-target="#archive-modal">Archive</a>
                     </div>
                 </div>
             </div>

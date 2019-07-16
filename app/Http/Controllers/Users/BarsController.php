@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Repositories\BarsRepository;
 use App\Integration;
 use App\Models\Bar;
+use App\Models\BarsClickLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -453,6 +454,10 @@ class BarsController extends Controller
             } elseif ($request->input('flag') == 'archive') {
                 $bar->archive_flag = 1;
                 $bar->save();
+            } elseif ($request->input('flag') == 'reset_stats') {
+                BarsClickLog::where('user_id', auth()->user()->id)->where('bar_id', $bar->id)->update([
+                    'reset_stats' => 1
+                ]);
             } elseif ($request->input('flag') == 'template') {
 //                if (array_search(auth()->user()->email, explode(',', trim(config('site.sys_temp_creators')))) === false) {
 //                    $bars_count = auth()->user()->bars->count();
