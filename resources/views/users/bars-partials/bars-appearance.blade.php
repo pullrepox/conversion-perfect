@@ -85,11 +85,7 @@
                         <option value="bottom_right">Bottom Right</option>
                         <option value="bottom_left">Bottom Left</option>
                         <option value="top_left">Top Left</option>
-                        @if (!is_null(auth()->user()->permissions))
-                            @if (auth()->user()->permissions['remove-powered-by'])
-                                <option value="hidden">Hidden</option>
-                            @endif
-                        @endif
+                        <option value="hidden">Hidden</option>
                     </select>
                 </div>
             </div>

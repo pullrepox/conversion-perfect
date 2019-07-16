@@ -40,11 +40,12 @@
                 </div>
             </div>
         </div>
+        @include('users.bars-partials.bars-button')
         @if (!is_null(auth()->user()->permissions))
             @if (auth()->user()->permissions['social-buttons'])
-                @include('users.bars-partials.bars-button')
-                @include('users.bars-partials.bars-video')
+                {{-- Social Buttons here. --}}
             @endif
         @endif
+        @include('users.bars-partials.bars-video')
     </div>
 </div>

@@ -53,17 +53,13 @@
                         Overlay
                     </a>
                 </li>
-                @if (!is_null(auth()->user()->permissions))
-                    @if (auth()->user()->permissions['lead-capture'])
-                        <li class="nav-item">
-                            <a class="nav-link mb-sm-3 mb-md-0" :class="{'active': model.sel_tab === 'lead_capture'}" href="javascript: void(0)" id="tabs-lead_capture-tab"
-                               data-toggle="pill" role="tab" aria-controls="tabs-lead_capture" :aria-selected="model.sel_tab === 'lead_capture' ? 'true' : 'false'"
-                               @click="tabClick($event, 'lead_capture')">
-                                Lead Capture
-                            </a>
-                        </li>
-                    @endif
-                @endif
+                <li class="nav-item">
+                    <a class="nav-link mb-sm-3 mb-md-0" :class="{'active': model.sel_tab === 'lead_capture'}" href="javascript: void(0)" id="tabs-lead_capture-tab"
+                       data-toggle="pill" role="tab" aria-controls="tabs-lead_capture" :aria-selected="model.sel_tab === 'lead_capture' ? 'true' : 'false'"
+                       @click="tabClick($event, 'lead_capture')">
+                        Lead Capture
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link mb-sm-3 mb-md-0" :class="{'active': model.sel_tab === 'translation'}" href="javascript: void(0)" id="tabs-translation-tab"
                        data-toggle="pill" role="tab" aria-controls="tabs-translation" :aria-selected="model.sel_tab === 'translation' ? 'true' : 'false'" @click="tabClick($event, 'translation')">
