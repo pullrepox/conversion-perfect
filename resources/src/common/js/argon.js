@@ -79,36 +79,6 @@ let Layout = (function () {
             case 'sidenav-unpin':
                 unpinSidenav();
                 break;
-            
-            case 'search-show':
-                target = $this.data('target');
-                $('body').removeClass('g-navbar-search-show').addClass('g-navbar-search-showing');
-                
-                setTimeout(function () {
-                    $('body').removeClass('g-navbar-search-showing').addClass('g-navbar-search-show');
-                }, 150);
-                
-                setTimeout(function () {
-                    $('body').addClass('g-navbar-search-shown');
-                }, 300);
-                break;
-            
-            case 'search-close':
-                target = $this.data('target');
-                $('body').removeClass('g-navbar-search-shown');
-                
-                setTimeout(function () {
-                    $('body').removeClass('g-navbar-search-show').addClass('g-navbar-search-hiding');
-                }, 150);
-                
-                setTimeout(function () {
-                    $('body').removeClass('g-navbar-search-hiding').addClass('g-navbar-search-hidden');
-                }, 300);
-                
-                setTimeout(function () {
-                    $('body').removeClass('g-navbar-search-hidden');
-                }, 500);
-                break;
         }
     });
     

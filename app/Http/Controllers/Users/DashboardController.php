@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
+use App\Http\Repositories\ApiRepository;
 use App\Models\Bonus;
 use App\Models\Training;
 use Illuminate\Http\Request;
@@ -10,6 +11,12 @@ use Illuminate\Http\Request;
 class DashboardController extends Controller
 {
     protected $redirectTo = '/dashboard';
+    protected $apiRepo;
+    
+    public function __construct(ApiRepository $apiRepository)
+    {
+        $this->apiRepo = $apiRepository;
+    }
     
     public function index()
     {
@@ -86,6 +93,8 @@ class DashboardController extends Controller
         
         $am_plans = explode(',', auth()->user()->amemberplans);
         
-        return view('users.profile', compact('header_data', 'am_plans'));
+        $permissions_list = $this->apiRepo->all();
+        
+        return view('users.profile', compact('header_data', 'am_plans', 'permissions_list'));
     }
 }

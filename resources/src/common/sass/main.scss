@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700');
-@import "~animate.css";
 @import "../nucleo/css/nucleo.css";
 @import "~@fortawesome/fontawesome-free/scss/solid";
 @import "~@fortawesome/fontawesome-free/scss/regular";
@@ -8,61 +7,3 @@
 @import "~select2/dist/css/select2.min.css";
 @import "./argon";
 @import "./custom";
-
-.form-control {
-    &:focus, &:active, &:hover {
-        box-shadow: none !important;
-        outline: 0 !important;
-    }
-}
-
-.btn, button {
-    &:active, &:focus {
-        outline: 0;
-        box-shadow: none !important;
-    }
-}
-
-.w-45 {
-    width: 45% !important;
-}
-
-.w-48 {
-    width: 48.3% !important;
-}
-
-.w-80 {
-    width: 80% !important;
-}
-
-.bg-cp {
-    background-color: #3baf85 !important;
-}
-
-.bg-gradient-cp {
-    background: linear-gradient(87deg, #3baf85 0, #369f78 100%) !important;
-}
-
-.bg-dark-cp {
-    background: #0b4c2c !important;
-}
-
-.bg-dark-gradient-cp {
-    background: linear-gradient(87deg, #0b4c2c 0, #0d5a38 100%) !important;
-}
-
-.fill-auth {
-    fill: #0b4c2c;
-}
-
-.text-cp {
-    color: #3baf85 !important;
-}
-
-.text-dark-cp {
-    color: #0a4c2c !important;
-}
-
-.card-header.login-logo {
-    padding-top: 4.5rem;
-}
