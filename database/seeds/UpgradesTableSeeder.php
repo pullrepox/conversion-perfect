@@ -36,7 +36,7 @@ class UpgradesTableSeeder extends Seeder
             [
                 'alias'          => 'social-unlimited',
                 'description'    => 'Upgrade to Social Unlimited',
-                'jvzooid'        => '332178',
+                'jvzooid'        => '332174',
                 'showwasupgrade' => 0,
                 'unlessuserhas'  => '0',
                 'created_at'     => now(),
