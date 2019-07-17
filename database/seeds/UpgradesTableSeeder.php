@@ -16,6 +16,7 @@ class UpgradesTableSeeder extends Seeder
         
         $list = [
             [
+                'alias'          => 'access',
                 'description'    => 'Access',
                 'jvzooid'        => '332178,332176,332174',
                 'showwasupgrade' => 0,
@@ -24,22 +25,25 @@ class UpgradesTableSeeder extends Seeder
                 'updated_at'     => now(),
             ],
             [
+                'alias'          => 'standard',
                 'description'    => 'Upgrade to Standard',
-                'jvzooid'        => '',
+                'jvzooid'        => '332176',
                 'showwasupgrade' => 0,
                 'unlessuserhas'  => '0',
                 'created_at'     => now(),
                 'updated_at'     => now(),
             ],
             [
+                'alias'          => 'social-unlimited',
                 'description'    => 'Upgrade to Social Unlimited',
-                'jvzooid'        => '',
+                'jvzooid'        => '332178',
                 'showwasupgrade' => 0,
                 'unlessuserhas'  => '0',
                 'created_at'     => now(),
                 'updated_at'     => now(),
             ],
             [
+                'alias'          => 'professional',
                 'description'    => 'Professional',
                 'jvzooid'        => '332182',
                 'showwasupgrade' => 1,
@@ -48,6 +52,7 @@ class UpgradesTableSeeder extends Seeder
                 'updated_at'     => now(),
             ],
             [
+                'alias'          => 'lead-capture',
                 'description'    => 'Lead Capture',
                 'jvzooid'        => '332180',
                 'showwasupgrade' => 1,
@@ -56,6 +61,7 @@ class UpgradesTableSeeder extends Seeder
                 'updated_at'     => now(),
             ],
             [
+                'alias'          => 'agency',
                 'description'    => 'Agency',
                 'jvzooid'        => '',
                 'showwasupgrade' => 1,
@@ -64,6 +70,7 @@ class UpgradesTableSeeder extends Seeder
                 'updated_at'     => now(),
             ],
             [
+                'alias'          => 'templates',
                 'description'    => 'Templates',
                 'jvzooid'        => '',
                 'showwasupgrade' => 1,
@@ -72,6 +79,7 @@ class UpgradesTableSeeder extends Seeder
                 'updated_at'     => now(),
             ],
             [
+                'alias'          => 'reseller',
                 'description'    => 'Reseller',
                 'jvzooid'        => '332186,332188,332190',
                 'showwasupgrade' => 1,

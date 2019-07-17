@@ -108,41 +108,32 @@ class ApiRepository extends Repository
         $perms = [];
         $perm_data = $this->all();
         
-        if ($perm_data && !is_null($perm_data)) {
-            foreach ($perm_data as $row) {
-                if (!isset($perms[$row->description])) {
-                    $perms[$row->description] = 0;
-                }
-                foreach ($subscriptions as $id => $expiry) {
-                    if ($row->description == 'maximum-bars') {
-                        $check_perm = $this->model()->where('description', $row->description)->where('am_plans', 'like', '%' . $id . '%')->first();
-                        if ($check_perm && !is_null($check_perm)) {
-                            $perms[$row->description] = $check_perm->am_maximum_bars;
-                        }
-                    } else {
-                        if (array_search($id, explode(',', $row->am_plans)) !== false) {
-                            $perms[$row->description] = 1;
-                        }
-                    }
-                }
-            }
-        } else {
+        if (!($perm_data && !is_null($perm_data))) {
             $perm_data = $this->staticList();
             $this->model()->insert($perm_data);
-            foreach ($perm_data as $row) {
-                if (!isset($perms[$row['description']])) {
-                    $perms[$row['description']] = 0;
-                }
-                foreach ($subscriptions as $id => $expiry) {
-                    if ($row['description'] == 'maximum-bars') {
-                        $check_perm = $this->model()->where('description', $row['description'])->where('am_plans', 'like', '%' . $id . '%')->first();
-                        if ($check_perm && !is_null($check_perm)) {
-                            $perms[$row['description']] = $check_perm->am_maximum_bars;
-                        }
-                    } else {
-                        if (array_search($id, explode(',', $row['am_plans'])) !== false) {
-                            $perms[$row['description']] = 1;
-                        }
+        }
+        
+        foreach ($perm_data as $row) {
+            if (!isset($perms[$row['description']])) {
+                $perms[$row['description']] = 0;
+            }
+            foreach ($subscriptions as $id => $expiry) {
+                if ($row['description'] == 'maximum-bars') {
+                    $check_perm = $this->model()
+                        ->where('description', $row['description'])
+                        ->where(function ($q) use ($id) {
+                            $q->where('am_plans', $id)
+                                ->orWhere('am_plans', 'like', $id . ',%')
+                                ->orWhere('am_plans', 'like', '%,' . $id . ',%')
+                                ->orWhere('am_plans', 'like', '%,' . $id);
+                        })
+                        ->first();
+                    if ($check_perm && !is_null($check_perm)) {
+                        $perms[$row['description']] = $check_perm->am_maximum_bars;
+                    }
+                } else {
+                    if (array_search($id, explode(',', $row['am_plans'])) !== false) {
+                        $perms[$row['description']] = 1;
                     }
                 }
             }

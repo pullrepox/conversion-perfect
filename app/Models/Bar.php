@@ -12,6 +12,7 @@ class Bar extends Model
         'drop_shadow', 'close_button', 'background_gradient', 'gradient_end_color', 'gradient_angle', 'powered_by_position',
         'sub_headline', 'sub_headline_color', 'sub_background_color', 'video_type', 'content_youtube_url', 'content_vimeo_url', 'video_code', 'video_auto_play',
         'button_type', 'button_location', 'button_label', 'button_background_color', 'button_text_color', 'button_animation', 'button_action', 'button_click_url', 'button_open_new',
+        'social_button_type',
         'countdown', 'countdown_location', 'countdown_format', 'countdown_end_date', 'countdown_end_time', 'countdown_timezone', 'countdown_days', 'countdown_hours',
         'countdown_minutes', 'countdown_background_color', 'countdown_text_color', 'countdown_on_expiry', 'countdown_expiration_text', 'countdown_expiration_url',
         'third_party_url', 'custom_link', 'custom_link_text', 'meta_title', 'meta_description', 'meta_keywords',

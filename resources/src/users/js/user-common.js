@@ -3,22 +3,37 @@ import List from 'list.js';
 (function ($) {
     'use strict';
     
+    let upgrades = window._clickAppConfig.upgrades;
     let permissions = window._clickAppConfig.permissions;
     // Permissions
-    $('#split_test_nav').click(function () {
-        if (permissions['split-test'] === 0) {
-            $('#upgrade-split-test-modal').modal('show');
+    $('#split_test_nav').on('click', function () {
+        if (permissions['split-test'] === 0 && upgrades['professional']['to_do']) {
+            let i_html = 'Sorry, your current plan does not include Split Testing. You need to upgrade to the ' + upgrades['professional']['description'] + ' plan to use Split Testing.';
+            $('#pro-plan-item-text').html(i_html);
+            $('#upgrade-pro-modal').modal('show');
         } else {
             location.href = $(this).data('href');
         }
     });
     
-    $('#multi_bar_nav').click(function () {
-        if (permissions['multi-bar'] === 0) {
-            alert('d');
+    $('#multi_bar_nav').on('click', function () {
+        if (permissions['multi-bar'] === 0 && upgrades['professional']['to_do']) {
+            let i_html = 'Sorry, your current plan does not include Multi-Bars. You need to upgrade to the ' + upgrades['professional']['description'] + ' plan to use Multi-Bars.';
+            $('#pro-plan-item-text').html(i_html);
+            $('#upgrade-pro-modal').modal('show');
         } else {
             location.href = $(this).data('href');
         }
+    });
+    
+    $('#upgrade-pro-btn').on('click', function () {
+        let href_ids = upgrades['professional']['jvzooid'].split(',');
+        if (href_ids.length > 0) {
+            for (let i = 0; i < href_ids.length; i++) {
+                window.open(`https://www.jvzoo.com/b/0/${href_ids[i]}/14`, '_new');
+            }
+        }
+        $('#upgrade-pro-modal').modal('hide');
     });
     
     // Tooltip

@@ -88,8 +88,8 @@
                    v-model="model.content.button_click_url" @input="changeStatusVal"/>
             @error('button_click_url')
             <span class="invalid-feedback" role="alert">
-                        {{ $message }}
-                    </span>
+                {{ $message }}
+            </span>
             @enderror
         </div>
     </div>

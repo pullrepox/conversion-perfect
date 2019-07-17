@@ -40,6 +40,7 @@
                 error: '{{ ($errorMessage = session('error')) ? $errorMessage : '' }}'
             },
             permissions: JSON.parse('{!! $permissions !!}'),
+            upgrades: JSON.parse('{!! $upgrades !!}'),
         };
     </script>
 </head>

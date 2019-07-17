@@ -41,11 +41,7 @@
             </div>
         </div>
         @include('users.bars-partials.bars-button')
-        @if (!is_null(auth()->user()->permissions))
-            @if (auth()->user()->permissions['social-buttons'])
-                {{-- Social Buttons here. --}}
-            @endif
-        @endif
+        @include('users.bars-partials.bars-social')
         @include('users.bars-partials.bars-video')
     </div>
 </div>

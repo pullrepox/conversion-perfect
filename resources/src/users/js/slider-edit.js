@@ -20,6 +20,7 @@ new Vue({
         bar_id: '',
         form_action: '/bars',
         permissions: {},
+        upgrades: {},
         changed_status: false,
         basic_model: {
             sel_tab: 'main',
@@ -32,7 +33,7 @@ new Vue({
                 sub_headline: [{attributes: {}, insert: ''}], sub_headline_color: '#ffffff', sub_background_color: '',
                 video_type: 'none', content_youtube_url: '', content_vimeo_url: '', video_auto_play: 0, video_code: '',
                 button_type: 'none', button_location: 'right', button_label: 'Click Here', button_background_color: '#515f7f', button_text_color: '#FFFFFF', button_animation: 'none',
-                button_action: 'hide_bar', button_click_url: '', button_open_new: 0,
+                button_action: 'hide_bar', button_click_url: '', button_open_new: 0, social_button_type: 'none'
             },
             timer: {
                 countdown: 'none', countdown_location: 'left', countdown_format: 'dd', countdown_end_date: '0000-00-00', countdown_end_time: '00:00:00',
@@ -83,6 +84,7 @@ new Vue({
         this.create_edit = (window._bar_opt_ary.create_edit || window._bar_opt_ary.create_edit === 'true');
         this.form_action = window._bar_opt_ary.form_action;
         this.permissions = window._clickAppConfig.permissions;
+        this.upgrades = window._clickAppConfig.upgrades;
         this.bar_id = window._bar_opt_ary.bar_id;
         let vm = this;
         Object.keys(this.model).forEach(function (item) {
@@ -152,8 +154,6 @@ new Vue({
         }
         
         this.capturing = false;
-        
-        console.log(this.permissions);
     },
     methods: {
         changeStatusVal() {
@@ -218,9 +218,25 @@ new Vue({
                     }).on('select2:select', function () {
                         vm.changeStatusVal();
                         if ($(this).data('parent')) {
-                            vm.model[$(this).data('parent')][$(this).attr('id')] = $(this).val();
-                            if ($(this).attr('id') === 'integration_type') {
-                                vm.getResponderList();
+                            if ($(this).attr('id') === 'powered_by_position') {
+                                if ($(this).val() === 'hidden') {
+                                    if (vm.permissions['remove-powered-by'] === 0 && vm.upgrades['professional']['to_do']) {
+                                        let i_html = 'Sorry, your current plan does allow hiding "Powered by Conversion Perfect". ';
+                                        i_html += 'You need to upgrade to the ' + vm.upgrades['professional']['description'] + ' plan to hide "Powered by Conversion Perfect".';
+                                        $('#pro-plan-item-text').html(i_html);
+                                        $('#upgrade-pro-modal').modal('show');
+                                        $(this).val('bottom_right').trigger('change');
+                                        vm.model[$(this).data('parent')][$(this).attr('id')] = 'bottom_right';
+                                        return false;
+                                    }
+                                }
+                                
+                                vm.model[$(this).data('parent')][$(this).attr('id')] = $(this).val();
+                            } else {
+                                vm.model[$(this).data('parent')][$(this).attr('id')] = $(this).val();
+                                if ($(this).attr('id') === 'integration_type') {
+                                    vm.getResponderList();
+                                }
                             }
                         } else {
                             vm.model[$(this).attr('id')] = $(this).val();

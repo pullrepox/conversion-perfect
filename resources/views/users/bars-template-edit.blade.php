@@ -118,6 +118,7 @@
                     button_action: "{{ old('button_action') ? old('button_action') : $bar->button_action }}",
                     button_click_url: "{{ old('button_click_url') ? old('button_click_url') : $bar->button_click_url }}",
                     button_open_new: "{{ old('button_open_new') ? old('button_open_new') : $bar->button_open_new }}",
+                    social_button_type: "{{ old('social_button_type') ? old('social_button_type') : $bar->social_button_type }}",
                 },
                 timer: {
                     countdown: "{{ old('countdown') ? old('countdown') : $bar->countdown }}",

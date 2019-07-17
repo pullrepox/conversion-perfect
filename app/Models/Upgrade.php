@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Upgrade extends Model
 {
     protected $fillable = [
-        'description', 'jvzooid', 'showwasupgrade', 'unlessuserhas'
+        'alias', 'description', 'jvzooid', 'showwasupgrade', 'unlessuserhas'
     ];
 }
