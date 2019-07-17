@@ -161,6 +161,13 @@ new Vue({
         },
         tabClick(e, id) {
             e.preventDefault();
+            if (id === 'lead_capture') {
+                if (this.permissions['lead-capture'] === 0 && this.upgrades['lead-capture']['to_do']) {
+                    $('#lead-capture-plan-item-text').html(this.upgrades['lead-capture']['description']);
+                    $('#upgrade-lead-capture-modal').modal('show');
+                    return false;
+                }
+            }
             if (!this.changed_status) {
                 this.model.sel_tab = id;
                 this.autoFocusField();
@@ -171,7 +178,6 @@ new Vue({
         autoFocusField() {
             let vm = this;
             let inputOptions = {main: '#friendly_name', overlay: '#third_party_url', translation: '#days_label'};
-            // let selOptions = {timer: '#countdown', lead_capture: '#integration_type'};
             if (this.model.sel_tab === 'content') {
                 this.$nextTick(function () {
                     vm.quill['sub_headline'].focus();
@@ -180,11 +186,7 @@ new Vue({
                 this.$nextTick(function () {
                     $(inputOptions[vm.model.sel_tab]).focus();
                 });
-            }/* else if (this.model.sel_tab in selOptions) {
-                this.$nextTick(function () {
-                    vm.select2Open(selOptions[vm.model.sel_tab]);
-                });
-            }*/
+            }
         },
         initScrollTab() {
             new PerfectScrollbar('#prod-edit-page', {
@@ -230,13 +232,23 @@ new Vue({
                                         return false;
                                     }
                                 }
-                                
-                                vm.model[$(this).data('parent')][$(this).attr('id')] = $(this).val();
-                            } else {
-                                vm.model[$(this).data('parent')][$(this).attr('id')] = $(this).val();
-                                if ($(this).attr('id') === 'integration_type') {
-                                    vm.getResponderList();
+                            } else if ($(this).attr('id') === 'social_button_type') {
+                                if ($(this).val() !== 'none') {
+                                    if (vm.permissions['social-buttons'] === 0) {
+                                        let i_html = 'Sorry, your current plan does allow Social Buttons. ';
+                                        i_html += 'You need to upgrade to the ' + vm.upgrades['social-unlimited']['description'] + ' plan to use Social Buttons.';
+                                        $('#social-plan-item-text').html(i_html);
+                                        $('#upgrade-social-modal').modal('show');
+                                        $(this).val('none').trigger('change');
+                                        vm.model[$(this).data('parent')][$(this).attr('id')] = 'none';
+                                        return false;
+                                    }
                                 }
+                            }
+                            
+                            vm.model[$(this).data('parent')][$(this).attr('id')] = $(this).val();
+                            if ($(this).attr('id') === 'integration_type') {
+                                vm.getResponderList();
                             }
                         } else {
                             vm.model[$(this).attr('id')] = $(this).val();

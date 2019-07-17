@@ -36,6 +36,26 @@ import List from 'list.js';
         $('#upgrade-pro-modal').modal('hide');
     });
     
+    $('#upgrade-lead-capture-btn').on('click', function () {
+        let href_ids = upgrades['lead-capture']['jvzooid'].split(',');
+        if (href_ids.length > 0) {
+            for (let i = 0; i < href_ids.length; i++) {
+                window.open(`https://www.jvzoo.com/b/0/${href_ids[i]}/14`, '_new');
+            }
+        }
+        $('#upgrade-lead-capture-modal').modal('hide');
+    });
+    
+    $('#upgrade-social-btn').on('click', function () {
+        let href_ids = upgrades['social-unlimited']['jvzooid'].split(',');
+        if (href_ids.length > 0) {
+            for (let i = 0; i < href_ids.length; i++) {
+                window.open(`https://www.jvzoo.com/b/0/${href_ids[i]}/14`, '_new');
+            }
+        }
+        $('#upgrade-social-modal').modal('hide');
+    });
+    
     // Tooltip
     $('[data-toggle="tooltip"]').tooltip({
         html: true
