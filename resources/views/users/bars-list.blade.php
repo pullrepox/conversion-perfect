@@ -6,89 +6,85 @@
         {{-- Page content --}}
         <div class="container-fluid mt--8">
             <!-- Table -->
-            <div class="row">
-                <div class="col">
-                    <div class="card">
-                        <!-- Card header -->
-                        <div class="card-header border-0">
-                            <div class="row">
-                                <h3 class="mb-0 col">{{ $header_data['main_name'] }}</h3>
-                                <div class="col text-right">
-                                    <a href="{{ secure_redirect(route('bars.create', ['flag' => 'template'])) }}" class="btn btn-success btn-sm text-capitalize">New Conversion Bar</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Light table -->
-                        <div class="table-responsive custom-table">
-                            <table class="table align-items-center table-flush">
-                                <thead class="thead-light">
-                                <tr>
-                                    <th></th>
-                                    <th>Friendly Name</th>
-                                    <th>Click Count</th>
-                                    <th>Unique Click Count</th>
-                                    <th>Added</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @if (sizeof($bars) > 0)
-                                    @foreach($bars as $bar)
-                                        <tr>
-                                            <td class="table-actions">
-                                                <a href="{{ route('bars.show', ['bar' => $bar->id, 'report' => true]) }}" class="table-action table-action-cp"
-                                                   data-toggle="tooltip" data-original-title="Report">
-                                                    <i class="fas fa-chart-pie"></i>
-                                                </a>
-                                                <a href="{{ route('bars.show', ['bar' => $bar->id]) }}" class="table-action table-action-cp" data-target="{{ $bar->id }}"
-                                                   data-toggle="tooltip" data-placement="top" title="Preview" target="_blank">
-                                                    <i class="fas fa-external-link-square-alt"></i>
-                                                </a>
-                                                <a href="javascript: void(0)" class="table-action table-action-cp bar-copy-code" data-toggle="modal" data-target="#copy-modal"
-                                                   data-link="{{ secure_redirect(route('conversion.get-scripts-code-for-embed', ['id' => $bar->id])) }}"
-                                                   data-custom="{{ $bar->custom_link_text != '' ? ($custom_links[$bar->custom_link] . $bar->custom_link_text) : 'No Existing Your Custom Link.' }}">
-                                                    <span data-toggle="tooltip" data-placement="top" title="Get Code" class="w-100 h-100">
-                                                        <i class="fas fa-clipboard-list"></i>
-                                                    </span>
-                                                </a>
-                                            </td>
-                                            <td class="table-user">{{ $bar->friendly_name }}</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>{{ time_elapsed_string($bar->created_at) }}</td>
-                                            <td class="table-actions text-right pl-0 pr-3" style="width: 90px;">
-                                                <a href="{{ route('bars.edit', ['bar' => $bar->id]) }}" class="table-action table-action-cp"
-                                                   data-toggle="tooltip" data-original-title="Edit Bar">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                <a href="javascript: void(0)" class="table-action table-action-cp bar-clone" data-target="{{ $bar->id }}"
-                                                   data-toggle="tooltip" data-placement="top" title="Clone">
-                                                    <i class="fas fa-clone"></i>
-                                                </a>
-                                                <a href="javascript: void(0)" data-id="{{ $bar->id }}" class="table-action table-action-delete bar-delete"
-                                                   data-toggle="modal" data-target="#delete-modal">
-                                                    <span data-toggle="tooltip" data-placement="top" title="Delete Bar" class="w-100 h-100">
-                                                        <i class="fas fa-trash"></i>
-                                                    </span>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @else
-                                    <tr>
-                                        <td colspan="8" class="text-center">
-                                            You have no Conversion Bars. Please add a Conversion Bar by clicking the [New Conversion Bar] button.
-                                        </td>
-                                    </tr>
-                                @endif
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- Card footer -->
-                        <div class="card-footer py-4">
-                            {{ $bars->links() }}
+            <div class="card">
+                <!-- Card header -->
+                <div class="card-header border-0">
+                    <div class="row">
+                        <h3 class="mb-0 col">{{ $header_data['main_name'] }}</h3>
+                        <div class="col text-right">
+                            <a href="{{ secure_redirect(route('bars.create', ['flag' => 'template'])) }}" class="btn btn-success btn-sm text-capitalize">New Conversion Bar</a>
                         </div>
                     </div>
+                </div>
+                <!-- Light table -->
+                <div class="table-responsive custom-table">
+                    <table class="table align-items-center table-flush">
+                        <thead class="thead-light">
+                        <tr>
+                            <th></th>
+                            <th>Friendly Name</th>
+                            <th>Click Count</th>
+                            <th>Unique Click Count</th>
+                            <th>Added</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @if (sizeof($bars) > 0)
+                            @foreach($bars as $bar)
+                                <tr>
+                                    <td class="table-actions">
+                                        <a href="{{ route('bars.show', ['bar' => $bar->id, 'report' => true]) }}" class="table-action table-action-cp"
+                                           data-toggle="tooltip" data-original-title="Report">
+                                            <i class="fas fa-chart-pie"></i>
+                                        </a>
+                                        <a href="{{ route('bars.show', ['bar' => $bar->id]) }}" class="table-action table-action-cp" data-target="{{ $bar->id }}"
+                                           data-toggle="tooltip" data-placement="top" title="Preview" target="_blank">
+                                            <i class="fas fa-external-link-square-alt"></i>
+                                        </a>
+                                        <a href="javascript: void(0)" class="table-action table-action-cp bar-copy-code" data-toggle="modal" data-target="#copy-modal"
+                                           data-link="{{ secure_redirect(route('conversion.get-scripts-code-for-embed', ['id' => $bar->id])) }}"
+                                           data-custom="{{ $bar->custom_link_text != '' ? ($custom_links[$bar->custom_link] . $bar->custom_link_text) : 'No Existing Your Custom Link.' }}">
+                                            <span data-toggle="tooltip" data-placement="top" title="Get Code" class="w-100 h-100">
+                                                <i class="fas fa-clipboard-list"></i>
+                                            </span>
+                                        </a>
+                                    </td>
+                                    <td class="table-user">{{ $bar->friendly_name }}</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>{{ time_elapsed_string($bar->created_at) }}</td>
+                                    <td class="table-actions text-right pl-0 pr-3" style="width: 90px;">
+                                        <a href="{{ route('bars.edit', ['bar' => $bar->id]) }}" class="table-action table-action-cp"
+                                           data-toggle="tooltip" data-original-title="Edit Bar">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="javascript: void(0)" class="table-action table-action-cp bar-clone" data-target="{{ $bar->id }}"
+                                           data-toggle="tooltip" data-placement="top" title="Clone">
+                                            <i class="fas fa-clone"></i>
+                                        </a>
+                                        <a href="javascript: void(0)" data-id="{{ $bar->id }}" class="table-action table-action-delete bar-delete"
+                                           data-toggle="modal" data-target="#delete-modal">
+                                            <span data-toggle="tooltip" data-placement="top" title="Delete Bar" class="w-100 h-100">
+                                                <i class="fas fa-trash"></i>
+                                            </span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="8" class="text-center">
+                                    You have no Conversion Bars. Please add a Conversion Bar by clicking the [New Conversion Bar] button.
+                                </td>
+                            </tr>
+                        @endif
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Card footer -->
+                <div class="card-footer py-4">
+                    {{ $bars->links() }}
                 </div>
             </div>
             <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modal" aria-hidden="true">

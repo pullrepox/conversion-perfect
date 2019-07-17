@@ -27,6 +27,8 @@ class ViewServiceProvider extends ServiceProvider
             'users/bars-edit', 'users/bars-list', 'users/bars-template', 'users/bars-template-edit'
         ], 'App\Http\View\BarsComposer');
         
-        view()->composer(['users/bars-edit', 'layouts/base'], 'App\Http\View\ProfilesComposer');
+        view()->composer([
+            'users/bars-edit', 'layouts/base', 'users/profile', 'users/bars-list', 'users/bars-template', 'users/bars-template-edit'
+        ], 'App\Http\View\ProfilesComposer');
     }
 }

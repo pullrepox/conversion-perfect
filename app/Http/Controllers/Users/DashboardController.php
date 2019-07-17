@@ -76,4 +76,16 @@ class DashboardController extends Controller
         
         return view('users.bonuses', compact('bonuses', 'header_data'));
     }
+    
+    public function profileIndex()
+    {
+        $header_data = [
+            'main_name'   => 'Account',
+            'parent_data' => []
+        ];
+        
+        $am_plans = explode(',', auth()->user()->amemberplans);
+        
+        return view('users.profile', compact('header_data', 'am_plans'));
+    }
 }

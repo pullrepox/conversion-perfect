@@ -346,9 +346,7 @@ class BarsController extends Controller
     {
         $header_data = [
             'main_name'   => 'Edit Conversion Bar',
-            'parent_data' => [
-                ['parent_name' => 'Conversion Bars', 'parent_url' => secure_redirect(route('bars'))],
-            ]
+            'parent_data' => []
         ];
         
         $bar->headline = !is_null(trim($bar->headline)) && !empty(trim($bar->headline)) ? stripslashes($bar->headline) : json_encode([['attributes' => [], 'insert' => 'Your Headline']]);

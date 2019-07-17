@@ -111,8 +111,8 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link text-capitalize">
+                    <li class="nav-item {{ isActiveRoute('account') }}">
+                        <a href="{{ secure_redirect(route('account')) }}" class="nav-link text-capitalize {{ isActiveRoute('account') }}">
                             <i class="ni ni-single-02 text-cp"></i>
                             <span class="nav-link-text text-capitalize">Account</span>
                         </a>
