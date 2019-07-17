@@ -3,6 +3,24 @@ import List from 'list.js';
 (function ($) {
     'use strict';
     
+    let permissions = window._clickAppConfig.permissions;
+    // Permissions
+    $('#split_test_nav').click(function () {
+        if (permissions['split-test'] === 0) {
+            $('#upgrade-split-test-modal').modal('show');
+        } else {
+            location.href = $(this).data('href');
+        }
+    });
+    
+    $('#multi_bar_nav').click(function () {
+        if (permissions['multi-bar'] === 0) {
+            alert('d');
+        } else {
+            location.href = $(this).data('href');
+        }
+    });
+    
     // Tooltip
     $('[data-toggle="tooltip"]').tooltip({
         html: true

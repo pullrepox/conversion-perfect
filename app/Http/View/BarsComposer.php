@@ -20,6 +20,7 @@ class BarsComposer
         $responder_list = [
             'none' => 'None'
         ];
+        
         $integration_list = Integration::where('user_id', auth()->user()->id)->get();
         if ($integration_list) {
             foreach ($integration_list as $row) {

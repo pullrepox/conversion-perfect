@@ -17,9 +17,9 @@
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/app.css', config('site.ssl_tf')) }}"/>
     <link rel="stylesheet" href="{{ asset('css/users.css', config('site.ssl_tf')) }}"/>
-    @section('styles')
-    @show
-    <!-- Scripts -->
+@section('styles')
+@show
+<!-- Scripts -->
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -38,7 +38,8 @@
                 info: '{{ ($successMessage = session('info')) ? $successMessage : '' }}',
                 warning: '{{ ($successMessage = session('warning')) ? $successMessage : '' }}',
                 error: '{{ ($errorMessage = session('error')) ? $errorMessage : '' }}'
-            }
+            },
+            permissions: JSON.parse('{!! $permissions !!}'),
         };
     </script>
 </head>
@@ -47,6 +48,7 @@
     @include('layouts.sidebar')
     @include('layouts.topnavbar')
     @yield('content')
+    @include('layouts.partials.modals')
 </div>
 {!! session(['success' => '']) !!}
 {!! session(['info' => '']) !!}

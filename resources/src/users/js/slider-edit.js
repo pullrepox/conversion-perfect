@@ -19,6 +19,7 @@ new Vue({
         create_edit: false,
         bar_id: '',
         form_action: '/bars',
+        permissions: {},
         changed_status: false,
         basic_model: {
             sel_tab: 'main',
@@ -81,6 +82,7 @@ new Vue({
         this.model = JSON.parse(JSON.stringify(this.basic_model));
         this.create_edit = (window._bar_opt_ary.create_edit || window._bar_opt_ary.create_edit === 'true');
         this.form_action = window._bar_opt_ary.form_action;
+        this.permissions = window._clickAppConfig.permissions;
         this.bar_id = window._bar_opt_ary.bar_id;
         let vm = this;
         Object.keys(this.model).forEach(function (item) {
@@ -150,6 +152,8 @@ new Vue({
         }
         
         this.capturing = false;
+        
+        console.log(this.permissions);
     },
     methods: {
         changeStatusVal() {
@@ -726,7 +730,7 @@ new Vue({
                 });
             });
         },
-        actionsBar(flag, message){
+        actionsBar(flag, message) {
             this.loading = true;
             axios.put(`/bars/${window._bar_opt_ary.bar_id}`, {
                 flag: flag,

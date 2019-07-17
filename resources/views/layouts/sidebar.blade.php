@@ -34,16 +34,18 @@
                             <span class="nav-link-text text-capitalize">Conversion Bars</span>
                         </a>
                     </li>
-                    @if (!is_null(auth()->user()->permissions))
-                        @if (auth()->user()->permissions['split-test'])
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <i class="ni ni-single-copy-04 text-cp"></i>
-                                    <span class="nav-link-text text-capitalize">Split Tests</span>
-                                </a>
-                            </li>
-                        @endif
-                    @endif
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript: void(0)" data-href="" id="split_test_nav">
+                            <i class="ni ni-single-copy-04 text-cp"></i>
+                            <span class="nav-link-text text-capitalize">Split Tests</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript: void(0)" data-href="" id="multi_bar_nav">
+                            <i class="ni ni-books text-cp"></i>
+                            <span class="nav-link-text text-capitalize">Multi Bar</span>
+                        </a>
+                    </li>
                     <li class="nav-item {{ isActiveRoute(['bars.show']) }}">
                         <a class="nav-link {{ isActiveRoute(['bars.show']) }}" href="#navbar-reports" data-toggle="collapse" role="button"
                            aria-expanded="{{ isExpendRoute(['bars.show']) }}" aria-controls="navbar-reports">
