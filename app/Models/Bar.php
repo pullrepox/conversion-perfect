@@ -29,6 +29,6 @@ class Bar extends Model
     
     public function logs()
     {
-        return $this->hasMany('App\Models\BarsClickLogs');
+        return $this->hasMany('App\Models\BarsClickLog');
     }
 }

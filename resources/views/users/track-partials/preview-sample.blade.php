@@ -201,7 +201,7 @@
     <p>For any portion of the Products requiring a usage or subscription fee, after the 14 day free trial period (if any) your credit card or Paypal account will be charged on a
         recurring basis according the service plan you have chosen. Unless you cancel the free trial prior to the end of the trial period, you will be automatically enrolled in and
         charged service fees for the service plan that you have chosen. Charges for all service plans are NON-REFUNDABLE, even if you do not like or use our Products. However,
-        exceptions for extenuating circumstances will be considered on a case by case basis in Click Perfect & Light Speed LLC's sole and absolute discretion.
+        exceptions for extenuating circumstances will be considered on a case by case basis in Click Perfect & Light Speed LLC"s sole and absolute discretion.
         Canceling your account will cause us to stop automatically charging your credit card at the end of your billing period. You will still be able to use your service until the end
         of the then-current billing period. Canceling your account does not refund your money, as charges are nonrefundable.If you are dissatisfied for any reason, your sole right and
         exclusive remedy is to cancel your account. No refunds for all or any portion of Products will be given. Click Perfect & Light Speed LLC reserves the right to suspend your

@@ -49,11 +49,144 @@
         }
     }
     
+    function murmurhash3_32_gc(key, seed) {
+        var remainder, bytes, h1, h1b, c1, c2, k1, i;
+        
+        remainder = key.length & 3;
+        bytes = key.length - remainder;
+        h1 = seed;
+        c1 = 0xcc9e2d51;
+        c2 = 0x1b873593;
+        i = 0;
+        
+        while (i < bytes) {
+            k1 =
+                ((key.charCodeAt(i) & 0xff)) |
+                ((key.charCodeAt(++i) & 0xff) << 8) |
+                ((key.charCodeAt(++i) & 0xff) << 16) |
+                ((key.charCodeAt(++i) & 0xff) << 24);
+            ++i;
+            
+            k1 = ((((k1 & 0xffff) * c1) + ((((k1 >>> 16) * c1) & 0xffff) << 16))) & 0xffffffff;
+            k1 = (k1 << 15) | (k1 >>> 17);
+            k1 = ((((k1 & 0xffff) * c2) + ((((k1 >>> 16) * c2) & 0xffff) << 16))) & 0xffffffff;
+            
+            h1 ^= k1;
+            h1 = (h1 << 13) | (h1 >>> 19);
+            h1b = ((((h1 & 0xffff) * 5) + ((((h1 >>> 16) * 5) & 0xffff) << 16))) & 0xffffffff;
+            h1 = (((h1b & 0xffff) + 0x6b64) + ((((h1b >>> 16) + 0xe654) & 0xffff) << 16));
+        }
+        
+        k1 = 0;
+        
+        switch (remainder) {
+            case 3:
+                k1 ^= (key.charCodeAt(i + 2) & 0xff) << 16;
+            case 2:
+                k1 ^= (key.charCodeAt(i + 1) & 0xff) << 8;
+            case 1:
+                k1 ^= (key.charCodeAt(i) & 0xff);
+                
+                k1 = (((k1 & 0xffff) * c1) + ((((k1 >>> 16) * c1) & 0xffff) << 16)) & 0xffffffff;
+                k1 = (k1 << 15) | (k1 >>> 17);
+                k1 = (((k1 & 0xffff) * c2) + ((((k1 >>> 16) * c2) & 0xffff) << 16)) & 0xffffffff;
+                h1 ^= k1;
+        }
+        
+        h1 ^= key.length;
+        
+        h1 ^= h1 >>> 16;
+        h1 = (((h1 & 0xffff) * 0x85ebca6b) + ((((h1 >>> 16) * 0x85ebca6b) & 0xffff) << 16)) & 0xffffffff;
+        h1 ^= h1 >>> 13;
+        h1 = ((((h1 & 0xffff) * 0xc2b2ae35) + ((((h1 >>> 16) * 0xc2b2ae35) & 0xffff) << 16))) & 0xffffffff;
+        h1 ^= h1 >>> 16;
+        
+        return h1 >>> 0;
+    }
+    
+    function isIE() {
+        return (navigator.appName === "Microsoft Internet Explorer") || (navigator.appName === "Netscape" && navigator.userAgent.indexOf("Trident/") !== -1);
+    }
+    
+    function getRegularPluginsString() {
+        var re = [];
+        Object.keys(navigator.plugins).forEach(function (p) {
+            var mimeTypes = "";
+            Object.keys(navigator.plugins[p]).forEach(function (mt) {
+                mimeTypes = [navigator.plugins[p][mt].type, navigator.plugins[p][mt].suffixes].join("~");
+            });
+            
+            re.push([navigator.plugins[p].name, navigator.plugins[p].description, mimeTypes].join("::"));
+        });
+        
+        return re.join(";");
+    }
+    
+    function getIEPluginsString() {
+        if (window.ActiveXObject) {
+            var names = [
+                "ShockwaveFlash.ShockwaveFlash",
+                "AcroPDF.PDF",
+                "PDF.PdfCtrl",
+                "QuickTime.QuickTime",
+                "rmocx.RealPlayer G2 Control",
+                "rmocx.RealPlayer G2 Control.1",
+                "RealPlayer.RealPlayer(tm) ActiveX Control (32-bit)",
+                "RealVideo.RealVideo(tm) ActiveX Control (32-bit)",
+                "RealPlayer",
+                "SWCtl.SWCtl",
+                "WMPlayer.OCX",
+                "AgControl.AgControl",
+                "Skype.Detection"
+            ];
+            return names.map(function (name) {
+                try {
+                    new ActiveXObject(name);
+                    return name;
+                } catch (e) {
+                    return null;
+                }
+            }).join(";");
+        } else {
+            return "";
+        }
+    }
+    
+    function getFingerPrint() {
+        var keys = [];
+        keys.push(navigator.userAgent);
+        keys.push(navigator.language);
+        keys.push(screen.colorDepth);
+        var resolution = [screen.height, screen.width];
+        if (typeof resolution !== "undefined") {
+            keys.push(resolution.join("x"));
+        }
+        keys.push(new Date().getTimezoneOffset());
+        keys.push(!!window.sessionStorage);
+        keys.push(!!window.localStorage);
+        keys.push(!!window.indexedDB);
+        if (document.body) {
+            keys.push(typeof (document.body.addBehavior));
+        } else {
+            keys.push(typeof undefined);
+        }
+        keys.push(typeof (window.openDatabase));
+        keys.push(navigator.cpuClass);
+        keys.push(navigator.platform);
+        keys.push(navigator.doNotTrack);
+        if (isIE()) {
+            keys.push(getIEPluginsString());
+        } else {
+            keys.push(getRegularPluginsString());
+        }
+        
+        return murmurhash3_32_gc(keys.join("###"), 31);
+    }
+    
     /**
      * Show Main Bar when load window.
      */
     $(function () {
-        // console.log(__cp_cf[bar_id].countdown_target);
         if (__cp_cf[bar_id].bar.countdown !== 'none') {
             let countDownDate = new Date(__cp_cf[bar_id].countdown_target.toLocaleString('en-US', {
                 timeZone: __cp_cf[bar_id].bar.countdown_timezone
@@ -107,7 +240,7 @@
                 }
             }, 1000);
         }
-    
+        
         switch (__cp_cf[bar_id].bar.show_bar_type) {
             case "immediate":
                 immediateDisplayBar();
@@ -127,11 +260,11 @@
                 showHideMainBar(window.localStorage.getItem('closed-cp-bar-' + bar_id) && window.localStorage.getItem('closed-cp-bar-' + bar_id) === 'closed');
                 break;
         }
-    
+        
         if (__cp_cf[bar_id].bar.meta_title !== '') {
             document.title = __cp_cf[bar_id].bar.meta_title;
         }
-    
+        
         if (__cp_cf[bar_id].bar.meta_description !== '') {
             if ($('meta[name=description]')) {
                 $('meta[name=description]').attr('content', __cp_cf[bar_id].bar.meta_description);
@@ -139,13 +272,17 @@
                 $(document.head).append('<meta name="description" content="' + __cp_cf[bar_id].bar.meta_description + '"/>');
             }
         }
-    
+        
         if (__cp_cf[bar_id].bar.meta_keywords !== '') {
             if ($('meta[name=keywords]')) {
                 $('meta[name=keywords]').attr('content', __cp_cf[bar_id].bar.meta_keywords);
             } else {
                 $(document.head).append('<meta name="keywords" content="' + __cp_cf[bar_id].bar.meta_keywords + '"/>');
             }
+        }
+        
+        if (!checkCookie('CVP--fp-id')) {
+            setCookie('CVP--fp-id', getFingerPrint(), 1);
         }
     });
     
@@ -209,18 +346,24 @@
      */
     if (document.querySelector('#cp--bar-action-btn-' + bar_id)) {
         $('#cp--bar-action-btn-' + bar_id).on('click', function () {
-            if (__cp_cf[bar_id].bar.button_action === 'open_click_url') {
-                window.open(__cp_cf[bar_id].bar.button_click_url, 'Conversion Perfect', '_blank');
-                showHideMainBar(true);
-            } else {
-                setTimeout(function () {
+            $.post(__cp_cf[bar_id].act_btn_action, {
+                cookie: checkCookie("CVP--fp-id") ? getCookie("CVP--fp-id") : getFingerPrint()
+            }).done((r) => {
+                console.log(r);
+            }).always(() => {
+                if (__cp_cf[bar_id].bar.button_action === 'open_click_url') {
+                    window.open(__cp_cf[bar_id].bar.button_click_url, 'Conversion Perfect', '_blank');
                     showHideMainBar(true);
-                }, (__cp_cf[bar_id].bar.autohide_delay_seconds * 1000));
-            }
-            
-            if (__cp_cf[bar_id].bar.integration_type !== 'none') {
-                showHideCtaBar((window.localStorage.getItem('closed-cta-cp-bar-' + bar_id) && window.localStorage.getItem('closed-cta-cp-bar-' + bar_id) === 'closed'));
-            }
+                } else {
+                    setTimeout(function () {
+                        showHideMainBar(true);
+                    }, (__cp_cf[bar_id].bar.autohide_delay_seconds * 1000));
+                }
+                
+                if (__cp_cf[bar_id].bar.integration_type !== 'none') {
+                    showHideCtaBar((window.localStorage.getItem('closed-cta-cp-bar-' + bar_id) && window.localStorage.getItem('closed-cta-cp-bar-' + bar_id) === 'closed'));
+                }
+            });
         });
     }
     
@@ -231,8 +374,9 @@
                 $('#lead_capture_cta_name__cp_bar_' + bar_id).focus();
                 return false;
             }
-        
-            $.post($('#cp-bar--cta-form-' + bar_id).attr('action'), $('#cp-bar--cta-form-' + bar_id).serialize())
+            
+            let param = $('#cp-bar--cta-form-' + bar_id).serialize() + "&cookie=" + (checkCookie("CVP--fp-id") ? getCookie("CVP--fp-id") : getFingerPrint());
+            $.post($('#cp-bar--cta-form-' + bar_id).attr('action'), param)
                 .done((r) => {
                     console.log(r);
                 })

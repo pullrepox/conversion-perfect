@@ -3,18 +3,22 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Repositories\ApiRepository;
 use App\Http\Repositories\BarsRepository;
 use App\Integration;
 use App\Models\Subscriber;
 use Illuminate\Http\Request;
+use Soumen\Agent\Facades\Agent;
 
 class BarOptionsApiController extends Controller
 {
     protected $barsRepo;
+    protected $apiRepo;
     
-    public function __construct(BarsRepository $barsRepository)
+    public function __construct(BarsRepository $barsRepository, ApiRepository $apiRepository)
     {
         $this->barsRepo = $barsRepository;
+        $this->apiRepo = $apiRepository;
     }
     
     /**
@@ -41,24 +45,24 @@ class BarOptionsApiController extends Controller
         }
         
         if ($responder_id == 'conversion_perfect') {
-            $re = $this->barsRepo->getConversionPerfectLists();
+            $re = $this->apiRepo->getConversionPerfectLists();
         } else {
             $integration = Integration::with('responder')->where('user_id', auth()->user()->id)->where('responder_id', $responder_id)->first();
             
             if ($integration->responder->title == 'Sendlane') {
-                $re = $this->barsRepo->getSendlaneList($integration);
+                $re = $this->apiRepo->getSendlaneList($integration);
             } else if ($integration->responder->title == 'MailChimp') {
-                $re = $this->barsRepo->getMailChimpLists($integration);
+                $re = $this->apiRepo->getMailChimpLists($integration);
             } else if ($integration->responder->title == 'ActiveCampaign') {
-                $re = $this->barsRepo->getActiveCampaignList($integration);
+                $re = $this->apiRepo->getActiveCampaignList($integration);
             } else if ($integration->responder->title == 'Campaign Monitor') {
-                $re = $this->barsRepo->getCampaignMonitorLists($integration);
+                $re = $this->apiRepo->getCampaignMonitorLists($integration);
             } else if ($integration->responder->title == 'GetResponse') {
-                $re = $this->barsRepo->getResponseCampaigns($integration);
+                $re = $this->apiRepo->getResponseCampaigns($integration);
             } else if ($integration->responder->title == 'MailerLite') {
-                $re = $this->barsRepo->getMailerLiteGroups($integration);
+                $re = $this->apiRepo->getMailerLiteGroups($integration);
             } else if ($integration->responder->title == 'Send In Blue') {
-                $re = $this->barsRepo->getSendInBlueLists($integration);
+                $re = $this->apiRepo->getSendInBlueLists($integration);
             }
         }
         
@@ -79,7 +83,7 @@ class BarOptionsApiController extends Controller
         if ($bar && !is_null($bar)) {
             $subscriber_name = $request->input('lead_capture_cta_name__cp_bar_' . $bar->id);
             $subscriber_email = $request->input('lead_capture_cta_email__cp_bar_' . $bar->id);
-            $ip = $request->ip();
+            $ip = $request->getClientIp();
             $list_id = $bar->list;
             
             if ($bar->integration_type == 'conversion_perfect') {
@@ -92,20 +96,62 @@ class BarOptionsApiController extends Controller
             } else if ($bar->integration_type != 'none') {
                 $integration = Integration::with('responder')->where('user_id', auth()->user()->id)->where('responder_id', $bar->integration_type)->first();
                 if ($integration->responder->title == 'Sendlane') {
-                    $this->barsRepo->setSendlaneList($integration, $subscriber_name, $subscriber_email, $list_id);
+                    $this->apiRepo->setSendlaneList($integration, $subscriber_name, $subscriber_email, $list_id);
                 } else if ($integration->responder->title == 'MailChimp') {
-                    $this->barsRepo->setMailChimpLists($integration, $subscriber_name, $subscriber_email, $list_id, $ip);
+                    $this->apiRepo->setMailChimpLists($integration, $subscriber_name, $subscriber_email, $list_id, $ip);
                 } else if ($integration->responder->title == 'ActiveCampaign') {
-                    $this->barsRepo->setActiveCampaignLists($integration, $subscriber_name, $subscriber_email, $list_id, $ip);
+                    $this->apiRepo->setActiveCampaignLists($integration, $subscriber_name, $subscriber_email, $list_id, $ip);
                 } else if ($integration->responder->title == 'Campaign Monitor') {
-                    $this->barsRepo->setCampaignMonitorLists($integration, $subscriber_name, $subscriber_email, $list_id, $ip);
+                    $this->apiRepo->setCampaignMonitorLists($integration, $subscriber_name, $subscriber_email, $list_id, $ip);
                 } else if ($integration->responder->title == 'GetResponse') {
-                    $this->barsRepo->setGetResponseContact($integration, $subscriber_email, $list_id);
+                    $this->apiRepo->setGetResponseContact($integration, $subscriber_email, $list_id);
                 } else if ($integration->responder->title == 'MailerLite') {
-                    $this->barsRepo->setMailerLiteSubscribers($integration, $subscriber_name, $subscriber_email, $list_id);
+                    $this->apiRepo->setMailerLiteSubscribers($integration, $subscriber_name, $subscriber_email, $list_id);
                 } else if ($integration->responder->title == 'Send In Blue') {
-                    $this->barsRepo->setSendInBlueSubscribers($integration, $subscriber_name, $subscriber_email, $list_id);
+                    $this->apiRepo->setSendInBlueSubscribers($integration, $subscriber_name, $subscriber_email, $list_id);
                 }
+            }
+            
+            $fp_id = $request->input('cookie');
+            $requestData = sprintf('lang:%s,ua:%s,ip:%s,accept:%s,ref:%s,encode:%s',
+                implode(',', $request->getLanguages()), $request->header('user-agent'), $ip,
+                $request->header('accept'), $request->header('referer'), implode(',', $request->getEncodings()));
+            $unique_id = md5($requestData);
+            
+            $set_log = $this->barsRepo->setLeadCaptureClickLog($bar->id, $bar->user_id, $fp_id, $unique_id);
+            if (!$set_log) {
+                $unique_check = $this->barsRepo->checkUniqueLog($bar->id, $bar->user_id, $fp_id, $unique_id);
+                $browser = Agent::browser();
+                $platform = Agent::platform();
+                $device = Agent::device();
+                $geo_location = geoip()->getLocation($ip);
+                
+                $ins_log_data = [
+                    'user_id'          => $bar->user_id,
+                    'bar_id'           => $bar->id,
+                    'reset_stats'      => 0,
+                    'cookie'           => $fp_id,
+                    'unique_ref'       => $unique_id,
+                    'unique_click'     => $unique_check ? 1 : 0,
+                    'button_click'     => 0,
+                    'lead_capture'     => 1,
+                    'ip_address'       => $ip,
+                    'agents'           => $request->header('user-agent'),
+                    'kind'             => $device->getFamily(),
+                    'model'            => $device->getModel(),
+                    'platform'         => $platform->getName(),
+                    'platform_version' => $platform->getVersion(),
+                    'is_mobile'        => $device->getIsMobile(),
+                    'browser'          => $browser->getName(),
+                    'domain'           => parse_url($request->header('referer'))['host'],
+                    'latitude'         => $geo_location['lat'],
+                    'longitude'        => $geo_location['lon'],
+                    'country_code'     => $geo_location['iso_code'],
+                    'country_name'     => $geo_location['country'],
+                    'language_range'   => implode(',', $request->getLanguages()),
+                ];
+                
+                $this->barsRepo->model1()->insertGetId($ins_log_data);
             }
         }
         

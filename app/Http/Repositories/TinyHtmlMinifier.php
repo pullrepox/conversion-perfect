@@ -62,20 +62,22 @@ class TinyHtmlMinifier
         }
         
         $rest = $html;
-        while (!empty($rest)) :
-            
-            $parts = explode('<', $rest, 2);
-            $this->walk($parts[0]);
-            $rest = (isset($parts[1])) ? $parts[1] : '';
-        endwhile;
+//        while (!empty($rest)) :
+//
+//            $parts = explode('<', $rest, 2);
+//            $this->walk($parts[0]);
+//            $rest = (isset($parts[1])) ? $parts[1] : '';
+//        endwhile;
+        $this->walk($rest);
         return $this->output;
     }
     
     // Walk trough html
     function walk(&$part)
     {
-        $tag_parts = explode('>', $part);
-        $tag_content = $tag_parts[0];
+        $tag_parts = [];
+//        $tag_content = $tag_parts[0];
+        $tag_content = $part;
         
         if (!empty($tag_content)) {
             $name = $this->findName($tag_content);
@@ -163,11 +165,11 @@ class TinyHtmlMinifier
     // Add chevrons around element
     function addChevrons($element, $noll)
     {
-        if (empty($element)) {
-            return $element;
-        }
-        $char = ($this->contains('>', $noll)) ? '>' : '';
-        $element = '<' . $element . $char;
+//        if (empty($element)) {
+//            return $element;
+//        }
+//        $char = ($this->contains('>', $noll)) ? '>' : '';
+//        $element = '<' . $element . $char;
         return $element;
     }
     
@@ -222,7 +224,7 @@ class TinyHtmlMinifier
     function findName($part)
     {
         $name_cut = explode(" ", $part, 2)[0];
-        $name_cut = explode(">", $name_cut, 2)[0];
+//        $name_cut = explode(">", $name_cut, 2)[0];
         $name_cut = explode("\n", $name_cut, 2)[0];
         $name_cut = preg_replace('/\s+/', '', $name_cut);
         $name_cut = strtolower(str_replace('/', '', $name_cut));

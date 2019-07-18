@@ -1,10 +1,12 @@
 {
     "name": "laravel/laravel",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "Conversion Perfect",
     "keywords": [
         "framework",
-        "laravel"
+        "laravel",
+        "Conversion Perfect",
+        "Conversion Bar"
     ],
     "license": "MIT",
     "require": {
@@ -14,16 +16,18 @@
         "drewm/mailchimp-api": "^2.5",
         "fideloper/proxy": "^4.0",
         "gentor/activecampaign": "^1.0",
+        "geoip2/geoip2": "^2.9",
         "getresponse/sdk-php": "^1.2",
         "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
         "mailerlite/mailerlite-api-v2-php-sdk": "^0.2.3",
         "predis/predis": "^1.1",
-        "sendinblue/api-v3-sdk": "^6.1"
+        "sendinblue/api-v3-sdk": "^6.1",
+        "soumen-dey/laravel-user-agent": "^1.0",
+        "torann/geoip": "^1.0"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.2",
         "beyondcode/laravel-dump-server": "^1.0",
         "filp/whoops": "^2.0",
         "fzaninotto/faker": "^1.4",

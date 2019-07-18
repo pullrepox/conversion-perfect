@@ -51,8 +51,8 @@
                                         </a>
                                     </td>
                                     <td class="table-user">{{ $bar->friendly_name }}</td>
-                                    <td>0</td>
-                                    <td>0</td>
+                                    <td>{{ $bar->logs()->count() }}</td>
+                                    <td>{{ $bar->logs()->where('unique_click', 1)->count() }}</td>
                                     <td>{{ time_elapsed_string($bar->created_at) }}</td>
                                     <td class="table-actions text-right pl-0 pr-3" style="width: 90px;">
                                         <a href="{{ route('bars.edit', ['bar' => $bar->id]) }}" class="table-action table-action-cp"

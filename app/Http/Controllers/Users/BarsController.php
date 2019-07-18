@@ -3,20 +3,23 @@
 namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
+use App\Http\Repositories\ApiRepository;
 use App\Http\Repositories\BarsRepository;
 use App\Integration;
 use App\Models\Bar;
-use App\Models\BarsClickLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Soumen\Agent\Facades\Agent;
 
 class BarsController extends Controller
 {
     protected $barsRepo;
+    protected $apiRepo;
     
-    public function __construct(BarsRepository $barsRepository)
+    public function __construct(BarsRepository $barsRepository, ApiRepository $apiRepository)
     {
         $this->barsRepo = $barsRepository;
+        $this->apiRepo = $apiRepository;
     }
     
     /**
@@ -277,7 +280,7 @@ class BarsController extends Controller
             }
         }
         if ($request->input('sel_tab') == 'overlay') {
-            $rules['third_party_url'] = 'required';
+//            $rules['third_party_url'] = 'required';
             $rules['custom_link_text'] = 'required';
         }
         $rules['days_label'] = 'required';
@@ -325,6 +328,7 @@ class BarsController extends Controller
      * @param \App\Models\Bar $bar
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
+     * @throws
      */
     public function show(Bar $bar, Request $request)
     {
@@ -380,7 +384,7 @@ class BarsController extends Controller
         $re = [['key' => '', 'name' => '-- Choose List --']];
         if (!is_null($bar->list) && $bar->list != '') {
             if ($bar->integration_type == 'conversion_perfect') {
-                $re_data = $this->barsRepo->getConversionPerfectLists();
+                $re_data = $this->apiRepo->getConversionPerfectLists();
                 if ($re_data['result'] == 'success') {
                     $re = $re_data['message'];
                 }
@@ -389,19 +393,19 @@ class BarsController extends Controller
                 
                 $re_data['result'] = '';
                 if ($integration->responder->title == 'Sendlane') {
-                    $re_data = $this->barsRepo->getSendlaneList($integration);
+                    $re_data = $this->apiRepo->getSendlaneList($integration);
                 } else if ($integration->responder->title == 'MailChimp') {
-                    $re_data = $this->barsRepo->getMailChimpLists($integration);
+                    $re_data = $this->apiRepo->getMailChimpLists($integration);
                 } else if ($integration->responder->title == 'ActiveCampaign') {
-                    $re_data = $this->barsRepo->getActiveCampaignList($integration);
+                    $re_data = $this->apiRepo->getActiveCampaignList($integration);
                 } else if ($integration->responder->title == 'Campaign Monitor') {
-                    $re_data = $this->barsRepo->getCampaignMonitorLists($integration);
+                    $re_data = $this->apiRepo->getCampaignMonitorLists($integration);
                 } else if ($integration->responder->title == 'GetResponse') {
-                    $re_data = $this->barsRepo->getResponseCampaigns($integration);
+                    $re_data = $this->apiRepo->getResponseCampaigns($integration);
                 } else if ($integration->responder->title == 'MailerLite') {
-                    $re_data = $this->barsRepo->getMailerLiteGroups($integration);
+                    $re_data = $this->apiRepo->getMailerLiteGroups($integration);
                 } else if ($integration->responder->title == 'Send In Blue') {
-                    $re_data = $this->barsRepo->getSendInBlueLists($integration);
+                    $re_data = $this->apiRepo->getSendInBlueLists($integration);
                 }
                 
                 if ($re_data['result'] == 'success') {
@@ -453,7 +457,7 @@ class BarsController extends Controller
                 $bar->archive_flag = 1;
                 $bar->save();
             } elseif ($request->input('flag') == 'reset_stats') {
-                BarsClickLog::where('user_id', auth()->user()->id)->where('bar_id', $bar->id)->update([
+                $this->barsRepo->model1()->where('user_id', auth()->user()->id)->where('bar_id', $bar->id)->update([
                     'reset_stats' => 1
                 ]);
             } elseif ($request->input('flag') == 'template') {
@@ -586,7 +590,7 @@ class BarsController extends Controller
             }
             
             if ($request->input('sel_tab') == 'overlay') {
-                $rules['third_party_url'] = 'required';
+//                $rules['third_party_url'] = 'required';
                 $rules['custom_link_text'] = 'required';
             }
             
