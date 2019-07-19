@@ -12,13 +12,7 @@ class AutoResponderController extends Controller
     {
         $header_data = [
             'main_name'   => 'Autoresponders',
-            'parent_data' => [
-                ['parent_name' => 'Settings', 'parent_url' => '']
-            ],
-            'button_show' => true,
-            'button_data' => [
-                ['button_url' => '', 'button_text' => '']
-            ]
+            'parent_data' => []
         ];
         
         $integrations = Integration::with('responder')
@@ -32,14 +26,7 @@ class AutoResponderController extends Controller
     {
         $header_data = [
             'main_name'   => ' New Autoresponder',
-            'parent_data' => [
-                ['parent_name' => 'Settings', 'parent_url' => ''],
-                ['parent_name' => 'Integration', 'parent_url' => secure_redirect(route('autoresponder.index'))],
-            ],
-            'button_show' => true,
-            'button_data' => [
-                ['button_url' => '', 'button_text' => '']
-            ]
+            'parent_data' => []
         ];
         
         $flag = true;

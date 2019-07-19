@@ -1,14 +1,11 @@
 @extends('layouts.base')
-@section('styles')
-
-@endsection
 @section('title', 'Autoresponder Edit - ' . config('app.name'))
 @section('content')
     <div class="main-content" id="autoresponder-edit-page">
         @include('layouts.page-header', ['data' => $header_data])
         {{-- Page content --}}
         <div class="container-fluid mt--8">
-            <form action="{{$flag ? route('autoresponder.store') : route('autoresponder.update', $integration->id)}}"
+            <form action="{{ $flag ? route('autoresponder.store') : route('autoresponder.update', $integration->id) }}"
                   method="POST" class="needs-validation" novalidate>
                 @if(!$flag) @method('PUT') @endif
                 @csrf
@@ -23,7 +20,6 @@
                             </div>
                         </div>
                     </div>
-                    
                     <div class="card-body pb-0">
                         <div class="form-row">
                             <div class="col-md-4" id="auto-responder">
@@ -35,13 +31,12 @@
                                         <option value="" selected disabled>Select Provider</option>
                                         @foreach($responders as $list)
                                             <option {{'selected' ? isset($integration) && $integration->responder_id === $list->id : old('responder_id') === $list->id}}
-                                                    value="{{$list->id}}">{{ucfirst($list->title)}}</option>
+                                                    value="{{$list->id}}">{{ ucfirst($list->title) }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                         </div>
-                        
                         <div class="form-row">
                             <div class="col-md-4 responder-group" id="friendly-name" style="display: none">
                                 <div class="form-group">
@@ -87,8 +82,8 @@
                             
                             <div class="col-md-4 responder-group" id="hash" style="display:none;">
                                 <div class="form-group">
-                                    <label class="form-control-label ml-1" for="hash_key" data-id="hash_key">
-                                        {{ $integration->responder->title == 'Campaign Monitor' ? 'Client ID' : 'Hash Key' }}
+                                    <label class="form-control-label ml-1" for="hash_key" data-id="hash_key" id="hash_label">
+                                        {{ !$flag && $integration->responder->title == 'Campaign Monitor' ? 'Client ID' : 'Hash Key' }}
                                     </label>
                                     <input type="text" value="{{isset($integration) && $integration->hash ? $integration->hash : old('hash')}}"
                                            class="@error('hash') is-invalid @enderror form-control" name="hash" id="hash"/>
@@ -183,6 +178,7 @@
                 $('#friendly-name').show();
                 $('#api-key').show();
                 $('#hash').show();
+                $('#hash_label').html('Hash Key');
             } else if (value === 'MailChimp') {
                 $('#friendly-name').show();
                 $('#api-key').show();
@@ -206,6 +202,7 @@
             } else if (value === 'Campaign Monitor') {
                 $('#friendly-name').show();
                 $('#api-key').show();
+                $('#hash_label').html('Client ID');
                 $('#hash').show();
             }
         }

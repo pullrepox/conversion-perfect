@@ -18,6 +18,7 @@
                                 </div>
                             </div>
                         </div>
+                        
                         <!-- Light table -->
                         <div class="table-responsive custom-table">
                             <table class="table align-items-center table-flush">
@@ -36,43 +37,31 @@
                                             <td>{{$integration->name}}</td>
                                             <td>{{$integration->responder->title}}</td>
                                             <td>{{$integration->created_at->diffForHumans()}}</td>
-                                            <td class="table-actions">
-                                                <form method="POST" class="form-inline  d-inline"
-                                                      action="">
-                                                    @csrf
-                                                    <button type="submit" href="#!"
-                                                            class="table-action  bg-transparent border-0" data-toggle="tooltip"
-                                                            data-original-title="">
-{{--                                                                                                        <i class="fas fa-{{$bar->status?'pause text-red':'play text-green'}}"></i>--}}
-                                                    </button>
-                                                </form>
-                                                <a href="{{route('autoresponder.edit',$integration->id)}}" class="table-action"
+                                            <td class="table-actions text-right">
+                                                <a href="{{ route('autoresponder.edit', $integration->id) }}" class="table-action table-action-cp"
                                                    data-toggle="tooltip"
                                                    data-original-title="Edit Bar">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-
-                                                <button type="submit"
-                                                        class="delete-btn table-action table-action-delete bg-transparent border-0"
-                                                        data-toggle="modal"
-                                                        data-id="{{$integration->id}}"
-                                                        data-target="#delete-modal">
+                                                <a href="javascript: void(0)"
+                                                   class="delete-btn table-action table-action-delete bar-delete"
+                                                   data-toggle="modal"
+                                                   data-id="{{ $integration->id }}"
+                                                   data-target="#delete-modal">
                                                     <i class="fas fa-trash"></i>
-                                                </button>
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach
                                 @else
                                     <tr>
-                                        <th scope="row" colspan="8" class="text-center">Auto Responder data does not exist</th>
+                                        <td colspan="4" class="text-center">
+                                            You have no Autoresponders. Please add an Autoresponder by clicking the [New Autoresponder] button
+                                        </td>
                                     </tr>
                                 @endif
                                 </tbody>
                             </table>
-                        </div>
-                        <!-- Card footer -->
-                        <div class="card-footer py-4">
-{{--                            {{ $bars->links() }}--}}
                         </div>
                     </div>
                 </div>
@@ -87,7 +76,6 @@
                             </button>
                         </div>
                         <div class="modal-body text-center">
-
                             <h1>Are you sure?</h1>
                             <p>Once deleted, you won't be able to revert this Autoresponder.</p>
                         </div>
@@ -98,7 +86,6 @@
                                 @method('DELETE')
                                 @csrf
                                 <button type="submit" class="btn btn-danger text-capitalize" id="deleteTracker">Delete</button>
-
                             </form>
                         </div>
                     </div>
@@ -110,16 +97,13 @@
 @endsection
 
 @section('scripts')
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script>
         $(function () {
-           $('.delete-btn').on('click', function (event) {
-               var id = $(this).attr('data-id');
-               var modal = $('#delete-modal');
-               modal.find('form').attr('action','/autoresponder/'+id);
-
-           })
+            $('.delete-btn').on('click', function (event) {
+                var id = $(this).data('id');
+                var modal = $('#delete-modal');
+                modal.find('form').attr('action', '/autoresponder/' + id);
+            })
         })
     </script>
-
 @endsection
