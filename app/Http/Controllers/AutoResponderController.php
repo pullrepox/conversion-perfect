@@ -178,12 +178,13 @@ class AutoResponderController extends Controller
     {
         $client = new \GuzzleHttp\Client();
         try {
-            $response = $client->request('GET', $responder->base_url . 'account', [
+            $client->request('GET', $responder->base_url . 'account', [
                 'headers' => [
                     'Content-Type' => 'application/json',
                     'api-key'      => $data['api_key']
                 ]
             ]);
+            
             return [
                 'type'    => 'success',
                 'message' => null,
@@ -266,6 +267,7 @@ class AutoResponderController extends Controller
         $data = $request->all();
         $data['user_id'] = auth()->user()->id;
         $validate = $this->validateCredentials($data);
+        
         if ($validate['type'] === 'error') {
             return redirect()->back()->with('error', $validate['message'])->withInput($data);
         }
