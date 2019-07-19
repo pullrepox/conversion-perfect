@@ -24,7 +24,8 @@ class OverlaysController extends Controller
         $bar = $this->barRepo->model()->where('user_id', $user->id)->where('custom_link_text', $link_name)->first();
         
         if ($bar && !is_null($bar)) {
-            return view('users.track-partials.preview-html', compact('bar'));
+            $option = 'loaded';
+            return view('users.track-partials.preview-html', compact('bar', 'option'));
         } else {
             abort(404, 'No existing is matched Conversion Bar.');
         }
@@ -105,6 +106,7 @@ class OverlaysController extends Controller
     public function setActionButtonClick($id, Request $request)
     {
         $bar = $this->barRepo->model()->find($id);
+        $set_log = 'success';
         if ($bar && !is_null($bar)) {
             $ip = $request->getClientIp();
             $fp_id = $request->input('cookie');
@@ -150,6 +152,6 @@ class OverlaysController extends Controller
             }
         }
         
-        return response()->json(['result' => 'success']);
+        return response()->json(['result' => $set_log]);
     }
 }

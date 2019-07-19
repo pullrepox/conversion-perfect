@@ -79,7 +79,8 @@ class BarOptionsApiController extends Controller
     public function setSubscribersOfLists($bar_id, Request $request)
     {
         $bar = $this->barsRepo->model()->find($bar_id);
-        
+    
+        $set_log = 'success';
         if ($bar && !is_null($bar)) {
             $subscriber_name = $request->input('lead_capture_cta_name__cp_bar_' . $bar->id);
             $subscriber_email = $request->input('lead_capture_cta_email__cp_bar_' . $bar->id);
@@ -156,7 +157,7 @@ class BarOptionsApiController extends Controller
         }
         
         return response()->json([
-            'status' => 'success'
+            'status' => $set_log
         ]);
     }
 }

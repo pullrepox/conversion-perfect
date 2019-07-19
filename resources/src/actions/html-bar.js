@@ -49,6 +49,12 @@
         }
     }
     
+    /**
+     * Make Finger Print Per Client Information for Unique Cookie
+     * @param key
+     * @param seed
+     * @returns {number}
+     */
     function murmurhash3_32_gc(key, seed) {
         var remainder, bytes, h1, h1b, c1, c2, k1, i;
         
@@ -104,10 +110,18 @@
         return h1 >>> 0;
     }
     
+    /**
+     * Check Is IE.
+     * @returns {boolean}
+     */
     function isIE() {
         return (navigator.appName === "Microsoft Internet Explorer") || (navigator.appName === "Netscape" && navigator.userAgent.indexOf("Trident/") !== -1);
     }
     
+    /**
+     * Get Browsers Plugins String for making finger print
+     * @returns {string}
+     */
     function getRegularPluginsString() {
         var re = [];
         Object.keys(navigator.plugins).forEach(function (p) {
@@ -122,6 +136,10 @@
         return re.join(";");
     }
     
+    /**
+     * Get IE Plugins String for making finger print
+     * @returns {string}
+     */
     function getIEPluginsString() {
         if (window.ActiveXObject) {
             var names = [
@@ -152,6 +170,10 @@
         }
     }
     
+    /**
+     * Get Finger Print for getting unique cookie per visit clients.
+     * @returns {number}
+     */
     function getFingerPrint() {
         var keys = [];
         keys.push(navigator.userAgent);
@@ -286,6 +308,9 @@
         }
     });
     
+    /**
+     * Appearance scroll option actions.
+     */
     function scrollDisplay() {
         $(window).scroll(function () {
             let per = Math.round(($(this).height() * __cp_cf[bar_id].bar.scroll_point_percent) / 100);
@@ -295,6 +320,9 @@
         });
     }
     
+    /**
+     * Appearance exit option actions.
+     */
     function exitDisplay() {
         window.onbeforeunload = function () {
             immediateDisplayBar();
@@ -302,6 +330,9 @@
         };
     }
     
+    /**
+     * Appearance immediately option actions.
+     */
     function immediateDisplayBar() {
         if (__cp_cf[bar_id].bar.frequency === 'every') {
             showHideMainBar(window.localStorage.getItem('closed-cp-bar-' + bar_id) && window.localStorage.getItem('closed-cp-bar-' + bar_id) === 'closed');
@@ -342,31 +373,62 @@
     }
     
     /**
+     * Main bars Action button click after event.
+     */
+    function cp_bar_action_btn_click_after() {
+        if (__cp_cf[bar_id].bar.button_action === 'open_click_url') {
+            window.open(__cp_cf[bar_id].bar.button_click_url, 'Conversion Perfect', '_blank');
+            showHideMainBar(true);
+        } else {
+            setTimeout(function () {
+                showHideMainBar(true);
+            }, (__cp_cf[bar_id].bar.autohide_delay_seconds * 1000));
+        }
+        
+        if (__cp_cf[bar_id].bar.integration_type !== 'none') {
+            showHideCtaBar((window.localStorage.getItem('closed-cta-cp-bar-' + bar_id) && window.localStorage.getItem('closed-cta-cp-bar-' + bar_id) === 'closed'));
+        }
+    }
+    
+    /**
      * main bar button click.
      */
     if (document.querySelector('#cp--bar-action-btn-' + bar_id)) {
         $('#cp--bar-action-btn-' + bar_id).on('click', function () {
-            $.post(__cp_cf[bar_id].act_btn_action, {
-                cookie: checkCookie("CVP--fp-id") ? getCookie("CVP--fp-id") : getFingerPrint()
-            }).done((r) => {
-                console.log(r);
-            }).always(() => {
-                if (__cp_cf[bar_id].bar.button_action === 'open_click_url') {
-                    window.open(__cp_cf[bar_id].bar.button_click_url, 'Conversion Perfect', '_blank');
-                    showHideMainBar(true);
-                } else {
-                    setTimeout(function () {
-                        showHideMainBar(true);
-                    }, (__cp_cf[bar_id].bar.autohide_delay_seconds * 1000));
-                }
-                
-                if (__cp_cf[bar_id].bar.integration_type !== 'none') {
-                    showHideCtaBar((window.localStorage.getItem('closed-cta-cp-bar-' + bar_id) && window.localStorage.getItem('closed-cta-cp-bar-' + bar_id) === 'closed'));
-                }
-            });
+            if (window.__cp_bar_config.option === 'preview') {
+                cp_bar_action_btn_click_after();
+            } else {
+                $.post(__cp_cf[bar_id].act_btn_action, {
+                    cookie: checkCookie("CVP--fp-id") ? getCookie("CVP--fp-id") : getFingerPrint()
+                }).done((r) => {
+                    console.log(r);
+                }).always(() => {
+                    cp_bar_action_btn_click_after();
+                });
+            }
         });
     }
     
+    /**
+     * CTA button click after event
+     */
+    function cta_cp_bar_button_click_after() {
+        if (__cp_cf[bar_id].bar.after_submit === 'show_message' || __cp_cf[bar_id].bar.after_submit === 'show_message_hide_bar') {
+            $('#cp-bar--cta-content-section-' + bar_id).html(`<div style="font-weight: bold;">${__cp_cf[bar_id].bar.message}</div>`);
+            if (__cp_cf[bar_id].bar.after_submit === 'show_message_hide_bar') {
+                setTimeout(function () {
+                    showHideCtaBar(true);
+                }, (__cp_cf[bar_id].bar.autohide_delay_seconds * 1000));
+            }
+        } else {
+            showHideCtaBar(true);
+            location.href = __cp_cf[bar_id].bar.redirect_url;
+        }
+    }
+    
+    /**
+     * CTA Button click event
+     */
     if (document.querySelector('#cta--cp-bar-button-' + bar_id)) {
         $('#cta--cp-bar-button-' + bar_id).on('click', function () {
             if ($('#lead_capture_cta_name__cp_bar_' + bar_id).val() === '' || $('#lead_capture_cta_email__cp_bar_' + bar_id).val() === '') {
@@ -376,26 +438,26 @@
             }
             
             let param = $('#cp-bar--cta-form-' + bar_id).serialize() + "&cookie=" + (checkCookie("CVP--fp-id") ? getCookie("CVP--fp-id") : getFingerPrint());
-            $.post($('#cp-bar--cta-form-' + bar_id).attr('action'), param)
-                .done((r) => {
-                    console.log(r);
-                })
-                .always(() => {
-                    if (__cp_cf[bar_id].bar.after_submit === 'show_message' || __cp_cf[bar_id].bar.after_submit === 'show_message_hide_bar') {
-                        $('#cp-bar--cta-content-section-' + bar_id).html(`<div style="font-weight: bold;">${__cp_cf[bar_id].bar.message}</div>`);
-                        if (__cp_cf[bar_id].bar.after_submit === 'show_message_hide_bar') {
-                            setTimeout(function () {
-                                showHideCtaBar(true);
-                            }, (__cp_cf[bar_id].bar.autohide_delay_seconds * 1000));
-                        }
-                    } else {
-                        showHideCtaBar(true);
-                        location.href = __cp_cf[bar_id].bar.redirect_url;
-                    }
-                });
+            if (window.__cp_bar_config.option === 'preview') {
+                cta_cp_bar_button_click_after();
+            } else {
+                $.post($('#cp-bar--cta-form-' + bar_id).attr('action'), param)
+                    .done((r) => {
+                        console.log(r);
+                    })
+                    .always(() => {
+                        cta_cp_bar_button_click_after();
+                    });
+            }
         });
     }
     
+    /**
+     * Set Cookie event
+     * @param cname
+     * @param cvalue
+     * @param exdays
+     */
     function setCookie(cname, cvalue, exdays) {
         let d = new Date();
         d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
@@ -403,6 +465,11 @@
         document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     }
     
+    /**
+     * Get Cookie
+     * @param cname
+     * @returns {string}
+     */
     function getCookie(cname) {
         let name = cname + "=";
         let ca = document.cookie.split(';');
@@ -418,6 +485,11 @@
         return "";
     }
     
+    /**
+     * Check existing cookie
+     * @param cname
+     * @returns {string|boolean}
+     */
     function checkCookie(cname) {
         let user = getCookie(cname);
         

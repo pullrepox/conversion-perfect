@@ -28,8 +28,8 @@
                             <span class="nav-link-text text-capitalize">Dashboard</span>
                         </a>
                     </li>
-                    <li class="nav-item {{ isActiveResource(['bars'], true) }}">
-                        <a class="nav-link {{ isActiveResource(['bars'], true) }}" href="{{ secure_redirect(route('bars')) }}">
+                    <li class="nav-item {{ isActiveResource('bars', false) }}">
+                        <a class="nav-link {{ isActiveResource('bars', false) }}" href="{{ secure_redirect(route('bars')) }}">
                             <i class="ni ni-credit-card text-cp"></i>
                             <span class="nav-link-text text-capitalize">Conversion Bars</span>
                         </a>
@@ -46,16 +46,16 @@
                             <span class="nav-link-text text-capitalize">Multi Bar</span>
                         </a>
                     </li>
-                    <li class="nav-item {{ isActiveRoute(['bars.show']) }}">
-                        <a class="nav-link {{ isActiveRoute(['bars.show']) }}" href="#navbar-reports" data-toggle="collapse" role="button"
-                           aria-expanded="{{ isExpendRoute(['bars.show']) }}" aria-controls="navbar-reports">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#navbar-reports" data-toggle="collapse" role="button"
+                           aria-expanded="false" aria-controls="navbar-reports">
                             <i class="ni ni-chart-pie-35 text-cp"></i>
                             <span class="nav-link-text">Reports</span>
                         </a>
-                        <div class="collapse {{ isActiveRoute(['bars.show'], 'show') }}" id="navbar-reports">
+                        <div class="collapse" id="navbar-reports">
                             <ul class="nav nav-sm flex-column">
-                                <li class="nav-item {{ isActiveRoute('bars.show') }}">
-                                    <a href="{{ secure_redirect(route('bars.show', ['tracker' => 1])) }}" class="nav-link text-capitalize {{ isActiveRoute('bars.show') }}">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link text-capitalize">
                                         Bars
                                     </a>
                                 </li>

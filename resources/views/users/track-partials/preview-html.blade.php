@@ -117,13 +117,14 @@
                 countdown_target: "{{ $bar->countdown == "none" ? "" : ($bar->countdown == "calendar" ? (date("F d, Y", strtotime($bar->countdown_end_date)) . " " . $bar->countdown_end_time) :
                     getCountdownTarget($bar->countdown_days, $bar->countdown_hours, $bar->countdown_minutes, $bar->created_at)) }}"
             },
-            bar_id: "{{ $bar->id }}"
+            bar_id: "{{ $bar->id }}",
+            option: "{{ $option }}"
         };
     </script>
     <script type="text/javascript" src="{{ url(mix("js/manifest.js")) }}"></script>
     <script type="text/javascript" src="{{ url(mix("js/vendor.js")) }}"></script>
     <script type="text/javascript" src="{{ url(mix("js/html-bar.js")) }}"></script>
-    <script data-cfasync="false" src="//localhost:3000/api/cp-embed-script/3"></script>
+{{--    <script data-cfasync="false" src="//localhost:3000/api/cp-embed-script/3"></script>--}}
     </body>
     </html>
 @endif

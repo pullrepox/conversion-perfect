@@ -9,7 +9,6 @@ use App\Integration;
 use App\Models\Bar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Soumen\Agent\Facades\Agent;
 
 class BarsController extends Controller
 {
@@ -333,9 +332,60 @@ class BarsController extends Controller
     public function show(Bar $bar, Request $request)
     {
         if ($request->has('report')) {
-            return response('Report Here');
+            $header_data = [
+                'main_name'   => 'Conversion Bar Statistics',
+                'parent_data' => []
+            ];
+            
+            $log_data = $this->barsRepo->model1()
+                ->where('bar_id', $bar->id)->where('user_id', auth()->user()->id);
+            if ($request->input('period') == 'day') {
+                $log_data = $log_data->whereRaw('YEAR(created_at) = "' . date('Y') . '"')
+                    ->whereRaw('MONTH(created_at) = "' . date('m') . '"')->whereRaw('DAY(created_at) = "' . date('d') . '"');
+            } elseif ($request->input('period') == 'week') {
+                $log_data = $log_data->whereRaw('DATE(created_at) >= date_sub(now(), interval 7 DAY)');
+            } else {
+                $log_data = $log_data->whereRaw('DATE(created_at) >= date_sub(now(), interval 30 DAY)');
+            }
+            
+            $log_data = $log_data->paginate(5);
+            
+            if ($request->input('period') == 'day') {
+                $total_visitor = $bar->logs()->whereRaw('YEAR(created_at) = "' . date('Y') . '"')
+                    ->whereRaw('MONTH(created_at) = "' . date('m') . '"')->whereRaw('DAY(created_at) = "' . date('d') . '"')->count();
+                $unique_visitor = $bar->logs()->where('unique_click', 1)->whereRaw('YEAR(created_at) = "' . date('Y') . '"')
+                    ->whereRaw('MONTH(created_at) = "' . date('m') . '"')->whereRaw('DAY(created_at) = "' . date('d') . '"')->count();
+                $button_click = $bar->logs()->where('button_click', 1)->whereRaw('YEAR(created_at) = "' . date('Y') . '"')
+                    ->whereRaw('MONTH(created_at) = "' . date('m') . '"')->whereRaw('DAY(created_at) = "' . date('d') . '"')->count();
+                $lead_capture = $bar->logs()->where('lead_capture', 1)->whereRaw('YEAR(created_at) = "' . date('Y') . '"')
+                    ->whereRaw('MONTH(created_at) = "' . date('m') . '"')->whereRaw('DAY(created_at) = "' . date('d') . '"')->count();
+            } elseif ($request->input('period') == 'week') {
+                $total_visitor = $bar->logs()->whereRaw('DATE(created_at) >= date_sub(now(), interval 7 DAY)')->count();
+                $unique_visitor = $bar->logs()->where('unique_click', 1)->whereRaw('DATE(created_at) >= date_sub(now(), interval 7 DAY)')->count();
+                $button_click = $bar->logs()->where('button_click', 1)->whereRaw('DATE(created_at) >= date_sub(now(), interval 7 DAY)')->count();
+                $lead_capture = $bar->logs()->where('lead_capture', 1)->whereRaw('DATE(created_at) >= date_sub(now(), interval 7 DAY)')->count();
+            } else {
+                $total_visitor = $bar->logs()->whereRaw('DATE(created_at) >= date_sub(now(), interval 30 DAY)')->count();
+                $unique_visitor = $bar->logs()->where('unique_click', 1)->whereRaw('DATE(created_at) >= date_sub(now(), interval 30 DAY)')->count();
+                $button_click = $bar->logs()->where('button_click', 1)->whereRaw('DATE(created_at) >= date_sub(now(), interval 30 DAY)')->count();
+                $lead_capture = $bar->logs()->where('lead_capture', 1)->whereRaw('DATE(created_at) >= date_sub(now(), interval 30 DAY)')->count();
+            }
+            
+            $total_sum = [$total_visitor, $unique_visitor, $button_click, $lead_capture];
+            
+            $searchParams = [
+                'report' => 1,
+                'period' => $request->input('period')
+            ];
+            
+            $report_data = $this->barsRepo->getLogsChartsData($request->input('period'), $bar->id);
+            
+            $report_data = json_encode($report_data);
+            
+            return view('users.bars-statistics', compact('header_data', 'bar', 'log_data', 'searchParams', 'total_sum', 'report_data'));
         } else {
-            return view('users.track-partials.preview-html', compact('bar'));
+            $option = 'preview';
+            return view('users.track-partials.preview-html', compact('bar', 'option'));
         }
     }
     
@@ -457,9 +507,10 @@ class BarsController extends Controller
                 $bar->archive_flag = 1;
                 $bar->save();
             } elseif ($request->input('flag') == 'reset_stats') {
-                $this->barsRepo->model1()->where('user_id', auth()->user()->id)->where('bar_id', $bar->id)->update([
-                    'reset_stats' => 1
-                ]);
+//                $this->barsRepo->model1()->where('user_id', auth()->user()->id)->where('bar_id', $bar->id)->update([
+//                    'reset_stats' => 1
+//                ]);
+                $this->barsRepo->model1()->where('user_id', auth()->user()->id)->where('bar_id', $bar->id)->delete();
             } elseif ($request->input('flag') == 'template') {
 //                if (array_search(auth()->user()->email, explode(',', trim(config('site.sys_temp_creators')))) === false) {
 //                    $bars_count = auth()->user()->bars->count();

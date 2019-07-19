@@ -2,6 +2,7 @@ import PerfectScrollbar from 'perfect-scrollbar';
 import VEvent from './components/VEvent';
 
 window.axios = require('axios');
+window.$ = jQuery;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 let token = document.head.querySelector('meta[name="csrf-token"]');

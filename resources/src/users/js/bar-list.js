@@ -48,7 +48,6 @@ import ClipboardJS from 'clipboard';
         });
         
         let clipboard = new ClipboardJS($element);
-        
         clipboard.on('success', function (e) {
             $(e.trigger)
                 .attr('title', 'Copied')

@@ -53,6 +53,7 @@ import List from 'list.js';
                 window.open(`https://www.jvzoo.com/b/0/${href_ids[i]}/14`, '_new');
             }
         }
+        
         $('#upgrade-social-modal').modal('hide');
     });
     
@@ -79,7 +80,6 @@ import List from 'list.js';
     }, false);
     
     // Variables
-    
     let $input = $('.form-control');
     
     // Methods
