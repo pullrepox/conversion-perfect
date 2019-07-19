@@ -263,9 +263,16 @@ class AutoResponderController extends Controller
     
     public function update($integration, Request $request)
     {
+        $data = $request->all();
+        $data['user_id'] = auth()->user()->id;
+        $validate = $this->validateCredentials($data);
+        if ($validate['type'] === 'error') {
+            return redirect()->back()->with('error', $validate['message'])->withInput($data);
+        }
+        
         $integration = Integration::find($integration);
         
-        if ($integration && $integration->update($request->all())) {
+        if ($integration && $integration->update($data)) {
             session()->flash('success', 'Updated Successfully');
             
             return redirect()->route('autoresponder.index');

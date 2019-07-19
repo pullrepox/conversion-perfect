@@ -167,7 +167,6 @@
                     var value = $('#responder_id option:selected').text();
                     adjustChanges(value)
                 });
-                
             })
         </script>
     @endif
