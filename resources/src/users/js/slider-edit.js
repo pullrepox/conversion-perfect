@@ -1,7 +1,6 @@
 require('select2/dist/js/select2.min');
 require('bootstrap-tagsinput/dist/bootstrap-tagsinput.min');
 require('bootstrap-datepicker/dist/js/bootstrap-datepicker.min');
-require('iframe2image/dist/iframe2image.min');
 require('../vendor/jscolor');
 import Quill from 'quill';
 import PerfectScrollbar from 'perfect-scrollbar';

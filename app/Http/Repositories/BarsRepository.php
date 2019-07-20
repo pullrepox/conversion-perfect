@@ -6,6 +6,7 @@ namespace App\Http\Repositories;
 
 use App\Models\Bar;
 use App\Models\BarsClickLog;
+use App\Models\SplitTest;
 use Illuminate\Support\Facades\DB;
 
 class BarsRepository extends Repository
@@ -20,6 +21,19 @@ class BarsRepository extends Repository
         return app(BarsClickLog::class);
     }
     
+    public function model2()
+    {
+        return app(SplitTest::class);
+    }
+    
+    /**
+     * Check Unique Click Logs
+     * @param $bar_id
+     * @param $user_id
+     * @param $fp_id
+     * @param $unique_ref
+     * @return bool
+     */
     public function checkUniqueLog($bar_id, $user_id, $fp_id, $unique_ref)
     {
         $bar_log = $this->model1()->where('user_id', $user_id)->where('bar_id', $bar_id)
@@ -39,6 +53,14 @@ class BarsRepository extends Repository
         }
     }
     
+    /**
+     * Main bar action button click set log.
+     * @param $bar_id
+     * @param $user_id
+     * @param $fp_id
+     * @param $unique_ref
+     * @return bool
+     */
     public function setActionBtnClickLog($bar_id, $user_id, $fp_id, $unique_ref)
     {
         $bar_log = $this->model1()->where('user_id', $user_id)->where('bar_id', $bar_id)
@@ -57,6 +79,14 @@ class BarsRepository extends Repository
         }
     }
     
+    /**
+     * Lead Capture log set.
+     * @param $bar_id
+     * @param $user_id
+     * @param $fp_id
+     * @param $unique_ref
+     * @return bool
+     */
     public function setLeadCaptureClickLog($bar_id, $user_id, $fp_id, $unique_ref)
     {
         $bar_log = $this->model1()->where('user_id', $user_id)->where('bar_id', $bar_id)
@@ -75,6 +105,12 @@ class BarsRepository extends Repository
         }
     }
     
+    /**
+     * Get visitors logs data of statistics chart
+     * @param $period
+     * @param int $bar_id
+     * @return array
+     */
     public function getLogsChartsData($period, $bar_id = 0)
     {
         $current_date = date('d-m-Y');
@@ -225,6 +261,15 @@ class BarsRepository extends Repository
         return $calc_data;
     }
     
+    /**
+     * formatting clicks data.
+     * @param $date
+     * @param $tVisitor
+     * @param $uVisitor
+     * @param $bClick
+     * @param $lCapture
+     * @return array
+     */
     public function getClicksData($date, $tVisitor, $uVisitor, $bClick, $lCapture)
     {
         $total_visitor = $unique_visitor = $button_click = $lead_capture = [];

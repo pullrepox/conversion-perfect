@@ -82,7 +82,12 @@ class User extends Authenticatable
     
     public function bar_logs()
     {
-        return $this->hasMany('App\Models\BarsClickLogs');
+        return $this->hasMany('App\Models\BarsClickLog');
+    }
+    
+    public function split_tests()
+    {
+        return $this->hasMany('App\Models\SplitTest');
     }
     
     public function groups()

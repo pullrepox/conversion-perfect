@@ -31,4 +31,9 @@ class Bar extends Model
     {
         return $this->hasMany('App\Models\BarsClickLog');
     }
+    
+    public function s_tests()
+    {
+        return $this->hasMany('App\Models\SplitTest');
+    }
 }

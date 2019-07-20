@@ -34,8 +34,9 @@
                             <span class="nav-link-text text-capitalize">Conversion Bars</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="javascript: void(0)" data-href="" id="split_test_nav">
+                    <li class="nav-item {{ isActiveResource('split-tests', false) }}">
+                        <a class="nav-link {{ isActiveResource('split-tests', false) }}" href="javascript: void(0)"
+                           data-href="{{ secure_redirect(route('split-tests')) }}" id="split_test_nav">
                             <i class="ni ni-single-copy-04 text-cp"></i>
                             <span class="nav-link-text text-capitalize">Split Tests</span>
                         </a>
