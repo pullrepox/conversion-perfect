@@ -11,6 +11,7 @@ new Vue({
         permissions: {},
         upgrades: {},
         changed_status: false,
+        model: {}
     }),
     created() {
     
