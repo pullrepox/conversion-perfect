@@ -64,4 +64,23 @@ import ClipboardJS from 'clipboard';
         $('#script_copy').val(`<script data-cfasync="false" src="${$(this).data('link')}"></script>`);
         $('#url_copy').val($(this).data('custom'));
     });
+    
+    $('.split-test-edit').on('click', function () {
+        location.href = $(this).data('href');
+    });
+    
+    let split_test_bar_id = '';
+    $('.split-test-delete').on('click', function () {
+        split_test_bar_id = $(this).data('id');
+    });
+    
+    $('#deleteSplitBar').on('click', function () {
+        window.axios.delete(`/split-tests/${split_test_bar_id}`).then((r) => {
+            $('#split-test-delete').modal('hide');
+            if (r.data.result === 'success') {
+                location.reload();
+            }
+        });
+    })
+    
 })(jQuery);
