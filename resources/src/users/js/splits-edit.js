@@ -41,14 +41,17 @@ new Vue({
     methods: {
         changeStatusVal() {
             this.changed_status = true;
+            if (!this.create_edit) {
+                this.updateSplitRow();
+            }
         },
         initSelect2() {
             let $select = $('[data-toggle="select"]');
             let vm = this;
             if ($select.length) {
-                // Init selects
                 $select.each(function () {
                     let $this = $(this);
+                    
                     $(this).select2({
                         minimumResultsForSearch: 12
                     }).on('select2:open', function () {
@@ -59,6 +62,7 @@ new Vue({
                         vm.getSplitLists();
                         vm.model.conversion_bar_name = $this.select2('data')[0].text;
                     });
+                    
                     $(this).val(`${vm.model.conversion_bar}`).trigger('change.select2');
                 });
             }
@@ -75,7 +79,7 @@ new Vue({
             });
         },
         equalizeWeight() {
-            let averageVal = Math.round((100 / (this.model.splits_list.length + 1)) * 100) / 100;
+            let averageVal = Math.round((100 / (this.model.splits_list.length + (this.model.create_edit ? 1 : 2))) * 100) / 100;
             this.loading = true;
             axios.post(`/split-tests`, {
                 flag: 'average',
@@ -89,6 +93,7 @@ new Vue({
                     });
                     
                     this.model.main_weight = averageVal;
+                    this.model.split_bar_weight = averageVal;
                 } else {
                     this.saveErrorNotify();
                 }
@@ -96,6 +101,44 @@ new Vue({
                 this.loading = false;
                 this.saveErrorNotify();
             });
+        },
+        updateSplitRow() {
+            let split_validate = {
+                split_bar_name: true,
+                split_bar_weight: 100,
+            };
+            
+            if (this.model.split_bar_name === '' || this.model.split_bar_name === null) {
+                this.commonNotification('danger', 'Description is required.');
+                return false;
+            }
+            if (this.model.split_bar_name === this.model.conversion_bar_name) {
+                this.commonNotification('danger', "Description must be different with Main Conversion Bar\'s Name.");
+                return false;
+            }
+            if (this.model.split_bar_weight < 0.01) {
+                this.commonNotification('danger', "Weight must be bigger than zero.");
+                return false;
+            }
+            split_validate.split_bar_weight -= this.model.split_bar_weight;
+            let vm = this;
+            if (this.model.splits_list.length) {
+                this.model.splits_list.map(function (item, i) {
+                    if (item.split_bar_name === vm.model.split_bar_name) {
+                        split_validate.split_bar_name = false;
+                    }
+                    split_validate.split_bar_weight -= item.split_bar_weight;
+                });
+            }
+            if (split_validate.split_bar_weight <= 0) {
+                this.commonNotification('danger', 'Weight must be less than 100.');
+                return false;
+            }
+            if (!split_validate.split_bar_name) {
+                this.commonNotification('danger', 'Description must be unique.');
+                return false;
+            }
+            this.model.main_weight = split_validate.split_bar_weight;
         },
         deleteSplitTest(split_id, ind) {
             this.loading = true;
@@ -140,7 +183,7 @@ new Vue({
                 });
             }
             if (split_validate.split_bar_weight <= 0) {
-                this.commonNotification('danger', 'Weight must be bigger than zero.');
+                this.commonNotification('danger', 'Weight must be less than 100.');
                 return false;
             }
             

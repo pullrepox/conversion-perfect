@@ -56,7 +56,7 @@ import ClipboardJS from 'clipboard';
                 .attr('title', 'Copy to clipboard')
                 .tooltip('_fixTitle');
             
-            e.clearSelection()
+            e.clearSelection();
         });
     }
     
@@ -65,7 +65,7 @@ import ClipboardJS from 'clipboard';
         $('#url_copy').val($(this).data('custom'));
     });
     
-    $('.split-test-edit').on('click', function () {
+    $('.split-test-edit, .split-test-report').on('click', function () {
         location.href = $(this).data('href');
     });
     
@@ -76,11 +76,12 @@ import ClipboardJS from 'clipboard';
     
     $('#deleteSplitBar').on('click', function () {
         window.axios.delete(`/split-tests/${split_test_bar_id}`).then((r) => {
-            $('#split-test-delete').modal('hide');
-            if (r.data.result === 'success') {
-                location.reload();
-            }
+            $('#delete-split-modal').modal('hide');
+            location.reload();
         });
-    })
+    });
     
+    $('a.splits-copy-code').on('click', function () {
+        $('#split_script_copy').val(`<script data-cfasync="false" src="${$(this).data('link')}"></script>`);
+    });
 })(jQuery);

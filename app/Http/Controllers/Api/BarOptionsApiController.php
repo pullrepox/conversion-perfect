@@ -119,9 +119,11 @@ class BarOptionsApiController extends Controller
                 $request->header('accept'), $request->header('referer'), implode(',', $request->getEncodings()));
             $unique_id = md5($requestData);
             
-            $set_log = $this->barsRepo->setLeadCaptureClickLog($bar->id, $bar->user_id, $fp_id, $unique_id);
+            $split_bar_id = $request->has('split_bar_id') ? $request->input('split_bar_id') : 0;
+            
+            $set_log = $this->barsRepo->setLeadCaptureClickLog($bar->id, $bar->user_id, $fp_id, $unique_id, $split_bar_id);
             if (!$set_log) {
-                $unique_check = $this->barsRepo->checkUniqueLog($bar->id, $bar->user_id, $fp_id, $unique_id);
+                $unique_check = $this->barsRepo->checkUniqueLog($bar->id, $bar->user_id, $fp_id, $unique_id, $split_bar_id);
                 $browser = Agent::browser();
                 $platform = Agent::platform();
                 $device = Agent::device();

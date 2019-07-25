@@ -280,7 +280,7 @@ class BarsController extends Controller
         }
         if ($request->input('sel_tab') == 'overlay') {
 //            $rules['third_party_url'] = 'required';
-            $rules['custom_link_text'] = 'required';
+            $rules['custom_link_text'] = 'required|unique:bars,custom_link_text';
         }
         $rules['days_label'] = 'required';
         $rules['hours_label'] = 'required';
@@ -338,7 +338,8 @@ class BarsController extends Controller
             ];
             
             $log_data = $this->barsRepo->model1()
-                ->where('bar_id', $bar->id)->where('user_id', auth()->user()->id);
+                ->where('bar_id', $bar->id)
+                ->where('user_id', auth()->user()->id);
             if ($request->input('period') == 'day') {
                 $log_data = $log_data->whereRaw('YEAR(created_at) = "' . date('Y') . '"')
                     ->whereRaw('MONTH(created_at) = "' . date('m') . '"')->whereRaw('DAY(created_at) = "' . date('d') . '"');
@@ -642,7 +643,7 @@ class BarsController extends Controller
             
             if ($request->input('sel_tab') == 'overlay') {
 //                $rules['third_party_url'] = 'required';
-                $rules['custom_link_text'] = 'required';
+                $rules['custom_link_text'] = 'required|unique:bars,custom_link_text,' . $bar->id;
             }
             
             if ($request->input('sel_tab') == 'lead_capture') {

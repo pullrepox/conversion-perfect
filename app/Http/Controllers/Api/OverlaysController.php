@@ -18,7 +18,7 @@ class OverlaysController extends Controller
         $this->barRepo = $barsRepository;
     }
     
-    public function index($sub_domain, $link_name, Request $request)
+    public function index($sub_domain, $link_name)
     {
         $user = User::where('subdomain', $sub_domain)->first();
         $bar = $this->barRepo->model()->where('user_id', $user->id)->where('custom_link_text', $link_name)->first();
@@ -87,10 +87,11 @@ class OverlaysController extends Controller
                 'country_name'     => $geo_location['country'],
                 'language_range'   => implode(',', $request->getLanguages()),
             ];
-            
             $this->barRepo->model1()->insertGetId($ins_log_data);
-            
-            $html_code = view('users.track-partials.script', compact('bar'));
+
+            $splitTest = '';
+
+            $html_code = view('users.track-partials.script', compact('bar', 'splitTest'));
             $code = TinyMinify::html($html_code);
             
             header('Content-Type: application/javascript; charset=utf-8;');
@@ -114,10 +115,12 @@ class OverlaysController extends Controller
                 implode(',', $request->getLanguages()), $request->header('user-agent'), $ip,
                 $request->header('accept'), $request->header('referer'), implode(',', $request->getEncodings()));
             $unique_id = md5($requestData);
+    
+            $split_bar_id = $request->has('split_bar_id') ? $request->input('split_bar_id') : 0;
             
-            $set_log = $this->barRepo->setActionBtnClickLog($bar->id, $bar->user_id, $fp_id, $unique_id);
+            $set_log = $this->barRepo->setActionBtnClickLog($bar->id, $bar->user_id, $fp_id, $unique_id, $split_bar_id);
             if (!$set_log) {
-                $unique_check = $this->barRepo->checkUniqueLog($bar->id, $bar->user_id, $fp_id, $unique_id);
+                $unique_check = $this->barRepo->checkUniqueLog($bar->id, $bar->user_id, $fp_id, $unique_id, $split_bar_id);
                 $browser = Agent::browser();
                 $platform = Agent::platform();
                 $device = Agent::device();
@@ -126,6 +129,7 @@ class OverlaysController extends Controller
                 $ins_log_data = [
                     'user_id'          => $bar->user_id,
                     'bar_id'           => $bar->id,
+                    'split_bar_id'     => $split_bar_id,
                     'reset_stats'      => 0,
                     'cookie'           => $fp_id,
                     'unique_ref'       => $unique_id,
@@ -153,5 +157,77 @@ class OverlaysController extends Controller
         }
         
         return response()->json(['result' => $set_log]);
+    }
+    
+    public function getSplitScriptCode($id, $bar_id, Request $request)
+    {
+        $splitTest = $this->barRepo->model2()->find($id);
+        if (!$splitTest || is_null($splitTest)) {
+            abort(404, 'No existing is matched Split Test Bar.');
+        }
+        if ($splitTest->bar_id != $bar_id) {
+            abort(404, 'No existing is matched Split Test Bar.');
+        }
+        
+        $bar = $this->barRepo->model()->find($bar_id);
+        if ($bar && !is_null($bar)) {
+            $fp_id = "";
+            if (strpos($request->header("cookie"), "CVP--fp-id=") !== false) {
+                $fp_ary = explode('CVP--fp-id=', $request->header("cookie"));
+                $fp_ary1 = explode(';', $fp_ary[1]);
+                $fp_id = $fp_ary1[0];
+            }
+            $ip = $request->getClientIp();
+            $requestData = sprintf('lang:%s,ua:%s,ip:%s,accept:%s,ref:%s,encode:%s',
+                implode(',', $request->getLanguages()), $request->header('user-agent'), $ip,
+                $request->header('accept'), $request->header('referer'), implode(',', $request->getEncodings()));
+            $unique_id = md5($requestData);
+            
+            $unique_check = $this->barRepo->checkUniqueLog($bar->id, $bar->user_id, $fp_id, $unique_id, $splitTest->id);
+            
+            $browser = Agent::browser();
+            $platform = Agent::platform();
+            $device = Agent::device();
+            $geo_location = geoip()->getLocation($ip);
+            
+            $ins_log_data = [
+                'user_id'          => $bar->user_id,
+                'bar_id'           => $bar->id,
+                'split_bar_id'     => $splitTest->id,
+                'reset_stats'      => 0,
+                'cookie'           => $fp_id,
+                'unique_ref'       => $unique_id,
+                'unique_click'     => $unique_check ? 1 : 0,
+                'button_click'     => 0,
+                'lead_capture'     => 0,
+                'ip_address'       => $ip,
+                'agents'           => $request->header('user-agent'),
+                'kind'             => $device->getFamily(),
+                'model'            => $device->getModel(),
+                'platform'         => $platform->getName(),
+                'platform_version' => $platform->getVersion(),
+                'is_mobile'        => $device->getIsMobile(),
+                'browser'          => $browser->getName(),
+                'domain'           => parse_url($request->header('referer'))['host'],
+                'latitude'         => $geo_location['lat'],
+                'longitude'        => $geo_location['lon'],
+                'country_code'     => $geo_location['iso_code'],
+                'country_name'     => $geo_location['country'],
+                'language_range'   => implode(',', $request->getLanguages()),
+            ];
+            
+            $this->barRepo->model1()->insertGetId($ins_log_data);
+            
+            $html_code = view('users.track-partials.script', compact('bar', 'splitTest'));
+            $code = TinyMinify::html($html_code);
+            
+            header('Content-Type: application/javascript; charset=utf-8;');
+            
+            exit("document.write('" . addslashes($code) . "')");
+        } else {
+            abort(404, 'No existing is matched Conversion Bar.');
+        }
+        
+        return response('No existing is matched Conversion Bar.');
     }
 }

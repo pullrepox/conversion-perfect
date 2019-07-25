@@ -149,7 +149,7 @@ class BarOptionsController extends Controller
         }
         if ($opt_key == 'overlay') {
 //            $rules['third_party_url'] = 'required';
-            $rules['custom_link_text'] = 'required';
+            $rules['custom_link_text'] = 'required|unique:bars,custom_link_text';
         }
         
         if ($opt_key == 'lead_capture') {

@@ -19,7 +19,7 @@
                             <div class="col text-right">
                                 <button type="submit" class="btn btn-success btn-sm text-capitalize" v-if="!create_edit">Update</button>
                                 <a href="{{ secure_redirect(route('split-tests')) }}" class="btn btn-light btn-sm text-capitalize">
-                                    @{{ !changed_status ? 'Close' : 'Cancel' }}
+                                    @{{ !changed_status ? 'Close' : (create_edit ? 'Cancel' : 'Cancel') }}
                                 </a>
                             </div>
                         </div>
@@ -29,7 +29,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="form-control-label ml-1 text-capitalize" for="conversion_bar">Conversion Bar</label>
-                                    <select class="form-control" id="conversion_bar" data-toggle="select" name="conversion_bar" v-model="model.conversion_bar">
+                                    <select class="form-control" id="conversion_bar" data-toggle="select" name="conversion_bar" v-model="model.conversion_bar" {{ $flag ? '' : 'disabled' }}>
                                         @if (sizeof($bars) > 0)
                                             @foreach($bars as $row)
                                                 <option value="{{ $row->id }}">{{ $row->friendly_name }}</option>
@@ -51,6 +51,9 @@
                                     <div class="input-group mb-3">
                                         <input type="number" id="split_bar_weight" name="split_bar_weight" class="form-control rounded-right mr-2"
                                                v-model="model.split_bar_weight" @input="changeStatusVal" min="0" max="99"/>
+                                        <span class="invalid-feedback" role="alert">
+                                            Please insert integer.
+                                        </span>
                                         <div class="input-group-prepend rounded-left rounded-right" v-if="create_edit">
                                             <button class="btn btn-light rounded-left rounded-right" type="button" @click="addSplitRow">
                                                 <i class="fas fa-plus"></i>
@@ -66,7 +69,7 @@
             </form>
             <div class="card mt--3">
                 <div class="card-header border-0">
-                    <h3 class="mb-0">Split List</h3>
+                    <h3 class="mb-0">Split Test List</h3>
                 </div>
                 <div class="table-responsive">
                     <table class="table align-items-center table-flush">
@@ -78,6 +81,13 @@
                         </tr>
                         </thead>
                         <tbody>
+                        @if (!$flag)
+                            <tr>
+                               <td>@{{ model.split_bar_name }}</td>
+                               <td>@{{ model.split_bar_weight }}%</td>
+                               <td></td>
+                            </tr>
+                        @endif
                         <tr v-for="(s_item, s_i) in model.splits_list" :key="`split_item_${s_i}`">
                             <td>@{{ s_item.split_bar_name }}</td>
                             <td>@{{ s_item.split_bar_weight }}%</td>

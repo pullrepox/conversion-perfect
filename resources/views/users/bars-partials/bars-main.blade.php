@@ -18,8 +18,8 @@
                         @enderror
                     @else
                         <span class="invalid-feedback" role="alert">
-                        Please insert correct value.
-                    </span>
+                            Please insert correct value.
+                        </span>
                     @endif
                 </div>
             </div>

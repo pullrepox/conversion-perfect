@@ -136,11 +136,70 @@ class SplitTestsController extends Controller
      * Display the specified resource.
      *
      * @param \App\Models\SplitTest $splitTest
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function show(SplitTest $splitTest)
+    public function show(SplitTest $splitTest, Request $request)
     {
-        //
+        if ($request->has('report')) {
+            $header_data = [
+                'main_name'   => 'Split Test Bar Statistics',
+                'parent_data' => []
+            ];
+            
+            $bar = $this->barsRepo->model()->find($splitTest->bar_id);
+            
+            $log_data = $this->barsRepo->model1()
+                ->where('bar_id', $bar->id)
+                ->where('split_bar_id', $splitTest->id)
+                ->where('user_id', auth()->user()->id);
+            if ($request->input('period') == 'day') {
+                $log_data = $log_data->whereRaw('YEAR(created_at) = "' . date('Y') . '"')
+                    ->whereRaw('MONTH(created_at) = "' . date('m') . '"')->whereRaw('DAY(created_at) = "' . date('d') . '"');
+            } elseif ($request->input('period') == 'week') {
+                $log_data = $log_data->whereRaw('DATE(created_at) >= date_sub(now(), interval 7 DAY)');
+            } else {
+                $log_data = $log_data->whereRaw('DATE(created_at) >= date_sub(now(), interval 30 DAY)');
+            }
+            
+            $log_data = $log_data->paginate(5);
+            
+            if ($request->input('period') == 'day') {
+                $total_visitor = $bar->logs()->where('split_bar_id', $splitTest->id)->whereRaw('YEAR(created_at) = "' . date('Y') . '"')
+                    ->whereRaw('MONTH(created_at) = "' . date('m') . '"')->whereRaw('DAY(created_at) = "' . date('d') . '"')->count();
+                $unique_visitor = $bar->logs()->where('split_bar_id', $splitTest->id)->where('unique_click', 1)->whereRaw('YEAR(created_at) = "' . date('Y') . '"')
+                    ->whereRaw('MONTH(created_at) = "' . date('m') . '"')->whereRaw('DAY(created_at) = "' . date('d') . '"')->count();
+                $button_click = $bar->logs()->where('split_bar_id', $splitTest->id)->where('button_click', 1)->whereRaw('YEAR(created_at) = "' . date('Y') . '"')
+                    ->whereRaw('MONTH(created_at) = "' . date('m') . '"')->whereRaw('DAY(created_at) = "' . date('d') . '"')->count();
+                $lead_capture = $bar->logs()->where('split_bar_id', $splitTest->id)->where('lead_capture', 1)->whereRaw('YEAR(created_at) = "' . date('Y') . '"')
+                    ->whereRaw('MONTH(created_at) = "' . date('m') . '"')->whereRaw('DAY(created_at) = "' . date('d') . '"')->count();
+            } elseif ($request->input('period') == 'week') {
+                $total_visitor = $bar->logs()->where('split_bar_id', $splitTest->id)->whereRaw('DATE(created_at) >= date_sub(now(), interval 7 DAY)')->count();
+                $unique_visitor = $bar->logs()->where('split_bar_id', $splitTest->id)->where('unique_click', 1)->whereRaw('DATE(created_at) >= date_sub(now(), interval 7 DAY)')->count();
+                $button_click = $bar->logs()->where('split_bar_id', $splitTest->id)->where('button_click', 1)->whereRaw('DATE(created_at) >= date_sub(now(), interval 7 DAY)')->count();
+                $lead_capture = $bar->logs()->where('split_bar_id', $splitTest->id)->where('lead_capture', 1)->whereRaw('DATE(created_at) >= date_sub(now(), interval 7 DAY)')->count();
+            } else {
+                $total_visitor = $bar->logs()->where('split_bar_id', $splitTest->id)->whereRaw('DATE(created_at) >= date_sub(now(), interval 30 DAY)')->count();
+                $unique_visitor = $bar->logs()->where('split_bar_id', $splitTest->id)->where('unique_click', 1)->whereRaw('DATE(created_at) >= date_sub(now(), interval 30 DAY)')->count();
+                $button_click = $bar->logs()->where('split_bar_id', $splitTest->id)->where('button_click', 1)->whereRaw('DATE(created_at) >= date_sub(now(), interval 30 DAY)')->count();
+                $lead_capture = $bar->logs()->where('split_bar_id', $splitTest->id)->where('lead_capture', 1)->whereRaw('DATE(created_at) >= date_sub(now(), interval 30 DAY)')->count();
+            }
+            
+            $total_sum = [$total_visitor, $unique_visitor, $button_click, $lead_capture];
+            
+            $searchParams = [
+                'report' => 1,
+                'period' => $request->input('period')
+            ];
+            
+            $report_data = $this->barsRepo->getLogsChartsData($request->input('period'), $bar->id, $splitTest->id);
+            
+            $report_data = json_encode($report_data);
+            
+            return view('users.split-test-statistics', compact('header_data', 'splitTest', 'log_data', 'searchParams', 'total_sum', 'report_data'));
+        } else {
+            return response('Success');
+        }
     }
     
     /**
@@ -155,9 +214,9 @@ class SplitTestsController extends Controller
             'main_name'   => 'Edit Split Test',
             'parent_data' => []
         ];
-    
+        
         $flag = false;
-    
+        
         $form_action = secure_redirect(route('split-tests.update', ['splitTest' => $splitTest]));
         $bars = $this->barsRepo->model()->where('user_id', auth()->user()->id)->where('archive_flag', '0')->get();
         $split_tests = auth()->user()->split_tests()->where('bar_id', $splitTest->bar_id)->get();
@@ -165,6 +224,9 @@ class SplitTestsController extends Controller
         $w = 0;
         if ($split_tests && !is_null($split_tests)) {
             foreach ($split_tests as $key => $row) {
+                if ($row->id == $splitTest->id) {
+                    continue;
+                }
                 $split_list[$key] = [
                     'id'               => $row->id,
                     'split_bar_name'   => $row->split_bar_name,
@@ -173,9 +235,11 @@ class SplitTestsController extends Controller
                 $w += $row->split_bar_weight;
             }
         }
-    
+        
+        $w += $splitTest->split_bar_weight;
+        
         $split_weight = (100 - $w) > 0 ? (100 - $w) : 0;
-    
+        
         return view('users.splits-edit', compact('header_data', 'flag', 'form_action', 'bars', 'split_list', 'split_weight', 'splitTest'));
     }
     
@@ -191,7 +255,7 @@ class SplitTestsController extends Controller
         $splitTest->split_bar_name = $request->input('split_bar_name');
         $splitTest->split_bar_weight = $request->input('split_bar_weight');
         $splitTest->save();
-    
+        
         return response()->redirectTo(route('split-tests'));
     }
     
@@ -206,7 +270,7 @@ class SplitTestsController extends Controller
     {
         $this->barsRepo->model1()->where('split_bar_id', $splitTest->id)->delete();
         $splitTest->delete();
-    
+        
         return response()->json([
             'status' => 'success'
         ]);

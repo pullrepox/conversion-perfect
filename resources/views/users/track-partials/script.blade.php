@@ -83,6 +83,7 @@
     (function () {
         var __cp_cf = window.__cp_bar_config;
         var bar_id = "{{ $bar->id }}";
+        var split_bar_id = "{{ $splitTest == '' ? 0 : $splitTest->id }}";
         
         function showHideMainBar(flag) {
             if (__cp_cf[bar_id].bar.position !== "bottom") {
@@ -415,7 +416,10 @@
                 xml_http.open("POST", __cp_cf[bar_id].act_btn_action);
                 xml_http.setRequestHeader("Content-type", "application/json");
                 xml_http.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                xml_http.send(JSON.stringify({cookie: (checkCookie("CVP--fp-id") ? getCookie("CVP--fp-id") : getFingerPrint())}));
+                xml_http.send(JSON.stringify({
+                    cookie: (checkCookie("CVP--fp-id") ? getCookie("CVP--fp-id") : getFingerPrint()),
+                    split_bar_id: split_bar_id
+                }));
             });
         }
         
@@ -436,6 +440,7 @@
                     }
                 }
                 params["cookie"] = checkCookie("CVP--fp-id") ? getCookie("CVP--fp-id") : getFingerPrint();
+                params["split_bar_id"] = split_bar_id;
                 
                 var xml_http;
                 if (window.XMLHttpRequest) {
