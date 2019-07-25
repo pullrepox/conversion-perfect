@@ -166,7 +166,7 @@ class OverlaysController extends Controller
             abort(404, 'No existing is matched Split Test Bar.');
         }
         if ($splitTest->bar_id != $bar_id) {
-            abort(404, 'No existing is matched Split Test Bar.');
+            abort(404, 'No existing is matched Conversion Bar.');
         }
         
         $bar = $this->barRepo->model()->find($bar_id);

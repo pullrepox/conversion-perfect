@@ -7,13 +7,13 @@ import List from 'list.js';
     let permissions = window._clickAppConfig.permissions;
     // Permissions
     $('#split_test_nav').on('click', function () {
-        // if (permissions['split-test'] === 0 && upgrades['professional']['to_do']) {
-        //     let i_html = 'Sorry, your current plan does not include Split Testing. You need to upgrade to the ' + upgrades['professional']['description'] + ' plan to use Split Testing.';
-        //     $('#pro-plan-item-text').html(i_html);
-        //     $('#upgrade-pro-modal').modal('show');
-        // } else {
+        if (permissions['split-test'] === 0 && upgrades['professional']['to_do']) {
+            let i_html = 'Sorry, your current plan does not include Split Testing. You need to upgrade to the ' + upgrades['professional']['description'] + ' plan to use Split Testing.';
+            $('#pro-plan-item-text').html(i_html);
+            $('#upgrade-pro-modal').modal('show');
+        } else {
             location.href = $(this).data('href');
-        // }
+        }
     });
     
     $('#multi_bar_nav').on('click', function () {
