@@ -19,7 +19,7 @@
                             <div class="col text-right">
                                 <button type="submit" class="btn btn-success btn-sm text-capitalize" v-if="!create_edit">Update</button>
                                 <a href="{{ secure_redirect(route('split-tests')) }}" class="btn btn-light btn-sm text-capitalize">
-                                    @{{ !changed_status ? 'Close' : (create_edit ? 'Cancel' : 'Cancel') }}
+                                    @{{ !changed_status ? 'Close' : (create_edit ? 'List' : 'Cancel') }}
                                 </a>
                             </div>
                         </div>
@@ -125,8 +125,8 @@
             create_edit: "{{ $flag }}",
             form_action: "{{ $form_action }}",
             model: {
-                conversion_bar: '{{ $bars[0]->id }}',
-                conversion_bar_name: '{{ $bars[0]->friendly_name }}',
+                conversion_bar: '{{ $flag ? $bars[0]->id : $splitTest->bar_id }}',
+                conversion_bar_name: '{{ $flag ? $bars[0]->friendly_name : $splitTest->bar->friendly_name }}'.replace(/&#039;/g, "'"),
                 split_bar_name: "{{ $flag ? '' : $splitTest->split_bar_name }}",
                 split_bar_weight: "{{ $flag ? '' : $splitTest->split_bar_weight }}",
                 splits_list: JSON.parse('{!! json_encode($split_list) !!}'),

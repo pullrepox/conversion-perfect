@@ -409,7 +409,7 @@
                             showHideMainBar(true);
                         }, (__cp_cf[bar_id].bar.autohide_delay_seconds * 1000));
                     }
-    
+                    
                     if (__cp_cf[bar_id].bar.integration_type !== "none") {
                         showHideCtaBar((window.localStorage.getItem("closed-cta-cp-bar-" + bar_id) && window.localStorage.getItem("closed-cta-cp-bar-" + bar_id) === "closed"));
                     }
@@ -449,6 +449,7 @@
                 } else {
                     xml_http = new ActiveXObject("Microsoft.XMLHTTP");
                 }
+                
                 xml_http.onreadystatechange = function () {
                     if (__cp_cf[bar_id].bar.after_submit === "show_message" || __cp_cf[bar_id].bar.after_submit === "show_message_hide_bar") {
                         document.getElementById("cp-bar--cta-content-section-" + bar_id).innerHTML = "<div style=\"font-weight: bold;\">" + __cp_cf[bar_id].bar.message + "</div>";
@@ -462,6 +463,7 @@
                         location.href = __cp_cf[bar_id].bar.redirect_url;
                     }
                 };
+                
                 xml_http.open("POST", form.getAttribute("action"));
                 xml_http.setRequestHeader("X-Requested-With", "XMLHttpRequest");
                 xml_http.setRequestHeader("Content-type", "application/json");

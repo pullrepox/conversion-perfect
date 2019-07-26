@@ -1,27 +1,43 @@
 <?php
 
-function jsonResponse($isSuccess, $statusCode = 200, $message = '', $data = [])
-{
-    return response()->json([
-        'success' => $isSuccess,
-        'message' => $message,
-        'data'    => $data,
-    ], $statusCode);
+if (!function_exists('jsonResponse')) {
+    function jsonResponse($isSuccess, $statusCode = 200, $message = '', $data = [])
+    {
+        return response()->json([
+            'success' => $isSuccess,
+            'message' => $message,
+            'data'    => $data,
+        ], $statusCode);
+    }
 }
 
-function user()
-{
-    return \Illuminate\Support\Facades\Auth::user();
+if (!function_exists('user')) {
+    function user()
+    {
+        return auth()->user();
+    }
 }
 
-function getSliderCode($slider)
-{
-    return '<script data-cfasync="false" src="' . url('/') . '/sliders/' . $slider->id . '"></script>';
+if (!function_exists('getArrayValue')) {
+    function getArrayValue($array, $key, $default)
+    {
+        return isset($array[$key]) ? $array[$key] : $default;
+    }
 }
 
-function getArrayValue($array, $key, $default)
-{
-    return isset($array[$key]) ? $array[$key] : $default;
+if (!function_exists('getBarNamesString')) {
+    function getBarNamesString($ids)
+    {
+        $nameStr = '';
+        foreach ($ids as $id) {
+            $bar = \App\Models\Bar::find($id);
+            if ($bar && !is_null($bar)) {
+                $nameStr .= $bar->friendly_name . ', ';
+            }
+        }
+        
+        return $nameStr != '' ? substr($nameStr, 0, -2) : '';
+    }
 }
 
 if (!function_exists('isActiveRoute')) {

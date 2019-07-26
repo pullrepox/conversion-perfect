@@ -69,19 +69,25 @@ import ClipboardJS from 'clipboard';
         location.href = $(this).data('href');
     });
     
-    let split_test_bar_id = '';
-    $('.split-test-delete').on('click', function () {
-        split_test_bar_id = $(this).data('id');
-    });
-    
     $('#deleteSplitBar').on('click', function () {
-        window.axios.delete(`/split-tests/${split_test_bar_id}`).then((r) => {
+        window.axios.delete(`/split-tests/${delId}`).then((r) => {
             $('#delete-split-modal').modal('hide');
             location.reload();
         });
     });
     
-    $('a.splits-copy-code').on('click', function () {
+    $('.splits-copy-code').on('click', function () {
         $('#split_script_copy').val(`<script data-cfasync="false" src="${$(this).data('link')}"></script>`);
+    });
+    
+    $('.multi-copy-code').on('click', function () {
+        $('#multi_script_copy').val(`<script data-cfasync="false" src="${$(this).data('link')}"></script>`);
+    });
+    
+    $('#deleteMultiBar').on('click', function () {
+        window.axios.delete(`/multi-bars/${delId}`).then((r) => {
+            $('#delete-multi-bar-modal').modal('hide');
+            location.reload();
+        });
     });
 })(jQuery);

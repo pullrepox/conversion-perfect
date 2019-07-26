@@ -17,6 +17,7 @@ Route::get('/', function () {
 Route::get('/reset-main-db', 'Api\DatabaseController@mainDbReset');
 Route::get('/cp-embed-script/{id}', 'Api\OverlaysController@getCBScriptCode')->name('conversion.get-scripts-code-for-embed');
 Route::get('/cp-embed-split-script/{id}/{bar_id}', 'Api\OverlaysController@getSplitScriptCode')->name('conversion.get-split-scripts-code-for-embed');
+Route::get('/cp-embed-multi-bar-script/{id}', 'Api\OverlaysController@getMultiBarScriptCode')->name('conversion.get-multi-scripts-code-for-embed');
 Route::post('/cp-action-button-click/{id}', 'Api\OverlaysController@setActionButtonClick')->name('conversion.set-action-button-click');
 Route::post('/cp-cta-set-subscribers/{bar_id}', 'Api\BarOptionsApiController@setSubscribersOfLists')->name('conversion.set-lead-capture-subscribers');
 

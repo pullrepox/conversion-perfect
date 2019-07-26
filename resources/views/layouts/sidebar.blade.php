@@ -41,8 +41,9 @@
                             <span class="nav-link-text text-capitalize">Split Tests</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="javascript: void(0)" data-href="" id="multi_bar_nav">
+                    <li class="nav-item {{ isActiveResource('multi-bars', false) }}">
+                        <a class="nav-link {{ isActiveResource('multi-bars', false) }}" href="javascript: void(0)"
+                           data-href="{{ secure_redirect(route('multi-bars')) }}" id="multi_bar_nav">
                             <i class="ni ni-books text-cp"></i>
                             <span class="nav-link-text text-capitalize">Multi Bar</span>
                         </a>

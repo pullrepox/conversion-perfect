@@ -217,7 +217,7 @@ class SplitTestsController extends Controller
         
         $flag = false;
         
-        $form_action = secure_redirect(route('split-tests.update', ['splitTest' => $splitTest]));
+        $form_action = secure_redirect(route('split-tests.update', ['splitTest' => $splitTest->id]));
         $bars = $this->barsRepo->model()->where('user_id', auth()->user()->id)->where('archive_flag', '0')->get();
         $split_tests = auth()->user()->split_tests()->where('bar_id', $splitTest->bar_id)->get();
         $split_list = [];

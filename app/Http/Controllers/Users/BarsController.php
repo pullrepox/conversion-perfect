@@ -51,6 +51,7 @@ class BarsController extends Controller
             'main_name'   => 'New Conversion Bar',
             'parent_data' => []
         ];
+        
         if ($request->input('flag') == 'template') {
             $header_data['main_name'] = 'Choose Bar Template';
             

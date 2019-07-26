@@ -6,6 +6,7 @@ namespace App\Http\Repositories;
 
 use App\Models\Bar;
 use App\Models\BarsClickLog;
+use App\Models\MultiBar;
 use App\Models\SplitTest;
 use Illuminate\Support\Facades\DB;
 
@@ -24,6 +25,22 @@ class BarsRepository extends Repository
     public function model2()
     {
         return app(SplitTest::class);
+    }
+    
+    public function model3()
+    {
+        return app(MultiBar::class);
+    }
+    
+    public function getBarNamesString($ids)
+    {
+        $nameStr = '';
+        foreach ($ids as $id) {
+            $bar = $this->model()->find($id);
+            $nameStr .= $bar->friendly_name . ', ';
+        }
+        
+        return substr($nameStr, 0, -2);
     }
     
     /**

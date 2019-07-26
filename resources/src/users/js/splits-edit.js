@@ -7,9 +7,7 @@ new Vue({
         loading: false,
         create_edit: false,
         split_id: '',
-        form_action: '/bars',
-        permissions: {},
-        upgrades: {},
+        form_action: '/split-tests',
         changed_status: false,
         model: {
             conversion_bar: 0,
@@ -24,8 +22,6 @@ new Vue({
         let vm = this;
         this.create_edit = (window._split_bar.create_edit || window._split_bar.create_edit === 'true');
         this.form_action = window._split_bar.form_action;
-        this.permissions = window._clickAppConfig.permissions;
-        this.upgrades = window._clickAppConfig.upgrades;
         this.split_id = window._split_bar.split_id;
         Object.keys(this.model).forEach(function (item) {
             if (window._split_bar.model[item]) {
@@ -63,7 +59,7 @@ new Vue({
                         vm.model.conversion_bar_name = $this.select2('data')[0].text;
                     });
                     
-                    $(this).val(`${vm.model.conversion_bar}`).trigger('change.select2');
+                    // $(this).val(`${vm.model.conversion_bar}`).trigger('change.select2');
                 });
             }
         },

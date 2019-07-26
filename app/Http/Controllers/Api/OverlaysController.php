@@ -88,9 +88,9 @@ class OverlaysController extends Controller
                 'language_range'   => implode(',', $request->getLanguages()),
             ];
             $this->barRepo->model1()->insertGetId($ins_log_data);
-
+            
             $splitTest = '';
-
+            
             $html_code = view('users.track-partials.script', compact('bar', 'splitTest'));
             $code = TinyMinify::html($html_code);
             
@@ -115,7 +115,7 @@ class OverlaysController extends Controller
                 implode(',', $request->getLanguages()), $request->header('user-agent'), $ip,
                 $request->header('accept'), $request->header('referer'), implode(',', $request->getEncodings()));
             $unique_id = md5($requestData);
-    
+            
             $split_bar_id = $request->has('split_bar_id') ? $request->input('split_bar_id') : 0;
             
             $set_log = $this->barRepo->setActionBtnClickLog($bar->id, $bar->user_id, $fp_id, $unique_id, $split_bar_id);
@@ -228,6 +228,78 @@ class OverlaysController extends Controller
             abort(404, 'No existing is matched Conversion Bar.');
         }
         
+        return response('No existing is matched Conversion Bar.');
+    }
+    
+    public function getMultiBarScriptCode($id, Request $request)
+    {
+        $multiBar = $this->barRepo->model3()->find($id);
+        if (!$multiBar || is_null($multiBar)) {
+            abort(404, 'No existing is matched Multi Bar.');
+        }
+        
+        $bar_ids = $multiBar->bar_ids;
+    
+        $bar = $this->barRepo->model()->find($bar_ids[0]);
+    
+        if ($bar && !is_null($bar)) {
+            $fp_id = "";
+            if (strpos($request->header("cookie"), "CVP--fp-id=") !== false) {
+                $fp_ary = explode('CVP--fp-id=', $request->header("cookie"));
+                $fp_ary1 = explode(';', $fp_ary[1]);
+                $fp_id = $fp_ary1[0];
+            }
+            $ip = $request->getClientIp();
+            $requestData = sprintf('lang:%s,ua:%s,ip:%s,accept:%s,ref:%s,encode:%s',
+                implode(',', $request->getLanguages()), $request->header('user-agent'), $ip,
+                $request->header('accept'), $request->header('referer'), implode(',', $request->getEncodings()));
+            $unique_id = md5($requestData);
+        
+            $unique_check = $this->barRepo->checkUniqueLog($bar->id, $bar->user_id, $fp_id, $unique_id);
+        
+            $browser = Agent::browser();
+            $platform = Agent::platform();
+            $device = Agent::device();
+            $geo_location = geoip()->getLocation($ip);
+        
+            $ins_log_data = [
+                'user_id'          => $bar->user_id,
+                'bar_id'           => $bar->id,
+                'reset_stats'      => 0,
+                'cookie'           => $fp_id,
+                'unique_ref'       => $unique_id,
+                'unique_click'     => $unique_check ? 1 : 0,
+                'button_click'     => 0,
+                'lead_capture'     => 0,
+                'ip_address'       => $ip,
+                'agents'           => $request->header('user-agent'),
+                'kind'             => $device->getFamily(),
+                'model'            => $device->getModel(),
+                'platform'         => $platform->getName(),
+                'platform_version' => $platform->getVersion(),
+                'is_mobile'        => $device->getIsMobile(),
+                'browser'          => $browser->getName(),
+                'domain'           => parse_url($request->header('referer'))['host'],
+                'latitude'         => $geo_location['lat'],
+                'longitude'        => $geo_location['lon'],
+                'country_code'     => $geo_location['iso_code'],
+                'country_name'     => $geo_location['country'],
+                'language_range'   => implode(',', $request->getLanguages()),
+            ];
+            $this->barRepo->model1()->insertGetId($ins_log_data);
+        
+            $splitTest = '';
+        
+            $html_code = view('users.track-partials.script', compact('bar', 'splitTest'));
+            $code = TinyMinify::html($html_code);
+        
+            header('Content-Type: application/javascript; charset=utf-8;');
+        
+            exit("document.write('" . addslashes($code) . "')");
+        } else {
+            abort(404, 'No existing is matched Conversion Bar.');
+        }
+    
         return response('No existing is matched Conversion Bar.');
     }
 }
