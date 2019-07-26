@@ -85,7 +85,7 @@
                         </div>
                         <div class="modal-body text-center">
                             <h1>Are you sure?</h1>
-                            <p>You will lose all settings and statistics for this Split Test Conversion Bar. You will not be able to restore this Split Test Conversion Bar.</p>
+                            <p>You will lose all settings and statistics for this Split Test. You will not be able to restore this Split Test.</p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger text-capitalize" id="deleteSplitBar">Delete</button>
