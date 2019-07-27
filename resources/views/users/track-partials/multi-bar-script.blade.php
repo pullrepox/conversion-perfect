@@ -53,11 +53,31 @@
         outline: 0 !important;
     }
 </style>
+@for ($i = (count($bars) - 1); $i >= 0; $i--)
+    <div id="main-preview--cp-bar-{{ $bars[$i]->id }}" class="main-preview--cp-bar" style="display: none;width: 100%;margin: 0 !important;padding: 0 !important;z-index: 99999999;
+        top: {{ $bars[$i]->position == "top" || $bars[$i]->position == "top_sticky" ? "-450px" : "auto" }};
+        bottom: {{ $bars[$i]->position == "bottom" ? "-450px" : "auto" }};
+        left: 0; position: {{ $bars[$i]->position == "top" ? "relative" : "fixed" }}">
+        @include("users.track-partials.preview-main", ["bar" => $bars[$i]])
+    </div>
+    @if ($bars[$i]->integration_type != "none")
+        <div id="cta-preview--cp-bar-{{ $bars[$i]->id }}" class="cta-preview--cp-bar" style="display: none;width: 100%;margin: 0 !important;padding: 0 !important;z-index: 99999999;
+            top: {{ $bars[$i]->position == "top" || $bars[$i]->position == "top_sticky" ? "-450px" : "auto" }};
+            bottom: {{ $bars[$i]->position == "bottom" ? "-450px" : "auto" }};
+            left: 0; position: {{ $bars[$i]->position == "top" ? "relative" : "fixed" }}">
+            @if ($bars[$i]->opt_in_type == "standard")
+                @include("users.track-partials.preview-cta-standard", ["bar" => $bars[$i]])
+            @else
+                @include("users.track-partials.preview-cta-media", ["bar" => $bars[$i]])
+            @endif
+        </div>
+    @endif
+@endfor
 <div id="main-preview--cp-bar-{{ $bar->id }}" class="main-preview--cp-bar" style="width: 100%;margin: 0 !important;padding: 0 !important;z-index: 99999999;
     top: {{ $bar->position == "top" || $bar->position == "top_sticky" ? "-450px" : "auto" }};
     bottom: {{ $bar->position == "bottom" ? "-450px" : "auto" }};
     left: 0; position: {{ $bar->position == "top" ? "relative" : "fixed" }}">
-    @include("users.track-partials.preview-main")
+    @include("users.track-partials.preview-main", ["bar" => $bar])
 </div>
 @if ($bar->integration_type != "none")
     <div id="cta-preview--cp-bar-{{ $bar->id }}" class="cta-preview--cp-bar" style="width: 100%;margin: 0 !important;padding: 0 !important;z-index: 99999999;
@@ -75,16 +95,26 @@
     window.__cp_bar_config = window.__cp_bar_config || {};
     
     window.__cp_bar_config["{{ $bar->id }}"] = {
-        BASE: "{{ request()->root() }}",
         bar: {!! json_encode($bar) !!},
-        act_btn_action: "{{ route("conversion.set-action-button-click", ["id" => $bar->id]) }}",
+        act_btn_action: "{{ secure_redirect(route("conversion.set-action-button-click", ["id" => $bar->id])) }}",
         countdown_target: "{{ $bar->countdown == "none" ? "" : ($bar->countdown == "calendar" ? (date("F d, Y", strtotime($bar->countdown_end_date)) . " " . $bar->countdown_end_time) : getCountdownTarget($bar->countdown_days, $bar->countdown_hours, $bar->countdown_minutes, $bar->created_at)) }}"
     };
-    
+</script>
+@for ($i = (count($bars) - 1); $i >= 0; $i--)
+    <script type="text/javascript">
+        window.__cp_bar_config["{{ $bars[$i]->id }}"] = {
+            bar: {!! json_encode($bars[$i]) !!},
+            act_btn_action: "{{ secure_redirect(route("conversion.set-action-button-click", ["id" => $bars[$i]->id])) }}",
+            countdown_target: "{{ $bars[$i]->countdown == "none" ? "" : ($bars[$i]->countdown == "calendar" ? (date("F d, Y", strtotime($bars[$i]->countdown_end_date)) . " " . $bars[$i]->countdown_end_time) : getCountdownTarget($bars[$i]->countdown_days, $bars[$i]->countdown_hours, $bars[$i]->countdown_minutes, $bars[$i]->created_at)) }}"
+        };
+    </script>
+@endfor
+<script type="text/javascript">
     (function () {
         var __cp_cf = window.__cp_bar_config;
         var bar_id = "{{ $bar->id }}";
-        var split_bar_id = "{{ $splitTest == '' ? 0 : $splitTest->id }}";
+        var multi_bar_id = "{{ $multiBar->id }}";
+        var set_load_action = "{{ secure_redirect(route("conversion.set-load-main-bar")) }}";
         
         function showHideMainBar(flag) {
             if (__cp_cf[bar_id].bar.position !== "bottom") {
@@ -95,6 +125,21 @@
             
             if (flag) {
                 window.localStorage.setItem("closed-cp-bar-" + bar_id, "closed");
+            } else {
+                var xml_http;
+                if (window.XMLHttpRequest) {
+                    xml_http = new XMLHttpRequest();
+                } else {
+                    xml_http = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xml_http.open("POST", set_load_action);
+                xml_http.setRequestHeader("Content-type", "application/json");
+                xml_http.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+                xml_http.send(JSON.stringify({
+                    cookie: (checkCookie("CVP--fp-id") ? getCookie("CVP--fp-id") : getFingerPrint()),
+                    bar_id: bar_id,
+                    multi_bar_id: multi_bar_id
+                }));
             }
         }
         
@@ -249,7 +294,7 @@
             return murmurhash3_32_gc(keys.join("###"), 31);
         }
         
-        window.onload = function () {
+        function loadEventHandle() {
             if (!checkCookie('CVP--fp-id')) {
                 setCookie('CVP--fp-id', getFingerPrint(), 1);
             }
@@ -341,6 +386,10 @@
                     document.querySelector("head").appendChild("<meta name=\"keywords\" content=\"" + __cp_cf[bar_id].bar.meta_keywords + "\"/>");
                 }
             }
+        }
+        
+        window.onload = function () {
+            loadEventHandle();
         };
         
         function scrollDisplay() {
@@ -419,7 +468,7 @@
                 xml_http.setRequestHeader("X-Requested-With", "XMLHttpRequest");
                 xml_http.send(JSON.stringify({
                     cookie: (checkCookie("CVP--fp-id") ? getCookie("CVP--fp-id") : getFingerPrint()),
-                    split_bar_id: split_bar_id
+                    multi_bar_id: multi_bar_id
                 }));
             });
         }
@@ -441,7 +490,7 @@
                     }
                 }
                 params["cookie"] = checkCookie("CVP--fp-id") ? getCookie("CVP--fp-id") : getFingerPrint();
-                params["split_bar_id"] = split_bar_id;
+                params["multi_bar_id"] = multi_bar_id;
                 
                 var xml_http;
                 if (window.XMLHttpRequest) {

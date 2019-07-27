@@ -93,11 +93,67 @@ class MultiBarsController extends Controller
      * Display the specified resource.
      *
      * @param \App\Models\MultiBar $multiBar
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function show(MultiBar $multiBar)
+    public function show(MultiBar $multiBar, Request $request)
     {
-        //
+        if ($request->has('report')) {
+            $header_data = [
+                'main_name'   => 'Multi Bar Statistics',
+                'parent_data' => []
+            ];
+            
+            $log_data = $this->barsRepo->model1()
+                ->where('multi_bar_id', $multiBar->id)
+                ->where('user_id', auth()->user()->id);
+            if ($request->input('period') == 'day') {
+                $log_data = $log_data->whereRaw('YEAR(created_at) = "' . date('Y') . '"')
+                    ->whereRaw('MONTH(created_at) = "' . date('m') . '"')->whereRaw('DAY(created_at) = "' . date('d') . '"');
+            } elseif ($request->input('period') == 'week') {
+                $log_data = $log_data->whereRaw('DATE(created_at) >= date_sub(now(), interval 7 DAY)');
+            } else {
+                $log_data = $log_data->whereRaw('DATE(created_at) >= date_sub(now(), interval 30 DAY)');
+            }
+            
+            $log_data = $log_data->paginate(5);
+            
+            if ($request->input('period') == 'day') {
+                $total_visitor = $this->barsRepo->model1()->where('multi_bar_id', $multiBar->id)->whereRaw('YEAR(created_at) = "' . date('Y') . '"')
+                    ->whereRaw('MONTH(created_at) = "' . date('m') . '"')->whereRaw('DAY(created_at) = "' . date('d') . '"')->count();
+                $unique_visitor = $this->barsRepo->model1()->where('multi_bar_id', $multiBar->id)->where('unique_click', 1)->whereRaw('YEAR(created_at) = "' . date('Y') . '"')
+                    ->whereRaw('MONTH(created_at) = "' . date('m') . '"')->whereRaw('DAY(created_at) = "' . date('d') . '"')->count();
+                $button_click = $this->barsRepo->model1()->where('multi_bar_id', $multiBar->id)->where('button_click', 1)->whereRaw('YEAR(created_at) = "' . date('Y') . '"')
+                    ->whereRaw('MONTH(created_at) = "' . date('m') . '"')->whereRaw('DAY(created_at) = "' . date('d') . '"')->count();
+                $lead_capture = $this->barsRepo->model1()->where('multi_bar_id', $multiBar->id)->where('lead_capture', 1)->whereRaw('YEAR(created_at) = "' . date('Y') . '"')
+                    ->whereRaw('MONTH(created_at) = "' . date('m') . '"')->whereRaw('DAY(created_at) = "' . date('d') . '"')->count();
+            } elseif ($request->input('period') == 'week') {
+                $total_visitor = $this->barsRepo->model1()->where('multi_bar_id', $multiBar->id)->whereRaw('DATE(created_at) >= date_sub(now(), interval 7 DAY)')->count();
+                $unique_visitor = $this->barsRepo->model1()->where('multi_bar_id', $multiBar->id)->where('unique_click', 1)->whereRaw('DATE(created_at) >= date_sub(now(), interval 7 DAY)')->count();
+                $button_click = $this->barsRepo->model1()->where('multi_bar_id', $multiBar->id)->where('button_click', 1)->whereRaw('DATE(created_at) >= date_sub(now(), interval 7 DAY)')->count();
+                $lead_capture = $this->barsRepo->model1()->where('multi_bar_id', $multiBar->id)->where('lead_capture', 1)->whereRaw('DATE(created_at) >= date_sub(now(), interval 7 DAY)')->count();
+            } else {
+                $total_visitor = $this->barsRepo->model1()->where('multi_bar_id', $multiBar->id)->whereRaw('DATE(created_at) >= date_sub(now(), interval 30 DAY)')->count();
+                $unique_visitor = $this->barsRepo->model1()->where('multi_bar_id', $multiBar->id)->where('unique_click', 1)->whereRaw('DATE(created_at) >= date_sub(now(), interval 30 DAY)')->count();
+                $button_click = $this->barsRepo->model1()->where('multi_bar_id', $multiBar->id)->where('button_click', 1)->whereRaw('DATE(created_at) >= date_sub(now(), interval 30 DAY)')->count();
+                $lead_capture = $this->barsRepo->model1()->where('multi_bar_id', $multiBar->id)->where('lead_capture', 1)->whereRaw('DATE(created_at) >= date_sub(now(), interval 30 DAY)')->count();
+            }
+            
+            $total_sum = [$total_visitor, $unique_visitor, $button_click, $lead_capture];
+            
+            $searchParams = [
+                'report' => 1,
+                'period' => $request->input('period')
+            ];
+            
+            $report_data = $this->barsRepo->getLogsChartsData($request->input('period'), 0, 0, $multiBar->id);
+            
+            $report_data = json_encode($report_data);
+            
+            return view('users.multi-bars-statistics', compact('header_data', 'multiBar', 'log_data', 'searchParams', 'total_sum', 'report_data'));
+        } else {
+            return response('Success');
+        }
     }
     
     /**

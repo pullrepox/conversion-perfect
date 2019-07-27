@@ -85,6 +85,7 @@
         var __cp_cf = window.__cp_bar_config;
         var bar_id = "{{ $bar->id }}";
         var split_bar_id = "{{ $splitTest == '' ? 0 : $splitTest->id }}";
+        var set_load_action = "{{ secure_redirect(route("conversion.set-load-main-bar")) }}";
         
         function showHideMainBar(flag) {
             if (__cp_cf[bar_id].bar.position !== "bottom") {
@@ -95,6 +96,21 @@
             
             if (flag) {
                 window.localStorage.setItem("closed-cp-bar-" + bar_id, "closed");
+            } else {
+                var xml_http;
+                if (window.XMLHttpRequest) {
+                    xml_http = new XMLHttpRequest();
+                } else {
+                    xml_http = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xml_http.open("POST", set_load_action);
+                xml_http.setRequestHeader("Content-type", "application/json");
+                xml_http.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+                xml_http.send(JSON.stringify({
+                    cookie: (checkCookie("CVP--fp-id") ? getCookie("CVP--fp-id") : getFingerPrint()),
+                    bar_id: bar_id,
+                    split_bar_id: split_bar_id
+                }));
             }
         }
         
@@ -409,7 +425,7 @@
                             showHideMainBar(true);
                         }, (__cp_cf[bar_id].bar.autohide_delay_seconds * 1000));
                     }
-    
+                    
                     if (__cp_cf[bar_id].bar.integration_type !== "none") {
                         showHideCtaBar((window.localStorage.getItem("closed-cta-cp-bar-" + bar_id) && window.localStorage.getItem("closed-cta-cp-bar-" + bar_id) === "closed"));
                     }

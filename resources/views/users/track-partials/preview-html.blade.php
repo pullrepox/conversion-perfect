@@ -124,7 +124,6 @@
     <script type="text/javascript" src="{{ url(mix("js/manifest.js")) }}"></script>
     <script type="text/javascript" src="{{ url(mix("js/vendor.js")) }}"></script>
     <script type="text/javascript" src="{{ url(mix("js/html-bar.js")) }}"></script>
-{{--    <script data-cfasync="false" src="//localhost:3000/api/cp-embed-split-script/6/3"></script>--}}
     </body>
     </html>
 @endif

@@ -50,17 +50,27 @@ class BarsRepository extends Repository
      * @param $fp_id
      * @param $unique_ref
      * @param $split_id
+     * @param $multi_bar_id
      * @return bool
      */
-    public function checkUniqueLog($bar_id, $user_id, $fp_id, $unique_ref, $split_id = 0)
+    public function checkUniqueLog($bar_id, $user_id, $fp_id, $unique_ref, $split_id = 0, $multi_bar_id = 0)
     {
-        $bar_log = $this->model1()->where('user_id', $user_id)->where('bar_id', $bar_id)
+        $bar_log = $this->model1()
+            ->where('user_id', $user_id)
             ->where(function ($q) use ($fp_id, $unique_ref) {
                 $q->where('cookie', $fp_id)->orWhere('unique_ref', $unique_ref);
             });
         
+        if ($bar_id != '' && $bar_id != 0) {
+            $bar_log = $bar_log->where('bar_id', $bar_id);
+        }
+        
         if ($split_id != '' && $split_id != 0) {
             $bar_log = $bar_log->where('split_bar_id', $split_id);
+        }
+    
+        if ($multi_bar_id != '' && $multi_bar_id != 0) {
+            $bar_log = $bar_log->where('multi_bar_id', $multi_bar_id);
         }
         
         $bar_log = $bar_log->first();
@@ -84,11 +94,14 @@ class BarsRepository extends Repository
      * @param $fp_id
      * @param $unique_ref
      * @param $split_id
+     * @param $multi_bar_id
      * @return bool
      */
-    public function setActionBtnClickLog($bar_id, $user_id, $fp_id, $unique_ref, $split_id = 0)
+    public function setActionBtnClickLog($bar_id, $user_id, $fp_id, $unique_ref, $split_id = 0, $multi_bar_id = 0)
     {
-        $bar_log = $this->model1()->where('user_id', $user_id)->where('bar_id', $bar_id)
+        $bar_log = $this->model1()
+            ->where('user_id', $user_id)
+            ->where('bar_id', $bar_id)
             ->where('button_click', 0)
             ->where(function ($q) use ($fp_id, $unique_ref) {
                 $q->where('cookie', $fp_id)->orWhere('unique_ref', $unique_ref);
@@ -96,6 +109,10 @@ class BarsRepository extends Repository
         
         if ($split_id != '' && $split_id != 0) {
             $bar_log = $bar_log->where('split_bar_id', $split_id);
+        }
+    
+        if ($multi_bar_id != '' && $multi_bar_id != 0) {
+            $bar_log = $bar_log->where('multi_bar_id', $multi_bar_id);
         }
         
         $bar_log = $bar_log->first();
@@ -117,11 +134,14 @@ class BarsRepository extends Repository
      * @param $fp_id
      * @param $unique_ref
      * @param $split_id
+     * @param $multi_bar_id
      * @return bool
      */
-    public function setLeadCaptureClickLog($bar_id, $user_id, $fp_id, $unique_ref, $split_id = 0)
+    public function setLeadCaptureClickLog($bar_id, $user_id, $fp_id, $unique_ref, $split_id = 0, $multi_bar_id = 0)
     {
-        $bar_log = $this->model1()->where('user_id', $user_id)->where('bar_id', $bar_id)
+        $bar_log = $this->model1()
+            ->where('user_id', $user_id)
+            ->where('bar_id', $bar_id)
             ->where('lead_capture', 0)
             ->where(function ($q) use ($fp_id, $unique_ref) {
                 $q->where('cookie', $fp_id)->orWhere('unique_ref', $unique_ref);
@@ -129,6 +149,10 @@ class BarsRepository extends Repository
         
         if ($split_id != '' && $split_id != 0) {
             $bar_log = $bar_log->where('split_bar_id', $split_id);
+        }
+    
+        if ($multi_bar_id != '' && $multi_bar_id != 0) {
+            $bar_log = $bar_log->where('multi_bar_id', $multi_bar_id);
         }
         
         $bar_log = $bar_log->first();
@@ -148,9 +172,10 @@ class BarsRepository extends Repository
      * @param $period
      * @param int $bar_id
      * @param int $split_id
+     * @param int $multi_bar_id
      * @return array
      */
-    public function getLogsChartsData($period, $bar_id = 0, $split_id = 0)
+    public function getLogsChartsData($period, $bar_id = 0, $split_id = 0, $multi_bar_id = 0)
     {
         $current_date = date('d-m-Y');
         
@@ -174,6 +199,9 @@ class BarsRepository extends Repository
             if ($split_id != 0) {
                 $total_visitors = $total_visitors->where('split_bar_id', $split_id);
             }
+            if ($multi_bar_id != 0) {
+                $total_visitors = $total_visitors->where('multi_bar_id', $multi_bar_id);
+            }
             $total_visitors = $total_visitors->groupBy(DB::raw('hour(created_at)'))->orderBy(DB::raw('hour(created_at)'))->get();
             
             $unique_visitors = $this->model1()
@@ -187,6 +215,9 @@ class BarsRepository extends Repository
             }
             if ($split_id != 0) {
                 $unique_visitors = $unique_visitors->where('split_bar_id', $split_id);
+            }
+            if ($multi_bar_id != 0) {
+                $unique_visitors = $unique_visitors->where('multi_bar_id', $multi_bar_id);
             }
             $unique_visitors = $unique_visitors->groupBy(DB::raw('hour(created_at)'))->orderBy(DB::raw('hour(created_at)'))->get();
             
@@ -202,6 +233,9 @@ class BarsRepository extends Repository
             if ($split_id != 0) {
                 $button_clicks = $button_clicks->where('split_bar_id', $split_id);
             }
+            if ($multi_bar_id != 0) {
+                $button_clicks = $button_clicks->where('multi_bar_id', $multi_bar_id);
+            }
             $button_clicks = $button_clicks->groupBy(DB::raw('hour(created_at)'))->orderBy(DB::raw('hour(created_at)'))->get();
             
             $lead_captures = $this->model1()
@@ -215,6 +249,9 @@ class BarsRepository extends Repository
             }
             if ($split_id != 0) {
                 $lead_captures = $lead_captures->where('split_bar_id', $split_id);
+            }
+            if ($multi_bar_id != 0) {
+                $lead_captures = $lead_captures->where('multi_bar_id', $multi_bar_id);
             }
             $lead_captures = $lead_captures->groupBy(DB::raw('hour(created_at)'))->orderBy(DB::raw('hour(created_at)'))->get();
             
@@ -260,6 +297,9 @@ class BarsRepository extends Repository
             }
             if ($split_id != 0) {
                 $log_data = $log_data->where('split_bar_id', $split_id);
+            }
+            if ($multi_bar_id != 0) {
+                $log_data = $log_data->where('multi_bar_id', $multi_bar_id);
             }
             
             $log_data = $log_data->orderBy('created_at')->get();

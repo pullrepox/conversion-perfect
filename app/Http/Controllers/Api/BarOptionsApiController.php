@@ -79,7 +79,7 @@ class BarOptionsApiController extends Controller
     public function setSubscribersOfLists($bar_id, Request $request)
     {
         $bar = $this->barsRepo->model()->find($bar_id);
-    
+        
         $set_log = 'success';
         if ($bar && !is_null($bar)) {
             $subscriber_name = $request->input('lead_capture_cta_name__cp_bar_' . $bar->id);
@@ -120,10 +120,12 @@ class BarOptionsApiController extends Controller
             $unique_id = md5($requestData);
             
             $split_bar_id = $request->has('split_bar_id') ? $request->input('split_bar_id') : 0;
+            $multi_bar_id = $request->has('multi_bar_id') ? $request->input('multi_bar_id') : 0;
             
-            $set_log = $this->barsRepo->setLeadCaptureClickLog($bar->id, $bar->user_id, $fp_id, $unique_id, $split_bar_id);
+            $set_log = $this->barsRepo->setLeadCaptureClickLog($bar->id, $bar->user_id, $fp_id, $unique_id, $split_bar_id, $multi_bar_id);
             if (!$set_log) {
-                $unique_check = $this->barsRepo->checkUniqueLog($bar->id, $bar->user_id, $fp_id, $unique_id, $split_bar_id);
+                $bar_id_p = ($multi_bar_id == 0) ? $bar->id : 0;
+                $unique_check = $this->barsRepo->checkUniqueLog($bar_id_p, $bar->user_id, $fp_id, $unique_id, $split_bar_id, $multi_bar_id);
                 $browser = Agent::browser();
                 $platform = Agent::platform();
                 $device = Agent::device();
@@ -132,6 +134,8 @@ class BarOptionsApiController extends Controller
                 $ins_log_data = [
                     'user_id'          => $bar->user_id,
                     'bar_id'           => $bar->id,
+                    'split_bar_id'     => $split_bar_id,
+                    'multi_bar_id'     => $multi_bar_id,
                     'reset_stats'      => 0,
                     'cookie'           => $fp_id,
                     'unique_ref'       => $unique_id,
