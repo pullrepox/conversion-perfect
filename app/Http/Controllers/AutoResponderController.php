@@ -11,7 +11,7 @@ class AutoResponderController extends Controller
     public function index()
     {
         $header_data = [
-            'main_name'   => 'Autoresponders',
+            'main_name'   => 'Integrations',
             'parent_data' => []
         ];
         
@@ -25,7 +25,7 @@ class AutoResponderController extends Controller
     public function create(Request $request)
     {
         $header_data = [
-            'main_name'   => ' New Autoresponder',
+            'main_name'   => ' New Integration',
             'parent_data' => []
         ];
         
@@ -245,15 +245,8 @@ class AutoResponderController extends Controller
     {
         $integration = Integration::findOrFail($id);
         $header_data = [
-            'main_name'   => 'Edit Autoresponder',
-            'parent_data' => [
-                ['parent_name' => 'Overlay', 'parent_url' => ''],
-                ['parent_name' => 'Bars', 'parent_url' => secure_redirect(route('autoresponder.index'))],
-            ],
-            'button_show' => true,
-            'button_data' => [
-                ['button_url' => '', 'button_text' => '']
-            ]
+            'main_name'   => 'Edit Integration',
+            'parent_data' => []
         ];
         
         $flag = false;

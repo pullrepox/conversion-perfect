@@ -78,7 +78,7 @@
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item {{ isActiveRoute(['autoresponder.index', 'autoresponder.create', 'autoresponder.edit']) }}">
                                     <a href="{{route('autoresponder.index')}}"
-                                       class="nav-link text-capitalize {{ isActiveRoute(['autoresponder.index', 'autoresponder.create', 'autoresponder.edit']) }}">Autoresponders</a>
+                                       class="nav-link text-capitalize {{ isActiveRoute(['autoresponder.index', 'autoresponder.create', 'autoresponder.edit']) }}">Integrations</a>
                                 </li>
                                 <li class="nav-item {{ isActiveResource(['email-lists']) }}">
                                     <a href="{{ secure_redirect(route('email-lists')) }}" class="nav-link text-capitalize {{ isActiveResource(['email-lists']) }}">Email Lists</a>

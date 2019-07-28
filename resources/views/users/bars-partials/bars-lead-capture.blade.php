@@ -4,7 +4,7 @@
         <div class="form-row">
             <div class="col-md-4">
                 <div class="form-group">
-                    <label class="form-control-label ml-1" for="integration_type">Autoresponder Service</label>
+                    <label class="form-control-label ml-1" for="integration_type">Integration Service</label>
                     <select class="form-control" data-toggle="select" id="integration_type" name="integration_type"
                             @keydown="tabKeyPress('#list', true, $event)" @keypress="tabKeyPress('#list', true, $event)"
                             v-model="model.lead_capture.integration_type" data-parent="lead_capture">

@@ -1,5 +1,5 @@
 @extends('layouts.base')
-@section('title', 'Autoresponder Edit - ' . config('app.name'))
+@section('title', 'Integration Edit - ' . config('app.name'))
 @section('content')
     <div class="main-content" id="autoresponder-edit-page">
         @include('layouts.page-header', ['data' => $header_data])
@@ -13,7 +13,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="form-row">
-                            <h3 class="mb-0 col">{{ $flag ? 'New' : 'Edit' }} Autoresponder</h3>
+                            <h3 class="mb-0 col">{{ $flag ? 'New' : 'Edit' }} Integration</h3>
                             <div class="col text-right">
                                 <button type="submit" class="btn btn-success btn-sm text-capitalize">{{ $flag ? 'Create' : 'Update' }}</button>
                                 <a href="{{ secure_redirect(route('autoresponder.index')) }}" class="btn btn-light btn-sm text-capitalize">Cancel</a>

@@ -18,9 +18,7 @@ class GroupsController extends Controller
     {
         $header_data = [
             'main_name'   => 'Groups',
-            'parent_data' => [
-                ['parent_name' => 'Settings', 'parent_url' => ''],
-            ]
+            'parent_data' => []
         ];
         
         $groups = Group::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->paginate(10);
@@ -37,10 +35,7 @@ class GroupsController extends Controller
     {
         $header_data = [
             'main_name'   => 'New Group',
-            'parent_data' => [
-                ['parent_name' => 'Settings', 'parent_url' => ''],
-                ['parent_name' => 'Groups', 'parent_url' => secure_redirect(route('groups'))],
-            ]
+            'parent_data' => []
         ];
         
         $flag = true;
@@ -152,10 +147,7 @@ class GroupsController extends Controller
     {
         $header_data = [
             'main_name'   => 'Edit Group',
-            'parent_data' => [
-                ['parent_name' => 'Settings', 'parent_url' => ''],
-                ['parent_name' => 'Groups', 'parent_url' => secure_redirect(route('groups'))],
-            ]
+            'parent_data' => []
         ];
         
         $flag = false;

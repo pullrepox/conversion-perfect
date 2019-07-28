@@ -45,9 +45,7 @@ class DashboardController extends Controller
     {
         $header_data = [
             'main_name'   => 'Training',
-            'parent_data' => [
-                ['parent_name' => 'Support', 'parent_url' => '']
-            ]
+            'parent_data' => []
         ];
         
         $trainings = Training::orderBy('sort_order')->get();

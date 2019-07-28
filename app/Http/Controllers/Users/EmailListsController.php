@@ -18,9 +18,7 @@ class EmailListsController extends Controller
     {
         $header_data = [
             'main_name'   => 'Email Lists',
-            'parent_data' => [
-                ['parent_name' => 'Settings', 'parent_url' => ''],
-            ]
+            'parent_data' => []
         ];
         
         $email_lists = EmailList::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->paginate(10);
@@ -37,10 +35,7 @@ class EmailListsController extends Controller
     {
         $header_data = [
             'main_name'   => 'New Email List',
-            'parent_data' => [
-                ['parent_name' => 'Settings', 'parent_url' => ''],
-                ['parent_name' => 'Email Lists', 'parent_url' => secure_redirect(route('email-lists'))],
-            ]
+            'parent_data' => []
         ];
         
         $flag = true;
@@ -96,10 +91,7 @@ class EmailListsController extends Controller
     {
         $header_data = [
             'main_name'   => 'Edit Email List',
-            'parent_data' => [
-                ['parent_name' => 'Settings', 'parent_url' => ''],
-                ['parent_name' => 'Email Lists', 'parent_url' => secure_redirect(route('email-lists'))],
-            ]
+            'parent_data' => []
         ];
         
         $flag = false;

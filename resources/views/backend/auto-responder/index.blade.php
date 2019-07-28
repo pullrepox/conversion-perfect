@@ -1,5 +1,5 @@
 @extends('layouts.base')
-@section('title', 'Autoresponder - ' . config('app.name'))
+@section('title', 'Integration - ' . config('app.name'))
 @section('content')
     <div class="main-content" id="auto-responder-list-panel">
         @include('layouts.page-header', ['data' => $header_data])
@@ -12,9 +12,9 @@
                         <!-- Card header -->
                         <div class="card-header border-0">
                             <div class="row">
-                                <h3 class="mb-0 col">Autoresponders</h3>
+                                <h3 class="mb-0 col">Integrations</h3>
                                 <div class="col text-right">
-                                    <a href="{{ secure_redirect(route('autoresponder.create')) }}" class="btn btn-success btn-sm text-capitalize">New Autoresponder</a>
+                                    <a href="{{ secure_redirect(route('autoresponder.create')) }}" class="btn btn-success btn-sm text-capitalize">New Integration</a>
                                 </div>
                             </div>
                         </div>
@@ -56,7 +56,7 @@
                                 @else
                                     <tr>
                                         <td colspan="4" class="text-center">
-                                            You have no Autoresponders. Please add an Autoresponder by clicking the [New Autoresponder] button
+                                            You have no Integrations. Please add an Integration by clicking the [New Integration] button
                                         </td>
                                     </tr>
                                 @endif
@@ -70,14 +70,14 @@
                 <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h6 class="modal-title" id="modal-title-default">Delete Autoresponder</h6>
+                            <h6 class="modal-title" id="modal-title-default">Delete Integration</h6>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
                         <div class="modal-body text-center">
                             <h1>Are you sure?</h1>
-                            <p>Once deleted, you won't be able to revert this Autoresponder.</p>
+                            <p>Once deleted, you won't be able to revert this Integration.</p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-light ml-auto" data-dismiss="modal">Cancel</button>
