@@ -82,11 +82,17 @@ class BarOptionsApiController extends Controller
         
         $set_log = 'success';
         if ($bar && !is_null($bar)) {
+            $ip = $request->getClientIp();
+            $fp_id = $request->input('cookie');
+            $requestData = sprintf('lang:%s,ua:%s,ip:%s,accept:%s,ref:%s,encode:%s',
+                implode(',', $request->getLanguages()), $request->header('user-agent'), $ip,
+                $request->header('accept'), $request->header('referer'), implode(',', $request->getEncodings()));
+            $unique_id = md5($requestData);
+            
             $subscriber_name = $request->input('lead_capture_cta_name__cp_bar_' . $bar->id);
             $subscriber_email = $request->input('lead_capture_cta_email__cp_bar_' . $bar->id);
-            $ip = $request->getClientIp();
             $list_id = $bar->list;
-            
+
             if ($bar->integration_type == 'conversion_perfect') {
                 $subscriber = new Subscriber();
                 $subscriber->list_id = $list_id;
@@ -112,12 +118,6 @@ class BarOptionsApiController extends Controller
                     $this->apiRepo->setSendInBlueSubscribers($integration, $subscriber_name, $subscriber_email, $list_id);
                 }
             }
-            
-            $fp_id = $request->input('cookie');
-            $requestData = sprintf('lang:%s,ua:%s,ip:%s,accept:%s,ref:%s,encode:%s',
-                implode(',', $request->getLanguages()), $request->header('user-agent'), $ip,
-                $request->header('accept'), $request->header('referer'), implode(',', $request->getEncodings()));
-            $unique_id = md5($requestData);
             
             $split_bar_id = $request->has('split_bar_id') ? $request->input('split_bar_id') : 0;
             $multi_bar_id = $request->has('multi_bar_id') ? $request->input('multi_bar_id') : 0;

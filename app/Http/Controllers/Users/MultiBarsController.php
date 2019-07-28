@@ -116,7 +116,7 @@ class MultiBarsController extends Controller
                 $log_data = $log_data->whereRaw('DATE(created_at) >= date_sub(now(), interval 30 DAY)');
             }
             
-            $log_data = $log_data->paginate(5);
+            $log_data = $log_data->orderBy('created_at', 'desc')->paginate(10);
             
             if ($request->input('period') == 'day') {
                 $total_visitor = $this->barsRepo->model1()->where('multi_bar_id', $multiBar->id)->whereRaw('YEAR(created_at) = "' . date('Y') . '"')
@@ -147,7 +147,6 @@ class MultiBarsController extends Controller
             ];
             
             $report_data = $this->barsRepo->getLogsChartsData($request->input('period'), 0, 0, $multiBar->id);
-            
             $report_data = json_encode($report_data);
             
             return view('users.multi-bars-statistics', compact('header_data', 'multiBar', 'log_data', 'searchParams', 'total_sum', 'report_data'));

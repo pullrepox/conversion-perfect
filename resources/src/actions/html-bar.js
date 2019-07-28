@@ -235,15 +235,24 @@
                 }
                 
                 if (__cp_cf[bar_id].bar.countdown_format === 'dd') {
-                    $('#cp-bar--countdown-days-' + bar_id).html((`0${days}`).slice(-2));
+                    if ($('#cp-bar--countdown-days-' + bar_id)) {
+                        $('#cp-bar--countdown-days-' + bar_id).html((`0${days}`).slice(-2));
+                    }
                 }
                 
                 if (__cp_cf[bar_id].bar.countdown_format !== 'mm') {
-                    $('#cp-bar--countdown-hours-' + bar_id).html((`0${hours}`).slice(-2));
+                    if ($('#cp-bar--countdown-hours-' + bar_id)) {
+                        $('#cp-bar--countdown-hours-' + bar_id).html((`0${hours}`).slice(-2));
+                    }
                 }
-                
-                $('#cp-bar--countdown-minutes-' + bar_id).html((`0${minutes}`).slice(-2));
-                $('#cp-bar--countdown-seconds-' + bar_id).html((`0${seconds}`).slice(-2));
+    
+                if ($('#cp-bar--countdown-minutes-' + bar_id)) {
+                    $('#cp-bar--countdown-minutes-' + bar_id).html((`0${minutes}`).slice(-2));
+                }
+    
+                if ($('#cp-bar--countdown-seconds-' + bar_id)) {
+                    $('#cp-bar--countdown-seconds-' + bar_id).html((`0${seconds}`).slice(-2));
+                }
                 
                 if (distance < 0) {
                     clearInterval(x);

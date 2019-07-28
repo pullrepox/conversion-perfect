@@ -236,6 +236,7 @@ class BarsRepository extends Repository
             if ($multi_bar_id != 0) {
                 $button_clicks = $button_clicks->where('multi_bar_id', $multi_bar_id);
             }
+            
             $button_clicks = $button_clicks->groupBy(DB::raw('hour(created_at)'))->orderBy(DB::raw('hour(created_at)'))->get();
             
             $lead_captures = $this->model1()
@@ -253,6 +254,7 @@ class BarsRepository extends Repository
             if ($multi_bar_id != 0) {
                 $lead_captures = $lead_captures->where('multi_bar_id', $multi_bar_id);
             }
+            
             $lead_captures = $lead_captures->groupBy(DB::raw('hour(created_at)'))->orderBy(DB::raw('hour(created_at)'))->get();
             
             if ($total_visitors && !is_null($total_visitors)) {
@@ -292,12 +294,15 @@ class BarsRepository extends Repository
                 ->where('user_id', auth()->user()->id)
                 ->whereRaw('DATE(created_at) >= date_sub(now(), ' . $QueryInterval . ')')
                 ->where('reset_stats', '0');
+            
             if ($bar_id != 0) {
                 $log_data = $log_data->where('bar_id', $bar_id);
             }
+            
             if ($split_id != 0) {
                 $log_data = $log_data->where('split_bar_id', $split_id);
             }
+            
             if ($multi_bar_id != 0) {
                 $log_data = $log_data->where('multi_bar_id', $multi_bar_id);
             }

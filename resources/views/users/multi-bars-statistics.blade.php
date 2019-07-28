@@ -11,7 +11,7 @@
                     <div class="row">
                         <h3 class="mb-0 col">{{ $header_data['main_name'] }}</h3>
                         <div class="col text-right">
-                            <a href="{{ secure_redirect(route('split-tests')) }}" class="btn btn-light btn-sm text-capitalize">
+                            <a href="{{ secure_redirect(route('multi-bars')) }}" class="btn btn-light btn-sm text-capitalize">
                                 Back
                             </a>
                         </div>

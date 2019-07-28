@@ -116,6 +116,7 @@ class OverlaysController extends Controller
     public function setActionButtonClick($id, Request $request)
     {
         $bar = $this->barRepo->model()->find($id);
+        
         $set_log = 'success';
         if ($bar && !is_null($bar)) {
             $ip = $request->getClientIp();

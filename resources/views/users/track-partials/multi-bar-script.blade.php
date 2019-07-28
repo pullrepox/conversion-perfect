@@ -115,48 +115,56 @@
         var bar_id = "{{ $bar->id }}";
         var multi_bar_id = "{{ $multiBar->id }}";
         var set_load_action = "{{ secure_redirect(route("conversion.set-load-main-bar")) }}";
+        var multi_bars = {!! json_encode($bars) !!};
+        var next_bar = 0;
+        var next_limit = multi_bars.length - 1;
         
         function showHideMainBar(flag) {
-            if (__cp_cf[bar_id].bar.position !== "bottom") {
-                document.querySelector("#main-preview--cp-bar-" + bar_id).style.top = (flag ? "-450px" : 0);
-            } else {
-                document.querySelector("#main-preview--cp-bar-" + bar_id).style.bottom = (flag ? "-450px" : 0);
-            }
-            
-            if (flag) {
-                window.localStorage.setItem("closed-cp-bar-" + bar_id, "closed");
-            } else {
-                var xml_http;
-                if (window.XMLHttpRequest) {
-                    xml_http = new XMLHttpRequest();
+            if (document.querySelector("#main-preview--cp-bar-" + bar_id)) {
+                if (__cp_cf[bar_id].bar.position !== "bottom") {
+                    document.querySelector("#main-preview--cp-bar-" + bar_id).style.top = (flag ? "-450px" : 0);
                 } else {
-                    xml_http = new ActiveXObject("Microsoft.XMLHTTP");
+                    document.querySelector("#main-preview--cp-bar-" + bar_id).style.bottom = (flag ? "-450px" : 0);
                 }
-                xml_http.open("POST", set_load_action);
-                xml_http.setRequestHeader("Content-type", "application/json");
-                xml_http.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                xml_http.send(JSON.stringify({
-                    cookie: (checkCookie("CVP--fp-id") ? getCookie("CVP--fp-id") : getFingerPrint()),
-                    bar_id: bar_id,
-                    multi_bar_id: multi_bar_id
-                }));
+                
+                document.querySelector("#main-preview--cp-bar-" + bar_id).style.display = (flag ? "none" : "block");
+                
+                if (flag) {
+                    window.localStorage.setItem("closed-cp-bar-" + bar_id, "closed");
+                } else {
+                    var xml_http;
+                    if (window.XMLHttpRequest) {
+                        xml_http = new XMLHttpRequest();
+                    } else {
+                        xml_http = new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+                    xml_http.open("POST", set_load_action);
+                    xml_http.setRequestHeader("Content-type", "application/json");
+                    xml_http.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+                    xml_http.send(JSON.stringify({
+                        cookie: (checkCookie("CVP--fp-id") ? getCookie("CVP--fp-id") : getFingerPrint()),
+                        bar_id: bar_id,
+                        multi_bar_id: multi_bar_id
+                    }));
+                }
             }
         }
         
         function showHideCtaBar(flag) {
-            if (!flag) {
-                document.querySelector("#cta-preview--cp-bar-" + bar_id).style.display = "block";
-            }
-            
-            if (__cp_cf[bar_id].bar.position !== "bottom") {
-                document.querySelector("#cta-preview--cp-bar-" + bar_id).style.top = (flag ? "-450px" : 0);
-            } else {
-                document.querySelector("#cta-preview--cp-bar-" + bar_id).style.bottom = (flag ? "-450px" : 0);
-            }
-            
-            if (flag) {
-                document.querySelector("#cta-preview--cp-bar-" + bar_id).style.display = "none";
-                window.localStorage.setItem("closed-cta-cp-bar-" + bar_id, "closed");
+            if (document.querySelector("#cta-preview--cp-bar-" + bar_id)) {
+                if (!flag) {
+                    document.querySelector("#cta-preview--cp-bar-" + bar_id).style.display = "block";
+                }
+                
+                if (__cp_cf[bar_id].bar.position !== "bottom") {
+                    document.querySelector("#cta-preview--cp-bar-" + bar_id).style.top = (flag ? "-450px" : 0);
+                } else {
+                    document.querySelector("#cta-preview--cp-bar-" + bar_id).style.bottom = (flag ? "-450px" : 0);
+                }
+                if (flag) {
+                    document.querySelector("#cta-preview--cp-bar-" + bar_id).style.display = "none";
+                    window.localStorage.setItem("closed-cta-cp-bar-" + bar_id, "closed");
+                }
             }
         }
         
@@ -320,27 +328,41 @@
                     }
                     
                     if (__cp_cf[bar_id].bar.countdown_format === "dd") {
-                        document.getElementById("cp-bar--countdown-days-" + bar_id).innerHTML = ("0" + days).slice(-2);
+                        if (document.getElementById("cp-bar--countdown-days-" + bar_id)) {
+                            document.getElementById("cp-bar--countdown-days-" + bar_id).innerHTML = ("0" + days).slice(-2);
+                        }
                     }
                     
                     if (__cp_cf[bar_id].bar.countdown_format !== "mm") {
-                        document.getElementById("cp-bar--countdown-hours-" + bar_id).innerHTML = ("0" + hours).slice(-2);
+                        if (document.getElementById("cp-bar--countdown-hours-" + bar_id)) {
+                            document.getElementById("cp-bar--countdown-hours-" + bar_id).innerHTML = ("0" + hours).slice(-2);
+                        }
                     }
                     
-                    document.getElementById("cp-bar--countdown-minutes-" + bar_id).innerHTML = ("0" + minutes).slice(-2);
-                    document.getElementById("cp-bar--countdown-seconds-" + bar_id).innerHTML = ("0" + seconds).slice(-2);
+                    if (document.getElementById("cp-bar--countdown-minutes-" + bar_id)) {
+                        document.getElementById("cp-bar--countdown-minutes-" + bar_id).innerHTML = ("0" + minutes).slice(-2);
+                    }
+                    
+                    if (document.getElementById("cp-bar--countdown-seconds-" + bar_id)) {
+                        document.getElementById("cp-bar--countdown-seconds-" + bar_id).innerHTML = ("0" + seconds).slice(-2);
+                    }
                     
                     if (distance < 0) {
                         clearInterval(x);
                         if (__cp_cf[bar_id].bar.countdown_on_expiry === "hide_bar") {
                             showHideMainBar(true);
                             showHideCtaBar(true);
+                            showNextBar();
                         } else if (__cp_cf[bar_id].bar.countdown_on_expiry === "redirect") {
+                            showNextBar();
                             location.href = __cp_cf[bar_id].bar.countdown_expiration_url;
                         } else if (__cp_cf[bar_id].bar.countdown_on_expiry === "display_text") {
-                            document.getElementById("cp-bar--cta-content-section-" + bar_id).innerHTML = "<div style=\"font-weight: bold;\">" + __cp_cf[bar_id].bar.countdown_expiration_text + "</div>";
+                            if (document.getElementById("cp-bar--cta-content-section-" + bar_id)) {
+                                document.getElementById("cp-bar--cta-content-section-" + bar_id).innerHTML = "<div style=\"font-weight: bold;\">" + __cp_cf[bar_id].bar.countdown_expiration_text + "</div>";
+                            }
                             setTimeout(function () {
                                 showHideCtaBar(true);
+                                showNextBar();
                             }, (__cp_cf[bar_id].bar.autohide_delay_seconds * 1000));
                         }
                     }
@@ -390,6 +412,7 @@
         
         window.onload = function () {
             loadEventHandle();
+            addEventsForActions();
         };
         
         function scrollDisplay() {
@@ -429,95 +452,129 @@
             }
         }
         
-        if (document.querySelector("#main--cp-bar-close-btn-" + bar_id)) {
-            document.querySelector("#main--cp-bar-close-btn-" + bar_id).addEventListener("click", function () {
-                showHideMainBar(true);
-            });
+        function showNextBar() {
+            if (next_bar > next_limit) {
+                return false;
+            }
+            
+            bar_id = multi_bars[next_bar].id;
+            
+            if (next_bar < next_limit) {
+                next_bar += 1;
+            }
+            
+            if (document.querySelector("#main-preview--cp-bar-" + bar_id)) {
+                document.querySelector("#main-preview--cp-bar-" + bar_id).style.display = "block";
+            }
+            if (document.querySelector("#cta-preview--cp-bar-" + bar_id)) {
+                document.querySelector("#cta-preview--cp-bar-" + bar_id).style.display = "block";
+            }
+            
+            loadEventHandle();
+            addEventsForActions();
         }
         
-        if (document.querySelector("#cta--cp-bar-close-btn-" + bar_id)) {
-            document.querySelector("#cta--cp-bar-close-btn-" + bar_id).addEventListener("click", function () {
-                showHideCtaBar(true);
-            });
-        }
-        
-        if (document.querySelector("#cp--bar-action-btn-" + bar_id)) {
-            document.querySelector("#cp--bar-action-btn-" + bar_id).addEventListener("click", function () {
-                var xml_http;
-                if (window.XMLHttpRequest) {
-                    xml_http = new XMLHttpRequest();
-                } else {
-                    xml_http = new ActiveXObject("Microsoft.XMLHTTP");
-                }
-                xml_http.onreadystatechange = function () {
-                    if (__cp_cf[bar_id].bar.button_action === "open_click_url") {
-                        window.open(__cp_cf[bar_id].bar.button_click_url, "Conversion Perfect", "_blank");
-                        showHideMainBar(true);
+        function addEventsForActions() {
+            if (document.querySelector("#main--cp-bar-close-btn-" + bar_id)) {
+                document.querySelector("#main--cp-bar-close-btn-" + bar_id).addEventListener("click", function () {
+                    showHideMainBar(true);
+                    showNextBar();
+                });
+            }
+            
+            if (document.querySelector("#cta--cp-bar-close-btn-" + bar_id)) {
+                document.querySelector("#cta--cp-bar-close-btn-" + bar_id).addEventListener("click", function () {
+                    showHideCtaBar(true);
+                    showNextBar();
+                });
+            }
+            
+            if (document.querySelector("#cp--bar-action-btn-" + bar_id)) {
+                document.querySelector("#cp--bar-action-btn-" + bar_id).addEventListener("click", function () {
+                    var xml_http;
+                    if (window.XMLHttpRequest) {
+                        xml_http = new XMLHttpRequest();
                     } else {
-                        setTimeout(function () {
+                        xml_http = new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+                    xml_http.onreadystatechange = function () {
+                        if (__cp_cf[bar_id].bar.button_action === "open_click_url") {
+                            window.open(__cp_cf[bar_id].bar.button_click_url, "Conversion Perfect", "_blank");
                             showHideMainBar(true);
-                        }, (__cp_cf[bar_id].bar.autohide_delay_seconds * 1000));
-                    }
-                    
-                    if (__cp_cf[bar_id].bar.integration_type !== "none") {
-                        showHideCtaBar((window.localStorage.getItem("closed-cta-cp-bar-" + bar_id) && window.localStorage.getItem("closed-cta-cp-bar-" + bar_id) === "closed"));
-                    }
-                };
-                xml_http.open("POST", __cp_cf[bar_id].act_btn_action);
-                xml_http.setRequestHeader("Content-type", "application/json");
-                xml_http.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                xml_http.send(JSON.stringify({
-                    cookie: (checkCookie("CVP--fp-id") ? getCookie("CVP--fp-id") : getFingerPrint()),
-                    multi_bar_id: multi_bar_id
-                }));
-            });
-        }
-        
-        if (document.querySelector("#cta--cp-bar-button-" + bar_id)) {
-            document.querySelector("#cta--cp-bar-button-" + bar_id).addEventListener("click", function () {
-                if (document.getElementById("lead_capture_cta_name__cp_bar_" + bar_id).value === ""
-                    || document.getElementById("lead_capture_cta_email__cp_bar_" + bar_id).value === "") {
-                    alert("Name and Email field is required.");
-                    document.getElementById("lead_capture_cta_name__cp_bar_" + bar_id).focus();
-                    return false;
-                }
-                
-                var form = document.getElementById("cp-bar--cta-form-" + bar_id);
-                var params = {};
-                for (var i = 0; i < form.elements.length; i++) {
-                    if (form.elements[i].nodeName === "INPUT") {
-                        params[form.elements[i].getAttribute("name")] = form.elements[i].value;
-                    }
-                }
-                params["cookie"] = checkCookie("CVP--fp-id") ? getCookie("CVP--fp-id") : getFingerPrint();
-                params["multi_bar_id"] = multi_bar_id;
-                
-                var xml_http;
-                if (window.XMLHttpRequest) {
-                    xml_http = new XMLHttpRequest();
-                } else {
-                    xml_http = new ActiveXObject("Microsoft.XMLHTTP");
-                }
-                
-                xml_http.onreadystatechange = function () {
-                    if (__cp_cf[bar_id].bar.after_submit === "show_message" || __cp_cf[bar_id].bar.after_submit === "show_message_hide_bar") {
-                        document.getElementById("cp-bar--cta-content-section-" + bar_id).innerHTML = "<div style=\"font-weight: bold;\">" + __cp_cf[bar_id].bar.message + "</div>";
-                        if (__cp_cf[bar_id].bar.after_submit === "show_message_hide_bar") {
+                        } else {
                             setTimeout(function () {
-                                showHideCtaBar(true);
+                                showHideMainBar(true);
                             }, (__cp_cf[bar_id].bar.autohide_delay_seconds * 1000));
                         }
-                    } else {
-                        showHideCtaBar(true);
-                        location.href = __cp_cf[bar_id].bar.redirect_url;
+                        
+                        if (__cp_cf[bar_id].bar.integration_type !== "none") {
+                            showHideCtaBar((window.localStorage.getItem("closed-cta-cp-bar-" + bar_id) && window.localStorage.getItem("closed-cta-cp-bar-" + bar_id) === "closed"));
+                        } else {
+                            showNextBar();
+                        }
+                    };
+                    xml_http.open("POST", __cp_cf[bar_id].act_btn_action);
+                    xml_http.setRequestHeader("Content-type", "application/json");
+                    xml_http.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+                    xml_http.send(JSON.stringify({
+                        cookie: (checkCookie("CVP--fp-id") ? getCookie("CVP--fp-id") : getFingerPrint()),
+                        multi_bar_id: multi_bar_id
+                    }));
+                });
+            }
+            
+            if (document.querySelector("#cta--cp-bar-button-" + bar_id)) {
+                document.querySelector("#cta--cp-bar-button-" + bar_id).addEventListener("click", function () {
+                    if (document.getElementById("lead_capture_cta_name__cp_bar_" + bar_id).value === ""
+                        || document.getElementById("lead_capture_cta_email__cp_bar_" + bar_id).value === "") {
+                        alert("Name and Email field is required.");
+                        document.getElementById("lead_capture_cta_name__cp_bar_" + bar_id).focus();
+                        return false;
                     }
-                };
-                
-                xml_http.open("POST", form.getAttribute("action"));
-                xml_http.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                xml_http.setRequestHeader("Content-type", "application/json");
-                xml_http.send(JSON.stringify(params));
-            });
+                    
+                    var form = document.getElementById("cp-bar--cta-form-" + bar_id);
+                    var params = {};
+                    for (var i = 0; i < form.elements.length; i++) {
+                        if (form.elements[i].nodeName === "INPUT") {
+                            params[form.elements[i].getAttribute("name")] = form.elements[i].value;
+                        }
+                    }
+                    params["cookie"] = checkCookie("CVP--fp-id") ? getCookie("CVP--fp-id") : getFingerPrint();
+                    params["multi_bar_id"] = multi_bar_id;
+                    
+                    var xml_http;
+                    if (window.XMLHttpRequest) {
+                        xml_http = new XMLHttpRequest();
+                    } else {
+                        xml_http = new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+                    
+                    xml_http.onreadystatechange = function () {
+                        if (__cp_cf[bar_id].bar.after_submit === "show_message" || __cp_cf[bar_id].bar.after_submit === "show_message_hide_bar") {
+                            if (document.getElementById("cp-bar--cta-content-section-" + bar_id)) {
+                                document.getElementById("cp-bar--cta-content-section-" + bar_id).innerHTML = "<div style=\"font-weight: bold;\">" + __cp_cf[bar_id].bar.message + "</div>";
+                            }
+                            if (__cp_cf[bar_id].bar.after_submit === "show_message_hide_bar") {
+                                setTimeout(function () {
+                                    showHideCtaBar(true);
+                                    showNextBar();
+                                }, (__cp_cf[bar_id].bar.autohide_delay_seconds * 1000));
+                            } else {
+                                showNextBar();
+                            }
+                        } else {
+                            showHideCtaBar(true);
+                            showNextBar();
+                            location.href = __cp_cf[bar_id].bar.redirect_url;
+                        }
+                    };
+                    
+                    xml_http.open("POST", form.getAttribute("action"));
+                    xml_http.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+                    xml_http.setRequestHeader("Content-type", "application/json");
+                    xml_http.send(JSON.stringify(params));
+                });
+            }
         }
         
         function setCookie(cname, c_value, ex_days) {

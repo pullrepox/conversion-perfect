@@ -17,13 +17,13 @@ import List from 'list.js';
     });
     
     $('#multi_bar_nav').on('click', function () {
-        // if (permissions['multi-bar'] === 0 && upgrades['professional']['to_do']) {
-        //     let i_html = 'Sorry, your current plan does not include Multi-Bars. You need to upgrade to the ' + upgrades['professional']['description'] + ' plan to use Multi-Bars.';
-        //     $('#pro-plan-item-text').html(i_html);
-        //     $('#upgrade-pro-modal').modal('show');
-        // } else {
+        if (permissions['multi-bar'] === 0 && upgrades['professional']['to_do']) {
+            let i_html = 'Sorry, your current plan does not include Multi-Bars. You need to upgrade to the ' + upgrades['professional']['description'] + ' plan to use Multi-Bars.';
+            $('#pro-plan-item-text').html(i_html);
+            $('#upgrade-pro-modal').modal('show');
+        } else {
             location.href = $(this).data('href');
-        // }
+        }
     });
     
     $('#upgrade-pro-btn').on('click', function () {

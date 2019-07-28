@@ -350,7 +350,7 @@ class BarsController extends Controller
                 $log_data = $log_data->whereRaw('DATE(created_at) >= date_sub(now(), interval 30 DAY)');
             }
             
-            $log_data = $log_data->paginate(5);
+            $log_data = $log_data->orderBy('created_at', 'desc')->paginate(10);
             
             if ($request->input('period') == 'day') {
                 $total_visitor = $bar->logs()->whereRaw('YEAR(created_at) = "' . date('Y') . '"')
