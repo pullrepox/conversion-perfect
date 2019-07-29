@@ -739,6 +739,53 @@ class ApiRepository extends Repository
     
     public function getAWeberLists($integration)
     {
+        $reMsg = [[
+            'key'  => '',
+            'name' => '-- Choose List --'
+        ]];
+        
+        $AWeber = new \AWeberAPI(config('site.aweber_consumerKey'), config('site.aweber_consumerSecret'));
+        $AWeber->adapter->debug = false;
+        $account = $AWeber->getAccount($integration['api_key'], $integration['hash']);
+        if ($account->lists) {
+            $i = 1;
+            foreach ($account->lists as $offset => $list) {
+                $reMsg[$i]['key'] = $list->id;
+                $reMsg[$i]['name'] = $list->name;
+                $i++;
+            }
+        }
+        
+        return [
+            'result'  => 'success',
+            'message' => $reMsg
+        ];
+    }
     
+    public function setAWeberSubscribers($integration, $name, $email, $list_id)
+    {
+        $AWeber = new \AWeberAPI(config('site.aweber_consumerKey'), config('site.aweber_consumerSecret'));
+        $AWeber->adapter->debug = false;
+        try {
+            $account = $AWeber->getAccount($integration['api_key'], $integration['hash']);
+            $list_url = "/accounts/{$integration['url']}/lists/{$list_id}";
+            $list = $account->loadFromUrl($list_url);
+            
+            $params = [
+                'email' => $email,
+                'name'  => $name
+            ];
+            
+            $subscribers = $list->subscribers;
+            $new_subscriber = $subscribers->create($params);
+            
+            if (!$new_subscriber) {
+                echo "There seems to be a problem. You are either already subscribed or your email is incorrect";
+                exit;
+            }
+        } catch (\AWeberAPIException $exc) {
+            echo "There seems to be a problem. You are either already subscribed or your email is incorrect";
+            exit;
+        }
     }
 }

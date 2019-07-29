@@ -33,13 +33,10 @@
         };
     </script>
 </head>
-<body class="users-area g-sidenav-show g-sidenav-pinned">
-<div id="app">
+<body>
+<div id="app" class="justify-content-center align-items-center">
     @include('layouts.alerts')
 </div>
-<script type="text/javascript" src="{{ url(mix('js/manifest.js')) }}"></script>
-<script type="text/javascript" src="{{ url(mix('js/vendor.js')) }}"></script>
-<script type="text/javascript" src="{{ url(mix('js/users.js')) }}"></script>
 <script type="text/javascript">
     window.onload = function () {
         setTimeout(function () {

@@ -25,6 +25,7 @@
                 </div>
             </div>
         </div>
+        
         <div class="form-row" v-show="model.lead_capture.integration_type !== 'none'">
             <div class="col-md-4">
                 <div class="form-group">
@@ -65,6 +66,7 @@
                 </div>
             </div>
         </div>
+        
         @include('users.bars-partials.bars-opt-in')
     </div>
 </div>

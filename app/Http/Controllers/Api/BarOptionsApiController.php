@@ -63,6 +63,8 @@ class BarOptionsApiController extends Controller
                 $re = $this->apiRepo->getMailerLiteGroups($integration);
             } else if ($integration->responder->title == 'Send In Blue') {
                 $re = $this->apiRepo->getSendInBlueLists($integration);
+            } else if ($integration->responder->title == 'Aweber') {
+                $re = $this->apiRepo->getAWeberLists($integration);
             }
         }
         
@@ -116,6 +118,8 @@ class BarOptionsApiController extends Controller
                     $this->apiRepo->setMailerLiteSubscribers($integration, $subscriber_name, $subscriber_email, $list_id);
                 } else if ($integration->responder->title == 'Send In Blue') {
                     $this->apiRepo->setSendInBlueSubscribers($integration, $subscriber_name, $subscriber_email, $list_id);
+                } else if ($integration->responder->title == 'Aweber') {
+                    $this->apiRepo->setAWeberSubscribers($integration, $subscriber_name, $subscriber_email, $list_id);
                 }
             }
             
@@ -175,12 +179,11 @@ class BarOptionsApiController extends Controller
             if (!$request->has('oauth_token') || empty($request->get('oauth_token'))) {
                 $callbackUrl = secure_redirect(route('integration.aweber-connect', [
                     'name'   => $request->input('name'), 'responder_id' => $request->input('responder_id'),
-                    '_token' => $request->input('_token'), 'user_id' => $request->input('user_id')
+                    '_token' => $request->input('_token'), 'number_key' => $request->input('number_key')
                 ]));
                 
                 list($requestToken, $requestTokenSecret) = $AWeber->getRequestToken($callbackUrl);
                 
-                setcookie('AWeberRequestToken', $requestToken);
                 setcookie('AWeberRequestTokenSecret', $requestTokenSecret);
                 setcookie('callbackUrl', $callbackUrl);
                 
@@ -207,7 +210,7 @@ class BarOptionsApiController extends Controller
         if ($account->id) {
             $active = true;
             $ins_data = [
-                'user_id'      => $request->input('user_id'),
+                'user_id'      => $request->input('number_key'),
                 'name'         => $request->input('name'),
                 'responder_id' => $request->input('responder_id'),
                 'api_key'      => $accessToken,
@@ -218,10 +221,19 @@ class BarOptionsApiController extends Controller
             ];
             
             Integration::insertGetId($ins_data);
+            
+            setcookie('AWeberRequestTokenSecret', '', 1);
+            setcookie('callbackUrl', '', 1);
+            setcookie('AWeberAccessToken', '', 1);
+            setcookie('AWeberAccessTokenSecret', '', 1);
+            unset($_COOKIE['AWeberRequestTokenSecret']);
+            unset($_COOKIE['callbackUrl']);
+            unset($_COOKIE['AWeberAccessToken']);
+            unset($_COOKIE['AWeberAccessTokenSecret']);
         }
         
         if ($active) {
-            session()->flash('success', 'Successfully saved your Aweber account');
+            session()->flash('success', 'Authorization Successful');
         } else {
             session()->flash('success', 'Authorization Failed');
         }

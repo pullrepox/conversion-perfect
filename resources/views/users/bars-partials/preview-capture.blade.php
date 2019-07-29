@@ -91,7 +91,6 @@
                 </div>
             </div>
         </div>
-        
         <div
             v-if="(model.content.button_type !== 'none' && model.content.button_location === 'right') || (model.timer.countdown !== 'none' && model.timer.countdown_location === 'right')"
             style="display: inline-block; width:auto; margin-left: 20px;padding: 10px 0;text-align: center;">

@@ -223,7 +223,7 @@
             }
             
             var url = '{{ secure_redirect(route('integration.aweber-connect')) }}' + '?name=' + $('#name').val() + '&responder_id=' + $('#responder_id').val();
-            url += '&_token=' + '{{ csrf_token() }}&user_id=' + '{{ auth()->user()->id }}';
+            url += '&_token=' + '{{ csrf_token() }}&number_key=' + '{{ auth()->user()->id }}';
             window.open(url, 'Aweber Authentication', 'width=700,height=700');
         });
     </script>
