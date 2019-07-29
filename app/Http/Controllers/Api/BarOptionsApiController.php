@@ -92,7 +92,7 @@ class BarOptionsApiController extends Controller
             $subscriber_name = $request->input('lead_capture_cta_name__cp_bar_' . $bar->id);
             $subscriber_email = $request->input('lead_capture_cta_email__cp_bar_' . $bar->id);
             $list_id = $bar->list;
-
+            
             if ($bar->integration_type == 'conversion_perfect') {
                 $subscriber = new Subscriber();
                 $subscriber->list_id = $list_id;
@@ -165,5 +165,67 @@ class BarOptionsApiController extends Controller
         return response()->json([
             'status' => $set_log
         ]);
+    }
+    
+    public function connectAweber(Request $request)
+    {
+        $active = false;
+        $AWeber = new \AWeberAPI(config('site.aweber_consumerKey'), config('site.aweber_consumerSecret'));
+        if (!isset($_COOKIE['AWeberAccessToken']) || empty($_COOKIE['AWeberAccessToken'])) {
+            if (!$request->has('oauth_token') || empty($request->get('oauth_token'))) {
+                $callbackUrl = secure_redirect(route('integration.aweber-connect', [
+                    'name'   => $request->input('name'), 'responder_id' => $request->input('responder_id'),
+                    '_token' => $request->input('_token'), 'user_id' => $request->input('user_id')
+                ]));
+                
+                list($requestToken, $requestTokenSecret) = $AWeber->getRequestToken($callbackUrl);
+                
+                setcookie('AWeberRequestToken', $requestToken);
+                setcookie('AWeberRequestTokenSecret', $requestTokenSecret);
+                setcookie('callbackUrl', $callbackUrl);
+                
+                return response()->redirectTo($AWeber->getAuthorizeUrl())->send();
+            }
+            
+            $AWeber->user->tokenSecret = $_COOKIE['AWeberRequestTokenSecret'];
+            $AWeber->user->requestToken = $request->get('oauth_token');
+            $AWeber->user->verifier = $request->get('oauth_verifier');
+            
+            list($aWeberAccessToken, $aWeberAccessTokenSecret) = $AWeber->getAccessToken();
+            
+            setcookie('AWeberAccessToken', $aWeberAccessToken);
+            setcookie('AWeberAccessTokenSecret', $aWeberAccessTokenSecret);
+            
+            return response()->redirectTo($_COOKIE['callbackUrl'])->send();
+        }
+        
+        $AWeber->adapter->debug = false;
+        $accessToken = $_COOKIE['AWeberAccessToken'];
+        $accessTokenSecret = $_COOKIE['AWeberAccessTokenSecret'];
+        $account = $AWeber->getAccount($accessToken, $accessTokenSecret);
+        
+        if ($account->id) {
+            $active = true;
+            $ins_data = [
+                'user_id'      => $request->input('user_id'),
+                'name'         => $request->input('name'),
+                'responder_id' => $request->input('responder_id'),
+                'api_key'      => $accessToken,
+                'hash'         => $accessTokenSecret,
+                'url'          => $account->id,
+                'created_at'   => now(),
+                'updated_at'   => now()
+            ];
+            
+            Integration::insertGetId($ins_data);
+        }
+        
+        if ($active) {
+            session()->flash('success', 'Successfully saved your Aweber account');
+        } else {
+            session()->flash('success', 'Authorization Failed');
+        }
+        
+        return view('backend.auto-responder.aweber-alert');
     }
 }

@@ -321,6 +321,16 @@
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
     }
+    
+    &#autoresponder-edit-page {
+        .responder-group {
+            display: none;
+        }
+        
+        #connect-button {
+            display: none;
+        }
+    }
 }
 
 body.prod-edit-page {

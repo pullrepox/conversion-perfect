@@ -7,15 +7,16 @@
         <div class="container-fluid mt--8">
             <form action="{{ $flag ? route('autoresponder.store') : route('autoresponder.update', $integration->id) }}"
                   method="POST" class="needs-validation" novalidate>
-                @if(!$flag) @method('PUT') @endif
                 @csrf
+                @if(!$flag) @method('PUT') @endif
                 {{-- bar Base Content --}}
                 <div class="card">
                     <div class="card-header">
                         <div class="form-row">
                             <h3 class="mb-0 col">{{ $flag ? 'New' : 'Edit' }} Integration</h3>
                             <div class="col text-right">
-                                <button type="submit" class="btn btn-success btn-sm text-capitalize">{{ $flag ? 'Create' : 'Update' }}</button>
+                                <button type="submit" class="btn btn-success btn-sm text-capitalize" id="edit-button">{{ $flag ? 'Create' : 'Update' }}</button>
+                                <button type="button" class="btn btn-success btn-sm text-capitalize" id="connect-button">Connect To Aweber</button>
                                 <a href="{{ secure_redirect(route('autoresponder.index')) }}" class="btn btn-light btn-sm text-capitalize">Cancel</a>
                             </div>
                         </div>
@@ -38,13 +39,13 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="col-md-4 responder-group" id="friendly-name" style="display: none">
+                            <div class="col-md-4 responder-group" id="friendly-name">
                                 <div class="form-group">
-                                    <label class="form-control-label ml-1" for="name" data-id="name">
+                                    <label class="form-control-label ml-1" for="name">
                                         Friendly Name
                                     </label>
                                     <input type="text" value="{{isset($integration) && $integration->name ? $integration->name: old('name')}}"
-                                           name="name" class="@error('name') is-invalid @enderror form-control required autocomplete=" friendly_name"/>
+                                           name="name" id="name" class="@error('name') is-invalid @enderror form-control" required autocomplete="name"/>
                                     @if ($errors->has('name'))
                                         @error('name')
                                         <span class="invalid-feedback" role="alert">
@@ -59,9 +60,9 @@
                                 </div>
                             </div>
                             
-                            <div class="col-md-4 responder-group" id="api-key" style="display: none">
+                            <div class="col-md-4 responder-group" id="api-key_div">
                                 <div class="form-group">
-                                    <label class="form-control-label ml-1" for="api_key" data-id="api_key">
+                                    <label class="form-control-label ml-1" for="api_key">
                                         API Key
                                     </label>
                                     <input type="text" value="{{isset($integration) && $integration->api_key ? $integration->api_key : old('api_key')}}"
@@ -80,9 +81,9 @@
                                 </div>
                             </div>
                             
-                            <div class="col-md-4 responder-group" id="hash" style="display:none;">
+                            <div class="col-md-4 responder-group" id="hash_div">
                                 <div class="form-group">
-                                    <label class="form-control-label ml-1" for="hash_key" data-id="hash_key" id="hash_label">
+                                    <label class="form-control-label ml-1" for="hash" id="hash_label">
                                         {{ !$flag && $integration->responder->title == 'Campaign Monitor' ? 'Client ID' : 'Hash Key' }}
                                     </label>
                                     <input type="text" value="{{isset($integration) && $integration->hash ? $integration->hash : old('hash')}}"
@@ -101,9 +102,9 @@
                                 </div>
                             </div>
                             
-                            <div class="col-md-4 responder-group" id="url" style="display:none;">
+                            <div class="col-md-4 responder-group" id="url_div">
                                 <div class="form-group">
-                                    <label class="form-control-label ml-1" for="hash_key" data-id="hash_key">
+                                    <label class="form-control-label ml-1" for="url">
                                         URL
                                     </label>
                                     <input type="text" value="{{isset($integration) && $integration->url ? $integration->url : old('url')}}"
@@ -122,11 +123,9 @@
                                 </div>
                             </div>
                         </div>
-                    
                     </div>
                 </div>
             </form>
-            
             @include('layouts.footer')
         </div>
     </div>
@@ -135,28 +134,28 @@
 @section('scripts')
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
-    <script>
+    <script type="text/javascript">
         $('#responder_id').select2({});
         const capitalize = (s) => {
             if (typeof s !== 'string') return '';
             return s.charAt(0).toUpperCase() + s.slice(1)
-        }
-    
+        };
+        var create_edit = '{!! $flag !!}';
     </script>
     {{--edit--}}
     @if(!$flag)
-        <script>
+        <script type="text/javascript">
             $(function () {
-                var responder_id =  {!! json_encode($integration->responder->id) !!};
-                var responder =  {!! json_encode($integration->responder) !!};
-                $('#responder_id').select2('val', responder_id.toString());
+                var responder_id = '{!! $integration->responder->id !!}';
+                var responder = JSON.parse('{!! json_encode($integration->responder) !!}');
+                $('#responder_id').select2('val', responder_id);
                 adjustChanges(capitalize(responder.title));
             })
         </script>
     @else
-        <script>
+        <script type="text/javascript">
             $(function () {
-                var data = {!! json_encode(old()) !!};
+                var data = JSON.parse('{!! json_encode(old()) !!}');
                 var responder = $("#responder_id  option[value=" + data.responder_id + "]").text();
                 if (responder !== '') {
                     $('#responder_id').select2('val', data.responder_id);
@@ -171,40 +170,61 @@
         </script>
     @endif
     
-    <script>
+    <script type="text/javascript">
         function adjustChanges(value) {
+            $('#edit-button').show();
+            $('#connect-button').hide();
             if (value === 'Sendlane') {
                 $('#friendly-name').show();
-                $('#api-key').show();
-                $('#hash').show();
+                $('#api-key_div').show();
+                $('#hash_div').show();
                 $('#hash_label').html('Hash Key');
             } else if (value === 'MailChimp') {
                 $('#friendly-name').show();
-                $('#api-key').show();
+                $('#api-key_div').show();
             } else if (value === 'ActiveCampaign') {
                 $('#friendly-name').show();
-                $('#url').show();
-                $('#api-key').show();
+                $('#url_div').show();
+                $('#api-key_div').show();
             } else if (value === 'Sendy') {
                 $('#friendly-name').show();
-                $('#url').show();
-                $('#api-key').show();
+                $('#url_div').show();
+                $('#api-key_div').show();
             } else if (value === 'MailerLite') {
                 $('#friendly-name').show();
-                $('#api-key').show();
+                $('#api-key_div').show();
             } else if (value === 'GetResponse') {
                 $('#friendly-name').show();
-                $('#api-key').show();
+                $('#api-key_div').show();
             } else if (value === 'Send In Blue') {
                 $('#friendly-name').show();
-                $('#api-key').show();
+                $('#api-key_div').show();
             } else if (value === 'Campaign Monitor') {
                 $('#friendly-name').show();
-                $('#api-key').show();
+                $('#api-key_div').show();
                 $('#hash_label').html('Client ID');
-                $('#hash').show();
+                $('#hash_div').show();
+            } else if (value === 'Aweber') {
+                $('#friendly-name').show();
+                if (create_edit === '1') {
+                    $('#edit-button').hide();
+                    $('#connect-button').show();
+                } else {
+                    $('#edit-button').show();
+                    $('#connect-button').hide();
+                }
             }
         }
-    </script>
 
+        $('#connect-button').on('click', function () {
+            if ($('#name').val() === '') {
+                window.commonNotify('top', 'right', 'fas fa-bug', 'danger', null, 'Please insert a friendly name', '', 'animated fadeInDown', 'animated fadeOutUp');
+                return false;
+            }
+            
+            var url = '{{ secure_redirect(route('integration.aweber-connect')) }}' + '?name=' + $('#name').val() + '&responder_id=' + $('#responder_id').val();
+            url += '&_token=' + '{{ csrf_token() }}&user_id=' + '{{ auth()->user()->id }}';
+            window.open(url, 'Aweber Authentication', 'width=700,height=700');
+        });
+    </script>
 @endsection

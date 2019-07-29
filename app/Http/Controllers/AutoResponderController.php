@@ -17,6 +17,7 @@ class AutoResponderController extends Controller
         
         $integrations = Integration::with('responder')
             ->where('user_id', auth()->user()->id)
+            ->orderBy('created_at', 'desc')
             ->get();
         
         return view('backend.auto-responder.index', compact('header_data', 'integrations'));
@@ -39,19 +40,19 @@ class AutoResponderController extends Controller
     public function validateCredentials($data)
     {
         $responder = Responder::findOrFail($data['responder_id']);
-        if ($responder->title === 'Sendlane') {
+        if ($responder->title == 'Sendlane') {
             return $this->sendLane($data, $responder);
-        } else if ($responder->title === 'MailChimp') {
+        } else if ($responder->title == 'MailChimp') {
             return $this->mailChimp($data, $responder);
-        } else if ($responder->title === 'ActiveCampaign') {
+        } else if ($responder->title == 'ActiveCampaign') {
             return $this->activeCampaign($data, $responder);
-        } else if ($responder->title === 'MailerLite') {
+        } else if ($responder->title == 'MailerLite') {
             return $this->mailerLite($data, $responder);
-        } else if ($responder->title === 'GetResponse') {
+        } else if ($responder->title == 'GetResponse') {
             return $this->getResponse($data, $responder);
-        } else if ($responder->title === 'Send In Blue') {
+        } else if ($responder->title == 'Send In Blue') {
             return $this->sendInBlue($data, $responder);
-        } else if ($responder->title === 'Campaign Monitor') {
+        } else if ($responder->title == 'Campaign Monitor') {
             return $this->campaignMonitor($data, $responder);
         }
     }
@@ -86,14 +87,20 @@ class AutoResponderController extends Controller
         }
     }
     
+    /**
+     * @param $data
+     * @param $responder
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function mailChimp($data, $responder)
     {
         $apikey = $data['api_key'];
         $client = new \GuzzleHttp\Client();
         try {
-            
             $response = $client->request('GET', $responder->base_url, [
-                'auth' => ['user', $apikey]
+                'auth'   => ['user', $apikey],
+                'verify' => false
             ]);
             $result = $response->getBody()->getContents();
             $user = json_decode($result);
@@ -110,7 +117,10 @@ class AutoResponderController extends Controller
             ];
         }
         
-        
+        return [
+            'type'    => 'error',
+            'message' => 'Invalid API key'
+        ];
     }
     
     public function activeCampaign($data, $responder)
@@ -138,7 +148,8 @@ class AutoResponderController extends Controller
             $response = $client->request('GET', $responder->base_url, [
                 'headers' => [
                     'X-MailerLite-ApiKey' => $data['api_key'],
-                ]
+                ],
+                'verify'  => false
             ]);
             return [
                 'type'    => 'success',
@@ -150,7 +161,6 @@ class AutoResponderController extends Controller
                 'message' => 'Unauthorized API-KEY'
             ];
         }
-        
     }
     
     public function getResponse($data, $responder)
@@ -160,7 +170,8 @@ class AutoResponderController extends Controller
             $response = $client->request('GET', $responder->base_url . 'accounts', [
                 'headers' => [
                     'X-Auth-Token' => 'api-key ' . $data['api_key']
-                ]
+                ],
+                'verify'  => false
             ]);
             return [
                 'type'    => 'success',
@@ -182,7 +193,8 @@ class AutoResponderController extends Controller
                 'headers' => [
                     'Content-Type' => 'application/json',
                     'api-key'      => $data['api_key']
-                ]
+                ],
+                'verify'  => false
             ]);
             
             return [
@@ -205,7 +217,8 @@ class AutoResponderController extends Controller
                 'headers' => [
                     'Content-Type'  => 'application/json',
                     'Authorization' => 'Basic ' . base64_encode($data['api_key'])
-                ]
+                ],
+                'verify'  => false
             ]);
             $result = json_decode($response->getBody()->getContents());
             if (isset($result) && isset($result[0])) {
@@ -221,21 +234,42 @@ class AutoResponderController extends Controller
                 'message' => 'Unauthorized API-KEY'
             ];
         }
+        
+        return [
+            'type'    => 'error',
+            'message' => 'Unauthorized API-KEY'
+        ];
     }
     
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
+     */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'name' => 'required'
+        ]);
+        
         $data = $request->all();
         $data['user_id'] = auth()->user()->id;
+        
+        $responder = Responder::findOrFail($request->input('responder_id'));
+        
         $validate = $this->validateCredentials($data);
+        
         if ($validate['type'] === 'error') {
             return redirect()->back()->with('error', $validate['message'])->withInput($data);
         }
-        $integration = Integration::create($data);
-        if ($integration) {
-            session()->flash('success', 'Successfully Created');
-        } else {
-            session()->flash('error', 'Some error occured');
+        
+        if ($responder->title != 'Aweber') {
+            $integration = Integration::create($data);
+            if ($integration) {
+                session()->flash('success', 'Successfully Created');
+            } else {
+                session()->flash('error', 'Some error occured');
+            }
         }
         
         return redirect()->route('autoresponder.index');
@@ -255,8 +289,18 @@ class AutoResponderController extends Controller
         return view('backend.auto-responder.create-edit', compact('header_data', 'flag', 'integration', 'responders'));
     }
     
+    /**
+     * @param $integration
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
+     */
     public function update($integration, Request $request)
     {
+        $this->validate($request, [
+            'name' => 'required'
+        ]);
+        
         $data = $request->all();
         $data['user_id'] = auth()->user()->id;
         $validate = $this->validateCredentials($data);

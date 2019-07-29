@@ -55,6 +55,12 @@ class ResponderTableSeeder extends Seeder
                 'base_url'   => 'https://api.sendinblue.com/v3/',
                 'created_at' => now(),
                 'updated_at' => now(),
+            ],
+            [
+                'title'      => 'Aweber',
+                'base_url'   => 'https://api.aweber.com/1.0/',
+                'created_at' => now(),
+                'updated_at' => now(),
             ]
         ];
         

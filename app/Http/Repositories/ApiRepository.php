@@ -31,7 +31,7 @@ class ApiRepository extends Repository
     {
         $this->baseUri = env('AMEMBER_BASE_URL');
         $this->key = env('AMEMBER_API_KEY');
-        $this->client = new Client(['base_uri' => $this->baseUri]);
+        $this->client = new Client(['base_uri' => $this->baseUri, 'verify' => false]);
     }
     
     public function model()
@@ -42,11 +42,12 @@ class ApiRepository extends Repository
     public function checkAccessByLogin($email, $pass)
     {
         $res = $this->client->request('GET', $this->checkAccess, [
-            'query' => [
+            'query'  => [
                 '_key'  => $this->key,
                 'login' => $email,
                 'pass'  => $pass,
-            ]
+            ],
+            'verify' => false
         ]);
         
         $statusCode = $res->getStatusCode();
@@ -489,12 +490,13 @@ class ApiRepository extends Repository
      */
     public function getCampaignMonitorLists($integration)
     {
-        $client = new Client();
+        $client = new Client(['verify' => false]);
         $response = $client->request('GET', $integration->responder->base_url . 'clients/' . $integration['hash'] . '/lists.json', [
             'headers' => [
                 'Content-Type'  => 'application/json',
                 'Authorization' => 'Basic ' . base64_encode($integration['api_key'])
-            ]
+            ],
+            'verify'  => false
         ]);
         $lists = json_decode($response->getBody()->getContents());
         
@@ -531,7 +533,7 @@ class ApiRepository extends Repository
      */
     public function setCampaignMonitorLists($integration, $name, $email, $list_id, $ip)
     {
-        $client = new Client();
+        $client = new Client(['verify' => false]);
         
         $client->request('POST', $integration->responder->base_url . 'subscribers/' . $list_id . '.json', [
             'headers' => [
@@ -554,7 +556,8 @@ class ApiRepository extends Repository
                 'Resubscribe'                            => true,
                 'RestartSubscriptionBasedAutoresponders' => true,
                 'ConsentToTrack'                         => "Yes"
-            ]
+            ],
+            'verify'  => false
         ]);
     }
     
@@ -687,7 +690,7 @@ class ApiRepository extends Repository
         ]];
         
         $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', $integration['api_key']);
-        $apiInstance = new ContactsApi(new Client(), $config);
+        $apiInstance = new ContactsApi(new Client(['verify' => false]), $config);
         $result = $apiInstance->getLists();
         if ($result) {
             $lists = $result['lists'];
@@ -719,7 +722,7 @@ class ApiRepository extends Repository
     public function setSendInBlueSubscribers($integration, $name, $email, $list_id)
     {
         $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', $integration['api_key']);
-        $apiInstance = new ContactsApi(new Client(), $config);
+        $apiInstance = new ContactsApi(new Client(['verify' => false]), $config);
         
         $nameAry = explode(' ', $name);
         $f_name = $nameAry[0];
@@ -732,5 +735,10 @@ class ApiRepository extends Repository
         ]);
         
         $apiInstance->createContact($createContact);
+    }
+    
+    public function getAWeberLists($integration)
+    {
+    
     }
 }

@@ -18,4 +18,6 @@ return [
         env('SYSTEM_TEMPLATE_CREATORS') : "rmadison@lightspeedtech.com,daddy@themadisons.ca"),
     'standard_plan_id'  => ['14'],
     'social_plan_id'    => ['14', '15'],
+    'aweber_consumerKey' => env('AWEBER_CONSUMERKEY', 'AkkCWion3lehCDE2WG28BGp4'),
+    'aweber_consumerSecret' => env('AWEBER_CONSUMERSECRET', 'Iop7B89l17MFZOnFGpWVl4yELKPJFXqJiWyRLzmH'),
 ];

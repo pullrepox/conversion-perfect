@@ -22,6 +22,8 @@ Route::group(['domain' => '{sub_domain}.cnvp.in'], function () {
     Route::get('/{link_name}', 'Api/OverlaysController@index');
 });
 
+Route::get('/connect-aweber', 'Api\BarOptionsApiController@connectAweber')->name('integration.aweber-connect');
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', 'Users\DashboardController@index')->name('customer.dashboard');
     Route::get('/sub-domain-register', 'Users\DashboardController@subDomainRegister');
