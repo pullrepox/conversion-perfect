@@ -17,6 +17,7 @@
                             <div class="col text-right">
                                 <button type="submit" class="btn btn-success btn-sm text-capitalize" id="edit-button">{{ $flag ? 'Create' : 'Update' }}</button>
                                 <button type="button" class="btn btn-success btn-sm text-capitalize" id="connect-button">Connect To Aweber</button>
+                                <button type="button" class="btn btn-success btn-sm text-capitalize area-hidden" id="connect-cc-button">Connect To Constant Contact</button>
                                 <a href="{{ secure_redirect(route('autoresponder.index')) }}" class="btn btn-light btn-sm text-capitalize">Cancel</a>
                             </div>
                         </div>
@@ -174,6 +175,7 @@
         function adjustChanges(value) {
             $('#edit-button').show();
             $('#connect-button').hide();
+            $('#connect-cc-button').hide();
             if (value === 'Sendlane') {
                 $('#friendly-name').show();
                 $('#api-key_div').show();
@@ -208,10 +210,23 @@
                 $('#friendly-name').show();
                 if (create_edit === '1') {
                     $('#edit-button').hide();
+                    $('#connect-cc-button').hide();
                     $('#connect-button').show();
                 } else {
                     $('#edit-button').show();
                     $('#connect-button').hide();
+                    $('#connect-cc-button').hide();
+                }
+            } else if (value === 'Constant Contact') {
+                $('#friendly-name').show();
+                if (create_edit === '1') {
+                    $('#edit-button').hide();
+                    $('#connect-button').hide();
+                    $('#connect-cc-button').show();
+                } else {
+                    $('#edit-button').show();
+                    $('#connect-button').hide();
+                    $('#connect-cc-button').hide();
                 }
             }
         }
@@ -225,6 +240,17 @@
             var url = '{{ secure_redirect(route('integration.aweber-connect')) }}' + '?name=' + $('#name').val() + '&responder_id=' + $('#responder_id').val();
             url += '&_token=' + '{{ csrf_token() }}&number_key=' + '{{ auth()->user()->id }}';
             window.open(url, 'Aweber Authentication', 'width=700,height=700');
+        });
+
+        $('#connect-cc-button').on('click', function () {
+            if ($('#name').val() === '') {
+                window.commonNotify('top', 'right', 'fas fa-bug', 'danger', null, 'Please insert a friendly name', '', 'animated fadeInDown', 'animated fadeOutUp');
+                return false;
+            }
+    
+            var url = '{{ secure_redirect(route('integration.constant-contact-connect')) }}' + '?name=' + $('#name').val() + '&responder_id=' + $('#responder_id').val();
+            url += '&_token=' + '{{ csrf_token() }}&number_key=' + '{{ auth()->user()->id }}';
+            window.open(url, 'Constant Contact Authentication', 'width=700,height=700');
         });
     </script>
 @endsection

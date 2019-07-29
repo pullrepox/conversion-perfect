@@ -23,6 +23,7 @@ Route::group(['domain' => '{sub_domain}.cnvp.in'], function () {
 });
 
 Route::get('/connect-aweber', 'Api\BarOptionsApiController@connectAweber')->name('integration.aweber-connect');
+Route::get('/connect-constant-contact', 'Api\BarOptionsApiController@connectConstantContact')->name('integration.constant-contact-connect');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', 'Users\DashboardController@index')->name('customer.dashboard');

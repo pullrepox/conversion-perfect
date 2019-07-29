@@ -7,6 +7,7 @@ use App\Http\Repositories\ApiRepository;
 use App\Http\Repositories\BarsRepository;
 use App\Integration;
 use App\Models\Subscriber;
+use App\Responder;
 use Illuminate\Http\Request;
 use Soumen\Agent\Facades\Agent;
 
@@ -235,9 +236,105 @@ class BarOptionsApiController extends Controller
         if ($active) {
             session()->flash('success', 'Authorization Successful');
         } else {
-            session()->flash('success', 'Authorization Failed');
+            session()->flash('error', 'Authorization Failed');
         }
         
         return view('backend.auto-responder.aweber-alert');
+    }
+    
+    public function connectConstantContact(Request $request)
+    {
+        $redirect_url = secure_redirect(route('integration.constant-contact-connect'));
+        
+        if ($request->has('error')) {
+            session()->flash('error', htmlspecialchars($request->get('error')) . ': ' . htmlspecialchars($request->get('error_description')));
+            $data = [
+                'message' => 'error'
+            ];
+        } else {
+            if ($request->has('code')) {
+                $accessToken = $this->getCCAccessToken($redirect_url, config('site.cs_ct_api_key'), config('site.cs_ct_secret'), $request->input('code'));
+                $token_data = json_decode($accessToken, true);
+                if (isset($token_data['error'])) {
+                    session()->flash('error', htmlspecialchars($token_data['error']) . ': ' . htmlspecialchars($token_data['error_description']));
+                } else {
+                    if (isset($token_data['access_token'])) {
+                        $ins_data = [
+                            'user_id'      => $_COOKIE['cc_number_key'],
+                            'name'         => $_COOKIE['cc_friendly_name'],
+                            'responder_id' => $_COOKIE['cc_responder_id'],
+                            'api_key'      => $token_data['access_token'],
+                            'hash'         => '',
+                            'url'          => '',
+                            'created_at'   => now(),
+                            'updated_at'   => now()
+                        ];
+                        
+                        Integration::insertGetId($ins_data);
+                        
+                        setcookie('cc_friendly_name', '', 1);
+                        setcookie('cc_responder_id', '', 1);
+                        setcookie('cc_number_key', '', 1);
+                        
+                        unset($_COOKIE['cc_friendly_name']);
+                        unset($_COOKIE['cc_responder_id']);
+                        unset($_COOKIE['cc_number_key']);
+                        
+                        session()->flash('success', 'Successfully Connected');
+                    }
+                }
+                $data = [
+                    'message' => 'code'
+                ];
+            } else {
+                setcookie('cc_friendly_name', $request->input('name'));
+                setcookie('cc_responder_id', $request->input('responder_id'));
+                setcookie('cc_number_key', $request->input('number_key'));
+                setcookie('cc__token', $request->input('_token'));
+                
+                $responder = Responder::find($request->input('responder_id'));
+                
+                $baseUrl = $responder->base_url . 'idfed';
+                $authURL = $baseUrl . '?client_id=' . config('site.cs_ct_api_key') . '&scope=contact_data&response_type=code&redirect_uri=' . $redirect_url;
+                
+                $data = [
+                    'message' => $authURL
+                ];
+            }
+        }
+        
+        return view('backend.auto-responder.cc-alert', compact('data'));
+    }
+    
+    private function getCCAccessToken($redirectURI, $clientId, $clientSecret, $code)
+    {
+        // Use cURL to get access token and refresh token
+        $ch = curl_init();
+        
+        // Define base URL
+        $base = 'https://idfed.constantcontact.com/as/token.oauth2';
+        
+        // Create full request URL
+        $url = $base . '?code=' . $code . '&redirect_uri=' . $redirectURI . '&grant_type=authorization_code&scope=contact_data';
+        curl_setopt($ch, CURLOPT_URL, $url);
+        
+        // Set authorization header
+        // Make string of "API_KEY:SECRET"
+        $auth = $clientId . ':' . $clientSecret;
+        // Base64 encode it
+        $credentials = base64_encode($auth);
+        // Create and set the Authorization header to use the encoded credentials
+        $authorization = 'Authorization: Basic ' . $credentials;
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [$authorization]);
+        
+        // Set method and to expect response
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        
+        // Make the call
+        $result = curl_exec($ch);
+        curl_close($ch);
+        
+        return $result;
     }
 }
