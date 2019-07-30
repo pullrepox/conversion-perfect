@@ -788,4 +788,39 @@ class ApiRepository extends Repository
             exit;
         }
     }
+    
+    public function getConstantContactLists($integration)
+    {
+        $reMsg = [[
+            'key'  => '',
+            'name' => '-- Choose List --'
+        ]];
+        
+        $response = $this->client->request('GET', $integration->responder->base_url . 'contact_lists', [
+            'headers' => [
+                'Cache-Control' => 'no-cache',
+                'Accept'        => 'application/json',
+                'Content-Type'  => 'application/json',
+                'Authorization' => 'Bearer ' . $integration['api_key']
+            ],
+            'verify'  => false
+        ]);
+        
+        $body = json_decode($response->getBody(), true);
+        
+        if (isset($body['lists'])) {
+            $i = 1;
+            foreach ($body['lists'] as $list) {
+                $reMsg[$i]['key'] = $list['list_id'];
+                $reMsg[$i]['name'] = $list['name'];
+                
+                $i++;
+            }
+        }
+        
+        return [
+            'result'  => 'success',
+            'message' => $reMsg
+        ];
+    }
 }

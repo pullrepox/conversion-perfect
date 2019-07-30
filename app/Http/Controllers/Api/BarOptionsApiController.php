@@ -66,6 +66,8 @@ class BarOptionsApiController extends Controller
                 $re = $this->apiRepo->getSendInBlueLists($integration);
             } else if ($integration->responder->title == 'Aweber') {
                 $re = $this->apiRepo->getAWeberLists($integration);
+            } else if ($integration->responder->title == 'Constant Contact') {
+                $re = $this->apiRepo->getConstantContactLists($integration);
             }
         }
         

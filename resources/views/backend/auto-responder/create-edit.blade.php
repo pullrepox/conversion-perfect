@@ -150,6 +150,7 @@
                 var responder_id = '{!! $integration->responder->id !!}';
                 var responder = JSON.parse('{!! json_encode($integration->responder) !!}');
                 $('#responder_id').select2('val', responder_id);
+                
                 adjustChanges(capitalize(responder.title));
             })
         </script>
