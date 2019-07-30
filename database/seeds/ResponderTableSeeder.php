@@ -67,6 +67,12 @@ class ResponderTableSeeder extends Seeder
                 'base_url'   => 'https://api.cc.email/v3/',
                 'created_at' => now(),
                 'updated_at' => now(),
+            ],
+            [
+                'title'      => 'Sendy',
+                'base_url'   => 'http://emails.emailinghost.com/',
+                'created_at' => now(),
+                'updated_at' => now(),
             ]
         ];
         

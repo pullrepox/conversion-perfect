@@ -23,6 +23,7 @@
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
         "mailerlite/mailerlite-api-v2-php-sdk": "^0.2.3",
+        "micovi/laravel-sendy": "dev-master",
         "predis/predis": "^1.1",
         "sendinblue/api-v3-sdk": "^6.1",
         "soumen-dey/laravel-user-agent": "^1.0",

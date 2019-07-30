@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Integration;
 use App\Responder;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
 class AutoResponderController extends Controller
@@ -54,6 +55,10 @@ class AutoResponderController extends Controller
             return $this->sendInBlue($data, $responder);
         } else if ($responder->title == 'Campaign Monitor') {
             return $this->campaignMonitor($data, $responder);
+        } else {
+            return [
+                'type' => 'success'
+            ];
         }
     }
     
@@ -96,7 +101,7 @@ class AutoResponderController extends Controller
     public function mailChimp($data, $responder)
     {
         $apikey = $data['api_key'];
-        $client = new \GuzzleHttp\Client();
+        $client = new Client();
         try {
             $response = $client->request('GET', $responder->base_url, [
                 'auth'   => ['user', $apikey],
@@ -143,7 +148,7 @@ class AutoResponderController extends Controller
     
     public function mailerLite($data, $responder)
     {
-        $client = new \GuzzleHttp\Client();
+        $client = new Client();
         try {
             $response = $client->request('GET', $responder->base_url, [
                 'headers' => [
@@ -165,7 +170,7 @@ class AutoResponderController extends Controller
     
     public function getResponse($data, $responder)
     {
-        $client = new \GuzzleHttp\Client();
+        $client = new Client();
         try {
             $response = $client->request('GET', $responder->base_url . 'accounts', [
                 'headers' => [
@@ -187,7 +192,7 @@ class AutoResponderController extends Controller
     
     public function sendInBlue($data, $responder)
     {
-        $client = new \GuzzleHttp\Client();
+        $client = new Client();
         try {
             $client->request('GET', $responder->base_url . 'account', [
                 'headers' => [
@@ -211,7 +216,7 @@ class AutoResponderController extends Controller
     
     public function campaignMonitor($data, $responder)
     {
-        $client = new \GuzzleHttp\Client();
+        $client = new Client();
         try {
             $response = $client->request('GET', $responder->base_url . 'clients.json', [
                 'headers' => [
@@ -239,6 +244,30 @@ class AutoResponderController extends Controller
             'type'    => 'error',
             'message' => 'Unauthorized API-KEY'
         ];
+    }
+    
+    public function Sendy($data)
+    {
+        $url = $data['url'] . '/api/subscribers/active-subscriber-count.php';
+        
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, "api_key={$data['api_key']}&list_id={$data['hash']}");
+        
+        $result = curl_exec($ch);
+        if (!is_numeric($result) && $result != 'No data passed') {
+            return [
+                'type'    => 'error',
+                'message' => $result
+            ];
+        } else {
+            return [
+                'type'    => 'success',
+                'message' => null
+            ];
+        }
     }
     
     /**

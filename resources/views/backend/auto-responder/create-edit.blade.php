@@ -193,6 +193,8 @@
                 $('#friendly-name').show();
                 $('#url_div').show();
                 $('#api-key_div').show();
+                $('#hash_div').show();
+                $('#hash_label').html('List ID');
             } else if (value === 'MailerLite') {
                 $('#friendly-name').show();
                 $('#api-key_div').show();

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "738db87f699f10578b810a39b01681ad",
+    "content-hash": "09bfa3b5348bd6d38074efd112b5aad1",
     "packages": [
         {
             "name": "activecampaign/api-php",
@@ -1846,6 +1846,61 @@
             "description": "Internal MaxMind Web Service API",
             "homepage": "https://github.com/maxmind/web-service-common-php",
             "time": "2018-02-12T22:31:54+00:00"
+        },
+        {
+            "name": "micovi/laravel-sendy",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/micovi/laravel-sendy.git",
+                "reference": "e3d6ffb90a57a9674e1bbf6649dd9b0382c18fd8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/micovi/laravel-sendy/zipball/e3d6ffb90a57a9674e1bbf6649dd9b0382c18fd8",
+                "reference": "e3d6ffb90a57a9674e1bbf6649dd9b0382c18fd8",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^5.4",
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "~3.7.0",
+                "phpunit/phpunit": "^7.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Micovi\\LaravelSendy\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Micovi\\LaravelSendy\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ovidiu Miclea",
+                    "email": "micleaovidiul@gmail.com",
+                    "homepage": "https://ovidiumiclea.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Service provider for Sendy API in PHP Laravel 5+",
+            "homepage": "https://github.com/Micovi/laravel-sendy",
+            "keywords": [
+                "Sendy",
+                "laravel"
+            ],
+            "time": "2019-03-24T13:01:21+00:00"
         },
         {
             "name": "mobiledetect/mobiledetectlib",
@@ -6630,7 +6685,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "micovi/laravel-sendy": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
