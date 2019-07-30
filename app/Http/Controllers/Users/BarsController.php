@@ -80,19 +80,23 @@ class BarsController extends Controller
                     
                     $re_data['result'] = '';
                     if ($integration->responder->title == 'Sendlane') {
-                        $re_data = $this->barsRepo->getSendlaneList($integration);
+                        $re_data = $this->apiRepo->getSendlaneList($integration);
                     } else if ($integration->responder->title == 'MailChimp') {
-                        $re_data = $this->barsRepo->getMailChimpLists($integration);
+                        $re_data = $this->apiRepo->getMailChimpLists($integration);
                     } else if ($integration->responder->title == 'ActiveCampaign') {
-                        $re_data = $this->barsRepo->getActiveCampaignList($integration);
+                        $re_data = $this->apiRepo->getActiveCampaignList($integration);
                     } else if ($integration->responder->title == 'Campaign Monitor') {
-                        $re_data = $this->barsRepo->getCampaignMonitorLists($integration);
+                        $re_data = $this->apiRepo->getCampaignMonitorLists($integration);
                     } else if ($integration->responder->title == 'GetResponse') {
-                        $re_data = $this->barsRepo->getResponseCampaigns($integration);
+                        $re_data = $this->apiRepo->getResponseCampaigns($integration);
                     } else if ($integration->responder->title == 'MailerLite') {
-                        $re_data = $this->barsRepo->getMailerLiteGroups($integration);
+                        $re_data = $this->apiRepo->getMailerLiteGroups($integration);
                     } else if ($integration->responder->title == 'Send In Blue') {
-                        $re_data = $this->barsRepo->getSendInBlueLists($integration);
+                        $re_data = $this->apiRepo->getSendInBlueLists($integration);
+                    } else if ($integration->responder->title == 'Aweber') {
+                        $re_data = $this->apiRepo->getAWeberLists($integration);
+                    } else if ($integration->responder->title == 'Constant Contact') {
+                        $re_data = $this->apiRepo->getConstantContactLists($integration);
                     }
                     
                     if ($re_data['result'] == 'success') {
@@ -458,6 +462,10 @@ class BarsController extends Controller
                     $re_data = $this->apiRepo->getMailerLiteGroups($integration);
                 } else if ($integration->responder->title == 'Send In Blue') {
                     $re_data = $this->apiRepo->getSendInBlueLists($integration);
+                } else if ($integration->responder->title == 'Aweber') {
+                    $re_data = $this->apiRepo->getAWeberLists($integration);
+                } else if ($integration->responder->title == 'Constant Contact') {
+                    $re_data = $this->apiRepo->getConstantContactLists($integration);
                 }
                 
                 if ($re_data['result'] == 'success') {

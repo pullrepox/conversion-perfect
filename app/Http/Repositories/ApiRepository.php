@@ -789,6 +789,11 @@ class ApiRepository extends Repository
         }
     }
     
+    /**
+     * @param $integration
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function getConstantContactLists($integration)
     {
         $reMsg = [[
@@ -808,13 +813,26 @@ class ApiRepository extends Repository
         
         $body = json_decode($response->getBody(), true);
         
-        if (isset($body['lists'])) {
-            $i = 1;
-            foreach ($body['lists'] as $list) {
-                $reMsg[$i]['key'] = $list['list_id'];
-                $reMsg[$i]['name'] = $list['name'];
-                
-                $i++;
+        if (isset($body['error_key'])) {
+            if ($body['error_key'] == 'unauthorized') {
+                $res = $this->refreshTokenForConstantContact($integration['hash'], config('site.cs_ct_api_key'), config('site.cs_ct_secret'));
+                $re = json_decode($res, true);
+                if (isset($re['access_token'])) {
+                    $integration->api_key = $re['access_token'];
+                    $integration->hash = $re['refresh_token'];
+                    $integration->save();
+                    $this->getConstantContactLists($integration);
+                }
+            }
+        } else {
+            if (isset($body['lists'])) {
+                $i = 1;
+                foreach ($body['lists'] as $list) {
+                    $reMsg[$i]['key'] = $list['list_id'];
+                    $reMsg[$i]['name'] = $list['name'];
+                    
+                    $i++;
+                }
             }
         }
         
@@ -822,5 +840,126 @@ class ApiRepository extends Repository
             'result'  => 'success',
             'message' => $reMsg
         ];
+    }
+    
+    /**
+     * @param $refreshToken - The refresh token provided with the previous access token
+     * @param $clientId - API Key
+     * @param $clientSecret - API Secret
+     * @return string - JSON String of results
+     */
+    public function refreshTokenForConstantContact($refreshToken, $clientId, $clientSecret)
+    {
+        // Use cURL to get a new access token and refresh token
+        $ch = curl_init();
+        
+        // Define base URL
+        $base = 'https://idfed.constantcontact.com/as/token.oauth2';
+        
+        // Create full request URL
+        $url = $base . '?refresh_token=' . $refreshToken . '&grant_type=refresh_token';
+        curl_setopt($ch, CURLOPT_URL, $url);
+        
+        // Set authorization header
+        // Make string of "API_KEY:SECRET"
+        $auth = $clientId . ':' . $clientSecret;
+        // Base64 encode it
+        $credentials = base64_encode($auth);
+        // Create and set the Authorization header to use the encoded credentials
+        $authorization = 'Authorization: Basic ' . $credentials;
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [$authorization]);
+        
+        // Set method and to expect response
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        
+        // Make the call
+        $result = curl_exec($ch);
+        curl_close($ch);
+        
+        return $result;
+    }
+    
+    /**
+     * @param $integration
+     * @param $name
+     * @param $email
+     * @param $list_id
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function setConstantContactSubscriber($integration, $name, $email, $list_id)
+    {
+        $nameAry = explode(' ', $name);
+        $f_name = $nameAry[0];
+        $l_name = isset($nameAry[1]) ? $nameAry[1] : '';
+        
+        $url = $integration->responder->base_url . 'contacts?email=' . $email;
+        $response = $this->client->request('GET', $url, [
+            'headers' => [
+                'Cache-Control' => 'no-cache',
+                'Accept'        => 'application/json',
+                'Content-Type'  => 'application/json',
+                'Authorization' => 'Bearer ' . $integration['api_key']
+            ],
+            'verify'  => false
+        ]);
+        
+        $body = json_decode($response->getBody(), true);
+        if (isset($body['error_key'])) {
+            if ($body['error_key'] == 'unauthorized') {
+                $res = $this->refreshTokenForConstantContact($integration['hash'], config('site.cs_ct_api_key'), config('site.cs_ct_secret'));
+                $re = json_decode($res, true);
+                if (isset($re['access_token'])) {
+                    $integration->api_key = $re['access_token'];
+                    $integration->hash = $re['refresh_token'];
+                    $integration->save();
+                    $this->setConstantContactSubscriber($integration, $name, $email, $list_id);
+                }
+            }
+        } else {
+            if (isset($body['contacts']) && sizeof($body['contacts']) > 0) {
+                $url = $integration->responder->base_url . 'contacts/' . $body['contacts'][0]['contact_id'];
+                $this->client->request('PUT', $url, [
+                    'headers' => [
+                        'cache-control' => 'no-cache',
+                        'accept'        => 'application/json',
+                        'content-type'  => 'application/json',
+                        'authorization' => 'Bearer ' . $integration['api_key']
+                    ],
+                    'verify'  => false,
+                    'body'    => json_encode([
+                        'email_address' => [
+                            'address'            => $email,
+                            'permission_to_send' => 'implicit'
+                        ],
+                        'first_name'    => $f_name,
+                        'last_name'     => $l_name,
+                        'update_source' => 'Contact',
+                        'list_memberships' => [$list_id]
+                    ])
+                ]);
+            } else {
+                $url = $integration->responder->base_url . 'contacts';
+                $this->client->request('POST', $url, [
+                    'headers' => [
+                        'cache-control' => 'no-cache',
+                        'accept'        => 'application/json',
+                        'content-type'  => 'application/json',
+                        'authorization' => 'Bearer ' . $integration['api_key']
+                    ],
+                    'verify'  => false,
+                    'body'    => json_encode([
+                        'email_address'    => [
+                            'address'            => $email,
+                            'permission_to_send' => 'implicit'
+                        ],
+                        'first_name'       => $f_name,
+                        'last_name'        => $l_name,
+                        'create_source'    => 'Contact',
+                        'list_memberships' => [$list_id]
+                    ])
+                ]);
+            }
+        }
     }
 }

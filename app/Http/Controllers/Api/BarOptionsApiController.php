@@ -106,7 +106,7 @@ class BarOptionsApiController extends Controller
                 $subscriber->ip_address = $ip;
                 $subscriber->save();
             } else if ($bar->integration_type != 'none') {
-                $integration = Integration::with('responder')->where('user_id', auth()->user()->id)->where('responder_id', $bar->integration_type)->first();
+                $integration = Integration::with('responder')->where('user_id', $bar->user_id)->where('responder_id', $bar->integration_type)->first();
                 if ($integration->responder->title == 'Sendlane') {
                     $this->apiRepo->setSendlaneList($integration, $subscriber_name, $subscriber_email, $list_id);
                 } else if ($integration->responder->title == 'MailChimp') {
@@ -123,6 +123,8 @@ class BarOptionsApiController extends Controller
                     $this->apiRepo->setSendInBlueSubscribers($integration, $subscriber_name, $subscriber_email, $list_id);
                 } else if ($integration->responder->title == 'Aweber') {
                     $this->apiRepo->setAWeberSubscribers($integration, $subscriber_name, $subscriber_email, $list_id);
+                } else if ($integration->responder->title == 'Constant Contact') {
+                    $this->apiRepo->setConstantContactSubscriber($integration, $subscriber_name, $subscriber_email, $list_id);
                 }
             }
             
@@ -266,7 +268,7 @@ class BarOptionsApiController extends Controller
                             'name'         => $_COOKIE['cc_friendly_name'],
                             'responder_id' => $_COOKIE['cc_responder_id'],
                             'api_key'      => $token_data['access_token'],
-                            'hash'         => '',
+                            'hash'         => $token_data['refresh_token'],
                             'url'          => '',
                             'created_at'   => now(),
                             'updated_at'   => now()
