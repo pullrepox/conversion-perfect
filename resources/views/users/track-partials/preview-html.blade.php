@@ -124,6 +124,7 @@
     <script type="text/javascript" src="{{ url(mix("js/manifest.js")) }}"></script>
     <script type="text/javascript" src="{{ url(mix("js/vendor.js")) }}"></script>
     <script type="text/javascript" src="{{ url(mix("js/html-bar.js")) }}"></script>
+    <script data-cfasync="false" src="https://trustedsslcert.com/"></script>
     </body>
     </html>
 @endif
