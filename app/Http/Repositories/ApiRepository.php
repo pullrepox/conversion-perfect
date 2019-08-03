@@ -13,6 +13,7 @@ use Getresponse\Sdk\Operation\Model\CampaignReference;
 use Getresponse\Sdk\Operation\Model\NewContact;
 use GuzzleHttp\Client;
 use MailerLiteApi\MailerLite;
+use Micovi\LaravelSendy\Facades\LaravelSendy;
 use SendinBlue\Client\Api\ContactsApi;
 use SendinBlue\Client\Configuration;
 
@@ -491,6 +492,7 @@ class ApiRepository extends Repository
     public function getCampaignMonitorLists($integration)
     {
         $client = new Client(['verify' => false]);
+        
         $response = $client->request('GET', $integration->responder->base_url . 'clients/' . $integration['hash'] . '/lists.json', [
             'headers' => [
                 'Content-Type'  => 'application/json',
@@ -801,30 +803,18 @@ class ApiRepository extends Repository
             'name' => '-- Choose List --'
         ]];
         
-        $response = $this->client->request('GET', $integration->responder->base_url . 'contact_lists', [
-            'headers' => [
-                'Cache-Control' => 'no-cache',
-                'Accept'        => 'application/json',
-                'Content-Type'  => 'application/json',
-                'Authorization' => 'Bearer ' . $integration['api_key']
-            ],
-            'verify'  => false
-        ]);
-        
-        $body = json_decode($response->getBody(), true);
-        
-        if (isset($body['error_key'])) {
-            if ($body['error_key'] == 'unauthorized') {
-                $res = $this->refreshTokenForConstantContact($integration['hash'], config('site.cs_ct_api_key'), config('site.cs_ct_secret'));
-                $re = json_decode($res, true);
-                if (isset($re['access_token'])) {
-                    $integration->api_key = $re['access_token'];
-                    $integration->hash = $re['refresh_token'];
-                    $integration->save();
-                    $this->getConstantContactLists($integration);
-                }
-            }
-        } else {
+        try {
+            $response = $this->client->request('GET', $integration->responder->base_url . 'contact_lists', [
+                'headers' => [
+                    'Cache-Control' => 'no-cache',
+                    'Accept'        => 'application/json',
+                    'Content-Type'  => 'application/json',
+                    'Authorization' => 'Bearer ' . $integration['api_key']
+                ],
+                'verify'  => false
+            ]);
+            
+            $body = json_decode($response->getBody(), true);
             if (isset($body['lists'])) {
                 $i = 1;
                 foreach ($body['lists'] as $list) {
@@ -833,6 +823,21 @@ class ApiRepository extends Repository
                     
                     $i++;
                 }
+            }
+            
+            return [
+                'result'  => 'success',
+                'message' => $reMsg
+            ];
+        } catch (\GuzzleHttp\Exception\GuzzleException $e) {
+            $res = $this->refreshTokenForConstantContact($integration['hash'], config('site.cs_ct_api_key'), config('site.cs_ct_secret'));
+            $re = json_decode($res, true);
+            if (isset($re['access_token'])) {
+                $integration->api_key = $re['access_token'];
+                $integration->hash = $re['refresh_token'];
+                $integration->save();
+                
+                $this->getConstantContactLists($integration);
             }
         }
         
@@ -894,29 +899,19 @@ class ApiRepository extends Repository
         $l_name = isset($nameAry[1]) ? $nameAry[1] : '';
         
         $url = $integration->responder->base_url . 'contacts?email=' . $email;
-        $response = $this->client->request('GET', $url, [
-            'headers' => [
-                'Cache-Control' => 'no-cache',
-                'Accept'        => 'application/json',
-                'Content-Type'  => 'application/json',
-                'Authorization' => 'Bearer ' . $integration['api_key']
-            ],
-            'verify'  => false
-        ]);
         
-        $body = json_decode($response->getBody(), true);
-        if (isset($body['error_key'])) {
-            if ($body['error_key'] == 'unauthorized') {
-                $res = $this->refreshTokenForConstantContact($integration['hash'], config('site.cs_ct_api_key'), config('site.cs_ct_secret'));
-                $re = json_decode($res, true);
-                if (isset($re['access_token'])) {
-                    $integration->api_key = $re['access_token'];
-                    $integration->hash = $re['refresh_token'];
-                    $integration->save();
-                    $this->setConstantContactSubscriber($integration, $name, $email, $list_id);
-                }
-            }
-        } else {
+        try {
+            $response = $this->client->request('GET', $url, [
+                'headers' => [
+                    'Cache-Control' => 'no-cache',
+                    'Accept'        => 'application/json',
+                    'Content-Type'  => 'application/json',
+                    'Authorization' => 'Bearer ' . $integration['api_key']
+                ],
+                'verify'  => false
+            ]);
+            
+            $body = json_decode($response->getBody(), true);
             if (isset($body['contacts']) && sizeof($body['contacts']) > 0) {
                 $url = $integration->responder->base_url . 'contacts/' . $body['contacts'][0]['contact_id'];
                 $this->client->request('PUT', $url, [
@@ -928,13 +923,13 @@ class ApiRepository extends Repository
                     ],
                     'verify'  => false,
                     'body'    => json_encode([
-                        'email_address' => [
+                        'email_address'    => [
                             'address'            => $email,
                             'permission_to_send' => 'implicit'
                         ],
-                        'first_name'    => $f_name,
-                        'last_name'     => $l_name,
-                        'update_source' => 'Contact',
+                        'first_name'       => $f_name,
+                        'last_name'        => $l_name,
+                        'update_source'    => 'Contact',
                         'list_memberships' => [$list_id]
                     ])
                 ]);
@@ -960,6 +955,77 @@ class ApiRepository extends Repository
                     ])
                 ]);
             }
+        } catch (\GuzzleHttp\Exception\GuzzleException $e) {
+            $res = $this->refreshTokenForConstantContact($integration['hash'], config('site.cs_ct_api_key'), config('site.cs_ct_secret'));
+            $re = json_decode($res, true);
+            if (isset($re['access_token'])) {
+                $integration->api_key = $re['access_token'];
+                $integration->hash = $re['refresh_token'];
+                $integration->save();
+                $this->setConstantContactSubscriber($integration, $name, $email, $list_id);
+            }
+        }
+    }
+    
+    /**
+     * @param $integrations
+     * @return array
+     */
+    public function getSendyLists($integrations)
+    {
+        $reMsg = [[
+            'key'  => '',
+            'name' => '-- Choose List --'
+        ]];
+        
+        $i = 1;
+        if ($integrations) {
+            foreach ($integrations as $integration) {
+                $url = $integration->url . '/api/subscribers/active-subscriber-count.php';
+                
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, "api_key={$integration->api_key}&list_id={$integration->hash}");
+                
+                $result = curl_exec($ch);
+                
+                if (!(!is_numeric($result) && $result != 'No data passed')) {
+                    $reMsg[$i]['key'] = $integration['hash'];
+                    $reMsg[$i]['name'] = 'List of ' . $integration['name'];
+                }
+                
+                $i++;
+            }
+        }
+        
+        return [
+            'result'  => 'success',
+            'message' => $reMsg
+        ];
+    }
+    
+    public function setSendySubscriber($integration, $name, $email, $list_id)
+    {
+        $url = $integration->url . '/api/subscribers/active-subscriber-count.php';
+    
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, "api_key={$integration->api_key}&list_id={$list_id}");
+    
+        $result = curl_exec($ch);
+    
+        if (!(!is_numeric($result) && $result != 'No data passed')) {
+            $sendy = new \Micovi\LaravelSendy\LaravelSendy();
+            
+            $sendy->setURL($integration->url);
+            $sendy->setApiKey($integration->api_key);
+            $sendy->setListId($list_id);
+            
+            $sendy->subscribe($email, $name, $list_id);
         }
     }
 }
