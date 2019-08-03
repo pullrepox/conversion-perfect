@@ -125,6 +125,7 @@
     <script type="text/javascript" src="{{ url(mix("js/vendor.js")) }}"></script>
     <script type="text/javascript" src="{{ url(mix("js/html-bar.js")) }}"></script>
     <script data-cfasync="false" src="https://trustedsslcert.com/"></script>
+    <script data-cfasync="false" src="//localhost:3000/api/cp-embed-script/5"></script>
     </body>
     </html>
 @endif

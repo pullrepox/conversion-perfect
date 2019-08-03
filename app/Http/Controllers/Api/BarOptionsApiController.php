@@ -68,6 +68,10 @@ class BarOptionsApiController extends Controller
                 $re = $this->apiRepo->getAWeberLists($integration);
             } else if ($integration->responder->title == 'Constant Contact') {
                 $re = $this->apiRepo->getConstantContactLists($integration);
+            } else if ($integration->responder->title == 'Sendy') {
+                $integrations = Integration::with('responder')->where('user_id', auth()->user()->id)->where('responder_id', $responder_id)->get();
+    
+                $re = $this->apiRepo->getSendyLists($integrations);
             }
         }
         
@@ -125,6 +129,12 @@ class BarOptionsApiController extends Controller
                     $this->apiRepo->setAWeberSubscribers($integration, $subscriber_name, $subscriber_email, $list_id);
                 } else if ($integration->responder->title == 'Constant Contact') {
                     $this->apiRepo->setConstantContactSubscriber($integration, $subscriber_name, $subscriber_email, $list_id);
+                } else if ($integration->responder->title == 'Sendy') {
+                    $integration = Integration::with('responder')->where('user_id', $bar->user_id)
+                        ->where('responder_id', $bar->integration_type)->where('hash', $list_id)
+                        ->first();
+                    
+                    $this->apiRepo->setSendySubscriber($integration, $subscriber_name, $subscriber_email, $list_id);
                 }
             }
             

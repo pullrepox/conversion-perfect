@@ -38,6 +38,11 @@ class AutoResponderController extends Controller
         return view('backend.auto-responder.create-edit', compact('header_data', 'flag', 'responders'));
     }
     
+    /**
+     * @param $data
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function validateCredentials($data)
     {
         $responder = Responder::findOrFail($data['responder_id']);
@@ -55,6 +60,8 @@ class AutoResponderController extends Controller
             return $this->sendInBlue($data, $responder);
         } else if ($responder->title == 'Campaign Monitor') {
             return $this->campaignMonitor($data, $responder);
+        } else if ($responder->title == 'Sendy') {
+            return $this->Sendy($data);
         } else {
             return [
                 'type' => 'success'
@@ -273,6 +280,7 @@ class AutoResponderController extends Controller
     /**
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
@@ -294,6 +302,7 @@ class AutoResponderController extends Controller
         
         if ($responder->title != 'Aweber') {
             $integration = Integration::create($data);
+            
             if ($integration) {
                 session()->flash('success', 'Successfully Created');
             } else {
@@ -322,6 +331,7 @@ class AutoResponderController extends Controller
      * @param $integration
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Illuminate\Validation\ValidationException
      */
     public function update($integration, Request $request)

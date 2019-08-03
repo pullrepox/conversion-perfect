@@ -97,6 +97,10 @@ class BarsController extends Controller
                         $re_data = $this->apiRepo->getAWeberLists($integration);
                     } else if ($integration->responder->title == 'Constant Contact') {
                         $re_data = $this->apiRepo->getConstantContactLists($integration);
+                    } else if ($integration->responder->title == 'Sendy') {
+                        $integrations = Integration::with('responder')->where('user_id', auth()->user()->id)->where('responder_id', $bar->integration_type)->get();
+    
+                        $re_data = $this->apiRepo->getSendyLists($integrations);
                     }
                     
                     if ($re_data['result'] == 'success') {
@@ -466,6 +470,10 @@ class BarsController extends Controller
                     $re_data = $this->apiRepo->getAWeberLists($integration);
                 } else if ($integration->responder->title == 'Constant Contact') {
                     $re_data = $this->apiRepo->getConstantContactLists($integration);
+                } else if ($integration->responder->title == 'Sendy') {
+                    $integrations = Integration::with('responder')->where('user_id', auth()->user()->id)->where('responder_id', $bar->integration_type)->get();
+                    
+                    $re_data = $this->apiRepo->getSendyLists($integrations);
                 }
                 
                 if ($re_data['result'] == 'success') {
@@ -568,6 +576,7 @@ class BarsController extends Controller
                 'friendly_name', 'button_label', 'countdown_expiration_text', 'custom_link_text', 'meta_title', 'opt_in_button_label',
                 'days_label', 'hours_label', 'minutes_label', 'seconds_label', 'opt_in_name_placeholder', 'opt_in_email_placeholder', 'powered_by_label', 'disclaimer'
             ];
+            
             foreach ($params as $key => $val) {
                 if (false !== array_search($key, $radio_keys)) {
                     $params[$key] = $val ? 1 : 0;

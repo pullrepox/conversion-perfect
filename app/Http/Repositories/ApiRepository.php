@@ -371,7 +371,9 @@ class ApiRepository extends Repository
         $nameAry = explode(' ', $name);
         $f_name = $nameAry[0];
         $l_name = isset($nameAry[1]) ? $nameAry[1] : '';
+        
         $api_key = $integration['api_key'];
+        
         $MailChimp = new MailChimp($api_key);
         $MailChimp->verify_ssl = false;
         $MailChimp->post(("lists/" . $list_id . "/members"), [
@@ -463,8 +465,8 @@ class ApiRepository extends Repository
             'ids'  => $list_id,
             'full' => '0'
         ];
-        $list = $ac->api('list/list', $list_params);
         
+        $list = $ac->api('list/list', $list_params);
         if ($list) {
             $nameAry = explode(' ', $name);
             $f_name = $nameAry[0];
@@ -500,6 +502,7 @@ class ApiRepository extends Repository
             ],
             'verify'  => false
         ]);
+        
         $lists = json_decode($response->getBody()->getContents());
         
         $reMsg = [[
