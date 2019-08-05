@@ -17,6 +17,10 @@ class BarOptionsController extends Controller
         $this->barsRepo = $barsRepository;
     }
     
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function hideBarOption(Request $request)
     {
         $bar_id = $request->route()->parameter('id');
@@ -32,6 +36,10 @@ class BarOptionsController extends Controller
         ]);
     }
     
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function saveBarOption(Request $request)
     {
         $bar_id = $request->route()->parameter('id');
@@ -69,6 +77,7 @@ class BarOptionsController extends Controller
                     if (trim($val[$i]['insert']) == '' || is_null($val[$i]['insert'])) {
                         continue;
                     }
+                    
                     $upd_sub_headline[$i]['insert'] = addslashes($val[$i]['insert'] . ($i < (count($val) - 1) ? ' ' : ''));
                     if (isset($val[$i]['attributes'])) {
                         if (isset($val[$i]['attributes']['bold'])) {

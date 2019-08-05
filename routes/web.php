@@ -40,6 +40,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/clear-option/{id}', 'Users\BarOptionsController@clearBarOption');
     Route::post('/image-upload/{id}', 'Users\BarOptionsController@uploadImageFile');
     Route::get('/get-responder-lists', 'Api\BarOptionsApiController@getAutoResponderLists');
+    Route::get('/get-html-integration-code', 'Api\BarOptionsApiController@getHtmlIntegrationCode');
     Route::resource('split-tests', 'Users\SplitTestsController', ['names' => ['index' => 'split-tests']]);
     Route::resource('multi-bars', 'Users\MultiBarsController', ['names' => ['index' => 'multi-bars']]);
     

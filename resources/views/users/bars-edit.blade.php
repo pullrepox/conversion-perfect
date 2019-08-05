@@ -217,7 +217,8 @@
                     powered_by_label: "{{ old('powered_by_label') ? old('powered_by_label') : ($flag ? 'Powered by' : $bar->powered_by_label) }}",
                     disclaimer: "{{ old('disclaimer') ? old('disclaimer') : ($flag ? 'We respect your privacy and will never share your information.' : $bar->disclaimer) }}",
                 },
-                template_name: "{{ $flag ? '' : ($bar->template_flag ? ($bar->template_name == '' ? ($sys_temp_avail ? $bar->friendly_name : '') : $bar->template_name) : '') }}"
+                template_name: "{{ $flag ? '' : ($bar->template_flag ? ($bar->template_name == '' ? ($sys_temp_avail ? $bar->friendly_name : '') : $bar->template_name) : '') }}",
+                html_integration_code: "{{ $flag ? '' : $html_integration_code }}"
             }
         };
     </script>

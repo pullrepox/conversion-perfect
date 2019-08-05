@@ -71,7 +71,7 @@ class BarsController extends Controller
             $re = [['key' => '', 'name' => '-- Choose List --']];
             if (!is_null($bar->list) && $bar->list != '') {
                 if ($bar->integration_type == 'conversion_perfect') {
-                    $re_data = $this->barsRepo->getConversionPerfectLists();
+                    $re_data = $this->apiRepo->getConversionPerfectLists();
                     if ($re_data['result'] == 'success') {
                         $re = $re_data['message'];
                     }
@@ -99,8 +99,12 @@ class BarsController extends Controller
                         $re_data = $this->apiRepo->getConstantContactLists($integration);
                     } else if ($integration->responder->title == 'Sendy') {
                         $integrations = Integration::with('responder')->where('user_id', auth()->user()->id)->where('responder_id', $bar->integration_type)->get();
-    
+                        
                         $re_data = $this->apiRepo->getSendyLists($integrations);
+                    } else if ($integration->responder->title == 'HTML Integration') {
+                        $integrations = Integration::with('responder')->where('user_id', auth()->user()->id)->where('responder_id', $bar->integration_type)->get();
+                        
+                        $re_data = $this->apiRepo->getHTMLIntegrationList($integrations);
                     }
                     
                     if ($re_data['result'] == 'success') {
@@ -238,21 +242,7 @@ class BarsController extends Controller
             }
         }
         
-        if ($request->input('video_type') != 'none') {
-            if ($request->input('video_type') == 'youtube') {
-                $rules['content_youtube_url'] = 'required|url';
-            } else if ($request->input('video_type') == 'vimeo') {
-                $rules['content_vimeo_url'] = 'required|url';
-            } else {
-                $rules['video_code'] = 'required';
-            }
-        }
-        if ($request->input('button_type') != 'none') {
-            $rules['button_label'] = 'required';
-        }
-        if ($request->input('button_action') == 'open_click_url') {
-            $rules['button_click_url'] = 'required';
-        }
+        $rules = $this->makeContentRule($request, $rules);
         
         if ($request->input('countdown_on_expiry') == 'display_text') {
             $rules['countdown_expiration_text'] = 'required|max:200';
@@ -395,7 +385,16 @@ class BarsController extends Controller
             return view('users.bars-statistics', compact('header_data', 'bar', 'log_data', 'searchParams', 'total_sum', 'report_data'));
         } else {
             $option = 'preview';
-            return view('users.track-partials.preview-html', compact('bar', 'option'));
+            
+            $html_integration_code = '';
+            if ($bar->integration_type == 11 && $bar->list != '') {
+                $integration = Integration::find($bar->list);
+                if ($integration) {
+                    $html_integration_code = $integration->api_key;
+                }
+            }
+            
+            return view('users.track-partials.preview-html', compact('bar', 'option', 'html_integration_code'));
         }
     }
     
@@ -474,6 +473,10 @@ class BarsController extends Controller
                     $integrations = Integration::with('responder')->where('user_id', auth()->user()->id)->where('responder_id', $bar->integration_type)->get();
                     
                     $re_data = $this->apiRepo->getSendyLists($integrations);
+                } else if ($integration->responder->title == 'HTML Integration') {
+                    $integrations = Integration::with('responder')->where('user_id', auth()->user()->id)->where('responder_id', $bar->integration_type)->get();
+                    
+                    $re_data = $this->apiRepo->getHTMLIntegrationList($integrations);
                 }
                 
                 if ($re_data['result'] == 'success') {
@@ -495,7 +498,16 @@ class BarsController extends Controller
         $sel_tab = !session()->get('sel_tab') || session()->get('sel_tab') == '' ? 'main' : session()->get('sel_tab');
         session(['sel_tab' => '']);
         
-        return view('users.bars-edit', compact('header_data', 'flag', 'form_action', 'bar', 'list_array', 'sel_tab'));
+        if ($bar->integration_type == '11') {
+            $html_integration_code = '';
+            
+            $html_integration = Integration::find($bar->list);
+            if ($html_integration) {
+                $html_integration_code = $html_integration->api_key;
+            }
+        }
+        
+        return view('users.bars-edit', compact('header_data', 'flag', 'form_action', 'bar', 'list_array', 'sel_tab', 'html_integration_code'));
     }
     
     /**
@@ -596,10 +608,12 @@ class BarsController extends Controller
                     } else {
                         $upd_headline = [['insert' => '']];
                     }
+                    
                     for ($i = 0; $i < count($val); $i++) {
                         if (trim($val[$i]) == '' || is_null($val[$i])) {
                             continue;
                         }
+                        
                         $upd_headline[$i]['insert'] = addslashes($val[$i] . ($i < (count($val) - 1) ? ' ' : ''));
                         if (!is_null($request->input($key . '_bold')[$i])) {
                             $upd_headline[$i]['attributes']['bold'] = true;
@@ -626,26 +640,8 @@ class BarsController extends Controller
                     $params[$key] = date('H:i:s', strtotime($val));
                 }
             }
-
-//            session(['sel_tab' => $request->input('sel_tab')]);
-            
-            if ($request->input('sel_tab') == 'content') {
-                if ($request->input('video_type') != 'none') {
-                    if ($request->input('video_type') == 'youtube') {
-                        $rules['content_youtube_url'] = 'required|url';
-                    } else if ($request->input('video_type') == 'vimeo') {
-                        $rules['content_vimeo_url'] = 'required|url';
-                    } else {
-                        $rules['video_code'] = 'required';
-                    }
-                }
-                if ($request->input('button_type') != 'none') {
-                    $rules['button_label'] = 'required';
-                }
-                if ($request->input('button_action') == 'open_click_url') {
-                    $rules['button_click_url'] = 'required';
-                }
-            }
+    
+            $rules = $this->makeContentRule($request, $rules);
             
             if ($request->input('sel_tab') == 'timer') {
                 if ($request->input('countdown_on_expiry') == 'display_text') {
@@ -753,5 +749,26 @@ class BarsController extends Controller
         return response()->json([
             'result' => 'success'
         ]);
+    }
+    
+    private function makeContentRule($request, $rules)
+    {
+        if ($request->input('video_type') != 'none') {
+            if ($request->input('video_type') == 'youtube') {
+                $rules['content_youtube_url'] = 'required|url';
+            } else if ($request->input('video_type') == 'vimeo') {
+                $rules['content_vimeo_url'] = 'required|url';
+            } else {
+                $rules['video_code'] = 'required';
+            }
+        }
+        if ($request->input('button_type') != 'none') {
+            $rules['button_label'] = 'required';
+        }
+        if ($request->input('button_action') == 'open_click_url') {
+            $rules['button_click_url'] = 'required';
+        }
+        
+        return $rules;
     }
 }

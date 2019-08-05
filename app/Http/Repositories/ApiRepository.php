@@ -13,7 +13,6 @@ use Getresponse\Sdk\Operation\Model\CampaignReference;
 use Getresponse\Sdk\Operation\Model\NewContact;
 use GuzzleHttp\Client;
 use MailerLiteApi\MailerLite;
-use Micovi\LaravelSendy\Facades\LaravelSendy;
 use SendinBlue\Client\Api\ContactsApi;
 use SendinBlue\Client\Configuration;
 
@@ -566,6 +565,11 @@ class ApiRepository extends Repository
         ]);
     }
     
+    /**
+     * @param $integration
+     * @return array
+     * @throws \Getresponse\Sdk\Client\Exception\MalformedResponseDataException
+     */
     public function getResponseCampaigns($integration)
     {
         $reMsg = [[
@@ -1009,18 +1013,26 @@ class ApiRepository extends Repository
         ];
     }
     
+    /**
+     * Sendy Subscriber set
+     * @param $integration
+     * @param $name
+     * @param $email
+     * @param $list_id
+     * @throws \Exception
+     */
     public function setSendySubscriber($integration, $name, $email, $list_id)
     {
         $url = $integration->url . '/api/subscribers/active-subscriber-count.php';
-    
+        
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, "api_key={$integration->api_key}&list_id={$list_id}");
-    
+        
         $result = curl_exec($ch);
-    
+        
         if (!(!is_numeric($result) && $result != 'No data passed')) {
             $sendy = new \Micovi\LaravelSendy\LaravelSendy();
             
@@ -1030,5 +1042,32 @@ class ApiRepository extends Repository
             
             $sendy->subscribe($email, $name, $list_id);
         }
+    }
+    
+    /**
+     * @param $integrations
+     * @return array
+     */
+    public function getHTMLIntegrationList($integrations)
+    {
+        $reMsg = [[
+            'key'  => '',
+            'name' => '-- Choose List --'
+        ]];
+    
+        $i = 1;
+        if ($integrations) {
+            foreach ($integrations as $integration) {
+                $reMsg[$i]['key'] = $integration->id;
+                $reMsg[$i]['name'] = $integration->name;
+                
+                $i++;
+            }
+        }
+    
+        return [
+            'result'  => 'success',
+            'message' => $reMsg
+        ];
     }
 }

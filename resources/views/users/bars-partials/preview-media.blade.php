@@ -43,32 +43,35 @@
                     </span>
                 </span>
             </div>
-            <input type="text"
-                   style="width: 100%; padding: .625rem .75rem; font-weight: 400; line-height: 1.5; color: #8898aa; background-clip: padding-box; border: 1px solid #dee2e6; border-radius: .25rem; background-color: #ffffff; font-size: 0.875rem; transition: all .15s ease-in-out; height: calc(1.5em + 1.25rem + 5px);"
-                   :placeholder="model.translation.opt_in_name_placeholder"/>
-            <input type="email"
-                   style="width: 100%; margin-top: 10px; padding: .625rem .75rem; font-weight: 400; line-height: 1.5; color: #8898aa; background-clip: padding-box; border: 1px solid #dee2e6; border-radius: .25rem; background-color: #ffffff; font-size: 0.875rem; transition: all .15s ease-in-out; height: calc(1.5em + 1.25rem + 5px);"
-                   :placeholder="model.translation.opt_in_email_placeholder"/>
-            <button type="button" v-if="model.lead_capture.opt_in_button_type === 'match_main_button'"
-                    style="width: 100%; padding: .625rem .75rem; margin-top: 10px; line-height: 1.5; border: none; text-decoration: none; font-size: 0.875rem; white-space: nowrap; height: calc(1.5em + 1.25rem + 5px);"
-                    :style="{
-                    'background-color': model.content.button_background_color.indexOf('#') > -1 ? model.content.button_background_color : `#${model.content.button_background_color}`,
-                    'color': model.content.button_text_color.indexOf('#') > -1 ? model.content.button_text_color : `#${model.content.button_text_color}`,
-                    'box-shadow': `0 3px 10px -4px ${model.content.button_background_color.indexOf('#') > -1 ? model.content.button_background_color : `#${model.content.button_background_color}`}`,
-                    'border-radius': model.content.button_type === 'rounded' ? '6px' : 0
-                    }">
-                @{{ model.lead_capture.opt_in_button_label }}
-            </button>
-            <button type="button" v-else
-                    style="width: 100%; padding: .625rem .75rem; margin-top: 10px; line-height: 1.5; border: none; text-decoration: none; font-size: 0.875rem; white-space: nowrap; height: calc(1.5em + 1.25rem + 5px);"
-                    :style="{
-                    'background-color': model.lead_capture.opt_in_button_bg_color.indexOf('#') > -1 ? model.lead_capture.opt_in_button_bg_color : `#${model.lead_capture.opt_in_button_bg_color}`,
-                    'color': model.lead_capture.opt_in_button_label_color.indexOf('#') > -1 ? model.lead_capture.opt_in_button_label_color : `#${model.lead_capture.opt_in_button_label_color}`,
-                    'box-shadow': `0 3px 10px -4px ${model.lead_capture.opt_in_button_bg_color.indexOf('#') > -1 ? model.lead_capture.opt_in_button_bg_color : `#${model.lead_capture.opt_in_button_bg_color}`}`,
-                    'border-radius': model.lead_capture.opt_in_button_type === 'rounded' ? '6px' : 0
-                    }">
-                @{{ model.lead_capture.opt_in_button_label }}
-            </button>
+            <div v-if="model.lead_capture.integration_type === '11'" v-html="model.html_integration_code"></div>
+            <div v-else>
+                <input type="text"
+                       style="width: 100%; padding: .625rem .75rem; font-weight: 400; line-height: 1.5; color: #8898aa; background-clip: padding-box; border: 1px solid #dee2e6; border-radius: .25rem; background-color: #ffffff; font-size: 0.875rem; transition: all .15s ease-in-out; height: calc(1.5em + 1.25rem + 5px);"
+                       :placeholder="model.translation.opt_in_name_placeholder"/>
+                <input type="email"
+                       style="width: 100%; margin-top: 10px; padding: .625rem .75rem; font-weight: 400; line-height: 1.5; color: #8898aa; background-clip: padding-box; border: 1px solid #dee2e6; border-radius: .25rem; background-color: #ffffff; font-size: 0.875rem; transition: all .15s ease-in-out; height: calc(1.5em + 1.25rem + 5px);"
+                       :placeholder="model.translation.opt_in_email_placeholder"/>
+                <button type="button" v-if="model.lead_capture.opt_in_button_type === 'match_main_button'"
+                        style="width: 100%; padding: .625rem .75rem; margin-top: 10px; line-height: 1.5; border: none; text-decoration: none; font-size: 0.875rem; white-space: nowrap; height: calc(1.5em + 1.25rem + 5px);"
+                        :style="{
+                        'background-color': model.content.button_background_color.indexOf('#') > -1 ? model.content.button_background_color : `#${model.content.button_background_color}`,
+                        'color': model.content.button_text_color.indexOf('#') > -1 ? model.content.button_text_color : `#${model.content.button_text_color}`,
+                        'box-shadow': `0 3px 10px -4px ${model.content.button_background_color.indexOf('#') > -1 ? model.content.button_background_color : `#${model.content.button_background_color}`}`,
+                        'border-radius': model.content.button_type === 'rounded' ? '6px' : 0
+                        }">
+                    @{{ model.lead_capture.opt_in_button_label }}
+                </button>
+                <button type="button" v-else
+                        style="width: 100%; padding: .625rem .75rem; margin-top: 10px; line-height: 1.5; border: none; text-decoration: none; font-size: 0.875rem; white-space: nowrap; height: calc(1.5em + 1.25rem + 5px);"
+                        :style="{
+                        'background-color': model.lead_capture.opt_in_button_bg_color.indexOf('#') > -1 ? model.lead_capture.opt_in_button_bg_color : `#${model.lead_capture.opt_in_button_bg_color}`,
+                        'color': model.lead_capture.opt_in_button_label_color.indexOf('#') > -1 ? model.lead_capture.opt_in_button_label_color : `#${model.lead_capture.opt_in_button_label_color}`,
+                        'box-shadow': `0 3px 10px -4px ${model.lead_capture.opt_in_button_bg_color.indexOf('#') > -1 ? model.lead_capture.opt_in_button_bg_color : `#${model.lead_capture.opt_in_button_bg_color}`}`,
+                        'border-radius': model.lead_capture.opt_in_button_type === 'rounded' ? '6px' : 0
+                        }">
+                    @{{ model.lead_capture.opt_in_button_label }}
+                </button>
+            </div>
             <div style="font-size: 12px;width: 100%;margin-top: 5px; margin-bottom: 10px;"
                  :style="{'color': (model.lead_capture.subscribe_text_color.indexOf('#') > -1 ? model.lead_capture.subscribe_text_color : `#${model.lead_capture.subscribe_text_color}`)}">
                 @{{ model.translation.disclaimer }}

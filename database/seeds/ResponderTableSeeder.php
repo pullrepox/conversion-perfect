@@ -73,6 +73,12 @@ class ResponderTableSeeder extends Seeder
                 'base_url'   => 'http://emails.emailinghost.com/',
                 'created_at' => now(),
                 'updated_at' => now(),
+            ],
+            [
+                'title'      => 'HTML Integration',
+                'base_url'   => ' ',
+                'created_at' => now(),
+                'updated_at' => now(),
             ]
         ];
         

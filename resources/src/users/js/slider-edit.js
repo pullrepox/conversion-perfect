@@ -56,12 +56,14 @@ new Vue({
             },
             auto_responder_list: [],
             group_list: [],
-            template_name: ''
+            template_name: '',
+            html_integration_code: ''
         },
         model: {
             sel_tab: 'main',
             friendly_name: '', position: 'top_sticky', group_id: '0', headline: [{attributes: {}, insert: 'Your Headline'}], headline_color: '#ffffff', background_color: '#3BAF85',
-            show_bar_type: 'immediate', frequency: 'every', delay_in_seconds: 3, scroll_point_percent: 10, auto_responder_list: [], group_list: [], template_name: ''
+            show_bar_type: 'immediate', frequency: 'every', delay_in_seconds: 3, scroll_point_percent: 10, auto_responder_list: [], group_list: [], template_name: '',
+            html_integration_code: ''
         },
         showUpload: false,
         uploadPercentage: 0,
@@ -153,6 +155,8 @@ new Vue({
         }
         
         this.capturing = false;
+        
+        this.model.html_integration_code = this.decodeHTML(this.model.html_integration_code);
     },
     methods: {
         changeStatusVal() {
@@ -248,6 +252,10 @@ new Vue({
                             vm.model[$(this).data('parent')][$(this).attr('id')] = $(this).val();
                             if ($(this).attr('id') === 'integration_type') {
                                 vm.getResponderList();
+                            } else if ($(this).attr('id') === 'list') {
+                                if (vm.model.lead_capture.integration_type === '11') {
+                                    vm.getHtmlIntegrationCode();
+                                }
                             }
                         } else {
                             vm.model[$(this).attr('id')] = $(this).val();
@@ -262,6 +270,7 @@ new Vue({
                                 break;
                         }
                     });
+                    
                     if ($(this).data('parent')) {
                         $(this).val(`${vm.model[$(this).data('parent')][$(this).attr('id')]}`).trigger('change.select2');
                     } else {
@@ -678,6 +687,7 @@ new Vue({
             formData.append('image-upload', file, file.name);
             this.uploadPercentage = 0;
             this.showUpload = true;
+            
             axios.post(`/image-upload/${this.bar_id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -777,6 +787,23 @@ new Vue({
         resetStats() {
             this.loading = true;
             this.actionsBar('reset_stats', 'reset');
+        },
+        getHtmlIntegrationCode() {
+            let list_id = this.model.lead_capture.list;
+            if (list_id === '') {
+                return;
+            }
+            
+            this.loading = true;
+            axios.get(`/get-html-integration-code?list_id=${list_id}`).then((r) => {
+                this.loading = false;
+                if (r.data.result === 'success') {
+                    this.model.html_integration_code = r.data.code;
+                }
+            }).catch((e) => {
+                this.loading = false;
+                this.commonNotification('danger', 'Internal Server Error. Please check your connection.');
+            });
         }
     }
 });

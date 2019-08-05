@@ -95,6 +95,7 @@
         left: 0; position: {{ $bar->position == "top" ? "relative" : "fixed" }}">
         @include("users.track-partials.preview-main")
     </div>
+    
     @if ($bar->integration_type != "none")
         <div id="cta-preview--cp-bar-{{ $bar->id }}" class="cta-preview--cp-bar" style="width: 100%;margin: 0 !important;padding: 0 !important;z-index: 99999999;
             top: {{ $bar->position == "top" || $bar->position == "top_sticky" ? "-450px" : "auto" }};
@@ -107,6 +108,7 @@
             @endif
         </div>
     @endif
+    
     <script type="text/javascript">
         window.__cp_bar_config = {
             "{{ $bar->id }}": {

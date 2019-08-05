@@ -49,36 +49,42 @@
                 </span>
             @endforeach
         </div>
-        <form id="cp-bar--cta-form-{{ $bar->id }}" action="{{ secure_redirect(route("conversion.set-lead-capture-subscribers", ["bar_id" => $bar->id])) }}" method="post">
-            @csrf
-            <div style="width: 100%; margin-top: 5px;">
-                <input type="text" id="lead_capture_cta_name__cp_bar_{{ $bar->id }}" name="lead_capture_cta_name__cp_bar_{{ $bar->id }}"
-                       style="width: calc(250px - .75rem - .75rem);padding: 0 .75rem;height: calc(1.5em + 1.25rem + 5px); display: inline-block; font-weight: 400; line-height: 1.5; color: #8898aa; background-clip: padding-box; border: 1px solid #dee2e6; border-radius: .25rem; margin-right: 5px; background-color: #ffffff; font-size: 0.875rem; transition: all .15s ease-in-out;"
-                       placeholder="{{ $bar->opt_in_name_placeholder }}" required/>
-                <input type="email" id="lead_capture_cta_email__cp_bar_{{ $bar->id }}" name="lead_capture_cta_email__cp_bar_{{ $bar->id }}"
-                       style="width: calc(250px - .75rem - .75rem);padding: 0 .75rem;height: calc(1.5em + 1.25rem + 5px); display: inline-block; font-weight: 400; line-height: 1.5; color: #8898aa; background-clip: padding-box; border: 1px solid #dee2e6; border-radius: .25rem; margin-left: 5px; background-color: #ffffff; font-size: 0.875rem; transition: all .15s ease-in-out;"
-                       placeholder="{{ $bar->opt_in_email_placeholder }}" required/>
+        @if ($bar->integration_type == 11)
+            <div style="width: 100%;">
+                {!! htmlspecialchars_decode($html_integration_code) !!}
             </div>
-            @if ($bar->opt_in_button_type == "match_main_button")
-                <button type="button" id="cta--cp-bar-button-{{ $bar->id }}"
-                        style="width: 514px; padding: .625rem .75rem; margin-top: 15px; line-height: 1.5; border: none; text-decoration: none; font-size: 0.875rem; white-space: nowrap; height: calc(1.5em + 1.25rem + 5px);
-                            background-color: {{ (strpos($bar->button_background_color, "#") === false ? "#" . $bar->button_background_color : $bar->button_background_color) }};
-                            color: {{ (strpos($bar->button_text_color, "#") === false ? "#" . $bar->button_text_color : $bar->button_text_color) }};
-                            box-shadow: 0 3px 10px -4px {{ (strpos($bar->button_background_color, "#") === false ? "#" . $bar->button_background_color : $bar->button_background_color) }};
-                            border-radius: {{ $bar->button_type === "rounded" ? "6px" : 0 }};">
-                    {{ $bar->opt_in_button_label }}
-                </button>
-            @else
-                <button type="button" id="cta--cp-bar-button-{{ $bar->id }}"
-                        style="width: 514px; padding: .625rem .75rem; margin-top: 15px; line-height: 1.5; border: none; text-decoration: none; font-size: 0.875rem; white-space: nowrap; height: calc(1.5em + 1.25rem + 5px);
-                            background-color: {{ (strpos($bar->opt_in_button_bg_color, "#") === false ? "#" . $bar->opt_in_button_bg_color : $bar->opt_in_button_bg_color) }};
-                            color: {{ (strpos($bar->opt_in_button_label_color, "#") === false ? "#" . $bar->opt_in_button_label_color : $bar->opt_in_button_label_color) }};
-                            box-shadow: 0 3px 10px -4px {{ (strpos($bar->opt_in_button_bg_color, "#") === false ? "#" . $bar->opt_in_button_bg_color : $bar->opt_in_button_bg_color) }};
-                            border-radius: {{ $bar->opt_in_button_type === "rounded" ? "6px" : 0 }};">
-                    {{ $bar->opt_in_button_label }}
-                </button>
-            @endif
-        </form>
+        @else
+            <form id="cp-bar--cta-form-{{ $bar->id }}" action="{{ secure_redirect(route("conversion.set-lead-capture-subscribers", ["bar_id" => $bar->id])) }}" method="post">
+                @csrf
+                <div style="width: 100%; margin-top: 5px;">
+                    <input type="text" id="lead_capture_cta_name__cp_bar_{{ $bar->id }}" name="lead_capture_cta_name__cp_bar_{{ $bar->id }}"
+                           style="width: calc(250px - .75rem - .75rem);padding: 0 .75rem;height: calc(1.5em + 1.25rem + 5px); display: inline-block; font-weight: 400; line-height: 1.5; color: #8898aa; background-clip: padding-box; border: 1px solid #dee2e6; border-radius: .25rem; margin-right: 5px; background-color: #ffffff; font-size: 0.875rem; transition: all .15s ease-in-out;"
+                           placeholder="{{ $bar->opt_in_name_placeholder }}" required/>
+                    <input type="email" id="lead_capture_cta_email__cp_bar_{{ $bar->id }}" name="lead_capture_cta_email__cp_bar_{{ $bar->id }}"
+                           style="width: calc(250px - .75rem - .75rem);padding: 0 .75rem;height: calc(1.5em + 1.25rem + 5px); display: inline-block; font-weight: 400; line-height: 1.5; color: #8898aa; background-clip: padding-box; border: 1px solid #dee2e6; border-radius: .25rem; margin-left: 5px; background-color: #ffffff; font-size: 0.875rem; transition: all .15s ease-in-out;"
+                           placeholder="{{ $bar->opt_in_email_placeholder }}" required/>
+                </div>
+                @if ($bar->opt_in_button_type == "match_main_button")
+                    <button type="button" id="cta--cp-bar-button-{{ $bar->id }}"
+                            style="width: 514px; padding: .625rem .75rem; margin-top: 15px; line-height: 1.5; border: none; text-decoration: none; font-size: 0.875rem; white-space: nowrap; height: calc(1.5em + 1.25rem + 5px);
+                                background-color: {{ (strpos($bar->button_background_color, "#") === false ? "#" . $bar->button_background_color : $bar->button_background_color) }};
+                                color: {{ (strpos($bar->button_text_color, "#") === false ? "#" . $bar->button_text_color : $bar->button_text_color) }};
+                                box-shadow: 0 3px 10px -4px {{ (strpos($bar->button_background_color, "#") === false ? "#" . $bar->button_background_color : $bar->button_background_color) }};
+                                border-radius: {{ $bar->button_type === "rounded" ? "6px" : 0 }};">
+                        {{ $bar->opt_in_button_label }}
+                    </button>
+                @else
+                    <button type="button" id="cta--cp-bar-button-{{ $bar->id }}"
+                            style="width: 514px; padding: .625rem .75rem; margin-top: 15px; line-height: 1.5; border: none; text-decoration: none; font-size: 0.875rem; white-space: nowrap; height: calc(1.5em + 1.25rem + 5px);
+                                background-color: {{ (strpos($bar->opt_in_button_bg_color, "#") === false ? "#" . $bar->opt_in_button_bg_color : $bar->opt_in_button_bg_color) }};
+                                color: {{ (strpos($bar->opt_in_button_label_color, "#") === false ? "#" . $bar->opt_in_button_label_color : $bar->opt_in_button_label_color) }};
+                                box-shadow: 0 3px 10px -4px {{ (strpos($bar->opt_in_button_bg_color, "#") === false ? "#" . $bar->opt_in_button_bg_color : $bar->opt_in_button_bg_color) }};
+                                border-radius: {{ $bar->opt_in_button_type === "rounded" ? "6px" : 0 }};">
+                        {{ $bar->opt_in_button_label }}
+                    </button>
+                @endif
+            </form>
+        @endif
         <div style="font-size: 12px; margin-bottom: 10px; margin-top: 5px;
             color: {{ (strpos($bar->subscribe_text_color, "#") === false ? "#" . $bar->subscribe_text_color : $bar->subscribe_text_color) }};">
             {{ $bar->disclaimer }}

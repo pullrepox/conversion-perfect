@@ -60,14 +60,13 @@
                                     @endif
                                 </div>
                             </div>
-                            
                             <div class="col-md-4 responder-group" id="api-key_div">
                                 <div class="form-group">
-                                    <label class="form-control-label ml-1" for="api_key">
-                                        API Key
+                                    <label class="form-control-label ml-1" for="api_key" id="api_key_label">
+                                        {{ !$flag && $integration->responder->title == 'HTML Integration' ? 'API Key' : 'HTML CODE' }}
                                     </label>
-                                    <input type="text" value="{{isset($integration) && $integration->api_key ? $integration->api_key : old('api_key')}}"
-                                           class="@error('api_key') is-invalid @enderror form-control" name="api_key" id="api_key"/>
+                                    <textarea class="@error('api_key') is-invalid @enderror form-control"
+                                              name="api_key" id="api_key" rows="1">{{ isset($integration) && $integration->api_key ? $integration->api_key : old('api_key') }}</textarea>
                                     @if ($errors->has('api_key'))
                                         @error('api_key')
                                         <span class="invalid-feedback" role="alert">
@@ -81,28 +80,27 @@
                                     @endif
                                 </div>
                             </div>
-                            
                             <div class="col-md-4 responder-group" id="hash_div">
                                 <div class="form-group">
                                     <label class="form-control-label ml-1" for="hash" id="hash_label">
-                                        {{ !$flag && $integration->responder->title == 'Campaign Monitor' ? 'Client ID' : 'Hash Key' }}
+                                        {{ !$flag && $integration->responder->title == 'Campaign Monitor' ? 'Client ID' :
+                                        (!$flag && $integration->responder->title == 'Sendy' ? 'List ID' : 'Hash Key') }}
                                     </label>
                                     <input type="text" value="{{isset($integration) && $integration->hash ? $integration->hash : old('hash')}}"
                                            class="@error('hash') is-invalid @enderror form-control" name="hash" id="hash"/>
                                     @if ($errors->has('hash'))
                                         @error('hash')
                                         <span class="invalid-feedback" role="alert">
-                                        {{ $message }}
-                                    </span>
+                                            {{ $message }}
+                                        </span>
                                         @enderror
                                     @else
                                         <span class="invalid-feedback" role="alert">
-                                        Please insert correct value.
-                                    </span>
+                                            Please insert correct value.
+                                        </span>
                                     @endif
                                 </div>
                             </div>
-                            
                             <div class="col-md-4 responder-group" id="url_div">
                                 <div class="form-group">
                                     <label class="form-control-label ml-1" for="url">
@@ -177,6 +175,8 @@
             $('#edit-button').show();
             $('#connect-button').hide();
             $('#connect-cc-button').hide();
+            $('#api_key_label').html('API Key');
+            $('#hash').attr('rows', 1);
             if (value === 'Sendlane') {
                 $('#friendly-name').show();
                 $('#api-key_div').show();
@@ -231,9 +231,16 @@
                     $('#connect-button').hide();
                     $('#connect-cc-button').hide();
                 }
+            } else if (value === 'HTML Integration') {
+                $('#friendly-name').show();
+                $('#api-key_div').show();
+                $('#hash_div').hide();
+                $('#url_div').hide();
+                $('#api_key_label').html('HTML CODE');
+                $('#api_key').attr('rows', 6);
             }
         }
-
+        
         $('#connect-button').on('click', function () {
             if ($('#name').val() === '') {
                 window.commonNotify('top', 'right', 'fas fa-bug', 'danger', null, 'Please insert a friendly name', '', 'animated fadeInDown', 'animated fadeOutUp');
@@ -244,13 +251,13 @@
             url += '&_token=' + '{{ csrf_token() }}&number_key=' + '{{ auth()->user()->id }}';
             window.open(url, 'Aweber Authentication', 'width=700,height=700');
         });
-
+        
         $('#connect-cc-button').on('click', function () {
             if ($('#name').val() === '') {
                 window.commonNotify('top', 'right', 'fas fa-bug', 'danger', null, 'Please insert a friendly name', '', 'animated fadeInDown', 'animated fadeOutUp');
                 return false;
             }
-    
+            
             var url = '{{ secure_redirect(route('integration.constant-contact-connect')) }}' + '?name=' + $('#name').val() + '&responder_id=' + $('#responder_id').val();
             url += '&_token=' + '{{ csrf_token() }}&number_key=' + '{{ auth()->user()->id }}';
             window.open(url, 'Constant Contact Authentication', 'width=700,height=700');

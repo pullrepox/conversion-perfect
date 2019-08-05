@@ -70,13 +70,28 @@ class BarOptionsApiController extends Controller
                 $re = $this->apiRepo->getConstantContactLists($integration);
             } else if ($integration->responder->title == 'Sendy') {
                 $integrations = Integration::with('responder')->where('user_id', auth()->user()->id)->where('responder_id', $responder_id)->get();
-    
+                
                 $re = $this->apiRepo->getSendyLists($integrations);
+            } else if ($integration->responder->title == 'HTML Integration') {
+                $integrations = Integration::with('responder')->where('user_id', auth()->user()->id)->where('responder_id', $responder_id)->get();
+                
+                $re = $this->apiRepo->getHTMLIntegrationList($integrations);
             }
         }
         
-        
         return response()->json($re);
+    }
+    
+    public function getHtmlIntegrationCode(Request $request)
+    {
+        $integration_id = $request->input('list_id');
+        
+        $integration = Integration::find($integration_id);
+        
+        return response()->json([
+            'result' => 'success',
+            'code'   => $integration ? $integration->api_key : ''
+        ]);
     }
     
     /**
@@ -139,6 +154,7 @@ class BarOptionsApiController extends Controller
             }
             
             $split_bar_id = $request->has('split_bar_id') ? $request->input('split_bar_id') : 0;
+            
             $multi_bar_id = $request->has('multi_bar_id') ? $request->input('multi_bar_id') : 0;
             
             $set_log = $this->barsRepo->setLeadCaptureClickLog($bar->id, $bar->user_id, $fp_id, $unique_id, $split_bar_id, $multi_bar_id);

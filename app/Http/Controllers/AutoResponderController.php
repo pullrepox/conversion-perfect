@@ -62,6 +62,17 @@ class AutoResponderController extends Controller
             return $this->campaignMonitor($data, $responder);
         } else if ($responder->title == 'Sendy') {
             return $this->Sendy($data);
+        } else if ($responder->title == 'HTML Integration') {
+            if ($data['api_key'] == '' || is_null($data['api_key']) || empty(trim($data['api_key']))) {
+                return [
+                    'type'    => 'error',
+                    'message' => 'HTML CODE is required'
+                ];
+            } else {
+                return [
+                    'type' => 'success'
+                ];
+            }
         } else {
             return [
                 'type' => 'success'
@@ -221,6 +232,13 @@ class AutoResponderController extends Controller
         }
     }
     
+    /**
+     * Campaign Monitor Validation
+     * @param $data
+     * @param $responder
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function campaignMonitor($data, $responder)
     {
         $client = new Client();
@@ -253,6 +271,11 @@ class AutoResponderController extends Controller
         ];
     }
     
+    /**
+     * Sendy Validation
+     * @param $data
+     * @return array
+     */
     public function Sendy($data)
     {
         $url = $data['url'] . '/api/subscribers/active-subscriber-count.php';
@@ -313,9 +336,14 @@ class AutoResponderController extends Controller
         return redirect()->route('autoresponder.index');
     }
     
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function edit($id)
     {
         $integration = Integration::findOrFail($id);
+        
         $header_data = [
             'main_name'   => 'Edit Integration',
             'parent_data' => []
@@ -359,6 +387,10 @@ class AutoResponderController extends Controller
         }
     }
     
+    /**
+     * @param $integration
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function destroy($integration)
     {
         Integration::findOrFail($integration)->delete();

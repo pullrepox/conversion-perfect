@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\BarsRepository;
 use App\Http\Repositories\TinyMinify;
+use App\Integration;
 use App\User;
 use Illuminate\Http\Request;
 use Soumen\Agent\Facades\Agent;
@@ -22,10 +23,17 @@ class OverlaysController extends Controller
     {
         $user = User::where('subdomain', $sub_domain)->first();
         $bar = $this->barRepo->model()->where('user_id', $user->id)->where('custom_link_text', $link_name)->first();
+        $html_integration_code = '';
+        if ($bar->integration_type == 11 && $bar->list != '') {
+            $integration = Integration::find($bar->list);
+            if ($integration) {
+                $html_integration_code = $integration->api_key;
+            }
+        }
         
         if ($bar && !is_null($bar)) {
             $option = 'loaded';
-            return view('users.track-partials.preview-html', compact('bar', 'option'));
+            return view('users.track-partials.preview-html', compact('bar', 'option', 'html_integration_code'));
         } else {
             abort(404, 'No existing is matched Conversion Bar.');
         }
@@ -46,7 +54,15 @@ class OverlaysController extends Controller
         if ($bar && !is_null($bar)) {
             $splitTest = '';
             
-            $html_code = view('users.track-partials.script', compact('bar', 'splitTest'));
+            $html_integration_code = '';
+            if ($bar->integration_type == 11 && $bar->list != '') {
+                $integration = Integration::find($bar->list);
+                if ($integration) {
+                    $html_integration_code = $integration->api_key;
+                }
+            }
+            
+            $html_code = view('users.track-partials.script', compact('bar', 'splitTest', 'html_integration_code'));
             $code = TinyMinify::html($html_code);
             
             header('Content-Type: application/javascript; charset=utf-8;');
@@ -178,13 +194,22 @@ class OverlaysController extends Controller
         if (!$splitTest || is_null($splitTest)) {
             abort(404, 'No existing is matched Split Test Bar.');
         }
+        
         if ($splitTest->bar_id != $bar_id) {
             abort(404, 'No existing is matched Conversion Bar.');
         }
         
         $bar = $this->barRepo->model()->find($bar_id);
         if ($bar && !is_null($bar)) {
-            $html_code = view('users.track-partials.script', compact('bar', 'splitTest'));
+            $html_integration_code = '';
+            if ($bar->integration_type == 11 && $bar->list != '') {
+                $integration = Integration::find($bar->list);
+                if ($integration) {
+                    $html_integration_code = $integration->api_key;
+                }
+            }
+            
+            $html_code = view('users.track-partials.script', compact('bar', 'splitTest', 'html_integration_code'));
             $code = TinyMinify::html($html_code);
             
             header('Content-Type: application/javascript; charset=utf-8;');
