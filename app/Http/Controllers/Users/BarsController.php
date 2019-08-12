@@ -498,9 +498,8 @@ class BarsController extends Controller
         $sel_tab = !session()->get('sel_tab') || session()->get('sel_tab') == '' ? 'main' : session()->get('sel_tab');
         session(['sel_tab' => '']);
         
+        $html_integration_code = '';
         if ($bar->integration_type == '11') {
-            $html_integration_code = '';
-            
             $html_integration = Integration::find($bar->list);
             if ($html_integration) {
                 $html_integration_code = $html_integration->api_key;
