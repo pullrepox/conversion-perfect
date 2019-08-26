@@ -172,7 +172,7 @@ class GroupsController extends Controller
                 $duplicate_row->name = $group->name . ' - Clone';
                 $duplicate_row->save();
                 
-                session()->flash('success', 'Tracker has been cloned.');
+                session()->flash('success', 'Group has been cloned.');
                 
                 return response()->json([
                     'result' => 'success',

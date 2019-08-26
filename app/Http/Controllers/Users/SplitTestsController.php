@@ -90,6 +90,7 @@ class SplitTestsController extends Controller
                     'split_bar_name'   => $row->split_bar_name,
                     'split_bar_weight' => $row->split_bar_weight,
                 ];
+                
                 $w += $row->split_bar_weight;
             }
         }
@@ -227,11 +228,13 @@ class SplitTestsController extends Controller
                 if ($row->id == $splitTest->id) {
                     continue;
                 }
+                
                 $split_list[$key] = [
                     'id'               => $row->id,
                     'split_bar_name'   => $row->split_bar_name,
                     'split_bar_weight' => $row->split_bar_weight,
                 ];
+                
                 $w += $row->split_bar_weight;
             }
         }
