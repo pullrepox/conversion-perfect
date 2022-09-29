@@ -20,3 +20,7 @@ Route::get('/reset-main-db', 'Api\DatabaseController@mainDbReset');
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
 //    return $request->user();
 //});
+
+Route::middleware(['api.token'])->group(function (){
+    Route::any('/autoresponders/refreshlists/', 'Api\AutoResponderController@refreshLists');
+});
